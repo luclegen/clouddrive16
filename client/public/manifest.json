@@ -12,6 +12,11 @@
       "type": "image/png",
       "sizes": "1250x1250"
     },
+    {
+      "src": "logo.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    }
   ],
   "start_url": ".",
   "display": "standalone",
