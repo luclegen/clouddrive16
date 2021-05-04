@@ -1,4 +1,4 @@
-# CloudDrive16
+# ![CloudDrive16 Logo](client/public/logo64.png) CloudDrive16
 
 This project used to build CloudDrive16 web (A file hosting service and synchronization service operated by CloudTeam16)
 
