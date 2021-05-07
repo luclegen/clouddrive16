@@ -1,5 +1,5 @@
 import './App.sass'
-import Header from './components/Header'
+import Header from './components/Header/Header'
 
 const App = () => {
   return (
