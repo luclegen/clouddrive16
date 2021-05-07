@@ -1,11 +1,11 @@
-import './App.sass';
+import './App.sass'
 
-function App() {
+const App = () => {
   return (
     <div className="App">
-      Hello CloudDrive16!
+      Hello {process.env.REACT_APP_CLIENT_NAME}!
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
