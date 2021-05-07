@@ -1,9 +1,12 @@
 import './Home.sass'
+import { Component } from 'react'
 
-const Home = () => {
-  return (
-    Home
-  )
+export default class Home extends Component {
+  render() {
+    return (
+      <main>
+        Home
+      </main>
+    )
+  }
 }
-
-export default Home;
