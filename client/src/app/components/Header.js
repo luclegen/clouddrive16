@@ -9,6 +9,8 @@ export default class Header extends Component {
     }
   }
 
+  toggle = () => this.setState({isHover: !this.state.isHover})
+
   render() {
     return (
       <header>
