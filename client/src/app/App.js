@@ -1,9 +1,10 @@
 import './App.sass'
+import Header from './components/Header'
 
 const App = () => {
   return (
     <div className="App">
-      Hello {process.env.REACT_APP_CLIENT_NAME}!
+      <Header />
     </div>
   )
 }
