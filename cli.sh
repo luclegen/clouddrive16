@@ -10,4 +10,4 @@ cd client; npm i -s node-sass axios bootstrap@4.6 reactstrap@8.9 --legacy-peer-d
 
 # II. EXPRESS.JS SERVER
 clear; npm start
-npm i -s dotenv mongoose express body-parser bcryptjs cors jsonwebtoken passport passport-local lodash nodemailer rimraf
+npm i -s dotenv mongoose express bcryptjs cors jsonwebtoken passport passport-local lodash nodemailer rimraf
