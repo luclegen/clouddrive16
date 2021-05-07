@@ -1,9 +1,10 @@
 import './Header.sass'
+import { Component } from 'react'
 
-const Header = () => {
-  return (
-    <header className="Header">Header</header>
-  )
+export default class Header extends Component {
+  render() {
+    return (
+      <header className="Header">Header</header>
+    )
+  }
 }
-
-export default Header;
