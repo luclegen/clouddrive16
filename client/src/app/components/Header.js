@@ -11,8 +11,6 @@ export default class Header extends Component {
 
   toggle = () => this.setState({isHover: !this.state.isHover})
 
-  logoWidth = () => document.querySelector('.logo').clientWidth
-
   render() {
     return (
       <header>
