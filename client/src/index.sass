@@ -1,5 +1,7 @@
 @import '~bootstrap/scss/bootstrap.scss'
 
+// New
+
 nav
   background: blue
 
@@ -10,20 +12,79 @@ nav
   &:hover
     color: navy
 
-  img
-    src: 'logo.png'
+.search-bar
+  background: #e1dfdd
 
-    &:hover
-      src: 'logo.highlight.png'
+  &:hover
+    background: white
 
-.logo
+  form
+
+    button
+      color: blue
+
+      &:hover
+        color: navy
+
+    button:focus, input:focus
+      outline: none
+      box-shadow: none
+
+.avatar-img
+  border: 1px solid blue
+
+  &:hover
+    border: 1px solid white
+
+// Bootstrap
+
+.search-form
+  @extend .input-group
+
+.search-btn
+  @extend .btn
+
+.logo, .search-from
   @extend .card-link
 
-.logo
+.search-in
+  @extend .form-control 
+
+.logo, .search-btn
   @extend .d-flex
 
 .logo
   @extend .align-items-center
 
+.search-in
+  @extend .bg-transparent
+
+.search-bar
+  @extend .border
+
+.search-bar
+  @extend .border-light
+
 .logo
-  @extend .px-2
+  @extend .rounded
+
+.avatar-img
+  @extend .rounded-circle
+
+.search-bar
+  @extend .rounded-pill
+
+.search-in
+  @extend .border-0
+
+.logo
+  @extend .px-1
+
+.search-in
+  @extend .pl-1
+
+.search-in
+  @extend .pr-3
+
+.logo-img
+  @extend .mr-1
