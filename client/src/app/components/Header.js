@@ -5,13 +5,31 @@ export default class Header extends Component {
     super(props)
 
     this.state = {
-      isHover: false
+      isHover: false,
+      preEvent: null,
+      selected: false
     }
   }
 
   toggle = () => this.setState({isHover: !this.state.isHover})
 
   select = () => document.querySelector('.search-bar').style.background = 'white'
+
+  coloring = e => {
+    if (e.type === 'select') this.setState({selected: true})
+    if (e.type === 'blur') this.setState({selected: false})
+
+    let color = this.state.selected ||
+                (this.state.preEvent == null && e.type === 'mouseenter') ||
+                (this.state.preEvent === 'mouseleave' && e.type === 'mouseenter') ||
+                (this.state.preEvent === 'blur' && e.type === 'mouseenter')
+                ? 'white' : '#e1dfdd'
+
+    if (e.type === 'select') color = 'white'
+    if (e.type === 'blur') color = '#e1dfdd'
+    document.querySelector('.search-bar').style.background = color
+    this.setState({preEvent: e.type})
+  }
 
   blur = () => document.querySelector('.search-bar').style.background = '#e1dfdd'
 
@@ -23,12 +41,12 @@ export default class Header extends Component {
             <img className="logo-img" src={'logo' + (this.state.isHover ? '.hover' : '') + '.png'} alt="Logo" />
             {process.env.REACT_APP_CLIENT_NAME}
           </a>
-          <div className="search-bar">
+          <div className="search-bar" onMouseEnter={this.coloring} onMouseLeave={this.coloring}>
             <form className="search-form">
               <button className="search-btn" type="button">
                 <i className="material-icons">search</i>
               </button>
-              <input className="search-in" type="search" placeholder="Search for anything" onFocus={this.select} onBlur={this.blur} />
+              <input className="search-in" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} />
             </form>
           </div>
           <a href="/" className="avatar">
