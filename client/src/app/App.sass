@@ -11,3 +11,24 @@
 
 .search-bar
   width: 500px
+
+@media (max-width: 1024px)
+  .search-bar
+    width: 250px
+
+@media (max-width: 800px)
+  .search-bar
+    width: auto
+    background: blue
+    border: 1px solid blue !important
+    justify-self: end !important
+
+    .search-btn
+      color: white
+      background: none
+
+      &:disabled
+        opacity: 1
+
+    .search-in
+      display: none
