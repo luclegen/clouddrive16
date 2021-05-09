@@ -29,8 +29,6 @@ export default class Header extends Component {
     this.setState({preEvent: e.type})
   }
 
-  blur = () => document.querySelector('.search-bar').style.background = '#e1dfdd'
-
   render() {
     return (
       <header>
