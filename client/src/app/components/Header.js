@@ -13,8 +13,6 @@ export default class Header extends Component {
 
   toggle = () => this.setState({isHover: !this.state.isHover})
 
-  select = () => document.querySelector('.search-bar').style.background = 'white'
-
   coloring = e => {
     if (e.type === 'select') this.setState({selected: true})
     if (e.type === 'blur') this.setState({selected: false})
