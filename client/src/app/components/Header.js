@@ -9,6 +9,7 @@ export default class Header extends Component {
     this.state = {
       isHover: false,
       selected: false,
+      opened: false,
       keyword: ''
     }
   }
@@ -17,34 +18,39 @@ export default class Header extends Component {
 
   getSearchBar = () => document.querySelector('.search-bar')
   getSearchIn = () => document.querySelector('.search-in')
+  getSearchBtn = () => document.querySelector('.search-btn')
 
-  show = () => {
+  open = () => {
     if (window.innerWidth < 801) {
       this.getSearchBar().style.position = 'absolute'
       this.getSearchBar().style.width = '100%'
       this.getSearchBar().style.left = '0'
       this.getSearchBar().style.background = 'white'
       this.getSearchIn().style.display = 'block'
+      this.getSearchBtn().style.color = 'blue'
       this.getSearchIn().focus()
+      setTimeout(() => this.setState({opened: true}));
     }
   }
 
   coloring = e => {
+    if (e.type === 'select') this.setState({selected: true})
+    if (e.type === 'blur') this.setState({selected: false})
+    
     if (window.innerWidth > 800) {
-      if (e.type === 'select') this.setState({selected: true})
-      if (e.type === 'blur') this.setState({selected: false})
-
       let color = this.state.keyword || this.state.selected || e.type === 'mouseenter' ? 'white' : '#e1dfdd'
 
       if (e.type === 'select') color = 'white'
       if (e.type === 'blur' && !this.state.keyword) color = '#e1dfdd'
       document.querySelector('.search-bar').style.background = color
     } else {
-      if (e.type === 'blur') {
+      if (e.type === 'mouseleave') {
         this.getSearchBar().style.width = 'auto'
         this.getSearchBar().style.position = 'static'
         this.getSearchBar().style.background = 'blue'
+        this.getSearchBtn().style.color = 'white'
         this.getSearchIn().style.display = 'none'
+        this.setState({opened: false})
       }
     }
   }
@@ -61,7 +67,7 @@ export default class Header extends Component {
           </a>
           <div className="search-bar" onMouseEnter={this.coloring} onMouseLeave={this.coloring}>
             <form className="search-form">
-              <button className="search-btn" type={window.innerWidth > 800 ? 'submit' : 'button'} disabled={window.innerWidth > 1023 && !this.state.keyword} onClick={this.show}>
+              <button className="search-btn" type={window.innerWidth > 800 ? 'submit' : this.state.opened && this.state.keyword ? 'submit' : 'button'} disabled={window.innerWidth > 800 && !this.state.keyword} onClick={this.open}>
                 <i className="material-icons">search</i>
               </button>
               <input className="search-in" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setKeyword} />
