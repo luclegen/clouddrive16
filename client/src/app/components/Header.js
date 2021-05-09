@@ -13,6 +13,8 @@ export default class Header extends Component {
 
   select = () => document.querySelector('.search-bar').style.background = 'white'
 
+  blur = () => document.querySelector('.search-bar').style.background = '#e1dfdd'
+
   render() {
     return (
       <header>
@@ -26,7 +28,7 @@ export default class Header extends Component {
               <button className="search-btn" type="button">
                 <i className="material-icons">search</i>
               </button>
-              <input className="search-in" type="search" placeholder="Search for anything" onFocus={this.select} />
+              <input className="search-in" type="search" placeholder="Search for anything" onFocus={this.select} onBlur={this.blur} />
             </form>
           </div>
           <a href="/" className="avatar">
