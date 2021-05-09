@@ -4,10 +4,13 @@ export default class Header extends Component {
   constructor(props) {
     super(props)
 
+    this.setKeyword = this.setKeyword.bind(this)
+
     this.state = {
       isHover: false,
       preEvent: null,
-      selected: false
+      selected: false,
+      keyword: ''
     }
   }
 
@@ -17,17 +20,20 @@ export default class Header extends Component {
     if (e.type === 'select') this.setState({selected: true})
     if (e.type === 'blur') this.setState({selected: false})
 
-    let color = this.state.selected ||
+    let color = this.state.keyword ||
+                this.state.selected ||
                 (this.state.preEvent == null && e.type === 'mouseenter') ||
                 (this.state.preEvent === 'mouseleave' && e.type === 'mouseenter') ||
                 (this.state.preEvent === 'blur' && e.type === 'mouseenter')
                 ? 'white' : '#e1dfdd'
 
     if (e.type === 'select') color = 'white'
-    if (e.type === 'blur') color = '#e1dfdd'
+    if (e.type === 'blur' && !this.state.keyword) color = '#e1dfdd'
     document.querySelector('.search-bar').style.background = color
     this.setState({preEvent: e.type})
   }
+
+  setKeyword = e => this.setState({keyword: e.target.value})
 
   render() {
     return (
@@ -42,7 +48,7 @@ export default class Header extends Component {
               <button className="search-btn" type="button">
                 <i className="material-icons">search</i>
               </button>
-              <input className="search-in" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} />
+              <input className="search-in" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setKeyword} />
             </form>
           </div>
           <a href="/" className="avatar">
