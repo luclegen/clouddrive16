@@ -8,7 +8,6 @@ export default class Header extends Component {
 
     this.state = {
       isHover: false,
-      preEvent: null,
       selected: false,
       keyword: ''
     }
@@ -20,17 +19,11 @@ export default class Header extends Component {
     if (e.type === 'select') this.setState({selected: true})
     if (e.type === 'blur') this.setState({selected: false})
 
-    let color = this.state.keyword ||
-                this.state.selected ||
-                (this.state.preEvent == null && e.type === 'mouseenter') ||
-                (this.state.preEvent === 'mouseleave' && e.type === 'mouseenter') ||
-                (this.state.preEvent === 'blur' && e.type === 'mouseenter')
-                ? 'white' : '#e1dfdd'
+    let color = this.state.keyword || this.state.selected || e.type === 'mouseenter' ? 'white' : '#e1dfdd'
 
     if (e.type === 'select') color = 'white'
     if (e.type === 'blur' && !this.state.keyword) color = '#e1dfdd'
     document.querySelector('.search-bar').style.background = color
-    this.setState({preEvent: e.type})
   }
 
   setKeyword = e => this.setState({keyword: e.target.value})
