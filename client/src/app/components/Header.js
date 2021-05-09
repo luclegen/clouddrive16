@@ -11,6 +11,8 @@ export default class Header extends Component {
 
   toggle = () => this.setState({isHover: !this.state.isHover})
 
+  select = () => document.querySelector('.search-bar').style.background = 'white'
+
   render() {
     return (
       <header>
@@ -24,7 +26,7 @@ export default class Header extends Component {
               <button className="search-btn" type="button">
                 <i className="material-icons">search</i>
               </button>
-              <input className="search-in" type="search" placeholder="Search for anything" />
+              <input className="search-in" type="search" placeholder="Search for anything" onFocus={this.select} />
             </form>
           </div>
           <a href="/" className="avatar">
