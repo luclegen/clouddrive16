@@ -68,7 +68,7 @@ export default class Header extends Component {
     if (this.state.opened) this.open()
   }
 
-  render = () => (
+  render = () => 
     <header>
       <nav className="navbar">
         <a className="logo" href="/" onMouseEnter={this.toggle} onMouseLeave={this.toggle}>
@@ -88,5 +88,4 @@ export default class Header extends Component {
         </a>
       </nav>
     </header>
-  )
 }
