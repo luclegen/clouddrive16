@@ -2,6 +2,12 @@
 
 $spacer: 16px
 
+// Custom
+
+.form-group
+  display: flex
+  width: fit-content
+
 // New
 
 header
@@ -25,10 +31,6 @@ header
       &:hover
         color: navy
 
-    button:focus, input:focus
-      outline: none
-      box-shadow: none
-
 .avatar-img
   border: 1px solid blue
 
@@ -43,31 +45,37 @@ header
 .search-form
   @extend .input-group
 
-.search-btn
+.search-btn, .in-btn
   @extend .btn
 
 .logo, .search-from
   @extend .card-link
 
-.sign-in-form
+.email-form-group, .password-form-group
   @extend .form-group
 
-.search-in, .email-in, .password-in
+input
   @extend .form-control
 
-.logo, .search-btn
+.logo, .search-btn, .in-btn, .sign-in-section
   @extend .d-flex
 
 .logo
   @extend .align-items-center
 
+.sign-in-section
+  @extend .justify-content-center
+
+.sign-in-section
+  @extend .text-center
+
 .search-in
   @extend .bg-transparent
 
-.search-bar
+.search-bar, .email-form-group, .password-form-group
   @extend .border
 
-.logo
+.logo, .email-form-group, .password-form-group
   @extend .rounded
 
 .avatar-img
@@ -76,8 +84,11 @@ header
 .search-bar
   @extend .rounded-pill
 
-.search-in
+.search-in, .email-in, .password-in
   @extend .border-0
+
+.search-in, .search-btn, .email-in, .password-in, .in-btn
+  @extend .shadow-none
 
 header
   @extend .p-1
