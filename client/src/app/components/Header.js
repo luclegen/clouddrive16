@@ -68,8 +68,7 @@ export default class Header extends Component {
     if (this.state.opened) this.open()
   }
 
-  render = () =>
-    <header>
+  render = () => <header>
       <nav className="navbar">
         <a className="logo" href="/" onMouseEnter={this.toggle} onMouseLeave={this.toggle}>
           <img className="logo-img" src={'logo' + (this.state.isHover ? '.hover' : '') + '.png'} alt="Logo" />
@@ -87,5 +86,5 @@ export default class Header extends Component {
           <img className="avatar-img" src="https://lh3.googleusercontent.com/ogw/ADGmqu80fLiAIwlesuv_8mPJR4eMNwocFkqj4Cz8vcHj=s83-c-mo" alt="'s avatar" />
         </a>
       </nav>
-    </header>
+  </header>
 }
