@@ -12,7 +12,6 @@ export default class Header extends Component {
       opened: false,
       keyword: '',
       width: window.innerWidth,
-      e: null
     }
   }
 
@@ -44,7 +43,6 @@ export default class Header extends Component {
   }
 
   coloring = e => {
-    this.setState({e: e})
     if (e.type === 'select') this.setState({selected: true})
     if (e.type === 'blur') this.setState({selected: false})
 
@@ -64,14 +62,14 @@ export default class Header extends Component {
 
   componentDidMount = () => window.onresize = () => {
     this.setState({width: window.innerWidth})
-    if (this.state.e) this.reset(this.state.width < 801)
+    this.reset(this.state.width < 801)
     if (this.state.opened) this.open()
   }
 
   render = () => <header>
     <a className="logo" href="/" onMouseEnter={this.toggle} onMouseLeave={this.toggle}>
-      <img className="logo-img" src={'logo' + (this.state.isHover ? '.hover' : '') + '.png'} alt="Logo" />
-      {this.state.width > 560 ? process.env.REACT_APP_CLIENT_NAME : ''}
+      <img className={`logo-img ${this.state.width > 560 ? 'mr-1' : null}`} src={'logo' + (this.state.isHover ? '.hover' : '') + '.png'} alt="Logo" />
+      { this.state.width > 560 ? process.env.REACT_APP_CLIENT_NAME : null}
     </a>
     <div className="search-bar" onMouseEnter={this.coloring} onMouseLeave={this.coloring}>
       <form className="search-form">
