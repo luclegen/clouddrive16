@@ -15,7 +15,7 @@ export default class Header extends Component {
     }
   }
 
-  toggle = () => this.setState({isHover: !this.state.isHover})
+  toggle = () => this.setState({ isHover: !this.state.isHover })
 
   getSearchBar = () => document.querySelector('.search-bar')
   getSearchIn = () => document.querySelector('.search-in')
@@ -30,7 +30,7 @@ export default class Header extends Component {
       this.getSearchIn().style.display = 'block'
       this.getSearchIn().focus()
       this.getSearchBtn().style.color = 'blue'
-      setTimeout(() => this.setState({opened: true}))
+      setTimeout(() => this.setState({ opened: true }))
     }
   }
 
@@ -43,8 +43,8 @@ export default class Header extends Component {
   }
 
   coloring = e => {
-    if (e.type === 'select') this.setState({selected: true})
-    if (e.type === 'blur') this.setState({selected: false})
+    if (e.type === 'select') this.setState({ selected: true })
+    if (e.type === 'blur') this.setState({ selected: false })
 
     if (this.state.width > 800) {
       let color = this.state.keyword || this.state.selected || e.type === 'mouseenter' ? 'white' : '#e1dfdd'
@@ -54,22 +54,22 @@ export default class Header extends Component {
       document.querySelector('.search-bar').style.background = color
     } else if (e.type === 'mouseleave') {
       this.reset()
-      this.setState({opened: false})
+      this.setState({ opened: false })
     }
   }
 
-  setKeyword = e => this.setState({keyword: e.target.value})
+  setKeyword = e => this.setState({ keyword: e.target.value })
 
   componentDidMount = () => window.onresize = () => {
-    this.setState({width: window.innerWidth})
+    this.setState({ width: window.innerWidth })
     this.reset(this.state.width < 801)
     if (this.state.opened) this.open()
   }
 
   render = () => <header>
     <a className="logo" href="/" onMouseEnter={this.toggle} onMouseLeave={this.toggle}>
-      <img className={`logo-img ${this.state.width > 560 ? 'mr-1' : null}`} src={'logo' + (this.state.isHover ? '.hover' : '') + '.png'} alt="Logo" />
-      { this.state.width > 560 ? process.env.REACT_APP_CLIENT_NAME : null}
+      <img className={`logo-img ${this.state.width > 560 && 'mr-1'}`} src={'logo' + (this.state.isHover ? '.hover' : '') + '.png'} alt="Logo" />
+      {this.state.width > 560 && process.env.REACT_APP_CLIENT_NAME}
     </a>
     <div className="search-bar" onMouseEnter={this.coloring} onMouseLeave={this.coloring}>
       <form className="search-form">
