@@ -1,8 +1,10 @@
 @import '~bootstrap/scss/bootstrap.scss'
 
+$spacer: 16px
+
 // New
 
-nav
+header
   background: blue
 
 .logo
@@ -35,6 +37,9 @@ nav
 
 // Bootstrap
 
+header
+  @extend .navbar
+
 .search-form
   @extend .input-group
 
@@ -44,8 +49,11 @@ nav
 .logo, .search-from
   @extend .card-link
 
-.search-in
-  @extend .form-control 
+.sign-in-form
+  @extend .form-group
+
+.search-in, .email-in, .password-in
+  @extend .form-control
 
 .logo, .search-btn
   @extend .d-flex
@@ -73,6 +81,9 @@ nav
 
 .search-in
   @extend .border-0
+
+header
+  @extend .p-1
 
 .logo
   @extend .px-1

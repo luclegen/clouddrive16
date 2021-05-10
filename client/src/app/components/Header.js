@@ -69,22 +69,20 @@ export default class Header extends Component {
   }
 
   render = () => <header>
-      <nav className="navbar">
-        <a className="logo" href="/" onMouseEnter={this.toggle} onMouseLeave={this.toggle}>
-          <img className="logo-img" src={'logo' + (this.state.isHover ? '.hover' : '') + '.png'} alt="Logo" />
-          {this.state.width > 560 ? process.env.REACT_APP_CLIENT_NAME : ''}
-        </a>
-        <div className="search-bar" onMouseEnter={this.coloring} onMouseLeave={this.coloring}>
-          <form className="search-form">
-            <button className="search-btn" type={this.state.width > 800 ? 'submit' : this.state.opened && this.state.keyword ? 'submit' : 'button'} disabled={this.state.width > 800 && !this.state.keyword} onClick={this.open}>
-              <i className="material-icons">search</i>
-            </button>
-            <input className="search-in" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setKeyword} />
-          </form>
-        </div>
-        <a href="/" className="avatar">
-          <img className="avatar-img" src="https://lh3.googleusercontent.com/ogw/ADGmqu80fLiAIwlesuv_8mPJR4eMNwocFkqj4Cz8vcHj=s83-c-mo" alt="'s avatar" />
-        </a>
-      </nav>
+    <a className="logo" href="/" onMouseEnter={this.toggle} onMouseLeave={this.toggle}>
+      <img className="logo-img" src={'logo' + (this.state.isHover ? '.hover' : '') + '.png'} alt="Logo" />
+      {this.state.width > 560 ? process.env.REACT_APP_CLIENT_NAME : ''}
+    </a>
+    <div className="search-bar" onMouseEnter={this.coloring} onMouseLeave={this.coloring}>
+      <form className="search-form">
+        <button className="search-btn" type={this.state.width > 800 ? 'submit' : this.state.opened && this.state.keyword ? 'submit' : 'button'} disabled={this.state.width > 800 && !this.state.keyword} onClick={this.open}>
+          <i className="material-icons">search</i>
+        </button>
+        <input className="search-in" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setKeyword} />
+      </form>
+    </div>
+    <a href="/" className="avatar">
+      <img className="avatar-img" src="https://lh3.googleusercontent.com/ogw/ADGmqu80fLiAIwlesuv_8mPJR4eMNwocFkqj4Cz8vcHj=s83-c-mo" alt="'s avatar" />
+    </a>
   </header>
 }
