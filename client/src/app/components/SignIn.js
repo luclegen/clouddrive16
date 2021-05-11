@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 class SignIn extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class SignIn extends Component {
   test = () => console.log('email')
 
   onSubmit = e => {
-    e.preventDefault();
+    e.preventDefault()
     console.log(document.querySelector('body').clientHeight)
     console.log('submit')
   }
@@ -36,4 +36,4 @@ class SignIn extends Component {
   </section>
 }
 
-export default SignIn;
+export default SignIn
