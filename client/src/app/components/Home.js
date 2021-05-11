@@ -1,9 +1,9 @@
 import { Component } from 'react'
-import SignIn from './SignIn'
+import Login from './Login'
 
 export default class Home extends Component {
 
   render = () => <main>
-    {true && <SignIn />}
+    {true && <Login />}
   </main>
 }

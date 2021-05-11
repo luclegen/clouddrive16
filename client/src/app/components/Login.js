@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-class SignIn extends Component {
+class Login extends Component {
   constructor(props) {
     super(props)
 
@@ -36,4 +36,4 @@ class SignIn extends Component {
   </section>
 }
 
-export default SignIn
+export default Login
