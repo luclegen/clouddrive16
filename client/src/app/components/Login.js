@@ -4,34 +4,52 @@ class Login extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
+    this.onChangeEmail = this.onChangeEmail.bind(this)
+    this.onChangePassword = this.onChangePassword.bind(this)
+    this.onChangeRemember = this.onChangeRemember.bind(this)
 
+    this.state = {
+      email: '',
+      password: '',
+      remembered: false
     }
   }
+
+  onChangeEmail = e => this.setState({ email: e.target.value })
+
+  onChangePassword = e => this.setState({ password: e.target.value })
+
+  onChangeRemember = e => this.setState({ remembered: e.target.value })
 
   test = () => console.log('email')
 
   onSubmit = e => {
     e.preventDefault()
-    console.log(document.querySelector('body').clientHeight)
-    console.log('submit')
+    console.log(this.state)
   }
 
-  render = () => <section className="sign-in-section">
-    <form className="sign-in-form" onSubmit={this.onSubmit}>
-      <h1>Sign in</h1>
-      <div className="email-form-group">
-        <input className="email-in" type="email" name="email" id="email-in" placeholder="Email" />
-        <button className="in-btn" type="button" onClick={this.test}>
+  render = () => <section className="section-login">
+    <form className="form-login" onSubmit={this.onSubmit}>
+      <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_CLIENT_NAME + ' logo'} />
+      <h1 className="h1-login">Sign in to {process.env.REACT_APP_CLIENT_NAME}</h1>
+      <div className="form-group-email">
+        <input className="input-email" type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.onChangeEmail} />
+        <button className="btn-input" type="button" onClick={this.test}>
           <i className="material-icons">input</i>
         </button>
       </div>
-      <div className="password-form-group">
-        <input className="password-in" type="password" name="password" id="password-in" placeholder="Password" />
-        <button className="in-btn" type="submit">
+      <div className="form-group-password">
+        <input className="input-password" type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.onChangePassword} />
+        <button className="btn-input" type="submit">
           <i className="material-icons">input</i>
         </button>
       </div>
+      <div className="form-check">
+        <input className="form-check-input input-remember-me" id="remember-me" type="checkbox" name="remember-me" value={this.state.remembered} onChange={this.onChangeRemember} />
+        <label className="form-check-label" htmlFor="remember-me">Keep me signed in</label>
+      </div>
+      <a href="/find-account">Forgotten password?</a>
+      <button className="btn-create-account" type="button">Create account</button>
     </form>
   </section>
 }

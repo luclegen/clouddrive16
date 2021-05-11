@@ -45,37 +45,43 @@ header
 .search-form
   @extend .input-group
 
-.search-btn, .in-btn
+.search-btn, .btn-input, .btn-create-account
   @extend .btn
+
+.btn-create-account
+  @extend .btn-success
 
 .logo, .search-from
   @extend .card-link
 
-.email-form-group, .password-form-group
+.form-group-email, .form-group-password
   @extend .form-group
 
-input
+.input-email, .input-password
   @extend .form-control
 
-.logo, .search-btn, .in-btn, .sign-in-section
+.logo, .search-btn, .btn-input, .section-login, .form-login
   @extend .d-flex
 
-.logo
+.form-login
+  @extend .flex-xl-column
+
+.logo, .form-login
   @extend .align-items-center
 
-.sign-in-section
+.section-login, .form-login, .section-login
   @extend .justify-content-center
 
-.sign-in-section
+.section-login
   @extend .text-center
 
 .search-in
   @extend .bg-transparent
 
-.search-bar, .email-form-group, .password-form-group
+.search-bar, .form-group-email, .form-group-password
   @extend .border
 
-.logo, .email-form-group, .password-form-group
+.logo, .form-group-email, .form-group-password
   @extend .rounded
 
 .avatar-img
@@ -84,11 +90,17 @@ input
 .search-bar
   @extend .rounded-pill
 
-.search-in, .email-in, .password-in
+.search-in, .input-email, .input-password
   @extend .border-0
 
-.search-in, .search-btn, .email-in, .password-in, .in-btn
+.search-in, .search-btn, .input-email, .input-password, .btn-input
   @extend .shadow-none
+
+.form-group-email
+  @extend .m-0
+
+.h1-login
+  @extend .mb-3
 
 header
   @extend .p-1
