@@ -5,7 +5,7 @@ class Login extends Component {
     super(props)
 
     this.setEmail = this.setEmail.bind(this)
-    this.onChangePassword = this.onChangePassword.bind(this)
+    this.setPassword = this.setPassword.bind(this)
     this.onChangeRemember = this.onChangeRemember.bind(this)
 
     this.state = {
@@ -17,7 +17,7 @@ class Login extends Component {
 
   setEmail = e => this.setState({ email: e.target.value })
 
-  onChangePassword = e => this.setState({ password: e.target.value })
+  setPassword = e => this.setState({ password: e.target.value })
 
   onChangeRemember = e => this.setState({ remembered: e.target.value })
 
@@ -39,7 +39,7 @@ class Login extends Component {
         </button>
       </div>
       <div className="form-group-password">
-        <input className="input-password" type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.onChangePassword} />
+        <input className="input-password" type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.setPassword} />
         <button className="btn-input" type="submit">
           <i className="material-icons">input</i>
         </button>
