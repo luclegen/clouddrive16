@@ -18,7 +18,7 @@ export default class Header extends Component {
   toggle = () => this.setState({ isHover: !this.state.isHover })
 
   getSearchBar = () => document.querySelector('.search-bar')
-  getSearchIn = () => document.querySelector('.search-in')
+  getSearchIn = () => document.querySelector('.input-search')
   getSearchBtn = () => document.querySelector('.search-btn')
 
   open = () => {
@@ -76,7 +76,7 @@ export default class Header extends Component {
         <button className="search-btn" type={this.state.width > 800 ? 'submit' : this.state.opened && this.state.keyword ? 'submit' : 'button'} disabled={this.state.width > 800 && !this.state.keyword} onClick={this.open}>
           <i className="material-icons">search</i>
         </button>
-        <input className="search-in" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setKeyword} />
+        <input className="input-search" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setKeyword} />
       </form>
     </div>
     <a href="/" className="avatar">
