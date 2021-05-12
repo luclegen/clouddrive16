@@ -60,6 +60,15 @@ header
 .input-email, .input-password
   @extend .form-control
 
+.form-check-remember
+  @extend .form-check
+
+.remember-me-input
+  @extend .form-check-input
+
+.remember-me-label
+  @extend .form-check-label
+
 .logo, .search-btn, .btn-input, .section-login, .form-login
   @extend .d-flex
 
@@ -84,6 +93,9 @@ header
 .form-group-password
   @extend .border-top-0
 
+.form-check
+  @extend .border-bottom
+
 .logo
   @extend .rounded
 
@@ -105,7 +117,7 @@ header
 .form-group-email
   @extend .m-0
 
-.h1-login
+.h1-login, .form-group-container, .form-check-remember
   @extend .mb-3
 
 header
@@ -119,3 +131,6 @@ header
 
 .search-in
   @extend .pr-3
+
+.form-check
+  @extend .pb-3
