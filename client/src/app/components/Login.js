@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import helper from '../services/helper'
 
 class Login extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class Login extends Component {
       email: '',
       password: '',
       remembered: false,
-      visible: false
+      visible: false,
     }
   }
 
@@ -22,23 +23,28 @@ class Login extends Component {
 
   setRemembered = e => this.setState({ remembered: e.target.checked })
 
-  check = e => {
-    if (this.state.email && (e.type === 'click' || (e.type === 'keyup' && e.keyCode === 13))) {
-      this.setState({ visible: true })
-      setTimeout(() => document.querySelector('.form-group-password').style.height = 39 + 'px')
-    }
-  }
-
-  reset = () => {
-    if (!this.state.email) {
-      setTimeout(() => { if (document.querySelector('.form-group-password')) document.querySelector('.form-group-password').style.height = 0 })
-      this.setState({ visible: false, password: '' })
-    }
+  enterEmail = e => {
+    e.target.setCustomValidity(RegExp(helper.emailRegex).test(e.target.value) ? '' : 'Invalid email!')
+    this.setState({ visible: false, password: '' })
+    setTimeout(() => {
+      if (document.querySelector('.form-group-password')) document.querySelector('.form-group-password').style.height = 0
+      document.querySelector('.input-email').style.width = 260 + 'px'
+    })
   }
 
   onSubmit = e => {
     e.preventDefault()
-    if (this.state.email && this.state.password) console.log(this.state)
+
+    if (this.state.email) {
+      this.setState({ visible: true })
+      setTimeout(() => {
+        document.querySelector('.form-group-password').style.height = 39 + 'px'
+        document.querySelector('.input-email').style.width = 310 + 'px'
+        document.querySelector('.input-password').focus()
+
+        if (this.state.password) console.log(this.state)
+      })
+    }
   }
 
   render = () => <section className="section-login">
@@ -46,14 +52,14 @@ class Login extends Component {
       <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_CLIENT_NAME + ' logo'} />
       <h1 className="h1-login">Sign in to {process.env.REACT_APP_CLIENT_NAME}</h1>
       <div className={`form-group-email ${this.state.visible ? 'rounded-top' : 'rounded'}`}>
-        <input className="input-email" type="email" name="email" placeholder="Email" value={this.state.email} onInput={this.reset} onChange={this.setEmail} onKeyUp={this.check} />
-        <button className="btn-input" type="button" disabled={!this.state.email} onClick={this.check}>
+        <input className="input-email" type="email" name="email" placeholder="Email" value={this.state.email} pattern={helper.emailRegex} onInput={this.enterEmail} onInvalid={this.enterEmail} onChange={this.setEmail} title="Please fill out this field." required />
+        {!this.state.visible && <button className="btn-input" type="submit" disabled={!this.state.email} hidden={true}>
           <i className="material-icons">input</i>
-        </button>
+        </button>}
       </div>
       <div className="form-group-container">
         {this.state.visible && this.state.email && <div className="form-group-password">
-          <input className="input-password" type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.setPassword} />
+          <input className="input-password" type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.setPassword} required />
           <button className="btn-input" type="submit" disabled={!this.state.password}>
             <i className="material-icons">input</i>
           </button>
