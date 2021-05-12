@@ -4,7 +4,7 @@ class Login extends Component {
   constructor(props) {
     super(props)
 
-    this.onChangeEmail = this.onChangeEmail.bind(this)
+    this.setEmail = this.setEmail.bind(this)
     this.onChangePassword = this.onChangePassword.bind(this)
     this.onChangeRemember = this.onChangeRemember.bind(this)
 
@@ -15,7 +15,7 @@ class Login extends Component {
     }
   }
 
-  onChangeEmail = e => this.setState({ email: e.target.value })
+  setEmail = e => this.setState({ email: e.target.value })
 
   onChangePassword = e => this.setState({ password: e.target.value })
 
@@ -33,7 +33,7 @@ class Login extends Component {
       <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_CLIENT_NAME + ' logo'} />
       <h1 className="h1-login">Sign in to {process.env.REACT_APP_CLIENT_NAME}</h1>
       <div className="form-group-email">
-        <input className="input-email" type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.onChangeEmail} />
+        <input className="input-email" type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.setEmail} />
         <button className="btn-input" type="button" onClick={this.test}>
           <i className="material-icons">input</i>
         </button>
