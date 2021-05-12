@@ -19,7 +19,7 @@ class Login extends Component {
 
   setPassword = e => this.setState({ password: e.target.value })
 
-  setRemembered = e => this.setState({ remembered: e.target.value })
+  setRemembered = e => this.setState({ remembered: e.target.checked })
 
   test = () => console.log('email')
 
