@@ -70,7 +70,7 @@ class Login extends Component {
         <label className="remember-me-label" htmlFor="remember-me">Keep me signed in</label>
       </div>
       <a href="/find-account">Forgotten password?</a>
-      <button className="btn-create-account" type="button">Create account</button>
+      <button className="btn-create-account" type="button">Create New Account</button>
     </form>
   </section>
 }
