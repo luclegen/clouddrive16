@@ -81,8 +81,14 @@ header
 .search-bar, .form-group-email, .form-group-password
   @extend .border
 
-.logo, .form-group-email, .form-group-password
+.form-group-password
+  @extend .border-top-0
+
+.logo
   @extend .rounded
+
+.form-group-password
+  @extend .rounded-bottom
 
 .avatar-img
   @extend .rounded-circle
