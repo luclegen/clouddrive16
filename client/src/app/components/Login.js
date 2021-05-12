@@ -49,10 +49,8 @@ class Login extends Component {
 
   render = () => <section className="section-login">
     <form className="form-login" onSubmit={this.onSubmit}>
-      <div style={{ background: 'red' }}>
-        <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_CLIENT_NAME + ' logo'} />
-        <h1 className="h1-login">Sign in to {process.env.REACT_APP_CLIENT_NAME}</h1>
-      </div>
+      <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_CLIENT_NAME + ' logo'} />
+      <h1 className="h1-login">Sign in to {process.env.REACT_APP_CLIENT_NAME}</h1>
       <div className={`form-group-email ${this.state.visible ? 'rounded-top' : 'rounded'}`}>
         <input className="input-email" type="email" name="email" placeholder="Email" value={this.state.email} pattern={helper.emailRegex} onInput={this.enterEmail} onInvalid={this.enterEmail} onChange={this.setEmail} title="Please fill out this field." required />
         {!this.state.visible && <button className="btn-input" type="submit" disabled={!this.state.email} hidden={true}>
@@ -67,14 +65,12 @@ class Login extends Component {
           </button>
         </div>}
       </div>
-      <div style={{ background: 'green', display: 'flex', flexDirection: 'column' }}>
-        <div className="form-check-remember">
-          <input className="remember-me-input" id="remember-me" type="checkbox" name="remember-me" value={this.state.remembered} onChange={this.setRemembered} />
-          <label className="remember-me-label" htmlFor="remember-me">Keep me signed in</label>
-        </div>
-        <a href="/find-account">Forgotten password?</a>
-        <button className="btn-create-account" type="button">Create account</button>
+      <div className="form-check-remember">
+        <input className="remember-me-input" id="remember-me" type="checkbox" name="remember-me" value={this.state.remembered} onChange={this.setRemembered} />
+        <label className="remember-me-label" htmlFor="remember-me">Keep me signed in</label>
       </div>
+      <a href="/find-account">Forgotten password?</a>
+      <button className="btn-create-account" type="button">Create account</button>
     </form>
   </section>
 }
