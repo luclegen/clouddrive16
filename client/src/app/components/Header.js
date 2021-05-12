@@ -19,7 +19,7 @@ export default class Header extends Component {
 
   getSearchBar = () => document.querySelector('.search-bar')
   getSearchIn = () => document.querySelector('.input-search')
-  getSearchBtn = () => document.querySelector('.search-btn')
+  getSearchBtn = () => document.querySelector('.btn-search')
 
   open = () => {
     if (this.state.width < 801) {
@@ -72,8 +72,8 @@ export default class Header extends Component {
       {this.state.width > 560 && process.env.REACT_APP_CLIENT_NAME}
     </a>
     <div className="search-bar" onMouseEnter={this.coloring} onMouseLeave={this.coloring}>
-      <form className="search-form">
-        <button className="search-btn" type={this.state.width > 800 ? 'submit' : this.state.opened && this.state.keyword ? 'submit' : 'button'} disabled={this.state.width > 800 && !this.state.keyword} onClick={this.open}>
+      <form className="form-search">
+        <button className="btn-search" type={this.state.width > 800 ? 'submit' : this.state.opened && this.state.keyword ? 'submit' : 'button'} disabled={this.state.width > 800 && !this.state.keyword} onClick={this.open}>
           <i className="material-icons">search</i>
         </button>
         <input className="input-search" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setKeyword} />
