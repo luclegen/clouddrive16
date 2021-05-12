@@ -6,7 +6,7 @@ class Login extends Component {
 
     this.setEmail = this.setEmail.bind(this)
     this.setPassword = this.setPassword.bind(this)
-    this.onChangeRemember = this.onChangeRemember.bind(this)
+    this.setRemembered = this.setRemembered.bind(this)
 
     this.state = {
       email: '',
@@ -19,7 +19,7 @@ class Login extends Component {
 
   setPassword = e => this.setState({ password: e.target.value })
 
-  onChangeRemember = e => this.setState({ remembered: e.target.value })
+  setRemembered = e => this.setState({ remembered: e.target.value })
 
   test = () => console.log('email')
 
@@ -45,7 +45,7 @@ class Login extends Component {
         </button>
       </div>
       <div className="form-check">
-        <input className="form-check-input input-remember-me" id="remember-me" type="checkbox" name="remember-me" value={this.state.remembered} onChange={this.onChangeRemember} />
+        <input className="form-check-input input-remember-me" id="remember-me" type="checkbox" name="remember-me" value={this.state.remembered} onChange={this.setRemembered} />
         <label className="form-check-label" htmlFor="remember-me">Keep me signed in</label>
       </div>
       <a href="/find-account">Forgotten password?</a>
