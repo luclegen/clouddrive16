@@ -69,7 +69,7 @@ class Login extends Component {
         <input className="remember-me-input" id="remember-me" type="checkbox" name="remember-me" value={this.state.remembered} onChange={this.setRemembered} />
         <label className="remember-me-label" htmlFor="remember-me">Keep me signed in</label>
       </div>
-      <a href="/find-account">Forgotten password?</a>
+      <a href="/find-account" target="_blank" rel="noopener noreferrer">Forgotten password? <i className="fas fa-external-link-alt"></i></a>
       <button className="btn-create-account" type="button">Create New Account</button>
     </form>
   </section>
