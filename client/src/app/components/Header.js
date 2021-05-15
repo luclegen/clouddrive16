@@ -34,12 +34,12 @@ export default class Header extends Component {
     }
   }
 
-  reset = (isMobile = true) => {
-    this.getSearchBar().style.width = isMobile ? 'auto' : (this.state.width < 1025 ? 250 : 500) + 'px'
+  reset = (mobile = true) => {
+    this.getSearchBar().style.width = mobile ? 'auto' : (this.state.width < 1025 ? 250 : 500) + 'px'
     this.getSearchBar().style.position = 'static'
-    this.getSearchBar().style.background = isMobile ? 'blue' : '#e1dfdd'
-    this.getSearchBtn().style.color = isMobile ? 'white' : 'blue'
-    this.getSearchIn().style.display = isMobile ? 'none' : 'flex'
+    this.getSearchBar().style.background = mobile ? 'blue' : '#e1dfdd'
+    this.getSearchBtn().style.color = mobile ? 'white' : 'blue'
+    this.getSearchIn().style.display = mobile ? 'none' : 'flex'
   }
 
   coloring = e => {
