@@ -47,6 +47,8 @@ class Login extends Component {
     }
   }
 
+  componentDidUpdate = () => window.onbeforeunload = () => this.state.email || this.password ? true : undefined
+
   render = () => <section className="section-login">
     <form className="form-login" onSubmit={this.onSubmit}>
       <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_CLIENT_NAME + ' logo'} />
