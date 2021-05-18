@@ -2,41 +2,6 @@
 
 $spacer: 16px
 
-// Custom
-
-.form-group
-  display: flex
-  width: fit-content
-
-// New
-
-header
-  background: blue
-
-.logo
-  color: blue
-  background: aqua
-
-  &:hover
-    color: navy
-
-.search-bar
-  background: #e1dfdd
-
-  form
-
-    button
-      color: blue
-
-      &:hover
-        color: navy
-
-.avatar-img
-  border: 1px solid blue
-
-  &:hover
-    border: 1px solid white
-
 // Bootstrap
 
 header
@@ -69,16 +34,19 @@ header
 .remember-me-label
   @extend .form-check-label
 
-.logo, .btn-search, .btn-input, .section-login, .form-login
+.section-register
+  @extend .position-absolute
+
+.logo, .btn-search, .btn-input, .section-login, .form-login, .section-register
   @extend .d-flex
 
 .form-login
   @extend .flex-xl-column
 
-.logo, .form-login
+.logo, .form-login, .section-register
   @extend .align-items-center
 
-.section-login, .form-login, .section-login
+.section-login, .form-login, .section-login, .section-register
   @extend .justify-content-center
 
 .section-login
@@ -98,6 +66,9 @@ header
 
 .logo
   @extend .rounded
+
+.form-register
+  @extend .rounded-lg
 
 .form-group-password
   @extend .rounded-bottom
@@ -126,6 +97,9 @@ header
 header
   @extend .p-1
 
+.form-register
+  @extend .p-3
+
 .logo
   @extend .px-1
 
@@ -137,3 +111,41 @@ header
 
 .form-check
   @extend .pb-3
+
+// Custom
+
+.form-group
+  display: flex
+  width: fit-content
+
+  &:focus-within
+    border: 2px solid blue !important
+
+// New
+
+header
+  background: blue
+
+.logo
+  color: blue
+  background: aqua
+
+  &:hover
+    color: navy
+
+.search-bar
+  background: #e1dfdd
+
+  form
+
+    button
+      color: blue
+
+      &:hover
+        color: navy
+
+.avatar-img
+  border: 1px solid blue
+
+  &:hover
+    border: 1px solid white

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import helper from '../services/helper'
+import Register from './Register'
 
 class Login extends Component {
   constructor(props) {
@@ -14,6 +15,7 @@ class Login extends Component {
       password: '',
       remembered: false,
       visible: false,
+      opened: false
     }
   }
 
@@ -31,6 +33,9 @@ class Login extends Component {
       document.querySelector('.input-email').style.width = 260 + 'px'
     })
   }
+
+  open = () => this.setState({ opened: true })
+  close = () => this.setState({ opened: false })
 
   onSubmit = e => {
     e.preventDefault()
@@ -72,7 +77,7 @@ class Login extends Component {
         <label className="remember-me-label" htmlFor="remember-me">Keep me signed in</label>
       </div>
       <a href="/find-account" target="_blank" rel="noopener noreferrer">Forgotten password? <i className="fas fa-external-link-alt"></i></a>
-      <button className="btn-create-account" type="button">Create New Account</button>
+      <button className="btn-create-account" type="button" onClick={this.open}>Create New Account</button>
     </form>
   </section>
 }
