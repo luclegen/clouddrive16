@@ -79,6 +79,7 @@ class Login extends Component {
       <a href="/find-account" target="_blank" rel="noopener noreferrer">Forgotten password? <i className="fas fa-external-link-alt"></i></a>
       <button className="btn-create-account" type="button" onClick={this.open}>Create New Account</button>
     </form>
+    {this.state.opened && <Register close={this.close}></Register>}
   </section>
 }
 
