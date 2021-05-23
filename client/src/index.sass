@@ -10,23 +10,32 @@ header
 .form-search
   @extend .input-group
 
-.btn-search, .btn-input, .btn-create-account
+.btn-search, .btn-input, .btn-create-account, .btn-sign-up
   @extend .btn
 
-.btn-create-account
+.btn-create-account, .btn-sign-up
   @extend .btn-success
 
 .logo, .search-from
   @extend .card-link
 
-.form-group-email, .form-group-password
+// .section-register
+//   @extend .was-validated
+
+.form-row-sign-up
+  @extend .form-row
+
+.form-group-email, .form-group-password, .form-floating, .form-group-password-strength
   @extend .form-group
 
-.input-search, .input-email, .input-password
+.input-search, .input-email, .input-password, .form-control-day, .form-control-month, .form-control-year
   @extend .form-control
 
-.form-check-remember
+.form-check-remember, .form-check-female, .form-check-male, .form-check-other
   @extend .form-check
+
+.form-check-female, .form-check-male, .form-check-other
+  @extend .form-check-inline
 
 .remember-me-input
   @extend .form-check-input
@@ -34,32 +43,40 @@ header
 .remember-me-label
   @extend .form-check-label
 
-.section-register
+.label-group
+  @extend .text-secondary
+
+.form-floating
+  @extend .position-relative
+
+.section-register, .form-floating label
   @extend .position-absolute
 
-.logo, .btn-search, .btn-input, .section-login, .form-login, .section-register
+.logo, .btn-search, .btn-input, .section-login, .form-login, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength
   @extend .d-flex
 
-.form-login
+.form-login, .form-floating
   @extend .flex-xl-column
 
 .logo, .form-login, .section-register
   @extend .align-items-center
 
-.section-login, .form-login, .section-login, .section-register
+.section-login, .form-login, .section-login, .section-register, .form-row-sign-up, .form-group-password-strength
   @extend .justify-content-center
 
-.section-login
-  @extend .text-center
+.section-login, .section-register
 
-.input-search
-  @extend .bg-transparent
+  h1
+    @extend .text-center
 
-.search-bar, .form-group-email, .form-group-password
+.search-bar, .form-group-email, .form-group-password, .form-check-female, .form-check-male, .form-check-other
   @extend .border
 
 .form-group-password
   @extend .border-top-0
+
+.input-search, .input-email, .input-password
+  @extend .border-0
 
 .form-check
   @extend .border-bottom
@@ -67,7 +84,7 @@ header
 .logo
   @extend .rounded
 
-.form-register
+.form-register, .form-floating, .form-check-female, .form-check-male, .form-check-other
   @extend .rounded-lg
 
 .form-group-password
@@ -79,22 +96,25 @@ header
 .search-bar
   @extend .rounded-pill
 
-.input-search, .input-email, .input-password
-  @extend .border-0
+.form-register
+  @extend .shadow
 
-.input-search, .btn-search, .input-email, .input-password, .btn-input
+.input-search, .btn-search, .input-email, .input-password, .btn-input, .form-floating input, select
   @extend .shadow-none
 
-.form-group-email
+.input-search, .form-floating input
+  @extend .bg-transparent
+
+.form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength
   @extend .m-0
 
 .form-login, .form-check-remember
   @extend .mt-3
 
-.h1-login, .form-check-remember
+.h1-login, .form-check-remember, .h1-register
   @extend .mb-3
 
-header
+header, .float label
   @extend .p-1
 
 .form-register
@@ -114,9 +134,10 @@ header
 
 // Custom
 
-.form-group
-  display: flex
-  width: fit-content
+.btn
+  font-weight: 700
+
+.form-group-email, .form-group-password
 
   &:focus-within
     border: 2px solid blue !important
@@ -149,3 +170,77 @@ header
 
   &:hover
     border: 1px solid white
+
+.float
+
+  label
+    transform: translate(4px, -12px) scale(0.7) !important
+
+.form-floating
+
+  &:focus-within
+    @extend .float
+
+    input, select
+      border: 2px solid blue !important
+
+    label
+      color: blue !important
+
+  label
+    padding: 0 12px
+    pointer-events: none
+    transform-origin: top left
+    transition: all 0.2s ease-out
+    transform: translate(1px, 8px) scale(1)
+    background: white
+    color: #999
+    z-index: 1
+
+meter
+
+  &[value="1"]::-webkit-meter-optimum-value
+    background: red
+  &[value="2"]::-webkit-meter-optimum-value
+    background: yellow
+  &[value="3"]::-webkit-meter-optimum-value
+    background: orange
+  &[value="4"]::-webkit-meter-optimum-value
+    background: green
+
+  &[value="1"]::-moz-meter-bar
+    background: red
+  &[value="2"]::-moz-meter-bar
+    background: yellow
+  &[value="3"]::-moz-meter-bar
+    background: orange
+  &[value="4"]::-moz-meter-bar
+    background: green
+
+.form-check-female, .form-check-male, .form-check-other
+  color: #495057
+
+  &.is-valid
+    border-color: #28a745 !important
+
+  &.is-invalid
+    border-color: #dc3545 !important
+
+.label-group
+
+  &.is-valid
+    padding-right: calc(1.5em + 0.75rem)
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e")
+    background-repeat: no-repeat
+    background-position: right calc(0.375em + 0.1875rem) center
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem)
+
+  &.is-invalid
+    padding-right: calc(1.5em + 0.75rem)
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e")
+    background-repeat: no-repeat
+    background-position: right calc(0.375em + 0.1875rem) center
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem)
+
+.form-control-day, .form-control-month, .form-control-year
+  background: none !important
