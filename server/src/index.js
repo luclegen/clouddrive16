@@ -3,6 +3,9 @@ const express = require('express')
 // Environment Variables
 require('dotenv').config()
 
+// Database
+require('./db/mongodb')
+
 // Initialization
 const app = express()
 
