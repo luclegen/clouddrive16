@@ -11,7 +11,7 @@ module.exports.register = async (req, res, next) => {
   user.email = req.body.email
   user.password = req.body.password
   user.dateOfBirth = new Date(req.body.year, req.body.month, req.body.day)
-  user.gender = req.body.gender
+  user.sex = req.body.sex
 
   user.save()
     .then(() => res.status(200).send({ msg: 'Registered successfully.' }))
