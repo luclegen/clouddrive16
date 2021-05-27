@@ -11,7 +11,7 @@ class Helper {
 
   isEmail = value => RegExp(this.emailPattern).test(value)
 
-  isDate = (y, m, d, date = new Date(parseInt(m) + 1 + '/' + d + '/' + y)) => date instanceof Date && !isNaN(date) && date.getFullYear() === parseInt(y) && date.getMonth() === parseInt(m) && date.getDate() === parseInt(d)
+  isDate = (y, m, d, date = new Date(parseInt(m) + 1 + '/' + d + '/' + y)) => date.getFullYear() === parseInt(y) && date.getMonth() === parseInt(m) && date.getDate() === parseInt(d)
 
   checkPassword = value => {
     let count = 0
