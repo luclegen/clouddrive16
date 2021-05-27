@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import helper from '../services/helper'
+import authService from '../services/auth'
 
 class Register extends Component {
   constructor(props) {
@@ -92,7 +93,13 @@ class Register extends Component {
       document.querySelector('#female-register').setCustomValidity(this.state.sex ? '' : 'Please select one of these options')
 
       if ((new Date()).getFullYear() - parseInt(this.state.year) >= 5) {
-        console.log(this.state)
+        authService.register(this.state)
+          .then(res => {
+            document.querySelector('.form-register').reset()
+            alert(res.data.msg)
+            this.setState({ submitted: false })
+          })
+          .catch(err => alert(err.response.data.msg))
       } else {
         alert('You must be 5 years or older')
         document.querySelector('#yearRegister').setCustomValidity('You must be 5 years or older')
@@ -108,7 +115,7 @@ class Register extends Component {
     })
 
     return <section className="section-register">
-      <form className="form-register needs-validation" onSubmit={this.onSubmit}>
+      <form className="form-register" onSubmit={this.onSubmit}>
         <button className="close" type="reset" onClick={this.props.close}>
           <i className="material-icons">close</i>
         </button>
