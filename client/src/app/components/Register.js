@@ -134,17 +134,17 @@ class Register extends Component {
             <label htmlFor="firstNameRegister">First name</label>
           </div>
           <div className={`form-floating col-md-6 ${this.state.lastName && 'float'}`}>
-            <input className={`form-control ${this.state.lastName && (RegExp(helper.lastNamePattern).test(this.state.lastName) ? 'is-valid' : 'is-invalid')}`} id="lastNameRegister" type="text" pattern={helper.lastNamePattern} onInput={this.enterLastName} onInvalid={this.enterLastName} onChange={this.setLastName} required />
+            <input className={`form-control ${this.state.lastName && (helper.isLastName(this.state.lastName) ? 'is-valid' : 'is-invalid')}`} id="lastNameRegister" type="text" pattern={helper.lastNamePattern} onInput={this.enterLastName} onInvalid={this.enterLastName} onChange={this.setLastName} required />
             <label htmlFor="lastNameRegister">Last name</label>
           </div>
         </div>
         <div className={`form-floating ${this.state.email && 'float'}`}>
-          <input className={`form-control ${this.state.email && (RegExp(helper.emailPattern).test(this.state.email) && this.state.available ? 'is-valid' : 'is-invalid')}`} id="addressRegister" type="email" pattern={helper.emailPattern} onInput={this.enterEmail} onInvalid={this.enterEmail} onChange={this.setEmail} required />
+          <input className={`form-control ${this.state.email && (helper.isEmail(this.state.email) && !this.state.available ? 'is-valid' : 'is-invalid')}`} id="addressRegister" type="email" pattern={helper.emailPattern} onInput={this.enterEmail} onInvalid={this.enterEmail} onChange={this.setEmail} required />
           <label htmlFor="addressRegister">Email</label>
         </div>
         <div className="form-row">
           <div className={`form-floating col-md-6 ${this.state.password && 'float'} form-floating-password`}>
-            <input className={`form-control ${this.state.password && (this.state.password.length >= 8 && /[a-z]/ig.test(this.state.password) && /\d/g.test(this.state.password) && /[.@#$%^&*(),.?":{ }|<>]/g.test(this.state.password) ? 'is-valid' : 'is-invalid')}`} id="passwordRegister" type="password" minLength="8" onInput={this.enterPassword} onChange={this.setPassword} required />
+            <input className={`form-control ${this.state.password && (helper.checkPassword(this.state.password).isStrong ? 'is-valid' : 'is-invalid')}`} id="passwordRegister" type="password" minLength="8" onInput={this.enterPassword} onChange={this.setPassword} required />
             <label htmlFor="passwordRegister">Password</label>
           </div>
           <div className={`form-floating col-md-6 ${this.state.confirm && 'float'} form-floating-confirm`}>
@@ -154,7 +154,7 @@ class Register extends Component {
         </div>
         <meter id="passwordStrengthRegister" title="Use 8 or more characters with a mix of letters, numbers & symbols" max="4" value="0"></meter>
         <div className="form-group-password-strength">
-          {this.state.strength && <label className="password-strength" htmlFor="passwordStrengthRegister">{this.state.strength}</label>}
+          {this.state.strength && <label className="password-strength" htmlFor="passwordStrengthRegister">{helper.checkPassword(this.state.password).strength}</label>}
         </div>
         <label className={`label-group ${this.getIsValidDateOfBirth()}`} htmlFor="dateOfBirthRegister">Date of birth</label>
         <div className="form-row" id="dateOfBirthRegister">
