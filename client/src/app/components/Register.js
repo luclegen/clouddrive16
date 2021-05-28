@@ -12,8 +12,7 @@ const state = {
   month: (new Date()).getMonth().toString(),
   year: (new Date()).getFullYear().toString(),
   sex: '',
-  available: false,
-  strength: 'Worst',
+  available: true,
   submitted: false
 }
 
@@ -114,6 +113,8 @@ class Register extends Component {
       }
     }
   }
+
+  componentDidUpdate = () => window.onbeforeunload = () => this.state.firstName || this.state.lastName || this.state.email || this.state.password || this.state.day || this.state.month || this.state.year || this.state.sex ? true : undefined
 
   render = () => {
     const sex = Object.freeze({
