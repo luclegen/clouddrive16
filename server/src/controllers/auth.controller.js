@@ -19,6 +19,6 @@ module.exports.register = (req, res, next) => {
   user.sex = req.body.sex
 
   user.save()
-    .then(() => res.status(200).send({ msg: 'Registered successfully.' }))
+    .then(() => res.status(201).send({ msg: 'Registered successfully.' }))
     .catch(e => e.code === 11000 ? res.status(422).send({ msg: 'Email is duplicate. Please try again.' }) : next(e))
 }
