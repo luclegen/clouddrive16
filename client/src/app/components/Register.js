@@ -12,6 +12,7 @@ const state = {
   month: (new Date()).getMonth().toString(),
   year: (new Date()).getFullYear().toString(),
   sex: '',
+  available: false,
   strength: 'Worst',
   submitted: false
 }
@@ -57,7 +58,11 @@ class Register extends Component {
 
   enterLastName = e => e.target.setCustomValidity(e.target.value ? helper.isLastName(e.target.value) ? '' : 'Invalid last name.' : 'This field is required.')
 
-  enterEmail = e => e.target.setCustomValidity(e.target.value ? helper.isEmail(e.target.value) ? '' : 'Invalid email.' : 'This field is required.')
+  enterEmail = async e => {
+    let available = (await authService.checkEmail(e.target.value)).data.available
+    this.setState({ available: available })
+    e.target.setCustomValidity(e.target.value ? helper.isEmail(e.target.value) ? available ? '' : 'Email is duplicate.' : 'Invalid email.' : 'This field is required.')
+  }
 
   enterPassword = e => {
     const check = helper.checkPassword(e.target.value)
@@ -134,7 +139,7 @@ class Register extends Component {
           </div>
         </div>
         <div className={`form-floating ${this.state.email && 'float'}`}>
-          <input className={`form-control ${this.state.email && (RegExp(helper.emailPattern).test(this.state.email) ? 'is-valid' : 'is-invalid')}`} id="addressRegister" type="email" pattern={helper.emailPattern} onInput={this.enterEmail} onInvalid={this.enterEmail} onChange={this.setEmail} required />
+          <input className={`form-control ${this.state.email && (RegExp(helper.emailPattern).test(this.state.email) && this.state.available ? 'is-valid' : 'is-invalid')}`} id="addressRegister" type="email" pattern={helper.emailPattern} onInput={this.enterEmail} onInvalid={this.enterEmail} onChange={this.setEmail} required />
           <label htmlFor="addressRegister">Email</label>
         </div>
         <div className="form-row">
