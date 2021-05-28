@@ -14,8 +14,8 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      available: false,
       remembered: false,
+      available: false,
       visible: false,
       opened: false
     }
@@ -27,9 +27,10 @@ class Login extends Component {
 
   setRemembered = e => this.setState({ remembered: e.target.checked })
 
-  enterEmail = e => {
-    e.target.setCustomValidity(helper.isEmail(e.target.value) ? '' : 'Invalid email!')
-    this.setState({ visible: false, password: '' })
+  enterEmail = async e => {
+    const available = (await authService.checkEmail(e.target.value)).data.available
+    e.target.setCustomValidity(helper.isEmail(e.target.value) ? available ? '' : 'Email not registered' : 'Invalid email!')
+    this.setState({ available: available, visible: false, password: '' })
     setTimeout(() => {
       if (document.querySelector('.form-group-password')) document.querySelector('.form-group-password').style.height = 0
       document.querySelector('.input-email').style.width = 260 + 'px'
