@@ -1,7 +1,7 @@
 const checker = require('../helpers/checker')
 const User = require('../models/user.model')
 
-module.exports.register = async (req, res, next) => {
+module.exports.register = (req, res, next) => {
   if (!checker.isDate(req.body.year, req.body.month, req.body.day)) return res.status(403).send({ msg: 'Invalid date of birth.' })
 
   const user = new User()
