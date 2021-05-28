@@ -50,7 +50,11 @@ class Login extends Component {
         document.querySelector('.input-email').style.width = 310 + 'px'
         document.querySelector('.input-password').focus()
 
-        if (this.state.password) console.log(this.state)
+        if (this.state.password) {
+          authService.authenticate(this.state)
+            .then(res => localStorage.setItem('token', res.data.token))
+            .catch(err => alert(err.response.data.msg))
+        }
       })
     }
   }
