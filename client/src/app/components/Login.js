@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import helper from '../services/helper'
 import Register from './Register'
+import authService from '../services/auth'
 
 class Login extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
+      available: false,
       remembered: false,
       visible: false,
       opened: false
@@ -26,7 +28,7 @@ class Login extends Component {
   setRemembered = e => this.setState({ remembered: e.target.checked })
 
   enterEmail = e => {
-    e.target.setCustomValidity(RegExp(helper.emailRegex).test(e.target.value) ? '' : 'Invalid email!')
+    e.target.setCustomValidity(helper.isEmail(e.target.value) ? '' : 'Invalid email!')
     this.setState({ visible: false, password: '' })
     setTimeout(() => {
       if (document.querySelector('.form-group-password')) document.querySelector('.form-group-password').style.height = 0
@@ -59,7 +61,7 @@ class Login extends Component {
       <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_CLIENT_NAME + ' logo'} />
       <h1 className="h1-login">Sign in to {process.env.REACT_APP_CLIENT_NAME}</h1>
       <div className={`form-group-email ${this.state.visible ? 'rounded-top' : 'rounded'}`}>
-        <input className="input-email" type="email" name="email" placeholder="Email" value={this.state.email} pattern={helper.emailRegex} onInput={this.enterEmail} onInvalid={this.enterEmail} onChange={this.setEmail} title="Please fill out this field." required />
+        <input className="input-email" type="email" name="email" placeholder="Email" value={this.state.email} pattern={helper.emailPattern} onInput={this.enterEmail} onInvalid={this.enterEmail} onChange={this.setEmail} title="Please fill out this field." required />
         {!this.state.visible && <button className="btn-input" type="submit" disabled={!this.state.email} hidden={true}>
           <i className="material-icons">input</i>
         </button>}
