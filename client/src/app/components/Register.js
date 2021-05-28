@@ -58,8 +58,7 @@ class Register extends Component {
   enterLastName = e => e.target.setCustomValidity(e.target.value ? helper.isLastName(e.target.value) ? '' : 'Invalid last name.' : 'This field is required.')
 
   enterEmail = async e => {
-    const available = (await authService.checkEmail(e.target.value)).data.available
-    this.setState({ available: available })
+    this.setState({ available: (await authService.checkEmail(e.target.value)).data.available })
     e.target.setCustomValidity(e.target.value ? helper.isEmail(e.target.value) ? available ? 'Email is duplicate.' : '' : 'Invalid email.' : 'This field is required.')
   }
 
