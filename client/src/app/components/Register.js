@@ -2,6 +2,20 @@ import React, { Component } from 'react'
 import helper from '../services/helper'
 import authService from '../services/auth'
 
+const state = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  confirm: '',
+  day: (new Date()).getDate().toString(),
+  month: (new Date()).getMonth().toString(),
+  year: (new Date()).getFullYear().toString(),
+  sex: '',
+  strength: 'Worst',
+  submitted: false
+}
+
 class Register extends Component {
   constructor(props) {
     super(props)
@@ -16,19 +30,7 @@ class Register extends Component {
     this.setYear = this.setYear.bind(this)
     this.setSex = this.setSex.bind(this)
 
-    this.state = {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirm: '',
-      day: (new Date()).getDate().toString(),
-      month: (new Date()).getMonth().toString(),
-      year: (new Date()).getFullYear().toString(),
-      sex: '',
-      strength: 'Worst',
-      submitted: false
-    }
+    this.state = state
   }
 
   setFirstName = e => this.setState({ firstName: e.target.value })
@@ -95,9 +97,10 @@ class Register extends Component {
       if ((new Date()).getFullYear() - parseInt(this.state.year) >= 5) {
         authService.register(this.state)
           .then(res => {
-            document.querySelector('.form-register').reset()
             alert(res.data.msg)
-            this.setState({ submitted: false })
+            document.querySelector('.form-register').reset()
+            document.querySelector('meter').value = 0
+            this.setState(state)
           })
           .catch(err => alert(err.response.data.msg))
       } else {
