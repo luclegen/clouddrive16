@@ -1,4 +1,6 @@
 import { Component } from 'react'
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
+import helper from '../services/helper'
 
 export default class Header extends Component {
   constructor(props) {
@@ -12,13 +14,18 @@ export default class Header extends Component {
       opened: false,
       keyword: '',
       width: window.innerWidth,
+      dropdownOpened: false
     }
   }
 
   toggle = () => this.setState({ isHover: !this.state.isHover })
 
+  toggleDropdown = () => this.setState({ dropdownOpened: !this.state.dropdownOpened })
+
   getSearchBar = () => document.querySelector('.search-bar')
+
   getSearchIn = () => document.querySelector('.input-search')
+
   getSearchBtn = () => document.querySelector('.btn-search')
 
   open = () => {
@@ -66,6 +73,11 @@ export default class Header extends Component {
     if (this.state.opened) this.open()
   }
 
+  logout() {
+    localStorage.clear()
+    window.location.reload()
+  }
+
   render = () => <header>
     <a className="logo" href="/" onMouseEnter={this.toggle} onMouseLeave={this.toggle}>
       <img className={`logo-img ${this.state.width > 560 && 'mr-1'}`} src={'logo' + (this.state.isHover ? '.hover' : '') + '.png'} alt="Logo" />
@@ -79,8 +91,15 @@ export default class Header extends Component {
         <input className="input-search" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setKeyword} />
       </form>
     </div>
-    <a href="/" className="avatar">
-      <img className="avatar-img" src="https://lh3.googleusercontent.com/ogw/ADGmqu80fLiAIwlesuv_8mPJR4eMNwocFkqj4Cz8vcHj=s83-c-mo" alt="'s avatar" />
-    </a>
+    <Dropdown isOpen={this.state.dropdownOpened} toggle={this.toggleDropdown}>
+      <DropdownToggle className="avatar">
+        <img className="avatar-img" src="https://lh3.googleusercontent.com/ogw/ADGmqu80fLiAIwlesuv_8mPJR4eMNwocFkqj4Cz8vcHj=s83-c-mo" alt="'s avatar" />
+      </DropdownToggle>
+      <DropdownMenu>
+        <DropdownItem tag="a" href="/profile">My profile</DropdownItem>
+        <DropdownItem divider />
+        <DropdownItem className="logout bg-danger text-white" onClick={this.logout}>Sign out</DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
   </header>
 }

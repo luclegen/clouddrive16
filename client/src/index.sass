@@ -19,9 +19,6 @@ header
 .logo, .search-from
   @extend .card-link
 
-// .section-register
-//   @extend .was-validated
-
 .form-row-sign-up
   @extend .form-row
 
@@ -45,6 +42,9 @@ header
 
 .label-group
   @extend .text-secondary
+
+.logout
+  @extend .text-white
 
 .form-floating
   @extend .position-relative
@@ -75,7 +75,7 @@ header
 .form-group-password
   @extend .border-top-0
 
-.input-search, .input-email, .input-password
+.input-search, .avatar, .input-email, .input-password
   @extend .border-0
 
 .form-check
@@ -99,11 +99,14 @@ header
 .form-register
   @extend .shadow
 
-.input-search, .btn-search, .input-email, .input-password, .btn-input, .form-floating input, select
+.input-search, .btn-search, .avatar, .input-email, .input-password, .btn-input, .form-floating input, select
   @extend .shadow-none
 
-.input-search, .form-floating input
+.input-search, .form-floating input, .avatar
   @extend .bg-transparent
+
+.logout
+  @extend .bg-danger
 
 .form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength
   @extend .m-0
@@ -113,6 +116,9 @@ header
 
 .h1-login, .form-check-remember, .h1-register
   @extend .mb-3
+
+.avatar
+  @extend .p-0
 
 header, .float label
   @extend .p-1
