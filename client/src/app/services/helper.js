@@ -34,6 +34,12 @@ class Helper {
       strength: strength[count]
     }
   }
+
+  getToken = () => localStorage.getItem('token')
+
+  loggedIn = () => Boolean(this.getToken())
+
+  remembered = () => localStorage.getItem('remembered') === 'true' ? true : localStorage.getItem('remembered') === 'false' ? false : null
 }
 
 export default new Helper()
