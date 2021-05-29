@@ -91,14 +91,12 @@ export default class Header extends Component {
         <input className="input-search" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setKeyword} />
       </form>
     </div>
-    <Dropdown isOpen={this.state.dropdownOpened} toggle={this.toggleDropdown}>
-      <DropdownToggle className="avatar">
-        <img className="avatar-img" src="https://lh3.googleusercontent.com/ogw/ADGmqu80fLiAIwlesuv_8mPJR4eMNwocFkqj4Cz8vcHj=s83-c-mo" alt="'s avatar" />
-      </DropdownToggle>
-      <DropdownMenu>
-        <DropdownItem tag="a" href="/profile">My profile</DropdownItem>
+    <Dropdown className="dropdown-avatar" isOpen={this.state.dropdownOpened} toggle={this.toggleDropdown}>
+      {helper.loggedIn() ? <DropdownToggle className="avatar"><img className="avatar-img" src="https://lh3.googleusercontent.com/ogw/ADGmqu80fLiAIwlesuv_8mPJR4eMNwocFkqj4Cz8vcHj=s83-c-mo" alt="'s avatar" /></DropdownToggle> : <a className="link-help" href="/help" target="_blank"><i className="material-icons">help_outline</i></a>}
+      <DropdownMenu className="dropdown-menu-avatar">
+        <DropdownItem className="dropdown-item-profile" tag="a" href="/profile"><p className="text-profile">My profile</p><i className="material-icons">info</i></DropdownItem>
         <DropdownItem divider />
-        <DropdownItem className="logout bg-danger text-white" onClick={this.logout}>Sign out</DropdownItem>
+        <DropdownItem className="dropdown-item-logout" onClick={this.logout}><p className="text-logout">Sign out</p><i className="material-icons">logout</i></DropdownItem>
       </DropdownMenu>
     </Dropdown>
   </header>

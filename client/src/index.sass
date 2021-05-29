@@ -43,7 +43,7 @@ header
 .label-group
   @extend .text-secondary
 
-.logout
+.dropdown-item-logout
   @extend .text-white
 
 .form-floating
@@ -52,7 +52,7 @@ header
 .section-register, .form-floating label
   @extend .position-absolute
 
-.logo, .btn-search, .btn-input, .section-login, .form-login, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength
+.logo, .btn-search, .btn-input, .section-login, .form-login, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout
   @extend .d-flex
 
 .form-login, .form-floating
@@ -63,6 +63,9 @@ header
 
 .section-login, .form-login, .section-login, .section-register, .form-row-sign-up, .form-group-password-strength
   @extend .justify-content-center
+
+.text-profile, .text-logout
+  @extend .flex-fill
 
 .section-login, .section-register
 
@@ -105,13 +108,13 @@ header
 .input-search, .form-floating input, .avatar
   @extend .bg-transparent
 
-.logout
+.dropdown-item-logout
   @extend .bg-danger
 
-.form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength
+.form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength, .text-profile, .text-logout
   @extend .m-0
 
-.form-login, .form-check-remember
+.form-login, .form-check-remember, .dropdown-menu-avatar
   @extend .mt-3
 
 .h1-login, .form-check-remember, .h1-register
@@ -128,6 +131,9 @@ header, .float label
 
 .logo
   @extend .px-1
+
+.dropdown-item-profile, .dropdown-item-logout
+  @extend .px-3
 
 .input-search
   @extend .pl-1
@@ -250,3 +256,9 @@ meter
 
 .form-control-day, .form-control-month, .form-control-year
   background: none !important
+
+.link-help
+  color: white
+
+  &:hover
+    color: navy
