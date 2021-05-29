@@ -114,7 +114,10 @@ header
 .form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength, .text-profile, .text-logout
   @extend .m-0
 
-.form-login, .form-check-remember, .dropdown-menu-avatar
+.dropdown-menu-avatar
+  @extend .mt-2
+
+.form-login, .form-check-remember
   @extend .mt-3
 
 .h1-login, .form-check-remember, .h1-register
@@ -262,3 +265,24 @@ meter
 
   &:hover
     color: navy
+
+.dropdown-menu-avatar
+  position: relative
+
+  &:before, &:after
+    content: ''
+    display: block
+    position: absolute
+    bottom: 100%
+    width: 0
+    height: 0
+
+  &:before
+    right: 10px
+    border: 12px solid transparent
+    border-bottom-color: rgba(0, 0, 0, 0.15)
+
+  &:after
+    right: 12px
+    border: 10px solid transparent
+    border-bottom-color: white
