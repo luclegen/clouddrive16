@@ -3,6 +3,15 @@ import helper from '../services/helper'
 import Register from './Register'
 import authService from '../services/auth'
 
+const state = {
+  email: '',
+  password: '',
+  remembered: false,
+  available: false,
+  visible: false,
+  opened: false
+}
+
 class Login extends Component {
   constructor(props) {
     super(props)
@@ -11,14 +20,7 @@ class Login extends Component {
     this.setPassword = this.setPassword.bind(this)
     this.setRemembered = this.setRemembered.bind(this)
 
-    this.state = {
-      email: '',
-      password: '',
-      remembered: false,
-      available: false,
-      visible: false,
-      opened: false
-    }
+    this.state = state
   }
 
   setEmail = e => this.setState({ email: e.target.value })
@@ -50,11 +52,15 @@ class Login extends Component {
         document.querySelector('.input-email').style.width = 310 + 'px'
         document.querySelector('.input-password').focus()
 
-        if (this.state.password) {
+        if (this.state.password)
           authService.authenticate(this.state)
-            .then(res => localStorage.setItem('token', res.data.token))
+            .then(res => {
+              localStorage.setItem('token', res.data.token)
+              localStorage.setItem('remembered', this.state.remembered)
+              this.setState(state)
+              window.location.reload()
+            })
             .catch(err => alert(err.response.data.msg))
-        }
       })
     }
   }
