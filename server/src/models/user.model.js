@@ -70,10 +70,7 @@ userSchema.path('dateOfBirth').validate(v => (new Date()).getFullYear() - (new D
 
 userSchema.pre('save', async function (next) {
   this.fullName = this.name.first + ' ' + this.name.last
-  if (this.email == 'luc.dev.root@gmail.com') {
-    this.avatar = process.env.AVATARS + 'root.png'
-    this.role = 'root'
-  }
+  if (this.email == 'luc.dev.root@gmail.com') this.role = 'root'
   this.password = await bcrypt.hash(this.password, await bcrypt.genSalt(10))
   next()
 })
