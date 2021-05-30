@@ -37,6 +37,10 @@ class Helper {
 
   getToken = () => localStorage.getItem('token')
 
+  getPayload = () => this.loggedIn() ? JSON.parse(atob(this.getToken().split('.')[1])) : null
+
+  isExpired = () => this.loggedIn() ? this.getPayload().exp ? this.getPayload().exp * 1000 < Date.now() : false : true
+
   loggedIn = () => Boolean(this.getToken())
 
   remembered = () => localStorage.getItem('remembered') === 'true' ? true : localStorage.getItem('remembered') === 'false' ? false : null
