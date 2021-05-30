@@ -4,10 +4,7 @@ const jwt = require('jsonwebtoken')
 const checker = require('../helpers/checker')
 
 const userSchema = new mongoose.Schema({
-  avatar: {
-    type: String,
-    default: process.env.DEFAULT_AVATAR
-  },
+  avatar: String,
   name: {
     first: {
       type: String,
