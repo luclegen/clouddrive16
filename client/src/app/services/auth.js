@@ -1,11 +1,11 @@
-import axios from 'axios'
+import PU from '../api/public'
+
+const URL = 'auth/'
 
 class AuthService {
-  checkEmail = email => axios.post('auth/check-email', { email: email })
+  checkEmail = email => PU.get(`${URL}${email}`)
 
-  register = user => axios.post('auth/register', user)
-
-  authenticate = user => axios.post('auth/authenticate', user)
+  authenticate = user => PU.post(`${URL}/authenticate`, user)
 }
 
 export default new AuthService()
