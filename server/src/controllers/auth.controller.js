@@ -7,21 +7,4 @@ module.exports.checkEmail = async (req, res, next) =>
     .then(user => res.status(user ? 203 : 200).send({ available: Boolean(user) }))
     .catch(err => console.warn(err))
 
-module.exports.register = (req, res, next) => {
-  if (!checker.isDate(req.body.year, req.body.month, req.body.day)) return res.status(403).send({ msg: 'Invalid date of birth.' })
-
-  const user = new User()
-
-  user.name.first = req.body.firstName
-  user.name.last = req.body.lastName
-  user.email = req.body.email
-  user.password = req.body.password
-  user.dateOfBirth = new Date(req.body.year, req.body.month, req.body.day)
-  user.sex = req.body.sex
-
-  user.save()
-    .then(() => res.status(201).send({ msg: 'Registered successfully.' }))
-    .catch(e => e.code === 11000 ? res.status(422).send({ msg: 'Email is duplicate. Please try again.' }) : next(e))
-}
-
 module.exports.authenticate = (req, res) => passport.authenticate('local', (err, user, info) => err ? res.status(400).json(err) : user ? res.status(200).json({ token: user.getToken() }) : res.status(404).json(info))(req, res)
