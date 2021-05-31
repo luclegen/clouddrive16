@@ -20,6 +20,7 @@ app.get('/', (req, res) => res.send(`Started ${process.env.SERVER_NAME} server i
 
 // Routes
 app.use('/auth', require('./routes/auth.router'))
+app.use('/user', require('./routes/user.router'))
 
 // Error handle
 app.use((err, req, res, next) => res.status(442).send(err.name == 'ValidationError' ? { msg: Object.values(err.errors).map((e, i) => (i + 1) + '. ' + e).join(', ') + '.' } : { error: err, msg: 'Unknown error.' }))
