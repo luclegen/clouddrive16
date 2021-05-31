@@ -29,7 +29,7 @@ app.use((err, req, res, next) => {
   switch (err.name) {
     case 'ValidationError':
       code = 400
-      msg = Object.values(err.errors).map((e, i) => (i + 1) + '. ' + e).join(', ') + '.'
+      msg = Object.values(err.errors).map((e, i) => (i + 1) + '. ' + e).join(';\n') + '.'
       break
 
     case 'TokenExpiredError':
