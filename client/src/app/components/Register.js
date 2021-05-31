@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import helper from '../services/helper'
 import authService from '../services/auth'
+import userService from '../services/user'
 
 const state = {
   firstName: '',
@@ -80,7 +81,7 @@ class Register extends Component {
 
   chooseSex = () => document.querySelector('#female-register').setCustomValidity(this.state.sex ? '' : 'Please select one of these options')
 
-  getIsValidDateOfBirth = () => (this.state.submitted || this.state.day !== (new Date()).getDate().toString() || this.state.month !== (new Date()).getMonth().toString() || this.state.year !== (new Date()).getFullYear().toString()) && (helper.isDate(this.state.year, this.state.month, this.state.day) && (new Date()).getFullYear() - parseInt(this.state.year) >= 5 ? 'is-valid' : 'is-invalid')
+  getIsValidDateOfBirth = () => (this.state.submitted || this.state.day !== (new Date()).getDate().toString() || this.state.month !== (new Date()).getMonth().toString() || this.state.year !== (new Date()).getFullYear().toString()) && (helper.isDate(this.state.year, this.state.month, this.state.day) && helper.isOldEnough(this.state.year) ? 'is-valid' : 'is-invalid')
 
   onSubmit = e => {
     e.preventDefault()
@@ -97,20 +98,16 @@ class Register extends Component {
       this.state.year
     ) {
       document.querySelector('#female-register').setCustomValidity(this.state.sex ? '' : 'Please select one of these options')
+      document.querySelector('#yearRegister').setCustomValidity(helper.isOldEnough(this.state.year) ? '' : 'You must be 5 years or older')
 
-      if ((new Date()).getFullYear() - parseInt(this.state.year) >= 5) {
-        authService.register(this.state)
-          .then(res => {
-            alert(res.data.msg)
-            document.querySelector('.form-register').reset()
-            document.querySelector('meter').value = 0
-            this.setState(state)
-          })
-          .catch(err => alert(err.response.data.msg))
-      } else {
-        alert('You must be 5 years or older')
-        document.querySelector('#yearRegister').setCustomValidity('You must be 5 years or older')
-      }
+      userService.create(this.state)
+        .then(res => {
+          alert(res.data.msg)
+          document.querySelector('.form-register').reset()
+          document.querySelector('meter').value = 0
+          this.setState(state)
+        })
+        .catch(err => alert(err.response.data.msg))
     }
   }
 
