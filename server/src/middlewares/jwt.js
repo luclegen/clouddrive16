@@ -11,10 +11,10 @@ module.exports.verify = async (req, res, next) => {
         if (payload) {
           req._id = payload._id
           next()
-        } else return res.status(500).send({ auth: false, msg: 'Token authentication failed.' })
+        } else return res.status(500).send({ msg: 'Authentication failed.' })
       } catch (err) {
         next(err)
       }
-    } else return res.status(403).send({ auth: false, msg: 'No token provided.' })
+    } else return res.status(403).send({ msg: 'Login?\nYou must be logged in to do this.' })
   }
 }
