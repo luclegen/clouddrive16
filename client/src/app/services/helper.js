@@ -13,6 +13,8 @@ class Helper {
 
   isDate = (y, m, d, date = new Date(parseInt(m) + 1 + '/' + d + '/' + y)) => date.getFullYear() === parseInt(y) && date.getMonth() === parseInt(m) && date.getDate() === parseInt(d)
 
+  isOldEnough = year => (new Date()).getFullYear() - parseInt(year) >= 5
+
   checkPassword = value => {
     let count = 0
     const strength = Object.freeze({
