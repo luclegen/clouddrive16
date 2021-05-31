@@ -34,7 +34,7 @@ app.use((err, req, res, next) => {
 
     case 'TokenExpiredError':
       code = 440
-      msg = 'Token has expired.'
+      msg = 'Login again?\nYour session has expired and must log in again.'
       break
 
     default:
