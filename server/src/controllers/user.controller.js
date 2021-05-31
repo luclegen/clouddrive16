@@ -21,5 +21,5 @@ module.exports.create = (req, res, next) => {
 
 module.exports.read = async (req, res, next) =>
   User.findById(req._id)
-    .then(user => user ? res.status(202).json({ status: true, user: _.pick(user, ['avatar', 'name', 'fullName', 'email', 'dateOfBirth', 'sex', 'role']) }) : res.status(404).json({ msg: 'User not found.' }))
+    .then(user => user ? res.status(202).json({ user: _.pick(user, ['avatar', 'name', 'fullName', 'email', 'dateOfBirth', 'sex', 'role']) }) : res.status(404).json({ msg: 'User not found.' }))
     .catch(err => next(err))
