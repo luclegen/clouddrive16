@@ -15,6 +15,10 @@ class Helper {
 
   isOldEnough = year => (new Date()).getFullYear() - parseInt(year) >= 5
 
+  isDigit = value => /^\d{1}$/.test(value)
+
+  isCode = value => /^\d+$/.test(value)
+
   checkPassword = value => {
     let count = 0
     const strength = Object.freeze({
