@@ -67,10 +67,10 @@ class Login extends Component {
 
   componentDidUpdate = () => window.onbeforeunload = () => this.state.email || this.password ? true : undefined
 
-  render = () => <section className="section-login">
-    <form className="form-login" onSubmit={this.onSubmit}>
+  render = () => <section className="section-only">
+    <form className="form-only" onSubmit={this.onSubmit}>
       <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_CLIENT_NAME + ' logo'} />
-      <h1 className="h1-login">Sign in to {process.env.REACT_APP_CLIENT_NAME}</h1>
+      <h1 className="h1-only">Sign in to {process.env.REACT_APP_CLIENT_NAME}</h1>
       <div className={`form-group-email ${this.state.visible ? 'rounded-top' : 'rounded'}`}>
         <input className="input-email" type="email" name="email" placeholder="Email" value={this.state.email} pattern={helper.emailPattern} onInput={this.enterEmail} onInvalid={this.enterEmail} onChange={this.setEmail} title="Please fill out this field." required />
         {!this.state.visible && <button className="btn-input" type="submit" disabled={!this.state.email} hidden={true}>
