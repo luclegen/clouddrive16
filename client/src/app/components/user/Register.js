@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import helper from '../services/helper'
-import authService from '../services/auth'
-import userService from '../services/user'
+import helper from '../../services/helper'
+import authService from '../../services/auth'
+import userService from '../../services/user'
 
 const state = {
   firstName: '',

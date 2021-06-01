@@ -1,5 +1,5 @@
 import { Component } from 'react'
-import helper from '../services/helper'
+import helper from '../../../services/helper'
 
 export default class Activate extends Component {
   constructor(props) {
