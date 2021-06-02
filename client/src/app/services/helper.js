@@ -17,7 +17,7 @@ class Helper {
 
   isDigit = value => /^\d{1}$/.test(value)
 
-  isCode = value => /^\d+$/.test(value)
+  isDigits = v => /^\d+$/.test(v)
 
   checkPassword = value => {
     let count = 0

@@ -39,7 +39,7 @@ export default class Activate extends Component {
 
     setTimeout(() => {
       input[i].value = helper.isDigit(txt[0]) ? txt[0] : null
-      if (helper.isCode(txt)) input[f].focus()
+      if (helper.isDigits(txt)) input[f].focus()
     })
 
     for (let j = i, k = 0; k < max; j++, k++) input[j].value = helper.isDigit(txt[k]) ? txt[k] : null
