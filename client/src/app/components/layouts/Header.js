@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
-import helper from '../services/helper'
-import userService from '../services/user'
+import helper from '../../services/helper'
+import userService from '../../services/user'
 
 export default class Header extends Component {
   constructor(props) {

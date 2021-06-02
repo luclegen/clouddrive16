@@ -1,4 +1,4 @@
-import PU from '../api/public'
+import PU from '../apis/public'
 
 const URL = 'auth/'
 

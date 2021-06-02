@@ -1,5 +1,5 @@
-import PU from '../api/public'
-import PR from '../api/private'
+import PU from '../apis/public'
+import PR from '../apis/private'
 
 const URL = 'user/'
 
