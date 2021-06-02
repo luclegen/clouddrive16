@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import helper from '../../../services/helper'
-import Register from '../../user/Register'
-import authService from '../../../services/auth'
+import helper from '../../services/helper'
+import Register from '../user/Register'
+import authService from '../../services/auth'
 
 const state = {
   email: '',
