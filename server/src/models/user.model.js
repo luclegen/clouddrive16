@@ -47,10 +47,7 @@ const userSchema = new mongoose.Schema({
     default: 'user'
   },
 }, {
-  timestamps: {
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  }
+  timestamps: true
 })
 
 //#region Validation
