@@ -25,7 +25,7 @@ header
 .form-group-email, .form-group-password, .form-floating, .form-group-password-strength
   @extend .form-group
 
-.input-search, .input-email, .input-password, .form-control-day, .form-control-month, .form-control-year
+.input-search, .input-email, .input-password, .form-control-day, .form-control-month, .form-control-year, .form-control-digit
   @extend .form-control
 
 .form-check-remember, .form-check-female, .form-check-male, .form-check-other
@@ -72,8 +72,14 @@ header
   h1
     @extend .text-center
 
-.search-bar, .form-group-email, .form-group-password, .form-check-female, .form-check-male, .form-check-other
+.form-control-digit
+  @extend .text-center
+
+.search-bar, .form-group-email, .form-group-password, .form-check-female, .form-check-male, .form-check-other, .form-control-digit
   @extend .border
+
+.form-control-digit
+  @extend .border-secondary
 
 .form-group-password
   @extend .border-top-0
@@ -84,7 +90,7 @@ header
 .form-check
   @extend .border-bottom
 
-.logo
+.logo, .form-control-digit
   @extend .rounded
 
 .form-register, .form-floating, .form-check-female, .form-check-male, .form-check-other
@@ -102,7 +108,7 @@ header
 .form-register
   @extend .shadow
 
-.input-search, .btn-search, .avatar, .input-email, .input-password, .btn-input, .form-floating input, select
+.input-search, .btn-search, .avatar, .input-email, .input-password, .btn-input, .form-floating input, select, .form-control-digit
   @extend .shadow-none
 
 .input-search, .form-floating input, .avatar
@@ -113,6 +119,9 @@ header
 
 .form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength, .text-profile, .text-help, .text-logout
   @extend .m-0
+
+.form-control-digit
+  @extend .mx-1
 
 .dropdown-menu-avatar
   @extend .mt-2
@@ -286,3 +295,14 @@ meter
     right: 12px
     border: 10px solid transparent
     border-bottom-color: white
+
+.form-control-digit
+
+  &::-webkit-inner-spin-button
+    -moz-appearance: none
+    -webkit-appearance: none
+    -ms-progress-appearance: none
+    appearance: none
+
+  &:focus
+    border: 2px solid blue !important

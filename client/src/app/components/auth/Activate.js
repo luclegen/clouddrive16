@@ -10,9 +10,11 @@ export default class Activate extends Component {
     }
   }
 
-  getIndex = target => Array.from(document.querySelector('.form-row-number').children).findIndex(i => i === target)
+  getIndex = target => Array.from(document.querySelector('.form-row').children).findIndex(i => i === target)
 
   getInput = () => document.querySelectorAll('.form-control-digit')
+
+  select = e => e.target.select()
 
   enterNumber = e => {
     const [i, input] = [this.getIndex(e.target), this.getInput()]
@@ -57,8 +59,8 @@ export default class Activate extends Component {
     <form className="form-only" onSubmit={this.onSubmit}>
       <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_CLIENT_NAME + ' logo'} />
       <h1 className="h1-only">Activate your account</h1>
-      <div className="form-row-digit">
-        {'0'.repeat(6).split('').map((v, i) => <input className="form-control-digit" key={i} type="number" maxLength="1" onInput={this.enterNumber} onDrop={this.enterNumber} onKeyUp={this.clearNumber} onKeyDown={this.clearNumber} onPaste={this.pasteNumber} required />)}
+      <div className="form-row">
+        {'0'.repeat(6).split('').map((v, i) => <input className="form-control-digit" key={i} type="number" maxLength="1" onClick={this.select} onInput={this.enterNumber} onDrop={this.enterNumber} onKeyUp={this.clearNumber} onKeyDown={this.clearNumber} onPaste={this.pasteNumber} required />)}
       </div>
     </form>
   </section>
