@@ -57,7 +57,7 @@ export default class Activate extends Component {
     <form className="form-only" onSubmit={this.onSubmit}>
       <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_CLIENT_NAME + ' logo'} />
       <h1 className="h1-only">Activate your account</h1>
-      <div className="form-row-number">
+      <div className="form-row-digit">
         {'0'.repeat(6).split('').map((v, i) => <input className="form-control-digit" key={i} type="number" maxLength="1" onInput={this.enterNumber} onDrop={this.enterNumber} onKeyUp={this.clearNumber} onKeyDown={this.clearNumber} onPaste={this.pasteNumber} required />)}
       </div>
     </form>
