@@ -8,7 +8,14 @@ module.exports.available = async (req, res, next) =>
     .then(user => res.status(user ? 203 : 200).send({ available: Boolean(user) }))
     .catch(err => next(err))
 
-module.exports.authenticate = (req, res) => passport.authenticate('local', (err, user, info) => err ? res.status(400).json(err) : user ? res.status(200).json({ token: user.getToken() }) : res.status(404).json(info))(req, res)
+module.exports.authenticate = (req, res, next) =>
+  passport.authenticate('local', (err, user, info) =>
+    err
+      ? next(err)
+      : user
+        ? res.status(200).json({ token: user.getToken() })
+        : res.status(404).json(info)
+  )(req, res)
 
 module.exports.verify = async (req, res, next) =>
   User.findById(req._id)
