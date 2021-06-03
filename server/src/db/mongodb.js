@@ -11,3 +11,4 @@ mongoose.connection.on('error', err => console.error(err))
 mongoose.connection.once('open', () => console.log('Connected to MongoDB'))
 
 require('../models/user.model')
+require('../models/code.model')
