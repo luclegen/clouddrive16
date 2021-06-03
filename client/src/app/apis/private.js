@@ -8,7 +8,7 @@ API.interceptors.request.use(
     config.headers = {
       'Authorization': `Bearer ${helper.getToken()}`,
       'Accept': 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/json'
     }
     return config
   },
