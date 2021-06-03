@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const jwt = require('../middlewares/jwt');
+const jwt = require('../middlewares/jwt')
 const authCtl = require('../controllers/auth.controller')
 
 router.get('/:email', authCtl.available)
