@@ -21,6 +21,7 @@ app.get('/', (req, res) => res.send(`Started ${process.env.SERVER_NAME} server i
 // Routes
 app.use('/auth', require('./routes/auth.router'))
 app.use('/user', require('./routes/user.router'))
+app.use('/code', require('./routes/code.router'))
 
 // Error handle
 app.use((err, req, res, next) => {
