@@ -38,6 +38,11 @@ app.use((err, req, res, next) => {
       msg = 'Login again?\nYour session has expired and must log in again.'
       break
 
+    case 'JsonWebTokenError':
+      code = 400
+      msg = 'Json Web Token malformed.'
+      break
+
     default:
       return res.status(code).send({ error: err, msg: msg })
   }
