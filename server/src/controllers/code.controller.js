@@ -19,7 +19,7 @@ module.exports.create = (req, res, next) => {
       User.findById(req._id)
         .then(user => {
           mailer.sendCode(user.email, 'Verify Email', newCode)
-          return res.status(201).send({ msg: 'Code created and sent.' })
+          return res.status(201).send({ msg: 'Code sent.' })
         })
         .catch(err => next(err))
     })
