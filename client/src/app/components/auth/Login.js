@@ -31,7 +31,7 @@ class Login extends Component {
   setRemembered = e => this.setState({ remembered: e.target.checked })
 
   enterEmail = async e => {
-    const available = (await authService.checkEmail(e.target.value)).data.available
+    const available = (await authService.available(e.target.value)).data.available
     e.target.setCustomValidity(helper.isEmail(e.target.value) ? available ? '' : 'Email not registered' : 'Invalid email!')
     this.setState({ available: available, visible: false, password: '' })
     setTimeout(() => {
