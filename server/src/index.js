@@ -40,11 +40,11 @@ app.use((err, req, res, next) => {
 
     case 'JsonWebTokenError':
       code = 400
-      msg = 'Json Web Token malformed.'
+      msg = err.message
       break
 
     default:
-      return res.status(code).send({ error: err, msg: msg })
+      return res.status(code).send({ err: err, msg: msg })
   }
 
   return res.status(code).send({ msg: msg })
