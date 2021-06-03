@@ -6,6 +6,6 @@ module.exports.isEmail = value => /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/.test
 
 module.exports.isStrongPassword = value => value.length >= 8 && /[a-z]/ig.test(value) && /\d/g.test(value) && /[.@#$%^&*(),.?":{}|<>]/g.test(value)
 
-module.exports.isDate = (year, month, day, date = new Date(parseInt(month) + 1 + '/' + d + '/' + year)) => date.getFullYear() === parseInt(year) && date.getMonth() === parseInt(month) && date.getDate() === parseInt(day)
+module.exports.isDate = (year, month, day, date = new Date(parseInt(month) + 1 + '/' + day + '/' + year)) => date.getFullYear() === parseInt(year) && date.getMonth() === parseInt(month) && date.getDate() === parseInt(day)
 
 module.exports.isCode = value => /^\d{6}$/.test(value)
