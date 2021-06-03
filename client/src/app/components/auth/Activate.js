@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import helper from '../../services/helper'
+import codeService from '../../services/code'
 
 export default class Activate extends Component {
   constructor(props) {
@@ -47,7 +48,12 @@ export default class Activate extends Component {
     if (this.isSubmit()) this.onSubmit(e)
   }
 
-  send = e => e.preventDefault()
+  send = e => {
+    e.preventDefault()
+    codeService.create()
+      .then(res => alert(res.data.msg))
+      .catch(err => alert(err.response.data.msg))
+  }
 
   isSubmit = () => '0'.repeat(6).split('').map((v, i) => v = document.querySelectorAll('.form-control-digit')[i].value).filter(v => helper.isDigit(v)).length === 6
 
@@ -61,6 +67,7 @@ export default class Activate extends Component {
     <form className="form-only" onSubmit={this.onSubmit}>
       <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_CLIENT_NAME + ' logo'} />
       <h1 className="h1-only">Activate your account</h1>
+      <p>We sent a code to your email. Please enter the verification code.</p>
       <div className="form-row">
         {'0'.repeat(6).split('').map((v, i) => <div className="form-group" key={i}>
           <input className="form-control-digit" type="number" maxLength="1" onClick={this.select} onInput={this.enterNumber} onDrop={this.enterNumber} onKeyUp={this.clearNumber} onKeyDown={this.clearNumber} onPaste={this.pasteNumber} required />
