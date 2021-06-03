@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import helper from '../../services/helper'
 import Register from '../user/Register'
 import authService from '../../services/auth'
+import codeService from '../../services/code'
 
 const state = {
   email: '',
@@ -58,6 +59,11 @@ class Login extends Component {
               localStorage.setItem('token', res.data.token)
               localStorage.setItem('remembered', this.state.remembered)
               this.setState(state)
+              if (!helper.getPayload().activated) {
+                alert('Your session exists for 5 minutes.')
+                codeService.create()
+                  .catch(err => alert(err.response.data.msg))
+              }
               window.location.reload()
             })
             .catch(err => alert(err.response.data.msg))
