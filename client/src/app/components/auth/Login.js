@@ -62,11 +62,9 @@ class Login extends Component {
               if (!helper.getPayload().activated) {
                 alert('Your session exists for 5 minutes.')
                 codeService.create()
-                  .catch(err => alert(err.response.data.msg))
               }
               window.location.reload()
             })
-            .catch(err => alert(err.response.data.msg))
       })
     }
   }
