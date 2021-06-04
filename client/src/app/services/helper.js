@@ -41,9 +41,7 @@ class Helper {
     }
   }
 
-  getToken = () => localStorage.getItem('token')
-
-  setToken = token => localStorage.setItem('token', token)
+  getToken = () => localStorage.getItem('token') || sessionStorage.getItem('token')
 
   getPayload = () => this.loggedIn() ? JSON.parse(atob(this.getToken().split('.')[1])) : null
 
@@ -51,7 +49,7 @@ class Helper {
 
   loggedIn = () => Boolean(this.getToken())
 
-  remembered = () => localStorage.getItem('remembered') === 'true' ? true : localStorage.getItem('remembered') === 'false' ? false : null
+  remembered = () => localStorage.getItem('remembered') === 'true' || sessionStorage.getItem('remembered') === 'true' ? true : localStorage.getItem('remembered') === 'false' || sessionStorage.getItem('remembered') === 'false' ? false : null
 }
 
 export default new Helper()
