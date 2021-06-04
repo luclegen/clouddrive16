@@ -17,14 +17,14 @@ module.exports.create = (req, res, next) => {
   user.save()
     .then(user => {
       res.status(201).send({ msg: 'Registered successfully.' })
-      setTimeout(() => {
+      setTimeout(() =>
         User.findById(user._id)
           .then(user => {
             if (!user.activated) User.findByIdAndDelete(user._id)
               .catch(err => next(err))
           })
           .catch(err => next(err))
-      }, 30 * 24 * 60 * 60 * 1000)
+        , 30 * 24 * 60 * 60 * 1000)
     })
     .catch(err => err.code === 11000 ? res.status(422).send({ msg: 'Email is duplicate. Please try again.' }) : next(err))
 }
