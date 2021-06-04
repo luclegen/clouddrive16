@@ -46,7 +46,6 @@ export default class Activate extends Component {
     e.preventDefault()
     codeService.create()
       .then(res => alert(res.data.msg))
-      .catch(err => alert(err.response.data.msg))
   }
 
   isSubmit = () => '0'.repeat(6).split('').map((v, i) => v = document.querySelectorAll('.form-control-digit')[i].value).filter(v => helper.isDigit(v)).length === 6
