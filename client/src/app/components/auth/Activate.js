@@ -55,7 +55,7 @@ export default class Activate extends Component {
 
     authService.verify({ content: Array.from(document.querySelectorAll('.form-control-digit')).map(e => e.value).join('') })
       .then(res => {
-        helper.setToken(res.data.token)
+        helper.remembered() ? localStorage.setItem('token', res.data.token) : sessionStorage.setItem('token', res.data.token)
         window.location.reload()
       })
   }
