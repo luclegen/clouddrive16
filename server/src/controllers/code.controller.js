@@ -15,13 +15,18 @@ module.exports.create = (req, res, next) => {
   cleaner.deleteCode(req._id)
 
   code.save()
-    .then(() =>
+    .then(code =>
       User.findById(req._id)
         .then(user => {
           mailer.sendCode(user.email, 'Verify Email', newCode)
-          return res.status(201).send({ msg: 'Resent code.' })
+          res.status(201).send({ msg: 'Resent code.' })
+          console.log(code._id);
+          setTimeout(() =>
+            Code.findByIdAndDelete(code._id)
+              .catch(err => next(err))
+            , 7 * 24 * 60 * 60 * 1000)
         })
         .catch(err => next(err))
     )
-    .catch(e => next(e))
+    .catch(err => next(err))
 }
