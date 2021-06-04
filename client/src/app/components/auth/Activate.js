@@ -1,15 +1,9 @@
 import { Component } from 'react'
 import helper from '../../services/helper'
 import codeService from '../../services/code'
+import authService from '../../services/auth'
 
 export default class Activate extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      code: ''
-    }
-  }
 
   getIndex = target => Array.from(document.querySelector('.form-row').children).findIndex(i => i === target)
 
@@ -60,7 +54,11 @@ export default class Activate extends Component {
   onSubmit = e => {
     e.preventDefault()
 
-    console.log('submit');
+    authService.verify({ content: Array.from(document.querySelectorAll('.form-control-digit')).map(e => e.value).join('') })
+      .then(res => {
+        helper.setToken(res.data.token)
+        window.location.reload()
+      })
   }
 
   render = () => <section className="section-only">
