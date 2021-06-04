@@ -107,7 +107,6 @@ class Register extends Component {
           document.querySelector('meter').value = 0
           this.setState(state)
         })
-        .catch(err => alert(err.response.data.msg))
     }
   }
 
