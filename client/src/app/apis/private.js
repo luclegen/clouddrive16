@@ -20,7 +20,7 @@ API.interceptors.response.use(res => res, async err => {
     localStorage.clear()
     if (window.location.href !== process.env.REACT_APP_CLIENT_URL) window.open('/')
     else window.location.reload()
-  } else alert(err.response.data.msg)
+  } else alert(err.response ? err.response.data.msg : err)
   return Promise.reject(err)
 })
 
