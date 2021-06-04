@@ -56,13 +56,8 @@ class Login extends Component {
         if (this.state.password)
           authService.authenticate(this.state)
             .then(res => {
-              if (this.state.remembered) {
-                localStorage.setItem('token', res.data.token)
-                localStorage.setItem('remembered', this.state.remembered)
-              } else {
-                sessionStorage.setItem('token', res.data.token)
-                sessionStorage.setItem('remembered', this.state.remembered)
-              }
+              this.state.remembered ? localStorage.setItem('remembered', this.state.remembered) : sessionStorage.setItem('remembered', this.state.remembered)
+              helper.setToken(res.data.token)
               this.setState(state)
               if (!helper.getPayload().activated) {
                 alert('Your session exists for 5 minutes.')
