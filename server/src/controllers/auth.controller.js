@@ -29,7 +29,7 @@ module.exports.verify = async (req, res, next) =>
                 ? code.times
                   ? code.verified(req.body.content)
                     ? User.findByIdAndUpdate(req._id, { $set: { activated: true } }, { new: true })
-                      .then(user => user ? res.status(202).send() : res.status(404).send({ msg: 'User not found.' }))
+                      .then(user => user ? res.status(202).send({ token: user.getToken() }) : res.status(404).send({ msg: 'User not found.' }))
                       .catch(err => next(err))
                     : Code.findByIdAndUpdate(code._id, { $set: { times: --code.times } }, { new: true })
                       .then(code => res.status(403).send({ msg: code.times ? `Wrong code. You have ${code.times} attempts left.` : 'You tried too many. Please try again with a different verification code or change your email again.' }))
