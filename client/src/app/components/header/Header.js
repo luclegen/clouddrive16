@@ -72,6 +72,12 @@ export default class Header extends Component {
 
   setKeyword = e => this.setState({ keyword: e.target.value })
 
+  logout() {
+    localStorage.clear()
+    sessionStorage.clear()
+    window.location.reload()
+  }
+
   componentDidMount = () => {
     if (helper.loggedIn())
       userService.read()
@@ -85,11 +91,6 @@ export default class Header extends Component {
     this.setState({ width: window.innerWidth })
     this.reset(this.state.width < 801)
     if (this.state.opened) this.open()
-  }
-
-  logout() {
-    localStorage.clear()
-    window.location.reload()
   }
 
   render = () => <header>
