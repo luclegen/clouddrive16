@@ -58,6 +58,10 @@ export default class Activate extends Component {
         helper.setToken(res.data.token)
         window.location.reload()
       })
+      .catch(() => {
+        document.querySelector('.form-only').reset()
+        document.querySelector('.form-control-digit').focus()
+      })
   }
 
   render = () => <section className="section-only">
