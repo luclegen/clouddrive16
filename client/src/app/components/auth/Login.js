@@ -31,13 +31,15 @@ class Login extends Component {
   setRemembered = e => this.setState({ remembered: e.target.checked })
 
   enterEmail = async e => {
-    const available = (await authService.available(e.target.value)).data.available
-    e.target.setCustomValidity(helper.isEmail(e.target.value) ? available ? '' : 'Email not registered' : 'Invalid email!')
-    this.setState({ available: available, visible: false, password: '' })
-    setTimeout(() => {
-      if (document.querySelector('.form-group-password')) document.querySelector('.form-group-password').style.height = 0
-      document.querySelector('.input-email').style.width = 260 + 'px'
-    })
+    if (e.target.value) {
+      const available = (await authService.available(e.target.value)).data.available
+      e.target.setCustomValidity(helper.isEmail(e.target.value) ? available ? '' : 'Email not registered' : 'Invalid email!')
+      this.setState({ available: available, visible: false, password: '' })
+      setTimeout(() => {
+        if (document.querySelector('.form-group-password')) document.querySelector('.form-group-password').style.height = 0
+        document.querySelector('.input-email').style.width = 260 + 'px'
+      })
+    }
   }
 
   open = () => this.setState({ opened: true })
