@@ -43,6 +43,8 @@ class Helper {
 
   getToken = () => localStorage.getItem('token')
 
+  setToken = token => localStorage.setItem('token', token)
+
   getPayload = () => this.loggedIn() ? JSON.parse(atob(this.getToken().split('.')[1])) : null
 
   isExpired = () => this.loggedIn() ? this.getPayload().exp ? this.getPayload().exp * 1000 < Date.now() : false : true
