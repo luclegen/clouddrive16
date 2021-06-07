@@ -20,10 +20,7 @@ module.exports.create = (req, res, next) => {
         .then(user => {
           mailer.sendCode(user.email, 'Verify Email', newCode)
           res.status(201).send({ msg: 'Resent code.' })
-          console.log(code._id);
-          setTimeout(() =>
-            Code.findByIdAndDelete(code._id)
-              .catch(err => next(err))
+          setTimeout(() => Code.findByIdAndDelete(code._id).catch(err => next(err))
             , 7 * 24 * 60 * 60 * 1000)
         })
         .catch(err => next(err))
