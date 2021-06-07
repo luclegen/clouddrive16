@@ -19,10 +19,7 @@ module.exports.create = (req, res, next) => {
       res.status(201).send({ msg: 'Registered successfully.' })
       setTimeout(() =>
         User.findById(user._id)
-          .then(user => {
-            if (!user.activated) User.findByIdAndDelete(user._id)
-              .catch(err => next(err))
-          })
+          .then(user => !user.activated && User.findByIdAndDelete(user._id).catch(err => next(err)))
           .catch(err => next(err))
         , 30 * 24 * 60 * 60 * 1000)
     })
