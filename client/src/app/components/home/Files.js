@@ -7,7 +7,8 @@ export default class Files extends Component {
     super(props)
 
     this.state = {
-      fullName: ''
+      fullName: '',
+      location: ''
     }
   }
 
@@ -17,19 +18,23 @@ export default class Files extends Component {
     const params = new URLSearchParams(window.location.search)
     params.set(name, value)
     window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${params}`))
-    window.location.reload()
   }
 
   deleteQueryStringParameter = name => {
     const params = new URLSearchParams(window.location.search)
     params.delete(name)
     window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${params}`))
-    window.location.reload()
   }
 
-  setFiles = () => this.deleteQueryStringParameter('location')
+  setFiles = () => {
+    this.deleteQueryStringParameter('location')
+    this.setState({ location: '' })
+  }
 
-  setTrash = () => this.setQueryStringParameter('location', 'trash')
+  setTrash = () => {
+    this.setQueryStringParameter('location', 'trash')
+    this.setState({ location: 'trash' })
+  }
 
   componentDidMount = () => {
     if (helper.loggedIn())
@@ -44,8 +49,8 @@ export default class Files extends Component {
         <label htmlFor="leftNav"><strong>{this.state.fullName}</strong></label>
       </div>
       <ul className="list-group">
-        <li className={`list-group-item list-group-item-action ${!this.getURLSearchParams().get('location') && 'active'}`} onClick={this.setFiles}><i className="material-icons">folder</i> My files</li>
-        <li className={`list-group-item list-group-item-action ${this.getURLSearchParams().get('location') === 'trash' && 'active'}`} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
+        <li className={`list-group-item list-group-item-action ${!this.state.location && 'active'}`} onClick={this.setFiles}><i className="material-icons">folder</i> My files</li>
+        <li className={`list-group-item list-group-item-action ${this.state.location === 'trash' && 'active'}`} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
       </ul>
     </nav>
     <div className="right-content col-10">
