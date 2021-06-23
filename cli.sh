@@ -2,6 +2,7 @@
 
 # * Prerequisites *
 sudo npm i -g npm nodemon
+npm i -s
 
 # I. REACT CLIENT
 cd client; clear; npm start
