@@ -9,3 +9,5 @@ module.exports.isStrongPassword = value => value.length >= 8 && /[a-z]/ig.test(v
 module.exports.isDate = (year, month, day, date = new Date(parseInt(month) + 1 + '/' + day + '/' + year)) => date.getFullYear() === parseInt(year) && date.getMonth() === parseInt(month) && date.getDate() === parseInt(day)
 
 module.exports.isCode = value => /^\d{6}$/.test(value)
+
+module.exports.isFolder = value => /^\w*(\.+)*\w+/.test(value) && /[^\.]$/.test(value)
