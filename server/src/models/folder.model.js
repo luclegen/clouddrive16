@@ -11,13 +11,13 @@ const folderSchema = new mongoose.Schema({
     type: String,
     default: '/',
     trim: true,
-    required: 'Path ID is required'
+    required: 'Path is required'
   },
   name: {
     type: String,
     default: 'New folder',
     trim: true,
-    required: 'Name ID is required'
+    required: 'Name is required'
   },
 }, {
   timestamps: true
