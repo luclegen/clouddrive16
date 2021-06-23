@@ -1,7 +1,7 @@
 import PU from '../apis/public'
 import PR from '../apis/private'
 
-const URL = 'user/'
+const URL = `${process.env.REACT_APP_SERVER_URL}user/`
 
 class UserService {
   create = user => PU.post(URL, user)

@@ -1,7 +1,7 @@
 import PU from '../apis/public'
 import PR from '../apis/private'
 
-const URL = 'auth/'
+const URL = `${process.env.REACT_APP_SERVER_URL}auth/`
 
 class AuthService {
   available = email => PU.get(`${URL}${email}`)
