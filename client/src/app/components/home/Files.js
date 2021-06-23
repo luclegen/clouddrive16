@@ -43,18 +43,20 @@ export default class Files extends Component {
     if (!window.location.search) window.location.search = 'id=root'
   }
 
-  render = () => <section className="section-files d-flex">
+  render = () => <section className="section-files">
     <nav className="left-nav col-2" id="leftNav">
       <div className="top-left-nav">
         <label htmlFor="leftNav"><strong>{this.state.fullName}</strong></label>
       </div>
       <ul className="list-group">
-        <li className={`list-group-item list-group-item-action ${!this.state.location && 'active'}`} onClick={this.setFiles}><i className="material-icons">folder</i> My files</li>
-        <li className={`list-group-item list-group-item-action ${this.state.location === 'trash' && 'active'}`} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
+        <li className={`list-group-item-files ${!this.state.location && 'active'}`} onClick={this.setFiles}><i className="material-icons">folder</i> My files</li>
+        <li className={`list-group-item-trash ${this.state.location === 'trash' && 'active'}`} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
       </ul>
     </nav>
     <div className="right-content col-10">
-      <div className="command-bar"></div>
+      <div className="command-bar">
+        T
+      </div>
       <div className="content"></div>
     </div>
   </section>

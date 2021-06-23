@@ -77,13 +77,21 @@ meter
 .right-content
   height: 100%
 
-.list-group-item
+.list-group-item-files, .list-group-item-trash
   display: flex !important
   align-items: flex-end !important
   cursor: pointer
 
+  &.active
+    cursor: auto
+
   i
     margin-right: 5px
+
+.command-bar
+  height: 53px
+  width: 100%
+  background: green
 
 @media (max-width: 1024px)
   .search-bar

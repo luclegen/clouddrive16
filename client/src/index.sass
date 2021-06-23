@@ -7,6 +7,12 @@ $spacer: 16px
 .section-files
   @extend .container-fluid
 
+.list-group-item-files, .list-group-item-trash
+  @extend .list-group-item
+
+.list-group-item-files, .list-group-item-trash
+  @extend .list-group-item-action
+
 header
   @extend .navbar
 
@@ -55,7 +61,7 @@ header
 .section-register, .form-floating label
   @extend .position-absolute
 
-.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item
+.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files
   @extend .d-flex
 
 .form-only, .form-floating
@@ -138,7 +144,7 @@ header
 .h1-only, .form-check-remember, .h1-register
   @extend .mb-3
 
-.avatar, .section-files
+.avatar, .section-files, .right-content
   @extend .p-0
 
 header, .float label
@@ -329,12 +335,12 @@ meter
 
 .list-group-item
 
-  i
-    margin-right: 30px
-
   &.active
     background: none
     font-weight: 700
     background-color: #e1dfdd
     color: black
     border: none
+
+  i
+    margin-right: 30px
