@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import helper from '../../services/helper'
 import userService from '../../services/user'
+import folderService from '../../services/folder'
 
 export default class Files extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ export default class Files extends Component {
       fullName: '',
       location: '',
       opened: false,
+      path: '/',
       name: ''
     }
   }
@@ -38,15 +40,14 @@ export default class Files extends Component {
     this.setState({ location: 'trash' })
   }
 
-  onSubmit = () => {
-    const t = prompt('Folder', 'New folder')
-    alert(t)
+  setFolder = () => {
+    folderService.create({ name: prompt('Folder', 'New folder'), path: this.state.path })
   }
 
   componentDidMount = () => {
     if (helper.loggedIn())
       userService.read()
-        .then(res => this.setState(res.data.user))
+        .then(res => this.setState({ fullName: res.data.user.fullName }))
     if (!window.location.search) window.location.search = 'id=root'
   }
 
@@ -62,7 +63,7 @@ export default class Files extends Component {
     </nav>
     <div className="right-content col-10">
       <div className="command-bar shadow-sm">
-        <button className="btn-new-folder" onClick={this.onSubmit}><i class="material-icons">create_new_folder</i> New</button>
+        <button className="btn-new-folder" onClick={this.setFolder}><i className="material-icons">create_new_folder</i> New</button>
       </div>
       <div className="content"></div>
     </div>
