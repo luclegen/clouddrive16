@@ -4,6 +4,9 @@ $spacer: 16px
 
 // Bootstrap
 
+.section-files
+  @extend .container-fluid
+
 header
   @extend .navbar
 
@@ -52,14 +55,17 @@ header
 .section-register, .form-floating label
   @extend .position-absolute
 
-.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout
+.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item
   @extend .d-flex
 
 .form-only, .form-floating
   @extend .flex-xl-column
 
-.logo, .form-only, .section-register
+.logo, .form-only, .section-register, .top-left-nav
   @extend .align-items-center
+
+.list-group-item
+  @extend .align-items-end
 
 .section-only, .form-only, .section-register, .form-row-sign-up, .form-group-password-strength
   @extend .justify-content-center
@@ -132,7 +138,7 @@ header
 .h1-only, .form-check-remember, .h1-register
   @extend .mb-3
 
-.avatar
+.avatar, .section-files
   @extend .p-0
 
 header, .float label
@@ -314,3 +320,21 @@ meter
 
   &:focus
     border: 2px solid blue !important
+
+.left-nav
+  background: #f3f2f1
+
+.right-content
+  background: yellow
+
+.list-group-item
+
+  i
+    margin-right: 30px
+
+  &.active
+    background: none
+    font-weight: 700
+    background-color: #e1dfdd
+    color: black
+    border: none
