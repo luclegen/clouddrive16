@@ -58,7 +58,7 @@ header
 .form-floating
   @extend .position-relative
 
-.section-register, .form-floating label
+.section-register, .form-floating label, .bg-folder, .pad-folder, .fg-folder
   @extend .position-absolute
 
 .logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files
@@ -135,6 +135,9 @@ header
 .form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength, .text-profile, .text-help, .text-logout
   @extend .m-0
 
+.path-bar
+  @extend .m-3
+
 .form-control-digit
   @extend .mx-1
 
@@ -159,7 +162,7 @@ header, .float label
 .logo
   @extend .px-1
 
-.dropdown-item-profile, .dropdown-item-logout, .command-bar
+.dropdown-item-profile, .dropdown-item-logout, .command-bar, .path-bar
   @extend .px-3
 
 .input-search
@@ -354,3 +357,18 @@ meter
 
   &:hover
     background: #f3f2f1
+
+.ls-folder
+  display: grid
+  list-style: none
+  grid-gap: 40px
+  grid-template-columns: repeat(auto-fill, 120px) 10%
+
+.pad-folder
+  background: white
+
+.li-folder
+  width: 150px
+
+  &:hover
+    background: #e1dfdd

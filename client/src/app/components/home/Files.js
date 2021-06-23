@@ -2,6 +2,7 @@ import { Component } from 'react'
 import helper from '../../services/helper'
 import userService from '../../services/user'
 import folderService from '../../services/folder'
+import foldersService from '../../services/folders'
 
 export default class Files extends Component {
   constructor(props) {
@@ -12,7 +13,8 @@ export default class Files extends Component {
       location: '',
       opened: false,
       path: '/',
-      name: ''
+      name: '',
+      folders: []
     }
   }
 
@@ -50,11 +52,16 @@ export default class Files extends Component {
   }
 
   componentDidMount = () => {
-    if (helper.loggedIn())
+    if (helper.loggedIn()) {
       userService.read()
         .then(res => this.setState({ fullName: res.data.user.fullName }))
+    }
     if (!window.location.search) window.location.search = 'id=root'
   }
+
+  componentDidUpdate = () =>
+    foldersService.read()
+      .then(res => this.setState({ folders: res.data.folders }))
 
   render = () => <section className="section-files">
     <nav className="left-nav col-2" id="leftNav">
@@ -70,7 +77,18 @@ export default class Files extends Component {
       <div className="command-bar shadow-sm">
         <button className="btn-new-folder" onClick={this.setFolder}><i className="material-icons">create_new_folder</i> New</button>
       </div>
-      <div className="content"></div>
+      <div className="path-bar">
+        <strong>{`My files${this.state.path === '/' ? '' : this.state.path}`}</strong>
+      </div>
+      <ul className="ls-folder">
+        {this.state.folders.map((v, i) => <li className="li-folder" key={i} id={`folder${i}`}>
+          <img className="bg-folder" src="svg/lg-bg.svg" alt="background folder" />
+          <div className="pad-folder"></div>
+          {/* <img className="fg-folder" src="svg/lg-fg-media.svg" alt="forceground folder" /> */}
+          <img className="fg-folder" src="svg/lg-fg.svg" alt="forceground folder" />
+          <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
+        </li>)}
+      </ul>
     </div>
   </section>
 }
