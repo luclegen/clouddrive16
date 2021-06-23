@@ -19,7 +19,7 @@ header
 .form-search
   @extend .input-group
 
-.btn-search, .btn-input, .btn-create-account, .btn-sign-up
+.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-new-folder
   @extend .btn
 
 .btn-create-account, .btn-sign-up
@@ -123,6 +123,9 @@ header
 .input-search, .btn-search, .avatar, .input-email, .input-password, .btn-input, .form-floating input, select, .form-control-digit
   @extend .shadow-none
 
+.command-bar
+  @extend .shadow-sm
+
 .input-search, .form-floating input, .avatar
   @extend .bg-transparent
 
@@ -156,7 +159,7 @@ header, .float label
 .logo
   @extend .px-1
 
-.dropdown-item-profile, .dropdown-item-logout
+.dropdown-item-profile, .dropdown-item-logout, .command-bar
   @extend .px-3
 
 .input-search
@@ -171,7 +174,12 @@ header, .float label
 // Custom
 
 .btn
+  display: flex
   font-weight: 700
+  align-items: center
+
+  i
+    margin-right: 5px
 
 .form-group-email, .form-group-password
 
@@ -330,9 +338,6 @@ meter
 .left-nav
   background: #f3f2f1
 
-.right-content
-  background: yellow
-
 .list-group-item
 
   &.active
@@ -344,3 +349,8 @@ meter
 
   i
     margin-right: 30px
+
+.btn-new-folder
+
+  &:hover
+    background: #f3f2f1

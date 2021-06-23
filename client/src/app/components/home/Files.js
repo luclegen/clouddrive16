@@ -8,7 +8,9 @@ export default class Files extends Component {
 
     this.state = {
       fullName: '',
-      location: ''
+      location: '',
+      opened: false,
+      name: ''
     }
   }
 
@@ -36,6 +38,11 @@ export default class Files extends Component {
     this.setState({ location: 'trash' })
   }
 
+  onSubmit = () => {
+    const t = prompt('Folder', 'New folder')
+    alert(t)
+  }
+
   componentDidMount = () => {
     if (helper.loggedIn())
       userService.read()
@@ -54,8 +61,8 @@ export default class Files extends Component {
       </ul>
     </nav>
     <div className="right-content col-10">
-      <div className="command-bar">
-        T
+      <div className="command-bar shadow-sm">
+        <button className="btn-new-folder" onClick={this.onSubmit}><i class="material-icons">create_new_folder</i> New</button>
       </div>
       <div className="content"></div>
     </div>
