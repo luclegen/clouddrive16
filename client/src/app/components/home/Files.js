@@ -41,7 +41,12 @@ export default class Files extends Component {
   }
 
   setFolder = () => {
-    folderService.create({ name: prompt('Folder', 'New folder'), path: this.state.path })
+    let name = ''
+    do {
+      name = prompt('Folder', 'New folder')
+      if (name === "") alert('Folder is required.')
+    } while (name !== null && name === "")
+    folderService.create({ name: name, path: this.state.path })
   }
 
   componentDidMount = () => {
