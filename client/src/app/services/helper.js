@@ -52,6 +52,12 @@ class Helper {
   loggedIn = () => Boolean(this.getToken())
 
   remembered = () => localStorage.getItem('remembered') === 'true' || sessionStorage.getItem('remembered') === 'true' ? true : localStorage.getItem('remembered') === 'false' || sessionStorage.getItem('remembered') === 'false' ? false : null
+
+  logout = () => {
+    localStorage.clear()
+    sessionStorage.clear()
+    window.location.reload()
+  }
 }
 
 export default new Helper()
