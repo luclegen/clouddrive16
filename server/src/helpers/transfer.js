@@ -9,7 +9,7 @@ module.exports.getImages = (imgDir, callback) => {
   });
 }
 
-module.exports.upload = (root, dir = '', parentdir = '') => {
+module.exports.upload = (root, dir = '') => {
   const storage = multer.diskStorage({
     destination: (req, file, callback) => {
       const path = [root];
