@@ -3,7 +3,6 @@ import helper from '../../services/helper'
 import userService from '../../services/user'
 import folderService from '../../services/folder'
 import foldersService from '../../services/folders'
-import fileService from '../../services/file'
 import filesService from '../../services/files'
 
 export default class Files extends Component {
@@ -73,7 +72,6 @@ export default class Files extends Component {
         const names = []
 
         formData.append("path", this.state.path)
-        // formData.append("file", this.state.file, this.state.file.name)
         this.state.files.forEach(f => {
           names.push(f.name)
           formData.append("files", f, f.name)
