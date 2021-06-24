@@ -25,6 +25,7 @@ app.use('/code', require('./routes/code.router'))
 app.use('/folder', require('./routes/folder.router'))
 app.use('/folders', require('./routes/folders.router'))
 app.use('/file', require('./routes/file.router'))
+app.use('/files', require('./routes/files.router'))
 
 // Error handle
 app.use((err, req, res, next) => {
