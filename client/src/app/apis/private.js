@@ -18,7 +18,7 @@ API.interceptors.request.use(
 API.interceptors.response.use(res => res, async err => {
   if (err.response && err.response.status === 440 && window.confirm(err.response.data.msg)) {
     helper.logout()
-    if (window.location.pathname !== '/') window.open('/')
+    window.location.pathname !== '/' && window.open('/')
   } else alert(err.response ? err.response.data.msg : err)
   return Promise.reject(err)
 })
