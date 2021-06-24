@@ -73,9 +73,7 @@ export default class Header extends Component {
   setKeyword = e => this.setState({ keyword: e.target.value })
 
   logout() {
-    localStorage.clear()
-    sessionStorage.clear()
-    window.location.reload()
+    helper.logout()
   }
 
   componentDidMount = () => {
