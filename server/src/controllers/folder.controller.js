@@ -1,3 +1,4 @@
+const fs = require("fs")
 const Folder = require('../models/folder.model')
 
 module.exports.create = (req, res, next) =>
@@ -12,7 +13,11 @@ module.exports.create = (req, res, next) =>
         folder.name = req.body.name
 
         folder.save()
-          .then(() => res.status(201).send({ msg: 'Folder created.' }))
+          .then(folder => {
+            const path = ['uploads', 'uploads/files', `uploads/files${folder.path}/${folder.name}`]
+            path.forEach(p => !fs.existsSync(p) && fs.mkdirSync(p))
+            res.status(201).send({ msg: 'Folder created.' })
+          })
           .catch(err => next(err))
       }
     })
