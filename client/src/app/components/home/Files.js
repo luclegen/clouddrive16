@@ -3,6 +3,7 @@ import helper from '../../services/helper'
 import userService from '../../services/user'
 import folderService from '../../services/folder'
 import foldersService from '../../services/folders'
+import fileService from '../../services/file'
 
 export default class Files extends Component {
   constructor(props) {
@@ -16,7 +17,9 @@ export default class Files extends Component {
       name: '',
       folder: { _id: 'root', path: '/', name: 'root' },
       folders: [],
-      items: []
+      items: [],
+      file: null,
+      ready: false
     }
   }
 
@@ -53,6 +56,22 @@ export default class Files extends Component {
       if (name === "") alert('Folder is required.')
     } while (name !== null && name === "")
     folderService.create({ name: name, path: this.state.path })
+  }
+
+  setFile = e => {
+    this.setState({ file: e.target.files[0], ready: true })
+  }
+
+  upload = () => {
+    document.getElementById("file").click()
+    if (this.state.ready) {
+      const formData = new FormData()
+      formData.append("path", this.state.path)
+      formData.append("name", this.state.file.name)
+      formData.append("file", this.state.file, this.state.file.name)
+
+      fileService.create(formData)
+    }
   }
 
   open = e => {
@@ -99,6 +118,8 @@ export default class Files extends Component {
     <div className="right-content col-10">
       <div className="command-bar shadow-sm">
         <button className="btn-new-folder" onClick={this.setFolder}><i className="material-icons">create_new_folder</i> New</button>
+        <input type="file" id="file" hidden onChange={this.setFile} />
+        <button className="btn-new-folder" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
       </div>
       <div className="path-bar">
         {this.state.path === '/' ? <strong>My files</strong> : this.state.path.split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
