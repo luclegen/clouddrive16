@@ -62,19 +62,27 @@ export default class Files extends Component {
   }
 
   setFile = e => {
-    this.setState({ file: e.target.files[0], ready: true })
+    this.setState({ files: Array.from(e.target.files), ready: true })
   }
 
   upload = () => {
     document.getElementById("file").click()
-    if (this.state.ready) {
-      const formData = new FormData()
-      formData.append("path", this.state.path)
-      formData.append("name", this.state.file.name)
-      formData.append("file", this.state.file, this.state.file.name)
+    setTimeout(() => {
+      if (this.state.ready) {
+        const formData = new FormData()
+        const names = []
 
-      fileService.create(formData)
-    }
+        formData.append("path", this.state.path)
+        // formData.append("file", this.state.file, this.state.file.name)
+        this.state.files.forEach(f => {
+          names.push(f.name)
+          formData.append("files", f, f.name)
+        })
+        formData.append("names", JSON.stringify(names))
+
+        filesService.create(formData)
+      }
+    }, 5000);
   }
 
   download = () => {
@@ -109,7 +117,7 @@ export default class Files extends Component {
         const path = folder.name === '' ? '/' : folder.path === '/' ? folder.path + folder.name : folder.path + '/' + folder.name
         this.setState({ folders: res.data.folders, items: res.data.folders.filter(f => f.path === path), path: path })
         filesService.read()
-          .then(res => this.setState({ files: res.data.files, itemFiles: res.data.files.filter(f => f.path === path) }))
+          .then(res => this.setState({ itemFiles: res.data.files.filter(f => f.path === path) }))
       })
   }
 
@@ -126,7 +134,7 @@ export default class Files extends Component {
     <div className="right-content col-10">
       <div className="command-bar shadow-sm">
         <button className="btn-new-folder" onClick={this.setFolder}><i className="material-icons">create_new_folder</i> New</button>
-        <input type="file" id="file" hidden onChange={this.setFile} />
+        <input type="file" id="file" hidden onChange={this.setFile} multiple />
         <button className="btn-new-folder" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
       </div>
       <div className="path-bar">
