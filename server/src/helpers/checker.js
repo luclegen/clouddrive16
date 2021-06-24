@@ -11,3 +11,5 @@ module.exports.isDate = (year, month, day, date = new Date(parseInt(month) + 1 +
 module.exports.isCode = value => /^\d{6}$/.test(value)
 
 module.exports.isFolder = value => /^\w*(\.+)*\w+/.test(value) && /[^\.]$/.test(value)
+
+module.exports.isFile = value => /^[0-9a-zA-Z ... ]+$/.test(value)
