@@ -23,10 +23,4 @@ const fileSchema = new mongoose.Schema({
   timestamps: true
 })
 
-//#region Validation
-
-fileSchema.path('name').validate(v => checker.isFile(v), 'Invalid file')
-
-//#endregion Validation
-
 module.exports = mongoose.model('File', fileSchema)
