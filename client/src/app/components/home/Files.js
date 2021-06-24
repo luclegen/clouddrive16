@@ -4,6 +4,7 @@ import userService from '../../services/user'
 import folderService from '../../services/folder'
 import foldersService from '../../services/folders'
 import fileService from '../../services/file'
+import filesService from '../../services/files'
 
 export default class Files extends Component {
   constructor(props) {
@@ -19,7 +20,9 @@ export default class Files extends Component {
       folders: [],
       items: [],
       file: null,
-      ready: false
+      ready: false,
+      files: [],
+      itemFiles: [],
     }
   }
 
@@ -74,6 +77,10 @@ export default class Files extends Component {
     }
   }
 
+  download = () => {
+
+  }
+
   open = e => {
     const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
     this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder.name })
@@ -89,10 +96,9 @@ export default class Files extends Component {
   }
 
   componentDidMount = () => {
-    if (helper.loggedIn()) {
+    if (helper.loggedIn())
       userService.read()
         .then(res => this.setState({ fullName: res.data.user.fullName }))
-    }
     if (!window.location.search) window.location.search = 'id=root'
   }
 
@@ -102,6 +108,8 @@ export default class Files extends Component {
         const folder = this.getQueryStringParameter('id') === 'root' ? { path: '/', name: '' } : res.data.folders.find(f => f._id === this.getQueryStringParameter('id'))
         const path = folder.name === '' ? '/' : folder.path === '/' ? folder.path + folder.name : folder.path + '/' + folder.name
         this.setState({ folders: res.data.folders, items: res.data.folders.filter(f => f.path === path), path: path })
+        filesService.read()
+          .then(res => this.setState({ files: res.data.files, itemFiles: res.data.files.filter(f => f.path === path) }))
       })
   }
 
@@ -132,6 +140,10 @@ export default class Files extends Component {
           <img className="fg-folder" src="svg/lg-fg.svg" alt="forceground folder" />
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
+        {this.state.itemFiles.map((v, i, a) => <li className="li-file" key={i} id={v._id} onClick={this.download}>
+          <i className="material-icons bg-file">description</i>
+          <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
+        </li>)}
       </ul>
     </div>
   </section>
