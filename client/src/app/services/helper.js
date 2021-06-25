@@ -53,6 +53,10 @@ class Helper {
 
   getPayload = () => this.loggedIn() ? JSON.parse(atob(this.getToken().split('.')[1])) : null
 
+  setFileId = id => this.remembered() ? localStorage.setItem('id', id) : sessionStorage.setItem('id', id)
+
+  getFileId = () => this.remembered() ? localStorage.getItem('id') : sessionStorage.getItem('id')
+
   isExpired = () => this.loggedIn() ? this.getPayload().exp ? this.getPayload().exp * 1000 < Date.now() : false : true
 
   loggedIn = () => Boolean(this.getToken())
