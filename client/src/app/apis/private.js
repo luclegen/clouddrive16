@@ -19,7 +19,7 @@ API.interceptors.response.use(res => res, async err => {
   if (err.response && err.response.status === 440 && window.confirm(err.response.data.msg)) {
     helper.logout()
     window.location.pathname !== '/' && window.open('/')
-  } else alert(err.response ? err.response.data.msg : err)
+  } else err.response ? alert(err.response.data.msg) : console.warn(err)
   return Promise.reject(err)
 })
 
