@@ -79,12 +79,12 @@ export default class Files extends Component {
     this.getMenuFolder().style.top = `${e.clientY}px`
     this.getMenuFolder().style.left = `${e.clientX}px`
 
-    document.querySelector('.list-group-item-dowload').style.setProperty('display', (/folder/g).test(e.target.className) ? 'none' : 'flex', 'important')
+    document.querySelector('.dropdown-item-dowload').style.setProperty('display', (/folder/g).test(e.target.className) ? 'none' : 'flex', 'important')
   }
 
   clickOut = e => this.getMenuFolder().style.display = 'none'
 
-  getMenuFolder = () => document.querySelector('.menu-folder')
+  getMenuFolder = () => document.querySelector('.dropdown-menu-folder')
 
   access = e => {
     const index = Number.parseInt(e.target.id)
@@ -113,10 +113,10 @@ export default class Files extends Component {
   }
 
   render = () => <section className="section-files" onClick={this.clickOut} >
-    <ul className="menu-folder">
-      <li className="list-group-item-dowload"><i className="material-icons">file_download</i>Download</li>
-      <li className="list-group-item-rename"><i className="material-icons">drive_file_rename_outline</i>Rename</li>
-      <li className="list-group-item-delete"><i className="material-icons">delete</i>Delete</li>
+    <ul className="dropdown-menu-folder">
+      <li className="dropdown-item-dowload"><i className="material-icons">file_download</i>Download</li>
+      <li className="dropdown-item-rename"><i className="material-icons">drive_file_rename_outline</i>Rename</li>
+      <li className="dropdown-item-delete"><i className="material-icons">delete</i>Delete</li>
     </ul>
     <nav className="left-nav col-2" id="leftNav">
       <div className="top-left-nav">

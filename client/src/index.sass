@@ -13,6 +13,12 @@ $spacer: 16px
 .list-group-item-files, .list-group-item-trash, .list-group-item-dowload, .list-group-item-rename, .list-group-item-delete
   @extend .list-group-item-action
 
+.dropdown-menu-folder
+  @extend .dropdown-menu
+
+.dropdown-item-dowload, .dropdown-item-rename, .dropdown-item-delete
+  @extend .dropdown-item
+
 .menu-folder
   @extend .list-group
 
@@ -64,7 +70,7 @@ header
 .section-register, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder
   @extend .position-absolute
 
-.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .command-bar
+.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .command-bar, .dropdown-item
   @extend .d-flex
 
 .form-only, .form-floating
@@ -191,6 +197,12 @@ header, .float label
 
   &:focus-within
     border: 2px solid blue !important
+
+.dropdown-item
+  cursor: pointer
+
+  i
+    margin-right: 5px
 
 // New
 
