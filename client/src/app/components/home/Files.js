@@ -80,8 +80,6 @@ export default class Files extends Component {
     this.getMenuFolder().style.left = `${e.clientX}px`
 
     document.querySelector('.list-group-item-dowload').style.setProperty('display', (/folder/g).test(e.target.className) ? 'none' : 'flex', 'important')
-
-    console.log((/folder/g).test(e.target.className))
   }
 
   clickOut = e => this.getMenuFolder().style.display = 'none'
