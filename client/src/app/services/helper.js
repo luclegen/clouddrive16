@@ -21,6 +21,8 @@ class Helper {
 
   isImage = value => /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i.test(value)
 
+  isImages = (files, value) => files.filter(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isImage(f.name)).length
+
   checkPassword = value => {
     let count = 0
     const strength = Object.freeze({
