@@ -1,13 +1,7 @@
 const multer = require('multer')
 const fs = require("fs")
 
-module.exports.getImages = (imgDir, callback) => {
-  let files = []
-  fs.readdir(imgDir, function (err, ls) {
-    for (let i = 0; i < ls.length; i++) files.push(ls[i])
-    callback(err, files)
-  });
-}
+module.exports.getImages = (dir, callback) => fs.readdir(dir, (err, files) => callback(err, files))
 
 module.exports.upload = (root, dir = '') => {
   const storage = multer.diskStorage({
