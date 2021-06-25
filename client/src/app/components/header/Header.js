@@ -42,7 +42,7 @@ export default class Header extends Component {
       this.getSearchIn().style.display = 'block'
       this.getSearchIn().focus()
       this.getSearchBtn().style.color = 'blue'
-      setTimeout(() => this.setState({ opened: true }))
+      this.setState({ opened: true })
     }
   }
 
