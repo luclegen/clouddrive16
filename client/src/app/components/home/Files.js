@@ -64,6 +64,8 @@ export default class Files extends Component {
 
   upload = () => document.getElementById("files").click()
 
+  download = e => window.open(process.env.REACT_APP_FILE_URI + helper.getFileId())
+
   create = () => folderService.create({ name: prompt('Folder', 'New folder'), path: this.state.path })
 
   open = e => {
@@ -78,6 +80,8 @@ export default class Files extends Component {
     this.getMenuFolder().style.display = 'block'
     this.getMenuFolder().style.top = `${e.clientY}px`
     this.getMenuFolder().style.left = `${e.clientX}px`
+
+    helper.setFileId(e.target.closest('.li-file').id)
 
     document.querySelector('.dropdown-item-dowload').style.setProperty('display', (/folder/g).test(e.target.className) ? 'none' : 'flex', 'important')
   }
@@ -114,7 +118,7 @@ export default class Files extends Component {
 
   render = () => <section className="section-files" onClick={this.clickOut} >
     <ul className="dropdown-menu-folder">
-      <li className="dropdown-item-dowload"><i className="material-icons">file_download</i>Download</li>
+      <li className="dropdown-item-dowload" onClick={this.download}><i className="material-icons">file_download</i>Download</li>
       <li className="dropdown-item-rename"><i className="material-icons">drive_file_rename_outline</i>Rename</li>
       <li className="dropdown-item-delete"><i className="material-icons">delete</i>Delete</li>
     </ul>
