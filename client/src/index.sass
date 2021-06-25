@@ -61,7 +61,7 @@ header
 .label-group
   @extend .text-secondary
 
-.dropdown-item-logout
+.dropdown-item-logout, .dropdown-item-delete
   @extend .text-white
 
 .form-floating
@@ -138,7 +138,7 @@ header
 .input-search, .form-floating input, .avatar
   @extend .bg-transparent
 
-.dropdown-item-logout
+.dropdown-item-logout, .dropdown-item-delete
   @extend .bg-danger
 
 .form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength, .text-profile, .text-help, .text-logout
@@ -203,6 +203,11 @@ header, .float label
 
   i
     margin-right: 5px
+
+.dropdown-item-logout, .dropdown-item-delete
+
+  &:hover
+    background: #bd2130 !important
 
 // New
 
