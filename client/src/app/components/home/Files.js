@@ -66,8 +66,6 @@ export default class Files extends Component {
 
   create = () => folderService.create({ name: prompt('Folder', 'New folder'), path: this.state.path })
 
-  rename = () => { }
-
   open = e => {
     const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
     this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder.name })
@@ -80,6 +78,10 @@ export default class Files extends Component {
     this.getMenuFolder().style.display = 'block'
     this.getMenuFolder().style.top = `${e.clientY}px`
     this.getMenuFolder().style.left = `${e.clientX}px`
+
+    document.querySelector('.list-group-item-dowload').style.setProperty('display', (/folder/g).test(e.target.className) ? 'none' : 'flex', 'important')
+
+    console.log((/folder/g).test(e.target.className))
   }
 
   clickOut = e => this.getMenuFolder().style.display = 'none'
@@ -114,7 +116,8 @@ export default class Files extends Component {
 
   render = () => <section className="section-files" onClick={this.clickOut} >
     <ul className="menu-folder">
-      <li className="list-group-item-rename" onClick={this.rename}><i className="material-icons">drive_file_rename_outline</i>Rename</li>
+      <li className="list-group-item-dowload"><i className="material-icons">file_download</i>Download</li>
+      <li className="list-group-item-rename"><i className="material-icons">drive_file_rename_outline</i>Rename</li>
       <li className="list-group-item-delete"><i className="material-icons">delete</i>Delete</li>
     </ul>
     <nav className="left-nav col-2" id="leftNav">
@@ -140,11 +143,11 @@ export default class Files extends Component {
           <img className="bg-folder" src="svg/lg-bg.svg" alt="background folder" />
           {helper.isImages(this.state.files, v) ? <img className="img" src={`${process.env.REACT_APP_IMAGES_URI}${helper.getPayload()._id}/files/${helper.getImage(this.state.files, v).path}/${helper.getImage(this.state.files, v).name}`} alt="forceground folder" /> : <div className="file"></div>}
           {helper.isImages(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="forceground folder" onContextMenu={this.choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="forceground folder" onContextMenu={this.choose} />}
-          <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
+          <label className="label-folder" htmlFor={`folder${i}`} onContextMenu={this.choose}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
-        {this.state.itemFiles.map((v, i, a) => <li className="li-file" key={i} id={v._id}>
+        {this.state.itemFiles.map((v, i, a) => <li className="li-file" key={i} id={v._id} onContextMenu={this.choose}>
           {helper.isImage(v.name) ? <img className="bg-img" src={`${process.env.REACT_APP_IMAGES_URI}${helper.getPayload()._id}/files/${v.path}/${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
-          <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
+          <label className="label-file" htmlFor={`folder${i}`} onContextMenu={this.choose}>{v.name}</label>
         </li>)}
       </ul>
     </div>
