@@ -21,7 +21,6 @@ export default class Files extends Component {
       file: null,
       ready: false,
       files: [],
-      itemFiles: [],
     }
   }
 
@@ -41,7 +40,7 @@ export default class Files extends Component {
     window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${params}`))
   }
 
-  setFiles = () => {
+  saves = () => {
     this.deleteQueryStringParameter('location')
     this.setState({ location: '' })
   }
@@ -60,32 +59,18 @@ export default class Files extends Component {
     folderService.create({ name: name, path: this.state.path })
   }
 
-  setFile = e => {
-    this.setState({ files: Array.from(e.target.files), ready: true })
+  save = e => {
+    const formData = new FormData()
+    const names = []
+
+    formData.append("path", this.state.path)
+    Array.from(e.target.files).forEach(file => names.push(file.name) && formData.append("files", file, file.name))
+    formData.append("names", JSON.stringify(names))
+
+    filesService.create(formData)
   }
 
-  upload = () => {
-    document.getElementById("file").click()
-    setTimeout(() => {
-      if (this.state.ready) {
-        const formData = new FormData()
-        const names = []
-
-        formData.append("path", this.state.path)
-        this.state.files.forEach(f => {
-          names.push(f.name)
-          formData.append("files", f, f.name)
-        })
-        formData.append("names", JSON.stringify(names))
-
-        filesService.create(formData)
-      }
-    }, 5000);
-  }
-
-  download = () => {
-
-  }
+  upload = () => document.getElementById("files").click()
 
   open = e => {
     const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
@@ -115,7 +100,7 @@ export default class Files extends Component {
         const path = folder.name === '' ? '/' : folder.path === '/' ? folder.path + folder.name : folder.path + '/' + folder.name
         this.setState({ folders: res.data.folders, items: res.data.folders.filter(f => f.path === path), path: path })
         filesService.read()
-          .then(res => this.setState({ itemFiles: res.data.files.filter(f => f.path === path) }))
+          .then(res => this.setState({ files: res.data.files.filter(f => f.path === path) }))
       })
   }
 
@@ -125,14 +110,14 @@ export default class Files extends Component {
         <label htmlFor="leftNav"><strong>{this.state.fullName}</strong></label>
       </div>
       <ul className="list-group">
-        <li className={`list-group-item-files ${!this.state.location && 'active'}`} onClick={this.setFiles}><i className="material-icons">folder</i> My files</li>
+        <li className={`list-group-item-files ${!this.state.location && 'active'}`} onClick={this.saves}><i className="material-icons">folder</i> My files</li>
         <li className={`list-group-item-trash ${this.state.location === 'trash' && 'active'}`} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
       </ul>
     </nav>
     <div className="right-content col-10">
       <div className="command-bar shadow-sm">
         <button className="btn-new-folder" onClick={this.setFolder}><i className="material-icons">create_new_folder</i> New</button>
-        <input type="file" id="file" hidden onChange={this.setFile} multiple />
+        <input type="file" id="files" hidden onChange={this.save} multiple />
         <button className="btn-new-folder" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
       </div>
       <div className="path-bar">
@@ -146,7 +131,7 @@ export default class Files extends Component {
           <img className="fg-folder" src="svg/lg-fg.svg" alt="forceground folder" />
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
-        {this.state.itemFiles.map((v, i, a) => <li className="li-file" key={i} id={v._id} onClick={this.download}>
+        {this.state.files.map((v, i, a) => <li className="li-file" key={i} id={v._id}>
           <i className="material-icons bg-file">description</i>
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li>)}
