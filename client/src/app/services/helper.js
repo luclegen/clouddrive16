@@ -19,6 +19,8 @@ class Helper {
 
   isDigits = v => /^\d+$/.test(v)
 
+  isImage = value => /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i.test(value)
+
   checkPassword = value => {
     let count = 0
     const strength = Object.freeze({
