@@ -21,6 +21,7 @@ export default class Files extends Component {
       file: null,
       ready: false,
       files: [],
+      itemFiles: [],
     }
   }
 
@@ -100,7 +101,7 @@ export default class Files extends Component {
         const path = folder.name === '' ? '/' : folder.path === '/' ? folder.path + folder.name : folder.path + '/' + folder.name
         this.setState({ folders: res.data.folders, items: res.data.folders.filter(f => f.path === path), path: path })
         filesService.read()
-          .then(res => this.setState({ files: res.data.files.filter(f => f.path === path) }))
+          .then(res => this.setState({ files: res.data.files, itemsFile: res.data.files.filter(f => f.path === path) }))
       })
   }
 
@@ -126,13 +127,12 @@ export default class Files extends Component {
       <ul className="ls-folder">
         {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} onClick={this.open}>
           <img className="bg-folder" src="svg/lg-bg.svg" alt="background folder" />
-          <div className="pad-folder"></div>
-          {/* <img className="fg-folder" src="svg/lg-fg-media.svg" alt="forceground folder" /> */}
-          <img className="fg-folder" src="svg/lg-fg.svg" alt="forceground folder" />
+          {helper.isImages(this.state.files, v) ? <img className="img" src="logo.png" alt="forceground folder" /> : <div className="file"></div>}
+          {helper.isImages(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="forceground folder" /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="forceground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
         {this.state.files.map((v, i, a) => <li className="li-file" key={i} id={v._id}>
-          <i className="material-icons bg-file">description</i>
+          {helper.isImage(v.name) ? <img className="bg-img" src="/logo.png" alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li>)}
       </ul>
