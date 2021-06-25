@@ -14,8 +14,14 @@ module.exports.create = (req, res, next) =>
 
         folder.save()
           .then(folder => {
-            const path = ['uploads', 'uploads/files', `uploads/files${folder.path}/${folder.name}`]
+            const path = [process.env.UPDATES]
+
+            path[1] = path[0] + req._id
+            path[2] = path[1] + `/files/`
+            path[3] = path[2] + `${folder.path}/`
+            path[4] = path[3] + `${folder.name}`
             path.forEach(p => !fs.existsSync(p) && fs.mkdirSync(p))
+
             res.status(201).send({ msg: 'Folder created.' })
           })
           .catch(err => next(err))
