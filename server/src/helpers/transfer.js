@@ -12,11 +12,14 @@ module.exports.getImages = (imgDir, callback) => {
 module.exports.upload = (root, dir = '') => {
   const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-      const path = [root];
+      const path = [process.env.UPDATES];
+
+      path[1] = path[0] + req._id
 
       switch (dir) {
         case 'files':
-          path.push(path[0] + req.body.path)
+          path[2] = path[1] + '/files'
+          path[3] = path[2] + req.body.path
           break;
       }
 
