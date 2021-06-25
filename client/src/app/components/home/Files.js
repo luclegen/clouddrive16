@@ -64,7 +64,7 @@ export default class Files extends Component {
 
   upload = () => document.getElementById("files").click()
 
-  download = () => window.location.href = process.env.REACT_APP_FILE_URI + helper.getFileId()
+  download = () => window.location.href = process.env.REACT_APP_FILE_URI + helper.getId()
 
   create = () => folderService.create({ name: prompt('Folder', 'New folder'), path: this.state.path })
 
@@ -80,7 +80,8 @@ export default class Files extends Component {
     this.getMenuFolder().style.display = 'block'
     this.getMenuFolder().style.top = `${e.clientY}px`
     this.getMenuFolder().style.left = `${e.clientX}px`
-    if ((/file/g).test(e.target.className)) helper.setFileId(e.target.closest('.li-file').id)
+    helper.setId(e.target.closest((/file/g).test(e.target.className) ? '.li-file' : (/folder/g).test(e.target.className) ? '.li-folder' : null).id)
+    helper.setType((/file/g).test(e.target.className) ? 'file' : (/folder/g).test(e.target.className) ? 'folder' : null)
 
     document.querySelector('.dropdown-item-dowload').style.setProperty('display', (/folder/g).test(e.target.className) ? 'none' : 'flex', 'important')
   }
