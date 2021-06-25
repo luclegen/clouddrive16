@@ -101,7 +101,7 @@ export default class Files extends Component {
         const path = folder.name === '' ? '/' : folder.path === '/' ? folder.path + folder.name : folder.path + '/' + folder.name
         this.setState({ folders: res.data.folders, items: res.data.folders.filter(f => f.path === path), path: path })
         filesService.read()
-          .then(res => this.setState({ files: res.data.files, itemsFile: res.data.files.filter(f => f.path === path) }))
+          .then(res => this.setState({ files: res.data.files, itemFiles: res.data.files.filter(f => f.path === path) }))
       })
   }
 
@@ -131,7 +131,7 @@ export default class Files extends Component {
           {helper.isImages(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="forceground folder" /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="forceground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
-        {this.state.files.map((v, i, a) => <li className="li-file" key={i} id={v._id}>
+        {this.state.itemFiles.map((v, i, a) => <li className="li-file" key={i} id={v._id}>
           {helper.isImage(v.name) ? <img className="bg-img" src="/logo.png" alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li>)}
