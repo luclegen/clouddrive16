@@ -51,15 +51,6 @@ export default class Files extends Component {
     this.setState({ location: 'trash' })
   }
 
-  setFolder = () => {
-    let name = ''
-    do {
-      name = prompt('Folder', 'New folder')
-      if (name === "") alert('Folder is required.')
-    } while (name !== null && name === "")
-    folderService.create({ name: name, path: this.state.path })
-  }
-
   save = e => {
     const formData = new FormData()
     const names = []
@@ -73,11 +64,27 @@ export default class Files extends Component {
 
   upload = () => document.getElementById("files").click()
 
+  create = () => folderService.create({ name: prompt('Folder', 'New folder'), path: this.state.path })
+
+  rename = () => { }
+
   open = e => {
     const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
     this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder.name })
     this.setQueryStringParameter('id', folder._id)
   }
+
+  choose = e => {
+    e.preventDefault()
+
+    this.getMenuFolder().style.display = 'block'
+    this.getMenuFolder().style.top = `${e.clientY}px`
+    this.getMenuFolder().style.left = `${e.clientX}px`
+  }
+
+  clickOut = e => this.getMenuFolder().style.display = 'none'
+
+  getMenuFolder = () => document.querySelector('.menu-folder')
 
   access = e => {
     const index = Number.parseInt(e.target.id)
@@ -105,7 +112,11 @@ export default class Files extends Component {
       })
   }
 
-  render = () => <section className="section-files">
+  render = () => <section className="section-files" onClick={this.clickOut} >
+    <ul className="menu-folder">
+      <li className="list-group-item-rename" onClick={this.rename}><i className="material-icons">drive_file_rename_outline</i>Rename</li>
+      <li className="list-group-item-delete"><i className="material-icons">delete</i>Delete</li>
+    </ul>
     <nav className="left-nav col-2" id="leftNav">
       <div className="top-left-nav">
         <label htmlFor="leftNav"><strong>{this.state.fullName}</strong></label>
@@ -117,7 +128,7 @@ export default class Files extends Component {
     </nav>
     <div className="right-content col-10">
       <div className="command-bar shadow-sm">
-        <button className="btn-new-folder" onClick={this.setFolder}><i className="material-icons">create_new_folder</i> New</button>
+        <button className="btn-new-folder" onClick={this.create}><i className="material-icons">create_new_folder</i> New</button>
         <input type="file" id="files" hidden onChange={this.save} multiple />
         <button className="btn-new-folder" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
       </div>
@@ -128,7 +139,7 @@ export default class Files extends Component {
         {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} onClick={this.open}>
           <img className="bg-folder" src="svg/lg-bg.svg" alt="background folder" />
           {helper.isImages(this.state.files, v) ? <img className="img" src={`${process.env.REACT_APP_IMAGES_URI}${helper.getPayload()._id}/files/${helper.getImage(this.state.files, v).path}/${helper.getImage(this.state.files, v).name}`} alt="forceground folder" /> : <div className="file"></div>}
-          {helper.isImages(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="forceground folder" /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="forceground folder" />}
+          {helper.isImages(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="forceground folder" onContextMenu={this.choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="forceground folder" onContextMenu={this.choose} />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
         {this.state.itemFiles.map((v, i, a) => <li className="li-file" key={i} id={v._id}>

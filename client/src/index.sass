@@ -7,11 +7,14 @@ $spacer: 16px
 .section-files
   @extend .container-fluid
 
-.list-group-item-files, .list-group-item-trash
+.list-group-item-files, .list-group-item-trash, .list-group-item-rename, .list-group-item-delete
   @extend .list-group-item
 
-.list-group-item-files, .list-group-item-trash
+.list-group-item-files, .list-group-item-trash, .list-group-item-rename, .list-group-item-delete
   @extend .list-group-item-action
+
+.menu-folder
+  @extend .list-group
 
 header
   @extend .navbar
@@ -58,7 +61,7 @@ header
 .form-floating
   @extend .position-relative
 
-.section-register, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img
+.section-register, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder
   @extend .position-absolute
 
 .logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .command-bar
@@ -351,7 +354,7 @@ meter
     border: none
 
   i
-    margin-right: 30px
+    margin-right: 5px
 
 .btn-new-folder
 
