@@ -52,7 +52,7 @@ class Login extends Component {
       this.setState({ visible: true })
       setTimeout(() => {
         document.querySelector('.form-group-password').style.height = 39 + 'px'
-        document.querySelector('.input-email').style.width = 310 + 'px'
+        document.querySelector('.input-email').style.width = 315 + 'px'
         document.querySelector('.input-password').focus()
 
         if (this.state.password)
