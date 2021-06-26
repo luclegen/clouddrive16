@@ -38,7 +38,7 @@ module.exports.update = (req, res, next) =>
             files.length
               ? res.status(422).send({ msg: 'You already have a file in the current path. Please a different name.' })
               : File.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
-                .then(() => res.status(200).send({ msg: 'File updated.' }))
+                .then(file => file ? res.status(200).send({ msg: 'File updated.' }) : res.status(404).send({ msg: 'File not found.' }))
                 .catch(err => next(err))
           )
           .catch(err => next(err))
