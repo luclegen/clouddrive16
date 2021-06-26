@@ -73,10 +73,7 @@ export default class Files extends Component {
       : fileService.delete(helper.getId())
   }
 
-  restore = () => {
-    helper.getType() === 'folder' &&
-      folderService.restore(helper.getId())
-  }
+  restore = () => helper.getType() === 'folder' ? folderService.restore(helper.getId()) : fileService.restore(helper.getId())
 
   choose = e => {
     e.preventDefault()
