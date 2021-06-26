@@ -51,3 +51,7 @@ module.exports.update = (req, res, next) =>
       .catch(err => next(err))
     : res.status(403).send({ msg: 'Name is required.' })
 
+module.exports.delete = (req, res, next) =>
+  Folder.findByIdAndUpdate(req.params.id, { $set: { inTrash: true } }, { new: true })
+    .then(() => res.status(200).send({ msg: 'Folder deleted.' }))
+    .catch(err => next(err))

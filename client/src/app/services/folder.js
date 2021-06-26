@@ -8,6 +8,8 @@ class UserService {
   read = id => PR.get(`${URL}/${id}`)
 
   update = (id, folder) => PR.put(`${URL}/${id}`, folder)
+
+  delete = id => PR.patch(`${URL}/${id}`)
 }
 
 export default new UserService()
