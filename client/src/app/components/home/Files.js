@@ -81,7 +81,7 @@ export default class Files extends Component {
     this.getMenuFolder().style.display = 'block'
     this.getMenuFolder().style.top = `${e.clientY}px`
     this.getMenuFolder().style.left = `${e.clientX}px`
-    helper.setId(e.target.closest((/file/g).test(e.target.className) ? '.li-file' : (/folder/g).test(e.target.className) ? '.li-folder' : null).id)
+    helper.setId(e.target.closest((/file|img/g).test(e.target.className) ? '.li-file' : (/folder/g).test(e.target.className) ? '.li-folder' : null).id)
     helper.setType((/file/g).test(e.target.className) ? 'file' : (/folder/g).test(e.target.className) ? 'folder' : null)
 
     document.querySelector('.dropdown-item-dowload').style.setProperty('display', (/folder/g).test(e.target.className) ? 'none' : 'flex', 'important')
