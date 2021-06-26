@@ -7,5 +7,6 @@ router.post('/', jwt.private, transfer.upload('uploads/files').single('file'), f
 router.get('/d/:id', fileCtl.download)
 router.get('/:id', jwt.private, fileCtl.read)
 router.put('/:id', jwt.private, fileCtl.update)
+router.patch('/:id', jwt.private, fileCtl.delete)
 
 module.exports = router

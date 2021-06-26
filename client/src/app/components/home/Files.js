@@ -68,8 +68,9 @@ export default class Files extends Component {
   }
 
   delete = () => {
-    helper.getType() === 'folder' &&
-      helper.getQuery('location') === 'trash' ? folderService.deleteForever(helper.getId()) : folderService.delete(helper.getId())
+    helper.getType() === 'folder'
+      ? helper.getQuery('location') === 'trash' ? folderService.deleteForever(helper.getId()) : folderService.delete(helper.getId())
+      : fileService.delete(helper.getId())
   }
 
   restore = () => {
