@@ -75,7 +75,9 @@ export default class Files extends Component {
   }
 
   rename = () => {
-    helper.getType() === 'folder' && folderService.update(helper.getId(), { name: prompt('Folder', 'Rename folder') })
+    helper.getType() === 'folder' &&
+      folderService.read(helper.getId())
+        .then(res => folderService.update(helper.getId(), { name: prompt('Folder', res.data.folder.name) }))
   }
 
   choose = e => {
