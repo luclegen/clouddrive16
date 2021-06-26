@@ -34,7 +34,7 @@ module.exports.update = (req, res, next) =>
   req.body.name
     ? File.findById(req.params.id)
       .then(file =>
-        File.find({ name: req.body.name, path: file.path })
+        File.find({ _userId: req._id, name: req.body.name, path: file.path })
           .then(files =>
             files.length
               ? res.status(422).send({ msg: 'You already have a file in the current path. Please a different name.' })
