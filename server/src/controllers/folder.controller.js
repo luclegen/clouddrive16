@@ -46,7 +46,7 @@ module.exports.update = (req, res, next) =>
               : Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
                 .then(folderEdited =>
                   folderEdited
-                    ? fs.rename(process.env.UPDATES + req._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name, process.env.UPDATES + req._id + '/files' + (folderEdited.path === '/' ? folderEdited.path : folderEdited.path + '/') + folderEdited.name, err => console.warn(err)) && res.status(200).send({ msg: 'Folder updated.' })
+                    ? fs.rename(process.env.UPDATES + req._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name, process.env.UPDATES + req._id + '/files' + (folderEdited.path === '/' ? folderEdited.path : folderEdited.path + '/') + folderEdited.name, err => err) && res.status(200).send({ msg: 'Folder updated.' })
                     : res.status(404).send({ msg: 'Folder not found.' })
                 )
                 .catch(err => next(err))
@@ -74,7 +74,7 @@ module.exports.deleteForever = (req, res, next) =>
           ? Folder.findByIdAndDelete(req.params.id)
             .then(folder => {
               folder
-                ? fs.rm(process.env.UPDATES + req._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name, { recursive: true }, err => console.warn(err)) && res.status(200).send({ msg: 'Folder permanently deleted.' })
+                ? fs.rm(process.env.UPDATES + req._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name, { recursive: true }, err => err) && res.status(200).send({ msg: 'Folder permanently deleted.' })
                 : res.status(404).send({ msg: 'Folder not found.' })
             })
             .catch(err => next(err))
