@@ -12,6 +12,8 @@ class FileService {
   delete = id => PR.patch(`${URL}/${id}`)
 
   restore = id => PR.patch(`${URL}/r/${id}`)
+
+  deleteForever = id => PR.delete(`${URL}/${id}`)
 }
 
 export default new FileService()
