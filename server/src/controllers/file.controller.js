@@ -3,7 +3,7 @@ const _ = require('lodash')
 const File = require('../models/file.model')
 
 module.exports.create = (req, res, next) =>
-  File.find({ name: req.body.name, path: req.body.path })
+  File.find({ _userId: req._id, name: req.body.name, path: req.body.path })
     .then(files => {
       if (files.length) res.status(422).send({ msg: 'File is duplicate. Please choose another file.' })
       else {
