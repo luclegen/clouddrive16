@@ -21,7 +21,7 @@ module.exports.create = (req, res, next) =>
 
 module.exports.download = (req, res, next) =>
   File.findById(req.params.id)
-    .then(file => res.download('uploads/' + file._userId + '/files' + file.path + '/' + file.name))
+    .then(file => res.download(process.env.UPDATES + file._userId + '/files' + file.path + '/' + file.name))
     .catch(err => next(err))
 
 module.exports.read = (req, res, next) =>
