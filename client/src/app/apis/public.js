@@ -8,7 +8,7 @@ const API = axios.create({
 })
 
 API.interceptors.response.use(res => res, async err => {
-  alert(err.response ? err.response.data.msg : err)
+  err.response ? alert(err.response.data.msg) : console.warn(err)
   return Promise.reject(err)
 })
 
