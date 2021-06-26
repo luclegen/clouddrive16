@@ -38,15 +38,16 @@ module.exports.read = (req, res, next) =>
 module.exports.update = (req, res, next) =>
   req.body.name
     ? Folder.findById(req.params.id)
-      .then(folder => Folder.find({ name: req.body.name, path: folder.path })
-        .then(folders =>
-          folders.length
-            ? res.status(422).send({ msg: 'You already have a folder in the current path. Please a different name.' })
-            : Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
-              .then(() => res.status(200).send({ msg: 'Folder updated.' }))
-              .catch(err => next(err))
-        )
-        .catch(err => next(err))
+      .then(folder =>
+        Folder.find({ name: req.body.name, path: folder.path })
+          .then(folders =>
+            folders.length
+              ? res.status(422).send({ msg: 'You already have a folder in the current path. Please a different name.' })
+              : Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
+                .then(() => res.status(200).send({ msg: 'Folder updated.' }))
+                .catch(err => next(err))
+          )
+          .catch(err => next(err))
       )
       .catch(err => next(err))
     : res.status(403).send({ msg: 'Name is required.' })
