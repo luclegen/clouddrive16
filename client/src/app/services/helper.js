@@ -47,6 +47,20 @@ class Helper {
     }
   }
 
+  getQuery = name => (new URLSearchParams(window.location.search)).get(name)
+
+  setQuery = (name, value) => {
+    const params = new URLSearchParams(window.location.search)
+    params.set(name, value)
+    window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${params}`))
+  }
+
+  deleteQuery = name => {
+    const params = new URLSearchParams(window.location.search)
+    params.delete(name)
+    window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${params}`))
+  }
+
   getToken = () => localStorage.getItem('token') || sessionStorage.getItem('token')
 
   setToken = token => this.remembered() ? localStorage.setItem('token', token) : sessionStorage.setItem('token', token)
