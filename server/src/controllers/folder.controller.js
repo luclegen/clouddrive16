@@ -37,7 +37,7 @@ module.exports.update = (req, res, next) =>
           folders.length
             ? res.status(422).send({ msg: 'You already have a folder in the current path. Please a different name.' })
             : Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
-              .then(() => res.status(201).send({ msg: 'Folder updated.' }))
+              .then(() => res.status(200).send({ msg: 'Folder updated.' }))
               .catch(err => next(err))
         )
         .catch(err => next(err))
