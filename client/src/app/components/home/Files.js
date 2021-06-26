@@ -55,6 +55,7 @@ export default class Files extends Component {
 
   open = e => {
     const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
+
     this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder.name })
     helper.setQuery('id', folder._id)
   }
