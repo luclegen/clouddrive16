@@ -66,7 +66,7 @@ export default class Files extends Component {
 
   delete = () => {
     helper.getType() === 'folder' &&
-      folderService.delete(helper.getId())
+      helper.getQuery('location') === 'trash' ? folderService.deleteForever(helper.getId()) : folderService.delete(helper.getId())
   }
 
   restore = () => {
@@ -126,7 +126,7 @@ export default class Files extends Component {
       <li className="dropdown-item-dowload" onClick={this.download}><i className="material-icons">file_download</i>Download</li>
       <li className="dropdown-item-rename" onClick={this.rename}><i className="material-icons">drive_file_rename_outline</i>Rename</li>
       {helper.getQuery('location') === 'trash' && <li className="dropdown-item-restore" onClick={this.restore}><i className="material-icons">restore</i>Restore</li>}
-      <li className="dropdown-item-delete" onClick={this.delete}><i className="material-icons">delete</i>Delete</li>
+      <li className="dropdown-item-delete" onClick={this.delete}><i className="material-icons">{helper.getQuery('location') === 'trash' ? 'delete_forever' : 'delete'}</i>Delete {helper.getQuery('location') === 'trash' && 'forever'}</li>
     </ul>
     <nav className="left-nav col-2" id="leftNav">
       <div className="top-left-nav">

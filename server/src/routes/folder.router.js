@@ -7,5 +7,6 @@ router.get('/:id', jwt.private, folderCtl.read)
 router.put('/:id', jwt.private, folderCtl.update)
 router.patch('/:id', jwt.private, folderCtl.delete)
 router.patch('/r/:id', jwt.private, folderCtl.restore)
+router.delete('/:id', jwt.private, folderCtl.deleteForever)
 
 module.exports = router
