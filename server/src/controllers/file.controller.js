@@ -13,7 +13,7 @@ module.exports.create = (req, res, next) =>
         file.name = req.body.name
 
         file.save()
-          .then(() => res.status(201).send({ msg: 'File created.' }))
+          .then(file => file ? res.status(201).send({ msg: 'File created.' }) : res.status(404).send({ msg: 'File not found.' }))
           .catch(err => next(err))
       }
     })
@@ -62,7 +62,7 @@ module.exports.deleteForever = (req, res, next) =>
       file
         ? file.inTrash
           ? File.findByIdAndDelete(req.params.id)
-            .then(() => res.status(200).send({ msg: 'File permanently deleted.' }))
+            .then(file => file ? res.status(200).send({ msg: 'File permanently deleted.' }) : res.status(404).send({ msg: 'File not found.' }))
             .catch(err => next(err))
           : res.status(403).send({ msg: 'File not in trash.' })
         : res.status(404).send({ msg: 'File not found.' })

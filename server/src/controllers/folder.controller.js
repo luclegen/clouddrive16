@@ -68,7 +68,7 @@ module.exports.deleteForever = (req, res, next) =>
       folder
         ? folder.inTrash
           ? Folder.findByIdAndDelete(req.params.id)
-            .then(() => res.status(200).send({ msg: 'Folder permanently deleted.' }))
+            .then(folder => folder ? res.status(200).send({ msg: 'Folder permanently deleted.' }) : res.status(404).send({ msg: 'Folder not found.' }))
             .catch(err => next(err))
           : res.status(403).send({ msg: 'Folder not in trash.' })
         : res.status(404).send({ msg: 'Folder not found.' })
