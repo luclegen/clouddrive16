@@ -5,5 +5,6 @@ const folderCtl = require('../controllers/folder.controller')
 router.post('/', jwt.private, folderCtl.create)
 router.get('/:id', jwt.private, folderCtl.read)
 router.put('/:id', jwt.private, folderCtl.update)
+router.patch('/:id', jwt.private, folderCtl.delete)
 
 module.exports = router

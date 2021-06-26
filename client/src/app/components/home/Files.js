@@ -80,6 +80,11 @@ export default class Files extends Component {
         .then(res => folderService.update(helper.getId(), { name: prompt('Folder', res.data.folder.name) }))
   }
 
+  delete = () => {
+    helper.getType() === 'folder' &&
+      folderService.delete(helper.getId())
+  }
+
   choose = e => {
     e.preventDefault()
 
@@ -126,7 +131,7 @@ export default class Files extends Component {
     <ul className="dropdown-menu-folder">
       <li className="dropdown-item-dowload" onClick={this.download}><i className="material-icons">file_download</i>Download</li>
       <li className="dropdown-item-rename" onClick={this.rename}><i className="material-icons">drive_file_rename_outline</i>Rename</li>
-      <li className="dropdown-item-delete"><i className="material-icons">delete</i>Delete</li>
+      <li className="dropdown-item-delete" onClick={this.delete}><i className="material-icons">delete</i>Delete</li>
     </ul>
     <nav className="left-nav col-2" id="leftNav">
       <div className="top-left-nav">
