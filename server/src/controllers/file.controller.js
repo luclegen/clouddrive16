@@ -45,3 +45,8 @@ module.exports.update = (req, res, next) =>
       )
       .catch(err => next(err))
     : res.status(403).send({ msg: 'Name is required.' })
+
+module.exports.delete = (req, res, next) =>
+  File.findByIdAndUpdate(req.params.id, { $set: { inTrash: true } }, { new: true })
+    .then(file => file ? res.status(200).send({ msg: 'File deleted.' }) : res.status(404).send({ msg: 'File not found.' }))
+    .catch(err => next(err))
