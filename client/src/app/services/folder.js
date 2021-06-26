@@ -5,15 +5,15 @@ const URL = `${process.env.REACT_APP_SERVER_URL}folder/`
 class UserService {
   create = folder => PR.post(URL, folder)
 
-  read = id => PR.get(`${URL}/${id}`)
+  read = id => PR.get(`${URL}${id}`)
 
-  update = (id, folder) => PR.put(`${URL}/${id}`, folder)
+  update = (id, folder) => PR.put(`${URL}${id}`, folder)
 
-  delete = id => PR.patch(`${URL}/${id}`)
+  delete = id => PR.patch(`${URL}${id}`)
 
-  restore = id => PR.patch(`${URL}/r/${id}`)
+  restore = id => PR.patch(`${URL}r/${id}`)
 
-  deleteForever = id => PR.delete(`${URL}/${id}`)
+  deleteForever = id => PR.delete(`${URL}${id}`)
 }
 
 export default new UserService()
