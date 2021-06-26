@@ -23,3 +23,25 @@ module.exports.download = (req, res, next) =>
   File.findById(req.params.id)
     .then(file => res.download('uploads/' + file._userId + '/files' + file.path + '/' + file.name))
     .catch(err => next(err))
+
+module.exports.read = (req, res, next) =>
+  File.findById(req.params.id)
+    .then(file => res.status(200).send({ file: _.pick(file, ['path', 'name', 'inTrash']) }))
+    .catch(err => next(err))
+
+module.exports.update = (req, res, next) =>
+  req.body.name
+    ? File.findById(req.params.id)
+      .then(file =>
+        File.find({ name: req.body.name, path: file.path })
+          .then(files =>
+            files.length
+              ? res.status(422).send({ msg: 'You already have a file in the current path. Please a different name.' })
+              : File.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
+                .then(() => res.status(200).send({ msg: 'File updated.' }))
+                .catch(err => next(err))
+          )
+          .catch(err => next(err))
+      )
+      .catch(err => next(err))
+    : res.status(403).send({ msg: 'Name is required.' })
