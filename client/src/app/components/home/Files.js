@@ -25,29 +25,13 @@ export default class Files extends Component {
     }
   }
 
-  getURLSearchParams = () => (new URLSearchParams(window.location.search))
-
-  getQueryStringParameter = (name) => (new URLSearchParams(window.location.search)).get(name)
-
-  setQueryStringParameter = (name, value) => {
-    const params = new URLSearchParams(window.location.search)
-    params.set(name, value)
-    window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${params}`))
-  }
-
-  deleteQueryStringParameter = name => {
-    const params = new URLSearchParams(window.location.search)
-    params.delete(name)
-    window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${params}`))
-  }
-
-  saves = () => {
-    this.deleteQueryStringParameter('location')
+  return = () => {
+    helper.deleteQuery('location')
     this.setState({ location: '' })
   }
 
   setTrash = () => {
-    this.setQueryStringParameter('location', 'trash')
+    helper.setQuery('location', 'trash')
     this.setState({ location: 'trash' })
   }
 
@@ -71,7 +55,7 @@ export default class Files extends Component {
   open = e => {
     const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
     this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder.name })
-    this.setQueryStringParameter('id', folder._id)
+    helper.setQuery('id', folder._id)
   }
 
   rename = () => {
@@ -106,7 +90,7 @@ export default class Files extends Component {
     const path = index === 1 ? '/' : this.state.path.split('/').slice(0, index).join('/')
     const folder = this.state.folders.find(f => f.path === path)
     this.setState({ path: path ? path : '/' })
-    this.setQueryStringParameter('id', Number.parseInt(e.target.id) === 0 ? 'root' : folder._id)
+    helper.setQuery('id', Number.parseInt(e.target.id) === 0 ? 'root' : folder._id)
   }
 
   componentDidMount = () => {
@@ -119,7 +103,7 @@ export default class Files extends Component {
   componentDidUpdate = () => {
     foldersService.read()
       .then(res => {
-        const folder = this.getQueryStringParameter('id') === 'root' ? { path: '/', name: '' } : res.data.folders.find(f => f._id === this.getQueryStringParameter('id'))
+        const folder = helper.getQuery('id') === 'root' ? { path: '/', name: '' } : res.data.folders.find(f => f._id === this.getQuery('id'))
         const path = folder.name === '' ? '/' : folder.path === '/' ? folder.path + folder.name : folder.path + '/' + folder.name
         this.setState({ folders: res.data.folders, items: res.data.folders.filter(f => f.path === path), path: path })
         filesService.read()
@@ -138,7 +122,7 @@ export default class Files extends Component {
         <label htmlFor="leftNav"><strong>{this.state.fullName}</strong></label>
       </div>
       <ul className="list-group">
-        <li className={`list-group-item-files ${!this.state.location && 'active'}`} onClick={this.saves}><i className="material-icons">folder</i> My files</li>
+        <li className={`list-group-item-files ${!this.state.location && 'active'}`} onClick={this.return}><i className="material-icons">folder</i> My files</li>
         <li className={`list-group-item-trash ${this.state.location === 'trash' && 'active'}`} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
       </ul>
     </nav>
