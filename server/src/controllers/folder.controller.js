@@ -44,7 +44,10 @@ module.exports.update = (req, res, next) =>
             folders.length
               ? res.status(422).send({ msg: 'You already have a folder in the current path. Please a different name.' })
               : Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
-                .then(folder => folder ? res.status(200).send({ msg: 'Folder updated.' }) : res.status(404).send({ msg: 'Folder not found.' }))
+                .then(folderEdited => folder
+                  ? fs.rename(process.env.UPDATES + req._id + '/files' + folder.path + folder.name, process.env.UPDATES + req._id + '/files' + folderEdited.path + folderEdited.name, err => console.warn(err)) && res.status(200).send({ msg: 'Folder updated.' })
+                  : res.status(404).send({ msg: 'Folder not found.' })
+                )
                 .catch(err => next(err))
           )
           .catch(err => next(err))
