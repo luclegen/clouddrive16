@@ -10,6 +10,8 @@ class FileService {
   update = (id, file) => PR.put(`${URL}/${id}`, file)
 
   delete = id => PR.patch(`${URL}/${id}`)
+
+  restore = id => PR.patch(`${URL}/r/${id}`)
 }
 
 export default new FileService()
