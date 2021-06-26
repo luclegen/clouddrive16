@@ -19,9 +19,11 @@ module.exports.create = (req, res, next) => {
       User.findById(req._id)
         .then(user => {
           mailer.sendCode(user.email, 'Verify Email', newCode)
-          res.status(201).send({ msg: 'Resent code.' })
-          setTimeout(() => Code.findByIdAndDelete(code._id).catch(err => next(err))
-            , 7 * 24 * 60 * 60 * 1000)
+          user
+            ? code
+              ? res.status(201).send({ msg: 'Resent code.' })
+              : res.status(201).send({ msg: 'Code not found.' })
+            : res.status(201).send({ msg: 'User not found.' })
         })
         .catch(err => next(err))
     )
