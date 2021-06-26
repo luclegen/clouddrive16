@@ -67,11 +67,14 @@ export default class Files extends Component {
       : fileService.read(helper.getId())
         .then(res => fileService.update(helper.getId(), { name: prompt('Rename file', res.data.file.name) }))
 
-  delete = () => {
+  delete = () =>
     helper.getType() === 'folder'
-      ? helper.getQuery('location') === 'trash' ? folderService.deleteForever(helper.getId()) : folderService.delete(helper.getId())
-      : fileService.delete(helper.getId())
-  }
+      ? helper.getQuery('location') === 'trash'
+        ? folderService.deleteForever(helper.getId())
+        : folderService.delete(helper.getId())
+      : helper.getQuery('location') === 'trash'
+        ? fileService.deleteForever(helper.getId())
+        : fileService.delete(helper.getId())
 
   restore = () => helper.getType() === 'folder' ? folderService.restore(helper.getId()) : fileService.restore(helper.getId())
 
