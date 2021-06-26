@@ -60,3 +60,16 @@ module.exports.restore = (req, res, next) =>
   Folder.findByIdAndUpdate(req.params.id, { $set: { inTrash: false } }, { new: true })
     .then(() => res.status(200).send({ msg: 'Folder restore.' }))
     .catch(err => next(err))
+
+module.exports.deleteForever = (req, res, next) =>
+  Folder.findById(req.params.id)
+    .then(folder =>
+      folder
+        ? folder.inTrash
+          ? Folder.findByIdAndDelete(req.params.id)
+            .then(() => res.status(200).send({ msg: 'Folder permanently deleted.' }))
+            .catch(err => next(err))
+          : res.status(403).send({ msg: 'Folder not in trash.' })
+        : res.status(404).send({ msg: 'Folder not found.' })
+    )
+    .catch(err => next(err))
