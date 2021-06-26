@@ -59,7 +59,7 @@ module.exports.delete = (req, res, next) =>
 
 module.exports.restore = (req, res, next) =>
   Folder.findByIdAndUpdate(req.params.id, { $set: { inTrash: false } }, { new: true })
-    .then(() => res.status(200).send({ msg: 'Folder restore.' }))
+    .then(folder => folder ? res.status(200).send({ msg: 'Folder restored.' }) : res.status(404).send({ msg: 'Folder not found.' }))
     .catch(err => next(err))
 
 module.exports.deleteForever = (req, res, next) =>
