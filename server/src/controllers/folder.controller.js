@@ -46,7 +46,7 @@ module.exports.update = (req, res, next) =>
               : Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
                 .then(folderEdited =>
                   folder
-                    ? fs.rename(process.env.UPDATES + req._id + '/files' + folder.path + folder.name, process.env.UPDATES + req._id + '/files' + folderEdited.path + folderEdited.name, err => console.warn(err)) && res.status(200).send({ msg: 'Folder updated.' })
+                    ? fs.rename(process.env.UPDATES + req._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name, process.env.UPDATES + req._id + '/files' + (folderEdited.path === '/' ? folderEdited.path : folderEdited.path + '/') + folderEdited.name, err => console.warn(err)) && res.status(200).send({ msg: 'Folder updated.' })
                     : res.status(404).send({ msg: 'Folder not found.' })
                 )
                 .catch(err => next(err))
