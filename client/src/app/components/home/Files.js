@@ -59,13 +59,12 @@ export default class Files extends Component {
     helper.setQuery('id', folder._id)
   }
 
-  rename = () => {
+  rename = () =>
     helper.getType() === 'folder'
       ? folderService.read(helper.getId())
         .then(res => folderService.update(helper.getId(), { name: prompt('Rename folder', res.data.folder.name) }))
       : fileService.read(helper.getId())
         .then(res => fileService.update(helper.getId(), { name: prompt('Rename file', res.data.file.name) }))
-  }
 
   delete = () => {
     helper.getType() === 'folder'
