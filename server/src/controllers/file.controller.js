@@ -1,3 +1,4 @@
+const fs = require("fs")
 const _ = require('lodash')
 const File = require('../models/file.model')
 
@@ -38,7 +39,11 @@ module.exports.update = (req, res, next) =>
             files.length
               ? res.status(422).send({ msg: 'You already have a file in the current path. Please a different name.' })
               : File.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
-                .then(file => file ? res.status(200).send({ msg: 'File updated.' }) : res.status(404).send({ msg: 'File not found.' }))
+                .then(fileEdited =>
+                  fileEdited
+                    ? fs.rename(process.env.UPDATES + req._id + '/files' + (file.path === '/' ? file.path : file.path + '/') + file.name, process.env.UPDATES + req._id + '/files' + (fileEdited.path === '/' ? fileEdited.path : fileEdited.path + '/') + fileEdited.name, err => console.warn(err)) && res.status(200).send({ msg: 'Folder updated.' })
+                    : res.status(404).send({ msg: 'File not found.' })
+                )
                 .catch(err => next(err))
           )
           .catch(err => next(err))
