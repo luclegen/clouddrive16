@@ -3,6 +3,7 @@ import helper from '../../services/helper'
 import userService from '../../services/user'
 import folderService from '../../services/folder'
 import foldersService from '../../services/folders'
+import fileService from '../../services/file'
 import filesService from '../../services/files'
 
 export default class Files extends Component {
@@ -50,7 +51,7 @@ export default class Files extends Component {
 
   download = () => window.location.href = process.env.REACT_APP_FILE_URI + helper.getId()
 
-  create = () => folderService.create({ name: prompt('Folder', 'New folder'), path: this.state.path })
+  create = () => folderService.create({ name: prompt('New folder', 'New folder'), path: this.state.path })
 
   open = e => {
     const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
@@ -59,9 +60,11 @@ export default class Files extends Component {
   }
 
   rename = () => {
-    helper.getType() === 'folder' &&
-      folderService.read(helper.getId())
-        .then(res => folderService.update(helper.getId(), { name: prompt('Folder', res.data.folder.name) }))
+    helper.getType() === 'folder'
+      ? folderService.read(helper.getId())
+        .then(res => folderService.update(helper.getId(), { name: prompt('Rename folder', res.data.folder.name) }))
+      : fileService.read(helper.getId())
+        .then(res => fileService.update(helper.getId(), { name: prompt('Rename file', res.data.file.name) }))
   }
 
   delete = () => {
