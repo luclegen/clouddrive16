@@ -15,14 +15,7 @@ module.exports.create = (req, res, next) => {
   user.sex = req.body.sex
 
   user.save()
-    .then(user => {
-      res.status(201).send({ msg: 'Registered successfully.' })
-      setTimeout(() =>
-        User.findById(user._id)
-          .then(user => !user.activated && User.findByIdAndDelete(user._id).catch(err => next(err)))
-          .catch(err => next(err))
-        , 30 * 24 * 60 * 60 * 1000)
-    })
+    .then(user => user ? res.status(201).send({ msg: 'Registered successfully.' }) : res.status(404).send({ msg: 'User not found.' }))
     .catch(err => err.code === 11000 ? res.status(422).send({ msg: 'Email is duplicate. Please try again.' }) : next(err))
 }
 
