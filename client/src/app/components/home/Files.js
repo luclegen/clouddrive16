@@ -63,9 +63,9 @@ export default class Files extends Component {
   rename = () =>
     helper.getType() === 'folder'
       ? folderService.read(helper.getId())
-        .then(res => folderService.update(helper.getId(), { name: prompt('Rename folder', res.data.folder.name) }) && setTimeout(() => window.location.reload()))
+        .then(res => folderService.update(helper.getId(), { name: prompt('Rename folder', res.data.folder.name) }) && setTimeout(() => window.location.reload(), 1000))
       : fileService.read(helper.getId())
-        .then(res => fileService.update(helper.getId(), { name: prompt('Rename file', res.data.file.name) }) && setTimeout(() => window.location.reload()))
+        .then(res => fileService.update(helper.getId(), { name: prompt('Rename file', res.data.file.name) }) && setTimeout(() => window.location.reload(), 1000))
 
   delete = () =>
     helper.getType() === 'folder'
