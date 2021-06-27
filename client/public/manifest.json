@@ -13,7 +13,12 @@
       "sizes": "1250x1250"
     },
     {
-      "src": "logo.png",
+      "src": "logo64.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "logo.hover.png",
       "type": "image/png",
       "sizes": "64x64"
     }
