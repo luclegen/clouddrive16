@@ -144,7 +144,7 @@ export default class Files extends Component {
     <div className="right-content col-10">
       <div className="command-bar shadow-sm">
         <button className="btn-new-folder" onClick={this.create}><i className="material-icons">create_new_folder</i> New</button>
-        <input type="file" id="files" hidden onChange={this.save} multiple />
+        <input type="file" id="files" hidden onChange={this.save} />
         <button className="btn-new-folder" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
       </div>
       <div className="path-bar">
