@@ -11,10 +11,11 @@
     "url": "git+https://github.com/luclegen/cloud-drive-16.git"
   },
   "keywords": [
-    "nodejs",
     "mern",
-    "react",
+    "mongodb",
     "express",
+    "react",
+    "node",
     "cloud"
   ],
   "author": "CloudTeam16",
