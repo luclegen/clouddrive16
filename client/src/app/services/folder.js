@@ -2,7 +2,7 @@ import PR from '../apis/private'
 
 const URL = `${process.env.REACT_APP_SERVER_URL}folder/`
 
-class UserService {
+class FolderService {
   create = folder => PR.post(URL, folder)
 
   read = id => PR.get(`${URL}${id}`)
@@ -16,4 +16,4 @@ class UserService {
   deleteForever = id => PR.delete(`${URL}${id}`)
 }
 
-export default new UserService()
+export default new FolderService()
