@@ -2,8 +2,8 @@ import PR from '../apis/private'
 
 const URL = `${process.env.REACT_APP_SERVER_URL}code/`
 
-class UserService {
+class CodeService {
   create = () => PR.post(URL)
 }
 
-export default new UserService()
+export default new CodeService()
