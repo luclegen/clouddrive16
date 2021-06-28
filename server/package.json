@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "nodemon",
-    "heroku-postbuild": "npm install"
+    "heroku-postbuild": "npm i"
   },
   "repository": {
     "type": "git",
