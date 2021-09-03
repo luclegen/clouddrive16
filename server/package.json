@@ -4,8 +4,7 @@
   "description": "CloudDrive16 server",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon",
-    "heroku-postbuild": "npm i"
+    "start": "nodemon"
   },
   "repository": {
     "type": "git",
