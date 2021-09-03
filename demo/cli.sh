@@ -10,6 +10,7 @@ npx create-react-app client
 cd client; npm i -s node-sass react-router-dom axios bootstrap@4.6 reactstrap@8.9 --legacy-peer-deps
 heroku login
 heroku create clouddrive16
+xdg-open https://dashboard.heroku.com/apps/clouddrive16/settings
 git init
 heroku git:remote -a clouddrive16
 git add .
@@ -22,6 +23,7 @@ cd /workspace/cloud-drive-16/server; clear; npm start
 cd server; npm i -s dotenv mongoose express bcryptjs cors jsonwebtoken passport passport-local lodash nodemailer rimraf
 heroku login
 heroku create clouddrive16-server
+xdg-open https://dashboard.heroku.com/apps/clouddrive16-server/settings
 git init
 heroku git:remote -a clouddrive16-server
 git add .
