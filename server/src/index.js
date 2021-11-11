@@ -15,8 +15,8 @@ app.use(express.json())
 app.use(require('passport').initialize())
 require('./middlewares/passport')
 
-// Access server and redirect to client
-app.get('/', (req, res) => res.redirect(`${process.env.CLIENT_URL}`))
+// Notification
+app.get('/', (req, res) => res.send(`Started ${process.env.SERVER_NAME} server is successfully!`))
 
 // Routes
 app.use('/auth', require('./routes/auth.router'))
