@@ -16,7 +16,7 @@ app.use(require('passport').initialize())
 require('./middlewares/passport')
 
 // Notification
-app.get('/', (req, res) => res.send(`Started ${process.env.SERVER_NAME} server is successfuly!`))
+app.get('/', (req, res) => res.send(`Started ${process.env.SERVER_NAME} server is successfully!`))
 
 // Routes
 app.use('/auth', require('./routes/auth.router'))
