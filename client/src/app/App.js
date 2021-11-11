@@ -6,13 +6,9 @@ import Home from './components/home/Home'
 import FindAccount from './components/others/FindAccount'
 
 export default class App extends Component {
-  render() {
-    return (
-      <Router>
-        <Header />
-        <Route exact path="/" component={Home} />
-        <Route path="/find-account" component={FindAccount} />
-      </Router>
-    )
-  }
+  render = () => <Router>
+    <Header />
+    <Route exact path="/" component={Home} />
+    <Route path="/find-account" component={FindAccount} />
+  </Router>
 }
