@@ -8,6 +8,7 @@ require('./db/mongodb')
 
 // Initialization
 const app = express()
+const PORT = process.env.PORT || 5000
 
 // Middlewares
 app.use(require('cors')())
@@ -56,4 +57,4 @@ app.use((err, req, res, next) => {
 })
 
 // Start server
-app.listen(process.env.PORT, () => console.log(`Server started at http://localhost:${process.env.PORT || 5000}`))
+app.listen(PORT, () => console.log(`Server started at http://localhost:${PORT}`))
