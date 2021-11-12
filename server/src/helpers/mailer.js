@@ -13,11 +13,11 @@ const transport = nodemailer.createTransport({
 
 module.exports.sendCode = (email, title, code) => {
   const options = {
-    from: `"${process.env.SERVER_NAME}" <${process.env.SERVER_EMAIL}>`,
+    from: `"${process.env.REACT_APP_NAME}" <${process.env.SERVER_EMAIL}>`,
     to: email,
     subject: title,
     text: '',
-    html: `<h1><img src="${process.env.SERVER_LOGO}" alt="${process.env.SERVER_NAME} Logo"> ${process.env.SERVER_NAME}</h1><hr><h1>` + title + '</h1><p>Verification code: ' + code + '</p>'
+    html: `<h1><img src="${process.env.SERVER_LOGO}" alt="${process.env.REACT_APP_NAME} Logo"> ${process.env.REACT_APP_NAME}</h1><hr><h1>` + title + '</h1><p>Verification code: ' + code + '</p>'
   }
 
   transport.sendMail(options)
