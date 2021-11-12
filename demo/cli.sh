@@ -20,6 +20,7 @@ git push heroku main
 
 # II. EXPRESS.JS SERVER
 cd /workspace/cloud-drive-16/server; clear; npm start
+mkdir server; cd server; mkdir src; touch src/index.js; npm init
 cd server; npm i -s dotenv mongoose express bcryptjs cors jsonwebtoken passport passport-local lodash nodemailer rimraf
 heroku login
 heroku create clouddrive16-server
