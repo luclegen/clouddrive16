@@ -35,3 +35,8 @@ git push heroku main
 # III. PORTS
 kill -9 $(lsof -t -i:3000)
 kill -9 $(lsof -t -i:5000)
+
+# IV. GIT
+git remote -v 
+git remote remove origin 
+git remote add origin git@github.com:luclegen/clouddrive16.git
