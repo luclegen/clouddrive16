@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express')
 
 // Environment Variables
@@ -11,13 +12,11 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 // Middlewares
+app.use(express.static(path.resolve(__dirname, '../client')))
 app.use(require('cors')())
 app.use(express.json())
 app.use(require('passport').initialize())
 require('./middlewares/passport')
-
-// Notification
-app.get('/', (req, res) => res.send(`Started ${process.env.REACT_APP_NAME} server is successfully!`))
 
 // Routes
 app.use('/auth', require('./routes/auth.router'))
@@ -28,6 +27,9 @@ app.use('/folders', require('./routes/folders.router'))
 app.use('/file', require('./routes/file.router'))
 app.use('/files', require('./routes/files.router'))
 app.use('/images', require('./routes/images.router'))
+
+// Client
+app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../client', 'index.html')))
 
 // Error handle
 app.use((err, req, res, next) => {
@@ -55,6 +57,7 @@ app.use((err, req, res, next) => {
 
   return res.status(code).send({ msg: msg })
 })
+
 
 // Start server
 app.listen(PORT, () => console.log(`Server started at http://localhost:${PORT}`))
