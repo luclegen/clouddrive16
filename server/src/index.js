@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 
 // Environment Variables
-require('dotenv').config()
+if (!process.env.NODE_ENV) require('dotenv').config()
 
 // Database
 require('./db/mongodb')
