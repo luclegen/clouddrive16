@@ -12,7 +12,7 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 // Middlewares
-app.use(express.static(path.resolve(__dirname, '../client')))
+if (process.env.NODE_ENV == 'production') app.use(express.static(path.resolve(__dirname, '../client')))
 app.use(require('cors')())
 app.use(express.json())
 app.use(require('passport').initialize())
@@ -29,7 +29,10 @@ app.use('/files', require('./routes/files.router'))
 app.use('/images', require('./routes/images.router'))
 
 // Client
-app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../client', 'index.html')))
+if (process.env.NODE_ENV == 'production')
+  app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../client', 'index.html')))
+else
+  app.get('/', (req, res) => res.send(`Started ${process.env.APP_NAME} server is successfully!`))
 
 // Error handle
 app.use((err, req, res, next) => {
