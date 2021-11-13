@@ -3,7 +3,7 @@ const checker = require('../helpers/checker')
 const User = require('../models/user.model')
 const Code = require('../models/code.model')
 
-module.exports.available = async (req, res, next) =>
+module.exports.available = (req, res, next) =>
   User.findOne({ email: req.params.email })
     .then(user => res.status(user ? 203 : 200).send({ available: Boolean(user) }))
     .catch(err => next(err))
@@ -17,7 +17,7 @@ module.exports.authenticate = (req, res, next) =>
         : res.status(404).json(info)
   )(req, res)
 
-module.exports.verify = async (req, res, next) =>
+module.exports.verify = (req, res, next) =>
   User.findById(req._id)
     .then(user =>
       user

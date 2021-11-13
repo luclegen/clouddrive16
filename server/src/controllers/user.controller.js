@@ -19,7 +19,7 @@ module.exports.create = (req, res, next) => {
     .catch(err => err.code === 11000 ? res.status(422).send({ msg: 'Email is duplicate. Please try again.' }) : next(err))
 }
 
-module.exports.read = async (req, res, next) =>
+module.exports.read = (req, res, next) =>
   User.findById(req._id)
     .then(user => user ? res.status(202).json({ user: _.pick(user, ['avatar', 'name', 'fullName', 'email', 'dateOfBirth', 'sex', 'role']) }) : res.status(404).json({ msg: 'User not found.' }))
     .catch(err => next(err))
