@@ -19,7 +19,7 @@ class FindAccount extends Component {
   render = () => <main>
     <section className="section-only">
       <form className="form-only" onSubmit={this.onSubmit}>
-        <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_CLIENT_NAME + ' logo'} />
+        <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_NAME + ' logo'} />
         <h1 className="h1-only">Find my account</h1>
         <div className="form-group-email">
           <input className="input-email" type="email" name="email" placeholder="Email" value={this.state.email} pattern={helper.emailPattern} onInput={this.enterEmail} onInvalid={this.enterEmail} onChange={this.setEmail} title="Please fill out this field." required />
