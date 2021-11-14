@@ -11,6 +11,8 @@ export default class Files extends Component {
     super(props)
 
     this.state = {
+      id: '',
+      type: '',
       fullName: '',
       location: '',
       opened: false,
@@ -49,7 +51,7 @@ export default class Files extends Component {
 
   upload = () => document.getElementById("files").click()
 
-  download = () => window.location.href = process.env.REACT_APP_FILE_URI + helper.getId()
+  download = () => window.location.href = process.env.REACT_APP_FILE_URI + this.state.id
 
   create = () => folderService.create({ name: prompt('Create folder', 'New folder'), path: this.state.path })
 
@@ -60,32 +62,40 @@ export default class Files extends Component {
     helper.setQuery('id', folder._id)
   }
 
-  rename = () =>
-    helper.getType() === 'folder'
-      ? folderService.read(helper.getId())
-        .then(res => folderService.update(helper.getId(), { name: prompt('Rename folder', res.data.folder.name) }) && setTimeout(() => window.location.reload(), 1000))
-      : fileService.read(helper.getId())
-        .then(res => fileService.update(helper.getId(), { name: prompt('Rename file', res.data.file.name) }) && setTimeout(() => window.location.reload(), 1000))
+  rename = () => {
+    this.state.type === 'folder'
+      ? folderService.update(this.state.id, { name: prompt('Rename folder', this.state.name) })
+      : fileService.update(this.state.id, { name: prompt('Rename file', this.state.name) })
+  }
 
   delete = () =>
-    helper.getType() === 'folder'
+    this.state.type === 'folder'
       ? helper.getQuery('location') === 'trash'
-        ? folderService.deleteForever(helper.getId())
-        : folderService.delete(helper.getId())
+        ? folderService.deleteForever(this.state.id)
+        : folderService.delete(this.state.id)
       : helper.getQuery('location') === 'trash'
-        ? fileService.deleteForever(helper.getId())
-        : fileService.delete(helper.getId())
+        ? fileService.deleteForever(this.state.id)
+        : fileService.delete(this.state.id)
 
-  restore = () => helper.getType() === 'folder' ? folderService.restore(helper.getId()) : fileService.restore(helper.getId())
+  restore = () => this.state.type === 'folder' ? folderService.restore(this.state.id) : fileService.restore(this.state.id)
 
   choose = e => {
     e.preventDefault()
 
+    const type = (/file|img/g).test(e.target.className)
+      ? 'file'
+      : (/folder/g).test(e.target.className)
+        ? 'folder'
+        : null
+
     this.getMenuFolder().style.display = 'block'
     this.getMenuFolder().style.top = `${e.clientY}px`
     this.getMenuFolder().style.left = `${e.clientX}px`
-    helper.setId(e.target.closest((/file|img/g).test(e.target.className) ? '.li-file' : (/folder/g).test(e.target.className) ? '.li-folder' : null).id)
-    helper.setType((/file/g).test(e.target.className) ? 'file' : (/folder/g).test(e.target.className) ? 'folder' : null)
+    this.setState({
+      id: e.target.closest('.li-' + type).id,
+      type: type,
+      name: e.target.closest('.li-' + type).getAttribute('name')
+    })
 
     document.querySelector('.dropdown-item-dowload').style.setProperty('display', (/folder/g).test(e.target.className) ? 'none' : 'flex', 'important')
   }
@@ -151,13 +161,13 @@ export default class Files extends Component {
         {this.state.path === '/' ? <strong>My files</strong> : this.state.path.split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
       </div>
       <ul className="ls-folder">
-        {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} onClick={this.open} onContextMenu={this.choose}>
+        {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} onClick={this.open} onContextMenu={this.choose}>
           <img className="bg-folder" src="svg/lg-bg.svg" alt="background folder" />
           {helper.isImages(this.state.files, v) ? <img className="img" src={`${process.env.REACT_APP_IMAGES_URI}${helper.getPayload()._id}/files/${helper.getImage(this.state.files, v).path}/${helper.getImage(this.state.files, v).name}`} alt="forceground folder" /> : <div className="file"></div>}
           {helper.isImages(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="forceground folder" onContextMenu={this.choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="forceground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
-        {this.state.itemFiles.map((v, i, a) => <li className="li-file" key={i} id={v._id} onContextMenu={this.choose}>
+        {this.state.itemFiles.map((v, i, a) => <li className="li-file" key={i} id={v._id} name={v.name} onContextMenu={this.choose}>
           {helper.isImage(v.name) ? <img className="bg-img" src={`${process.env.REACT_APP_IMAGES_URI}${helper.getPayload()._id}/files/${v.path}/${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
           <label className="label-file" htmlFor={`folder${i}`}>{v.name}</label>
         </li>)}
