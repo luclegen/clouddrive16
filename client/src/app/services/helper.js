@@ -19,7 +19,7 @@ class Helper {
 
   isDigits = v => /^\d+$/.test(v)
 
-  isImage = value => /\.(gif|jpe?g|tiff?|png|webp|bmp)$/i.test(value)
+  isImage = value => /\.(gif|jpe?g|tiff?|png|webp|bmp|ico)$/i.test(value)
 
   getImage = (files, value) => files.find(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isImage(f.name))
 
