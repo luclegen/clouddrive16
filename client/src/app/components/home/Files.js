@@ -97,7 +97,7 @@ export default class Files extends Component {
       name: e.target.closest('.li-' + type).getAttribute('name')
     })
 
-    document.querySelector('.dropdown-item-dowload').style.setProperty('display', (/folder/g).test(e.target.className) ? 'none' : 'flex', 'important')
+    document.querySelector('.dropdown-item-download').style.setProperty('display', (/folder/g).test(e.target.className) ? 'none' : 'flex', 'important')
   }
 
   clickOut = e => this.getMenuFolder().style.display = 'none'
@@ -137,7 +137,7 @@ export default class Files extends Component {
 
   render = () => <section className="section-files" onClick={this.clickOut} >
     <ul className="dropdown-menu-folder">
-      <li className="dropdown-item-dowload" onClick={this.download}><i className="material-icons">file_download</i>Download</li>
+      <li className="dropdown-item-download" onClick={this.download}><i className="material-icons">file_download</i>Download</li>
       <li className="dropdown-item-rename" onClick={this.rename}><i className="material-icons">drive_file_rename_outline</i>Rename</li>
       {helper.getQuery('location') === 'trash' && <li className="dropdown-item-restore" onClick={this.restore}><i className="material-icons">restore</i>Restore</li>}
       <li className="dropdown-item-delete" onClick={this.delete}><i className="material-icons">{helper.getQuery('location') === 'trash' ? 'delete_forever' : 'delete'}</i>Delete {helper.getQuery('location') === 'trash' && 'forever'}</li>
