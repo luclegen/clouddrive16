@@ -14,7 +14,7 @@ xdg-open https://dashboard.heroku.com/apps/clouddrive16/settings
 git init
 heroku git:remote -a clouddrive16
 git add .
-git commit -am "Create client"
+git commit -am "Create web"
 git branch -m main
 git push heroku main
 
