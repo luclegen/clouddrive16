@@ -22,8 +22,8 @@ module.exports.create = (req, res, next) => {
           user
             ? code
               ? res.status(201).send({ msg: 'Resent code.' })
-              : res.status(201).send({ msg: 'Code not found.' })
-            : res.status(201).send({ msg: 'User not found.' })
+              : res.status(404).send({ msg: 'Code not found.' })
+            : res.status(404).send({ msg: 'User not found.' })
         })
         .catch(err => next(err))
     )
