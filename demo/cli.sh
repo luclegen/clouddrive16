@@ -7,7 +7,8 @@ npm i -s
 # I. REACT CLIENT
 cd /workspace/cloud-drive-16/client; clear; npm start
 npx create-react-app client
-cd client; npm i -s node-sass react-router-dom axios bootstrap@4.6 reactstrap@8.9 --legacy-peer-deps
+cd client; npm i -s node-sass react-router-dom axios bootstrap@4 reactstrap@8 --legacy-peer-deps
+
 heroku login
 heroku create clouddrive16
 xdg-open https://dashboard.heroku.com/apps/clouddrive16/settings
