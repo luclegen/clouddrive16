@@ -92,8 +92,9 @@ export default class Header extends Component {
   }
 
   render = () => <header>
-    <a className="logo" href="/" onMouseEnter={this.toggle} onMouseLeave={this.toggle}>
-      <img className={`logo-img ${this.state.width > 560 && 'mr-1'}`} src={'logo' + (this.state.isHover ? '.hover' : '') + '.png'} alt="Logo" />
+    <a className="logo" href="/" color={this.state.color} onMouseEnter={this.toggle} onMouseLeave={this.toggle}>
+      <img className={`logo-img ${this.state.width > 560 && 'mr-1'}`} src="logo.svg" alt="Logo" hidden={this.state.isHover} />
+      <img className={`logo-img ${this.state.width > 560 && 'mr-1'}`} src="logo.hover.svg" alt="Hover logo" hidden={!this.state.isHover} />
       {this.state.width > 560 && process.env.REACT_APP_NAME}
     </a>
     <div className="search-bar" onMouseEnter={this.coloring} onMouseLeave={this.coloring}>
