@@ -8,6 +8,16 @@
       "type": "image/x-icon"
     },
     {
+      "src": "logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "logo.hover.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
       "src": "logo.png",
       "type": "image/png",
       "sizes": "1250x1250"
