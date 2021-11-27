@@ -72,18 +72,13 @@ export default class Header extends Component {
 
   setKeyword = e => this.setState({ keyword: e.target.value })
 
-  logout() {
-    helper.logout()
-  }
+  logout = () => helper.logout()
 
-  componentDidMount = () => {
-    if (helper.loggedIn())
-      userService.read()
-        .then(res => {
-          this.setState(res.data.user)
-          this.setState({ firstName: res.data.user.name.first })
-        })
-  }
+  componentDidMount = () => helper.loggedIn() && userService.read()
+    .then(res => {
+      this.setState(res.data.user)
+      this.setState({ firstName: res.data.user.name.first })
+    })
 
   componentDidUpdate = () => window.onresize = () => {
     this.setState({ width: window.innerWidth })
