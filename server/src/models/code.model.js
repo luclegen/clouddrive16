@@ -18,7 +18,7 @@ const codeSchema = new mongoose.Schema({
     default: 3,
     max: 3,
     min: 0,
-    required: 'Count is required',
+    required: 'Times is required',
   },
 }, {
   timestamps: true
