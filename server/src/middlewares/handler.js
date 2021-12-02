@@ -8,7 +8,7 @@ module.exports = (err, req, res, next) => {
       break
 
     case 'TokenExpiredError':
-      code = 440
+      code = 401
       msg = 'Login again?\nYour session has expired and must log in again.'
       break
 
