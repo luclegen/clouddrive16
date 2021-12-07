@@ -29,7 +29,7 @@ xdg-open https://dashboard.heroku.com/apps/clouddrive16-server/settings
 git init
 heroku git:remote -a clouddrive16-server
 git add .
-git commit -am "Update server"
+git commit -am "Create server"
 git branch -m main
 git push heroku main
 
