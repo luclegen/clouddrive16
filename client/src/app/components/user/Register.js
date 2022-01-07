@@ -17,7 +17,7 @@ const state = {
   submitted: false
 }
 
-class Register extends Component {
+export default class Register extends Component {
   constructor(props) {
     super(props)
 
@@ -202,5 +202,3 @@ class Register extends Component {
     </section >
   }
 }
-
-export default Register

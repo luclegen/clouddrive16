@@ -13,7 +13,7 @@ const state = {
   opened: false
 }
 
-class Login extends Component {
+export default class Login extends Component {
   constructor(props) {
     super(props)
 
@@ -101,5 +101,3 @@ class Login extends Component {
     {this.state.opened && <Register close={this.close}></Register>}
   </section>
 }
-
-export default Login
