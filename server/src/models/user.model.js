@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     required: 'Password is required',
     minlength: [8, 'Password must be at least 8 characters long']
   },
-  dateOfBirth: {
+  dob: {
     type: Date,
     required: 'Date of birth is required'
   },
@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
     enum: ['male', 'female', 'other'],
     required: 'Gender is required'
   },
-  activated: {
+  is_activate: {
     type: Boolean,
     default: false
   },
@@ -56,7 +56,7 @@ userSchema.path('name.first').validate(v => checker.isFirstName(v), 'Invalid fir
 userSchema.path('name.last').validate(v => checker.isLastName(v), 'Invalid last name')
 userSchema.path('email').validate(v => checker.isEmail(v), 'Invalid email')
 userSchema.path('password').validate(v => checker.isStrongPassword(v), 'Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters)')
-userSchema.path('dateOfBirth').validate(v => (new Date()).getFullYear() - (new Date(v)).getFullYear() >= 5, 'You must be 5 years or older')
+userSchema.path('dob').validate(v => (new Date()).getFullYear() - (new Date(v)).getFullYear() >= 5, 'You must be 5 years or older')
 
 //#endregion Validation
 
@@ -64,8 +64,7 @@ userSchema.path('dateOfBirth').validate(v => (new Date()).getFullYear() - (new D
 
 userSchema.pre('save', async function (next) {
   this.fullName = this.name.first + ' ' + this.name.last
-  if (this.email == process.env.ROOT_EMAIL) this.role = 'root'
-  this.password = await bcrypt.hash(this.password, await bcrypt.genSalt(10))
+  this.password && (this.password = await bcrypt.hash(this.password, await bcrypt.genSalt(10)))
   next()
 })
 
@@ -73,11 +72,11 @@ userSchema.pre('save', async function (next) {
 
 //#region Methods
 
-userSchema.methods.verified = function (password) {
+userSchema.methods.authenticate = async function (password) {
   return bcrypt.compareSync(password, this.password)
 }
 
-userSchema.methods.getToken = function () {
+userSchema.methods.sign = function () {
   return jwt.sign({ _id: this._id, username: this.username, admin: this.role == 'root' || this.role == 'admin', activated: this.activated }, process.env.JWT_SECRET, this.activated ? {} : { expiresIn: process.env.JWT_EXP })
 }
 
