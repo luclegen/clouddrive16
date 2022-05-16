@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
   },
   sex: {
     type: String,
-    enum: ['male', 'female', 'other'],
+    enum: ['Male', 'Female', 'Other'],
     required: 'Gender is required'
   },
   is_activate: {
