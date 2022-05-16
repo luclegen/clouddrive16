@@ -6,7 +6,7 @@ module.exports.private = async (req, res, next) => {
 
     if (token) {
       try {
-        const payload = await jwt.verify(token, process.env.JWT_SECRET)
+        const payload = await jwt.verify(token, process.env.SECRET)
 
         if (payload) {
           req._id = payload._id
