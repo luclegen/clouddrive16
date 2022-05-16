@@ -8,10 +8,8 @@ const sess = {
   cookie: {},
 }
 
-api.get('env') === 'production' && api.set('trust proxy', 1)
-
 // Environment Variables
-if (!process.env.NODE_ENV) require('dotenv').config()
+!process.env.NODE_ENV && require('dotenv').config()
 
 // Database
 require('./db/mongodb')
@@ -20,6 +18,9 @@ require('./db/mongodb')
 const api = express()
 const web = express()
 const PORT = process.env.PORT || 5000
+
+// Add trust proxy
+api.get('env') === 'production' && api.set('trust proxy', 1)
 
 // Middlewares
 if (process.env.NODE_ENV == 'production') web.use(express.static(path.resolve(__dirname, './views')))
