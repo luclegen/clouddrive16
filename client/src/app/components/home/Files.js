@@ -51,7 +51,7 @@ export default class Files extends Component {
 
   upload = () => document.getElementById("files").click()
 
-  download = () => window.location.href = process.env.REACT_APP_FILE_URI + this.state.id
+  download = () => window.location.href = process.env.REACT_APP_FILE + this.state.id
 
   create = () => folderService.create({ name: prompt('Create folder', 'New folder'), path: this.state.path })
 
