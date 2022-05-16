@@ -41,11 +41,6 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
-  role: {
-    type: String,
-    enum: ['root', 'admin', 'user'],
-    default: 'user'
-  },
 }, {
   timestamps: true
 })
@@ -77,7 +72,7 @@ userSchema.methods.authenticate = async function (password) {
 }
 
 userSchema.methods.sign = function () {
-  return jwt.sign({ _id: this._id, username: this.username, admin: this.role == 'root' || this.role == 'admin', activated: this.activated }, process.env.SECRET, this.activated ? {} : { expiresIn: process.env.JWT_EXP })
+  return jwt.sign({ _id: this._id, username: this.username, is_activate: this.is_activate }, process.env.SECRET, this.activated ? {} : { expiresIn: process.env.EXP })
 }
 
 //#endregion Methods
