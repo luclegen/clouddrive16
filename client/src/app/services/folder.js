@@ -1,6 +1,6 @@
 import PR from '../apis/private'
 
-const URL = `${process.env.REACT_APP_SERVER_URL}folder/`
+const URL = `${process.env.REACT_APP_API}folder/`
 
 class FolderService {
   create = folder => PR.post(URL, folder)

@@ -1,6 +1,6 @@
 import PR from '../apis/private'
 
-const URL = `${process.env.REACT_APP_SERVER_URL}file/`
+const URL = `${process.env.REACT_APP_API}file/`
 
 class FileService {
   create = file => PR.post(URL, file)
