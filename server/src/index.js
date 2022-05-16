@@ -1,12 +1,6 @@
 const path = require('path')
 const express = require('express')
 const session = require('express-session')
-const sess = {
-  secret: process.env.SECRET,
-  resave: true,
-  saveUninitialized: true,
-  cookie: {},
-}
 
 // Environment Variables
 !process.env.NODE_ENV && require('dotenv').config()
@@ -18,6 +12,12 @@ require('./db/mongodb')
 const api = express()
 const web = express()
 const PORT = process.env.PORT || 5000
+const sess = {
+  secret: process.env.SECRET,
+  resave: true,
+  saveUninitialized: true,
+  cookie: {},
+}
 
 // Add trust proxy
 api.get('env') === 'production' && api.set('trust proxy', 1)
