@@ -19,7 +19,7 @@ const sess = {
   cookie: {},
 }
 
-// Add trust proxy
+// Trust proxy
 api.get('env') === 'production' && api.set('trust proxy', 1)
 
 // Middlewares
