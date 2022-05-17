@@ -8,6 +8,36 @@ Content-Type: application/json
 
 ###
 
+# @name login
+POST {{baseUrl}}/auth/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}",
+  "remember": false
+}
+
+###
+
+@cookie = {{login.response.headers.set-cookie}}
+
+# @name logout
+DELETE {{baseUrl}}/auth/ HTTP/1.1
+Content-Type: application/json
+Cookie: {{cookie}}
+
+# @cookie = {{logout.response.headers.set-cookie}}
+
+###
+
+# @name createCode
+POST {{baseUrl}}/codes/ HTTP/1.1
+content-type: application/json
+Cookie: {{cookie}}
+
+###
+
 # @name createUser
 POST {{baseUrl}}/users/ HTTP/1.1
 Content-Type: application/json
@@ -22,5 +52,12 @@ Content-Type: application/json
   "year": 1997,
   "sex": "Male"
 }
+
+###
+
+# @name readUser
+GET {{baseUrl}}/users/ HTTP/1.1
+Content-Type: application/json
+Cookie: {{cookie}}
 
 ###
