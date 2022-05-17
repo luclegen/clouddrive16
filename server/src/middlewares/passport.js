@@ -10,7 +10,7 @@ passport.use(new LocalStrategy({
   .then(async user => user
     ? await user.authenticate(password)
       ? done(null, user)
-      : done(null, false, 'Wrong password. Please try again or click "Forgotten password?"')
+      : done(null, false, 'Wrong password.')
     : done(null, false, 'Username not registered.'))
   .catch(err => done(err, false, 'Username not registered.'))
 ))
