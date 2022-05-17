@@ -1,6 +1,7 @@
 const path = require('path')
 const express = require('express')
 const session = require('express-session')
+const MongoStore = require('connect-mongo')
 
 // Environment Variables
 !process.env.NODE_ENV && require('dotenv').config()
@@ -17,6 +18,7 @@ const sess = {
   resave: true,
   saveUninitialized: true,
   cookie: {},
+  store: MongoStore.create({ mongoUrl: process.env.MONGODB, crypto: process.env.SECRET })
 }
 
 // Trust proxy
@@ -34,7 +36,7 @@ require('./middlewares/passport')
 // Routes
 api.use('/auth', require('./routes/auth.router'))
 api.use('/users', require('./routes/users.router'))
-api.use('/code', require('./routes/code.router'))
+api.use('/codes', require('./routes/codes.router'))
 api.use('/folder', require('./routes/folder.router'))
 api.use('/folders', require('./routes/folders.router'))
 api.use('/file', require('./routes/file.router'))
