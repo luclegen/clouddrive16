@@ -2,6 +2,12 @@
 @email={{$dotenv EMAIL}}
 @password={{$dotenv PASSWORD}}
 
+# @name available
+GET {{baseUrl}}/auth/l@email.test HTTP/1.1
+Content-Type: application/json
+
+###
+
 # @name createUser
 POST {{baseUrl}}/users/ HTTP/1.1
 Content-Type: application/json
