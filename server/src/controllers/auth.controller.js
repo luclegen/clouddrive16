@@ -47,3 +47,13 @@ module.exports.verify = (req, res, next) =>
         : res.status(404).send({ msg: 'User not found.' })
     )
     .catch(err => next(err))
+
+module.exports.logout = (req, res, next) =>
+  res
+    .clearCookie('connect.sid')
+    .clearCookie('id')
+    .clearCookie('avatar')
+    .clearCookie('firstName')
+    .clearCookie('lastName')
+    .clearCookie('is_activate')
+    .send()
