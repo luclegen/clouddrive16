@@ -7,7 +7,7 @@ import codeService from '../../services/code'
 const state = {
   email: '',
   password: '',
-  remembered: false,
+  remember: false,
   available: false,
   visible: false,
   opened: false
@@ -19,7 +19,7 @@ export default class Login extends Component {
 
     this.setEmail = this.setEmail.bind(this)
     this.setPassword = this.setPassword.bind(this)
-    this.setRemembered = this.setRemembered.bind(this)
+    this.setRemember = this.setRemember.bind(this)
 
     this.state = state
   }
@@ -28,7 +28,7 @@ export default class Login extends Component {
 
   setPassword = e => this.setState({ password: e.target.value })
 
-  setRemembered = e => this.setState({ remembered: e.target.checked })
+  setRemember = e => this.setState({ remember: e.target.checked })
 
   enterEmail = async e => {
     if (e.target.value) {
@@ -58,7 +58,7 @@ export default class Login extends Component {
         if (this.state.password)
           authService.authenticate(this.state)
             .then(res => {
-              this.state.remembered ? localStorage.setItem('remembered', this.state.remembered) : sessionStorage.setItem('remembered', this.state.remembered)
+              this.state.remember ? localStorage.setItem('remember', this.state.remember) : sessionStorage.setItem('remember', this.state.remember)
               helper.setToken(res.data.token)
               this.setState(state)
               if (!helper.getPayload().activated) {
@@ -92,7 +92,7 @@ export default class Login extends Component {
         </div>}
       </div>
       <div className="form-check-remember">
-        <input className="remember-me-input" id="remember-me" type="checkbox" name="remember-me" value={this.state.remembered} onChange={this.setRemembered} />
+        <input className="remember-me-input" id="remember-me" type="checkbox" name="remember-me" value={this.state.remember} onChange={this.setRemember} />
         <label className="remember-me-label" htmlFor="remember-me">Keep me signed in</label>
       </div>
       <a href="/find-account" target="_blank" rel="noopener noreferrer">Forgotten password? <i className="fas fa-external-link-alt"></i></a>
