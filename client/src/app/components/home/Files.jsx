@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import helper from '../../services/helper'
-import userService from '../../services/user'
+import usersService from '../../services/users'
 import folderService from '../../services/folder'
 import foldersService from '../../services/folders'
 import fileService from '../../services/file'
@@ -114,7 +114,7 @@ export default class Files extends Component {
 
   componentDidMount = () => {
     if (helper.loggedIn())
-      userService.read()
+      usersService.read()
         .then(res => this.setState({ fullName: res.data.user.fullName }))
     if (!window.location.search) window.location.search = 'id=root'
   }
