@@ -3,37 +3,36 @@ const bcrypt = require('bcryptjs')
 const checker = require('../helpers/checker')
 
 const codeSchema = new mongoose.Schema({
-  _userId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: 'User ID is required',
-    ref: 'User'
-  },
-  content: {
+  body: {
     type: String,
     trim: true,
     required: 'Content is required'
   },
-  times: {
+  attempts: {
     type: Number,
     default: 3,
     max: 3,
     min: 0,
     required: 'Times is required',
-  },
+  }, _uid: {
+    required: 'User id is required',
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }
 }, {
   timestamps: true
 })
 
 //#region Validation
 
-codeSchema.path('content').validate(v => checker.isCode(v), 'Invalid code')
+codeSchema.path('body').validate(v => checker.isCode(v), 'Invalid body')
 
 //#endregion Validation
 
 //#region Events
 
 codeSchema.pre('save', async function (next) {
-  this.content = await bcrypt.hash(this.content, await bcrypt.genSalt(10))
+  this.body = await bcrypt.hash(this.body, await bcrypt.genSalt(10))
   next()
 })
 
@@ -41,8 +40,8 @@ codeSchema.pre('save', async function (next) {
 
 //#region Methods
 
-codeSchema.methods.verified = function (content) {
-  return bcrypt.compareSync(content, this.content)
+codeSchema.methods.verify = async function (body) {
+  return await bcrypt.compare(body, this.body)
 }
 
 //#endregion Methods
