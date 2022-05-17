@@ -19,6 +19,7 @@ module.exports = (err, req, res, next) => {
 
     case 'TokenExpiredError':
       code = 401
+      msg = err.message
       break
 
     default:
