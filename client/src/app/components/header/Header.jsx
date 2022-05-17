@@ -10,10 +10,7 @@ export default class Header extends Component {
     this.setKeyword = this.setKeyword.bind(this)
 
     this.state = {
-      firstName: '',
-      fullName: '',
       avatar: '',
-      role: '',
       isHover: false,
       selected: false,
       opened: false,
@@ -74,12 +71,6 @@ export default class Header extends Component {
 
   logout = () => helper.logout()
 
-  componentDidMount = () => helper.loggedIn() && usersService.read()
-    .then(res => {
-      this.setState(res.data.user)
-      this.setState({ firstName: res.data.user.name.first })
-    })
-
   componentDidUpdate = () => window.onresize = () => {
     this.setState({ width: window.innerWidth })
     this.reset(this.state.width < 801)
@@ -101,7 +92,7 @@ export default class Header extends Component {
       </form>
     </div>
     <Dropdown className="dropdown-avatar" isOpen={this.state.dropdownOpened} toggle={this.toggleDropdown}>
-      {helper.loggedIn() ? <DropdownToggle className="avatar" title={this.state.fullName}>{this.state.avatar ? <img className="avatar-img" src={this.state.avatar} alt={`${this.state.firstName}'s avatar`} /> : this.state.role === 'root' ? <i className="material-icons">security</i> : this.state.role === 'admin' ? <i className="material-icons">local_police</i> : <i className="material-icons">account_circle</i>}</DropdownToggle> : <a className="link-help" href="/help" target="_blank"><i className="material-icons">help_outline</i></a>}
+      {helper.isLogin() ? <DropdownToggle className="avatar" title={helper.getCookie('firstName')}>{this.state.avatar ? <img className="avatar-img" src={this.state.avatar} alt={`${this.state.firstName}'s avatar`} /> : this.state.role === 'root' ? <i className="material-icons">security</i> : this.state.role === 'admin' ? <i className="material-icons">local_police</i> : <i className="material-icons">account_circle</i>}</DropdownToggle> : <a className="link-help" href="/help" target="_blank"><i className="material-icons">help_outline</i></a>}
       <DropdownMenu className="dropdown-menu-avatar">
         <DropdownItem className="dropdown-item-profile" tag="a" href="/profile"><p className="text-profile">My profile</p><i className="material-icons">info</i></DropdownItem>
         <DropdownItem divider />
