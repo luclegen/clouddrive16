@@ -61,6 +61,23 @@ class Helper {
     window.history.replaceState({}, "", decodeURIComponent(`${window.location.pathname}?${params}`))
   }
 
+  getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+  }
+
+  setCookie = (cookies, expires = 0) => Object.entries(cookies).map(c => document.cookie = c[0] + '=' + c[1] + (expires ? '; Max-Age=' + expires : ''))
+
+  deleteCookie = key => document.cookie = key + '= Max-Age=0'
+
+  clearCookies = () => document.cookie.split(' ').map(c => c.split('=')).forEach(c => document.cookie = c[0] + '=; Max-Age=0')
+
   getToken = () => localStorage.getItem('token') || sessionStorage.getItem('token')
 
   setToken = token => this.remembered() ? localStorage.setItem('token', token) : sessionStorage.setItem('token', token)
