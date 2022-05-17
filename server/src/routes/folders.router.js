@@ -1,7 +1,7 @@
 const router = require('express').Router()
-const jwt = require('../middlewares/jwt');
+const authorize = require('../middlewares/authorize');
 const foldersCtl = require('../controllers/folders.controller')
 
-router.get('/', jwt.private, foldersCtl.read)
+router.get('/', authorize, foldersCtl.read)
 
 module.exports = router
