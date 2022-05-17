@@ -9,6 +9,8 @@ class AuthService {
   available = email => API.get(`${URL}${email}`)
 
   verify = code => PR.put(URL, code)
+
+  logout = () => API.delete(URL)
 }
 
 export default new AuthService()
