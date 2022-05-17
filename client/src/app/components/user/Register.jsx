@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import helper from '../../services/helper'
 import sex from '../../models/sex'
 import authService from '../../services/auth'
-import userService from '../../services/users'
+import usersService from '../../services/users'
 
 const state = {
   firstName: '',
@@ -109,7 +109,7 @@ export default class Register extends Component {
       document.querySelector('#female-register').setCustomValidity(this.state.sex ? '' : 'Please select one of these options')
       document.querySelector('#yearRegister').setCustomValidity(helper.isOldEnough(this.state.year) ? '' : 'You must be 5 years or older')
 
-      userService.create(this.state)
+      usersService.create(this.state)
         .then(res => {
           alert(res.data)
           document.querySelector('.form-register').reset()
