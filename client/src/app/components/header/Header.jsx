@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import helper from '../../services/helper'
-import usersService from '../../services/users'
+import authService from '../../services/auth'
 
 export default class Header extends Component {
   constructor(props) {
@@ -69,7 +69,7 @@ export default class Header extends Component {
 
   setKeyword = e => this.setState({ keyword: e.target.value })
 
-  logout = () => helper.logout()
+  logout = () => authService.logout().then(() => window.location.href = '/')
 
   componentDidUpdate = () => window.onresize = () => {
     this.setState({ width: window.innerWidth })
