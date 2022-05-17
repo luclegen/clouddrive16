@@ -1,5 +1,4 @@
 const passport = require('passport')
-const checker = require('../helpers/checker')
 const User = require('../models/user.model')
 const Code = require('../models/code.model')
 
@@ -8,13 +7,20 @@ module.exports.available = (req, res, next) =>
     .then(user => res.status(user ? 203 : 200).send(!user))
     .catch(err => next(err))
 
-module.exports.authenticate = (req, res, next) =>
-  passport.authenticate('local', (err, user, info) =>
-    err
-      ? next(err)
-      : user
-        ? res.status(200).json({ token: user.getToken() })
-        : res.status(404).json(info)
+module.exports.login = (req, res, next) =>
+  passport.authenticate('local', (err, user, info) => err
+    ? next(err)
+    : user
+      ? (req.session.cookie.expires = req.body.remember ? 365 * 24 * 60 * 60 * 1000 : false)
+      + (req.session.token = user.sign())
+      && res.send({
+        id: user._id,
+        avatar: user.avatar,
+        firstName: user.name.first,
+        lastName: user.name.last,
+        is_activate: user.is_activate,
+      })
+      : res.status(401).send(info)
   )(req, res)
 
 module.exports.verify = (req, res, next) =>
