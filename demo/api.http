@@ -1,0 +1,21 @@
+@baseUrl={{$dotenv API}}
+@email={{$dotenv EMAIL}}
+@password={{$dotenv PASSWORD}}
+
+
+# @name createUser
+POST {{baseUrl}}/users/ HTTP/1.1
+Content-Type: application/json
+
+{
+  "firstName": "Luc",
+  "lastName": "Huynh Tan",
+  "email": "{{email}}",
+  "password": "{{password}}",
+  "day": 29,
+  "month": 9,
+  "year": 1997,
+  "sex": "Male"
+}
+
+###
