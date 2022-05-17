@@ -1,13 +1,12 @@
 import API from '../apis/api'
-import PU from '../apis/public'
 import PR from '../apis/private'
 
 const URL = `${process.env.REACT_APP_API}/auth/`
 
 class AuthService {
-  available = email => API.get(`${URL}${email}`)
+  login = user => API.post(URL, user)
 
-  authenticate = user => PU.post(URL, user)
+  available = email => API.get(`${URL}${email}`)
 
   verify = code => PR.put(URL, code)
 }
