@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import helper from '../../services/helper'
-import userService from '../../services/user'
+import usersService from '../../services/users'
 
 export default class Header extends Component {
   constructor(props) {
@@ -74,7 +74,7 @@ export default class Header extends Component {
 
   logout = () => helper.logout()
 
-  componentDidMount = () => helper.loggedIn() && userService.read()
+  componentDidMount = () => helper.loggedIn() && usersService.read()
     .then(res => {
       this.setState(res.data.user)
       this.setState({ firstName: res.data.user.name.first })
