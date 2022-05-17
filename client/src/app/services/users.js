@@ -4,10 +4,10 @@ import PR from '../apis/private'
 
 const URL = `${process.env.REACT_APP_API}/users/`
 
-class UserService {
+class UsersService {
   create = user => API.post(URL, user)
 
   read = () => PR.get(URL)
 }
 
-export default new UserService()
+export default new UsersService()
