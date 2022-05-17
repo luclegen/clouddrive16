@@ -6,6 +6,6 @@ import helper from '../../services/helper'
 
 export default class Home extends Component {
   render = () => <main>
-    {helper.loggedIn() ? helper.getPayload().activated ? <Files /> : <Activate /> : <Login />}
+    {helper.isLogin() ? helper.getCookie('is_activate') === 'true' ? <Files /> : <Activate /> : <Login />}
   </main>
 }
