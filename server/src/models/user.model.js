@@ -68,7 +68,7 @@ userSchema.pre('save', async function (next) {
 //#region Methods
 
 userSchema.methods.authenticate = async function (password) {
-  return bcrypt.compareSync(password, this.password)
+  return await bcrypt.compare(password, this.password)
 }
 
 userSchema.methods.sign = function () {
