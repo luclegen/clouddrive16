@@ -5,7 +5,7 @@ const Code = require('../models/code.model')
 
 module.exports.available = (req, res, next) =>
   User.findOne({ email: req.params.email })
-    .then(user => res.status(user ? 203 : 200).send({ available: Boolean(user) }))
+    .then(user => res.status(user ? 203 : 200).send(!user))
     .catch(err => next(err))
 
 module.exports.authenticate = (req, res, next) =>
