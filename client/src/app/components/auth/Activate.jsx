@@ -1,9 +1,16 @@
 import { Component } from 'react'
 import helper from '../../services/helper'
-import codeService from '../../services/code'
+import codesService from '../../services/codes'
 import authService from '../../services/auth'
 
 export default class Activate extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      sent: false
+    }
+  }
 
   getIndex = target => Array.from(document.querySelector('.form-row').children).findIndex(i => i === target)
 
@@ -42,11 +49,8 @@ export default class Activate extends Component {
     if (this.isSubmit()) this.onSubmit(e)
   }
 
-  send = e => {
-    e.preventDefault()
-    codeService.create()
-      .then(res => alert(res.data.msg))
-  }
+  send = e => e.preventDefault() || codesService.create()
+    .then(res => this.setState({ sent: true }) || window.open(res.data))
 
   isSubmit = () => '0'.repeat(6).split('').map((v, i) => v = document.querySelectorAll('.form-control-digit')[i].value).filter(v => helper.isDigit(v)).length === 6
 
@@ -74,7 +78,7 @@ export default class Activate extends Component {
           <input className="form-control-digit" type="number" maxLength="1" onClick={this.select} onInput={this.enterNumber} onDrop={this.enterNumber} onKeyUp={this.clearNumber} onKeyDown={this.clearNumber} onPaste={this.pasteNumber} required />
         </div>)}
       </div>
-      <a href="/" onClick={this.send}>Resend Code</a>
+      <a href="/" onClick={this.send}>{`${this.state.sent ? 'Resend' : 'Send'} Code`}</a>
     </form>
   </section>
 }
