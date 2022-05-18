@@ -32,7 +32,7 @@ module.exports.create = (req, res, next) =>
 
 module.exports.read = (req, res, next) =>
   Folder.findById(req.params.id)
-    .then(folder => res.status(200).send({ folder: _.pick(folder, ['path', 'name', 'inTrash']) }))
+    .then(folder => res.status(200).send({ folder: _.pick(folder, ['path', 'name', 'is_trash']) }))
     .catch(err => next(err))
 
 module.exports.update = (req, res, next) =>
@@ -57,12 +57,12 @@ module.exports.update = (req, res, next) =>
     : res.status(403).send({ msg: 'Name is required.' })
 
 module.exports.delete = (req, res, next) =>
-  Folder.findByIdAndUpdate(req.params.id, { $set: { inTrash: true } }, { new: true })
+  Folder.findByIdAndUpdate(req.params.id, { $set: { is_trash: true } }, { new: true })
     .then(folder => folder ? res.status(200).send({ msg: 'Folder deleted.' }) : res.status(404).send({ msg: 'Folder not found.' }))
     .catch(err => next(err))
 
 module.exports.restore = (req, res, next) =>
-  Folder.findByIdAndUpdate(req.params.id, { $set: { inTrash: false } }, { new: true })
+  Folder.findByIdAndUpdate(req.params.id, { $set: { is_trash: false } }, { new: true })
     .then(folder => folder ? res.status(200).send({ msg: 'Folder restored.' }) : res.status(404).send({ msg: 'Folder not found.' }))
     .catch(err => next(err))
 
@@ -70,7 +70,7 @@ module.exports.deleteForever = (req, res, next) =>
   Folder.findById(req.params.id)
     .then(folder =>
       folder
-        ? folder.inTrash
+        ? folder.is_trash
           ? Folder.findByIdAndDelete(req.params.id)
             .then(folder => {
               folder

@@ -27,7 +27,7 @@ module.exports.download = (req, res, next) =>
 
 module.exports.read = (req, res, next) =>
   File.findById(req.params.id)
-    .then(file => res.status(200).send({ file: _.pick(file, ['path', 'name', 'inTrash']) }))
+    .then(file => res.status(200).send({ file: _.pick(file, ['path', 'name', 'is_trash']) }))
     .catch(err => next(err))
 
 module.exports.update = (req, res, next) =>
@@ -52,12 +52,12 @@ module.exports.update = (req, res, next) =>
     : res.status(403).send({ msg: 'Name is required.' })
 
 module.exports.delete = (req, res, next) =>
-  File.findByIdAndUpdate(req.params.id, { $set: { inTrash: true } }, { new: true })
+  File.findByIdAndUpdate(req.params.id, { $set: { is_trash: true } }, { new: true })
     .then(file => file ? res.status(200).send({ msg: 'File deleted.' }) : res.status(404).send({ msg: 'File not found.' }))
     .catch(err => next(err))
 
 module.exports.restore = (req, res, next) =>
-  File.findByIdAndUpdate(req.params.id, { $set: { inTrash: false } }, { new: true })
+  File.findByIdAndUpdate(req.params.id, { $set: { is_trash: false } }, { new: true })
     .then(file => file ? res.status(200).send({ msg: 'File restored.' }) : res.status(404).send({ msg: 'File not found.' }))
     .catch(err => next(err))
 
@@ -65,7 +65,7 @@ module.exports.deleteForever = (req, res, next) =>
   File.findById(req.params.id)
     .then(file =>
       file
-        ? file.inTrash
+        ? file.is_trash
           ? File.findByIdAndDelete(req.params.id)
             .then(file =>
               file

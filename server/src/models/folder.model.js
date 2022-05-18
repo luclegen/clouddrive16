@@ -19,7 +19,7 @@ const folderSchema = new mongoose.Schema({
     trim: true,
     required: 'Name is required'
   },
-  inTrash: {
+  is_trash: {
     type: Boolean,
     default: false,
   }
