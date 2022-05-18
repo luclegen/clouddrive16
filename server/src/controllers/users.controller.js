@@ -10,11 +10,11 @@ module.exports.create = (req, res, next) => {
   const user = new User()
   const profile = new Profile()
 
-  user.name.first = req.body.firstName
-  user.name.last = req.body.lastName
+  user.name.first = req.body.first_name
+  user.name.last = req.body.last_name
   user.email = req.body.email
   user.password = req.body.password
-  profile.name = req.body.firstName + ' ' + req.body.lastName
+  profile.name = req.body.first_name + ' ' + req.body.last_name
   profile.dob = new Date(req.body.year, req.body.month, req.body.day)
   profile.sex = req.body.sex
 

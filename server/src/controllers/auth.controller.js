@@ -16,8 +16,8 @@ module.exports.login = (req, res, next) =>
       && res.send({
         id: user._id,
         avatar: user.avatar,
-        firstName: user.name.first,
-        lastName: user.name.last,
+        first_name: user.name.first,
+        last_name: user.name.last,
         is_activate: user.is_activate,
       })
       : res.status(401).send(info)
@@ -50,7 +50,7 @@ module.exports.logout = (req, res, next) =>
     .clearCookie('connect.sid')
     .clearCookie('id')
     .clearCookie('avatar')
-    .clearCookie('firstName')
-    .clearCookie('lastName')
+    .clearCookie('first_name')
+    .clearCookie('last_name')
     .clearCookie('is_activate')
     .send()
