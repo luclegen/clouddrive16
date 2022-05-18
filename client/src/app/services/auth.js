@@ -1,5 +1,4 @@
 import API from '../apis/api'
-import PR from '../apis/private'
 
 const URL = `${process.env.REACT_APP_API}/auth/`
 
@@ -8,7 +7,7 @@ class AuthService {
 
   available = email => API.get(`${URL}${email}`)
 
-  verify = code => PR.put(URL, code)
+  verify = code => API.put(URL, code)
 
   logout = () => API.delete(URL)
 }
