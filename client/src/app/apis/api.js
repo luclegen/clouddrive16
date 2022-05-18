@@ -14,6 +14,7 @@ API.interceptors.response.use(res => res, err => {
     ? alert(typeof err.response?.data === 'object'
       ? JSON.stringify(err.response?.data)
       : err.response?.data || err.response?.statusText)
+    || (err.response.status === 401 && (window.location.href = '/'))
     : console.error(err)
 
   return Promise.reject(err)
