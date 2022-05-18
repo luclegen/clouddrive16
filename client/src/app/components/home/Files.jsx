@@ -51,7 +51,7 @@ export default class Files extends Component {
 
   download = () => window.location.href = process.env.REACT_APP_FILE + this.state.id
 
-  create = () => folderService.create({ name: prompt('Create folder', 'New folder'), path: this.state.path })
+  create = () => foldersService.create({ name: prompt('Create folder', 'New folder'), path: this.state.path })
 
   open = e => {
     const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
