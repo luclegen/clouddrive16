@@ -13,7 +13,7 @@ const codeSchema = new mongoose.Schema({
     default: 3,
     max: 3,
     min: 0,
-    required: 'Times is required',
+    required: 'Attempts is required',
   }, _uid: {
     required: 'User id is required',
     type: mongoose.Schema.Types.ObjectId,
