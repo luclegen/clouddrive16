@@ -22,7 +22,7 @@ module.exports.create = (req, res, next) =>
 
 module.exports.download = (req, res, next) =>
   File.findById(req.params.id)
-    .then(file => res.download(process.env.UPDATES + file._uid + '/files' + file.path + '/' + file.name))
+    .then(file => res.download(process.env.UPLOADS + file._uid + '/files' + file.path + '/' + file.name))
     .catch(err => next(err))
 
 module.exports.read = (req, res, next) =>
@@ -41,7 +41,7 @@ module.exports.update = (req, res, next) =>
               : File.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
                 .then(fileEdited =>
                   fileEdited
-                    ? fs.rename(process.env.UPDATES + req._id + '/files' + (file.path === '/' ? file.path : file.path + '/') + file.name, process.env.UPDATES + req._id + '/files' + (fileEdited.path === '/' ? fileEdited.path : fileEdited.path + '/') + fileEdited.name, err => err) && res.status(200).send({ msg: 'Folder updated.' })
+                    ? fs.rename(process.env.UPLOADS + req._id + '/files' + (file.path === '/' ? file.path : file.path + '/') + file.name, process.env.UPLOADS + req._id + '/files' + (fileEdited.path === '/' ? fileEdited.path : fileEdited.path + '/') + fileEdited.name, err => err) && res.status(200).send({ msg: 'Folder updated.' })
                     : res.status(404).send({ msg: 'File not found.' })
                 )
                 .catch(err => next(err))
@@ -69,7 +69,7 @@ module.exports.deleteForever = (req, res, next) =>
           ? File.findByIdAndDelete(req.params.id)
             .then(file =>
               file
-                ? fs.rm(process.env.UPDATES + req._id + '/files' + (file.path === '/' ? file.path : file.path + '/') + file.name, { recursive: true }, err => err) && res.status(200).send({ msg: 'File permanently deleted.' })
+                ? fs.rm(process.env.UPLOADS + req._id + '/files' + (file.path === '/' ? file.path : file.path + '/') + file.name, { recursive: true }, err => err) && res.status(200).send({ msg: 'File permanently deleted.' })
                 : res.status(404).send({ msg: 'File not found.' }))
             .catch(err => next(err))
           : res.status(403).send({ msg: 'File not in trash.' })

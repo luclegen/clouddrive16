@@ -6,7 +6,7 @@ module.exports.getImages = (dir, callback) => fs.readdir(dir, (err, files) => ca
 module.exports.upload = (root, dir = '') => {
   const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-      const path = [process.env.UPDATES];
+      const path = [process.env.UPLOADS];
 
       path[1] = path[0] + req._id
 

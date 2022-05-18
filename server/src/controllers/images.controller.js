@@ -4,7 +4,7 @@ const transfer = require('../helpers/transfer')
 
 module.exports.read = (req, res, next) => {
   const img = url.parse(req.url, true).query.image
-  const dir = process.env.UPDATES
+  const dir = process.env.UPLOADS
 
   if (typeof img === 'undefined') {
     transfer.getImages(dir, function (err, files) {
