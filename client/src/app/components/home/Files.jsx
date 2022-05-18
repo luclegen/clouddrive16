@@ -13,7 +13,6 @@ export default class Files extends Component {
     this.state = {
       id: '',
       type: '',
-      fullName: '',
       location: '',
       opened: false,
       path: '/',
@@ -112,12 +111,7 @@ export default class Files extends Component {
     helper.setQuery('id', Number.parseInt(e.target.id) === 0 ? 'root' : folder._id)
   }
 
-  componentDidMount = () => {
-    if (helper.loggedIn())
-      usersService.read()
-        .then(res => this.setState({ fullName: res.data.user.fullName }))
-    if (!window.location.search) window.location.search = 'id=root'
-  }
+  componentDidMount = () => !window.location.search && (window.location.search = 'id=root')
 
   componentDidUpdate = () => {
     foldersService.read()
@@ -144,7 +138,7 @@ export default class Files extends Component {
     </ul>
     <nav className="left-nav col-2" id="leftNav">
       <div className="top-left-nav">
-        <label htmlFor="leftNav"><strong>{this.state.fullName}</strong></label>
+        <label htmlFor="leftNav"><strong>{helper.getCookie('firstName') + ' ' + helper.getCookie('lastName')}</strong></label>
       </div>
       <ul className="list-group">
         <li className={`list-group-item-files ${!this.state.location && 'active'}`} onClick={this.return}><i className="material-icons">folder</i> My files</li>
