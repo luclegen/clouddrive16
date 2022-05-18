@@ -62,26 +62,26 @@ class Helper {
   }
 
   getCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
+    var nameEQ = name + "="
+    var ca = document.cookie.split(';')
     for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+      var c = ca[i]
+      while (c.charAt(0) === ' ') c = c.substring(1, c.length)
+      if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length)
     }
-    return null;
+    return null
   }
 
   setCookies = (cookies, expires = 0) => Object.entries(cookies).map(c => document.cookie = c[0] + '=' + c[1] + (expires ? '; Max-Age=' + expires : ''))
 
   setCookie(name, value, ms = 0) {
-    var expires = "";
+    var expires = ""
     if (ms) {
-      var date = new Date();
-      date.setTime(date.getTime() + ms);
-      expires = "; expires=" + date.toUTCString();
+      var date = new Date()
+      date.setTime(date.getTime() + ms)
+      expires = "; expires=" + date.toUTCString()
     }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    document.cookie = name + "=" + (value || "") + expires + "; path=/"
   }
 
   deleteCookie = key => document.cookie = key + '= Max-Age=0'
