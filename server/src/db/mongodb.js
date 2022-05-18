@@ -1,3 +1,4 @@
+const { error, info } = require('console')
 const mongoose = require('mongoose')
 
 mongoose.set('useCreateIndex', true)
@@ -7,8 +8,8 @@ mongoose.set('useFindAndModify', false)
 
 mongoose.connect(process.env.MONGODB)
 
-mongoose.connection.on('error', err => console.error(err))
-mongoose.connection.once('open', () => console.log('Connected to MongoDB'))
+mongoose.connection.on('error', err => error(err))
+mongoose.connection.once('open', () => info('Connected to MongoDB'))
 
 require('../models/user.model')
 require('../models/profile.model')
