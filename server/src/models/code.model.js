@@ -6,7 +6,7 @@ const codeSchema = new mongoose.Schema({
   body: {
     type: String,
     trim: true,
-    required: 'Content is required'
+    required: ' Body is required'
   },
   attempts: {
     type: Number,
