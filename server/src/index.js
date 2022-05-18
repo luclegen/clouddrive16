@@ -1,4 +1,5 @@
 const path = require('path')
+const { info } = require('console')
 const express = require('express')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
@@ -56,4 +57,4 @@ api.use(require('./middlewares/handler'))
 web.use('/api', api)
 
 // Start server
-web.listen(PORT, () => console.log(`Server started at http://localhost:${PORT}`))
+web.listen(PORT, () => info(`Server started at http://localhost:${PORT}`))
