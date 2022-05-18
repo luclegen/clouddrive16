@@ -57,7 +57,7 @@ export default class Login extends Component {
         this.state.password && authService
           .login(this.state)
           .then(res => {
-            helper.setCookie(res.data, this.state.remember ? 365 * 24 * 60 * 60 : 0)
+            helper.setCookies(res.data, this.state.remember ? 365 * 24 * 60 * 60 : 0)
             this.setState(state)
             helper.getCookie('is_activate') === 'false'
               && alert('Your session exists for 5 minutes.')
