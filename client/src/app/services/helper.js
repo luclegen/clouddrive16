@@ -74,6 +74,16 @@ class Helper {
 
   setCookies = (cookies, expires = 0) => Object.entries(cookies).map(c => document.cookie = c[0] + '=' + c[1] + (expires ? '; Max-Age=' + expires : ''))
 
+  setCookie(name, value, ms = 0) {
+    var expires = "";
+    if (ms) {
+      var date = new Date();
+      date.setTime(date.getTime() + ms);
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+  }
+
   deleteCookie = key => document.cookie = key + '= Max-Age=0'
 
   clearCookies = () => document.cookie.split(' ').map(c => c.split('=')).forEach(c => document.cookie = c[0] + '=; Max-Age=0')
