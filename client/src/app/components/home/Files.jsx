@@ -1,6 +1,5 @@
 import { Component } from 'react'
 import helper from '../../services/helper'
-import usersService from '../../services/users'
 import folderService from '../../services/folder'
 import foldersService from '../../services/folders'
 import fileService from '../../services/file'
@@ -148,7 +147,7 @@ export default class Files extends Component {
     <div className="right-content col-10">
       <div className="command-bar shadow-sm">
         <button className="btn-new-folder" onClick={this.create}><i className="material-icons">create_new_folder</i> New</button>
-        <input type="file" id="files" hidden onChange={this.save} />
+        <input type="file" id="files" onChange={this.save} hidden />
         <button className="btn-new-folder" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
       </div>
       <div className="path-bar">
