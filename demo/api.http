@@ -1,6 +1,7 @@
 @baseUrl={{$dotenv API}}
 @email={{$dotenv EMAIL}}
 @password={{$dotenv PASSWORD}}
+@code={{$dotenv CODE}}
 
 # @name available
 GET {{baseUrl}}/auth/l@email.test HTTP/1.1
@@ -16,6 +17,17 @@ Content-Type: application/json
   "email": "{{email}}",
   "password": "{{password}}",
   "remember": false
+}
+
+###
+
+# @name verify
+PUT {{baseUrl}}/auth/ HTTP/1.1
+Content-Type: application/json
+Cookie: {{cookie}}
+
+{
+  "code": "{{code}}"
 }
 
 ###
