@@ -15,6 +15,7 @@ module.exports.create = (req, res, next) => User.findById(req.payload)
       }
 
       code.body = body
+      code.attempts = 3
 
       code.save()
         .then(code => {
