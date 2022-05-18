@@ -14,7 +14,7 @@ module.exports.login = (req, res, next) =>
       ? (req.session.cookie.expires = req.body.remember ? 365 * 24 * 60 * 60 * 1000 : false)
       + (req.session.token = user.sign())
       && res.send({
-        id: user._id,
+        id: user.payload,
         avatar: user.avatar,
         firstName: user.name.first,
         lastName: user.name.last,
@@ -24,27 +24,25 @@ module.exports.login = (req, res, next) =>
   )(req, res)
 
 module.exports.verify = (req, res, next) =>
-  User.findById(req._id)
+  User.findById(req.payload)
     .then(user =>
       user
-        ? user.activated
-          ? res.status(403).send({ msg: 'User verified.' })
-          : Code.findOne({ _userId: req._id })
-            .then(code =>
-              code
-                ? code.times
-                  ? code.verified(req.body.content)
-                    ? User.findByIdAndUpdate(req._id, { $set: { activated: true } }, { new: true })
-                      .then(user => user ? res.status(202).send({ token: user.getToken() }) : res.status(404).send({ msg: 'User not found.' }))
-                      .catch(err => next(err))
-                    : Code.findByIdAndUpdate(code._id, { $set: { times: --code.times } }, { new: true })
-                      .then(code => res.status(403).send({ msg: code.times ? `Wrong code. You have ${code.times} attempts left.` : 'You tried too many. Please try again with a different verification code or change your email again.' }))
-                      .catch(err => next(err))
-                  : res.status(403).send({ msg: 'You tried too many. Please try again with a different verification code or change your email again.' })
-                : res.status(404).send({ msg: 'Code not found.' })
-            )
+        ? user.is_activate
+          ? res.status(403).send('User verified.')
+          : Code.findOne({ _uid: req.payload })
+            .then(async code => code
+              ? code.attempts
+                ? await code.verify(req.body.code)
+                  ? User.findByIdAndUpdate(req.payload, { $set: { is_activate: true } }, { new: true })
+                    .then(user => user ? res.send() : res.status(404).send('User not found.'))
+                    .catch(err => next(err))
+                  : Code.findByIdAndUpdate(code, { $set: { attempts: --code.attempts } }, { new: true })
+                    .then(code => res.status(403).send(code.attempts ? `Wrong code. You have ${code.attempts} attempts left.` : 'You tried too many. Please try again with a different verification code or change your email again.'))
+                    .catch(err => next(err))
+                : res.status(403).send('You tried too many. Please try again with a different verification code or change your email again.')
+              : res.status(404).send('Code not found.'))
             .catch(err => next(err))
-        : res.status(404).send({ msg: 'User not found.' })
+        : res.status(404).send('User not found.')
     )
     .catch(err => next(err))
 
