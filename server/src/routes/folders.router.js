@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const authorize = require('../middlewares/authorize');
-const foldersCtl = require('../controllers/folders.controller')
+const foldersController = require('../controllers/folders.controller')
 
-router.get('/', authorize, foldersCtl.read)
+router.get('/', authorize, foldersController.read)
 
 module.exports = router

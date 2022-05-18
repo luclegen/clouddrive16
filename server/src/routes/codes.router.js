@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const authorize = require('../middlewares/authorize');
-const codeCtl = require('../controllers/codes.controller')
+const codeController = require('../controllers/codes.controller')
 
-router.post('/', authorize, codeCtl.create)
+router.post('/', authorize, codeController.create)
 
 module.exports = router
