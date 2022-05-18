@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const checker = require('../helpers/checker')
 
 const fileSchema = new mongoose.Schema({
-  _userId: {
+  _uid: {
     type: mongoose.Schema.Types.ObjectId,
     required: 'User ID is required',
     ref: 'User'

@@ -8,7 +8,7 @@ module.exports.create = (req, res, next) =>
         JSON.parse(req.body.names).forEach(name => {
           const file = new File()
 
-          file._userId = req._id
+          file._uid = req._id
           file.path = req.body.path
           file.name = name
 
@@ -21,6 +21,6 @@ module.exports.create = (req, res, next) =>
     .catch(err => next(err))
 
 module.exports.read = (req, res, next) =>
-  File.find({ _userId: req._id })
+  File.find({ _uid: req._id })
     .then(files => res.status(201).send({ files: files }))
     .catch(err => next(err))

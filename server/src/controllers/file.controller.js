@@ -3,13 +3,13 @@ const _ = require('lodash')
 const File = require('../models/file.model')
 
 module.exports.create = (req, res, next) =>
-  File.find({ _userId: req._id, name: req.body.name, path: req.body.path })
+  File.find({ _uid: req._id, name: req.body.name, path: req.body.path })
     .then(files => {
       if (files.length) res.status(422).send({ msg: 'File is duplicate. Please choose another file.' })
       else {
         const file = new File()
 
-        file._userId = req._id
+        file._uid = req._id
         file.path = req.body.path
         file.name = req.body.name
 
@@ -22,7 +22,7 @@ module.exports.create = (req, res, next) =>
 
 module.exports.download = (req, res, next) =>
   File.findById(req.params.id)
-    .then(file => res.download(process.env.UPDATES + file._userId + '/files' + file.path + '/' + file.name))
+    .then(file => res.download(process.env.UPDATES + file._uid + '/files' + file.path + '/' + file.name))
     .catch(err => next(err))
 
 module.exports.read = (req, res, next) =>
@@ -34,7 +34,7 @@ module.exports.update = (req, res, next) =>
   req.body.name
     ? File.findById(req.params.id)
       .then(file =>
-        File.find({ _userId: req._id, name: req.body.name, path: file.path })
+        File.find({ _uid: req._id, name: req.body.name, path: file.path })
           .then(files =>
             files.length
               ? res.status(422).send({ msg: 'You already have a file in the current path. Please a different name.' })
