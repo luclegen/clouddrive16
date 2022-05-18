@@ -54,19 +54,12 @@ export default class Activate extends Component {
 
   isSubmit = () => '0'.repeat(6).split('').map((v, i) => v = document.querySelectorAll('.form-control-digit')[i].value).filter(v => helper.isDigit(v)).length === 6
 
-  onSubmit = e => {
-    e.preventDefault()
-
-    authService.verify({ content: Array.from(document.querySelectorAll('.form-control-digit')).map(e => e.value).join('') })
-      .then(res => {
-        helper.setToken(res.data.token)
-        window.location.reload()
-      })
-      .catch(() => {
-        document.querySelector('.form-only').reset()
-        document.querySelector('.form-control-digit').focus()
-      })
-  }
+  onSubmit = e => e.preventDefault() || authService.verify({ code: Array.from(document.querySelectorAll('.form-control-digit')).map(e => e.value).join('') })
+    .then(() => window.location.reload())
+    .catch(() => {
+      document.querySelector('.form-only').reset()
+      document.querySelector('.form-control-digit').focus()
+    })
 
   render = () => <section className="section-only">
     <form className="form-only" onSubmit={this.onSubmit}>
