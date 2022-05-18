@@ -60,7 +60,7 @@ userSchema.methods.authenticate = async function (password) {
 }
 
 userSchema.methods.sign = function () {
-  return jwt.sign({ _id: this._id, username: this.username, is_activate: this.is_activate }, process.env.SECRET, this.activated ? {} : { expiresIn: process.env.EXP })
+  return jwt.sign({ _id: this._id, username: this.username, is_activate: this.is_activate }, process.env.SECRET, this.is_activate ? {} : { expiresIn: process.env.EXP })
 }
 
 //#endregion Methods
