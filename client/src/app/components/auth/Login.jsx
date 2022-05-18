@@ -67,7 +67,7 @@ export default class Login extends Component {
     }
   }
 
-  componentDidUpdate = () => window.onbeforeunload = () => this.state.email || this.password ? true : undefined
+  componentDidUpdate = () => window.onbeforeunload = () => this.state.email || this.state.password ? true : undefined
 
   render = () => <section className="section-only">
     <form className="form-only" onSubmit={this.onSubmit}>
