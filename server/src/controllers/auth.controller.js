@@ -14,7 +14,7 @@ module.exports.login = (req, res, next) =>
       ? (req.session.cookie.expires = req.body.remember ? 365 * 24 * 60 * 60 * 1000 : false)
       + (req.session.token = user.sign())
       && res.send({
-        id: user.payload,
+        id: user._id,
         avatar: user.avatar,
         firstName: user.name.first,
         lastName: user.name.last,
@@ -34,7 +34,7 @@ module.exports.verify = (req, res, next) =>
               ? code.attempts
                 ? await code.verify(req.body.code)
                   ? User.findByIdAndUpdate(req.payload, { $set: { is_activate: true } }, { new: true })
-                    .then(user => user ? res.send() : res.status(404).send('User not found.'))
+                    .then(user => user ? (req.session.token = user.sign()) && res.send() : res.status(404).send('User not found.'))
                     .catch(err => next(err))
                   : Code.findByIdAndUpdate(code, { $set: { attempts: --code.attempts } }, { new: true })
                     .then(code => res.status(403).send(code.attempts ? `Wrong code. You have ${code.attempts} attempts left.` : 'You tried too many. Please try again with a different verification code or change your email again.'))
