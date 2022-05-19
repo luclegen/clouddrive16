@@ -7,6 +7,8 @@ class FoldersService {
 
   update = (id, folder) => API.put(`${URL}${id}`, folder)
 
+  delete = id => API.patch(`${URL}${id}`)
+
   list = () => API.get(URL)
 }
 
