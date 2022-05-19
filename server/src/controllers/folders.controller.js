@@ -58,6 +58,11 @@ module.exports.delete = (req, res, next) =>
     .then(folder => folder ? res.status(200).send() : res.status(404).send('Folder not found.'))
     .catch(err => next(err))
 
+module.exports.restore = (req, res, next) =>
+  Folder.findByIdAndUpdate(req.params.id, { $set: { is_trash: false } }, { new: true })
+    .then(folder => folder ? res.send() : res.status(404).send('Folder not found.'))
+    .catch(err => next(err))
+
 module.exports.list = (req, res, next) =>
   Folder.find({ _uid: req.payload })
     .then(folders => res.send(folders))
