@@ -30,7 +30,7 @@ export default class Files extends Component {
     .then(res => {
       const folders = res.data.filter(f => helper.getQuery('location') === 'trash' ? f.is_trash : !f.is_trash)
       const folder = helper.getQuery('id') === 'root' ? { path: '/', name: '' } : res.data.find(f => f._id === helper.getQuery('id'))
-      const path = folder.name === '' ? '/' : folder.path === '/' ? folder.path + folder.name : folder.path + '/' + folder.name
+      const path = folder?.name === '' ? '/' : folder?.path === '/' ? folder?.path + folder?.name : folder?.path + '/' + folder?.name
 
       this.setState({ folders: folders, items: folders.filter(f => f.path === path), path: path })
       // filesService.read()
@@ -61,7 +61,7 @@ export default class Files extends Component {
 
   create = () => foldersService.create({ name: prompt('Create folder', 'New folder'), path: this.state.path })
 
-  open = (e, folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)) => this.refresh() && helper.setQuery('id', folder._id) && this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder.name })
+  open = (e, folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)) => this.refresh() && helper.setQuery('id', folder?._id) && this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder?.name })
 
   rename = () => this.state.type === 'folder'
     ? foldersService
@@ -116,7 +116,7 @@ export default class Files extends Component {
     const path = index === 1 ? '/' : this.state.path.split('/').slice(0, index).join('/')
     const folder = this.state.folders.find(f => f.path === path)
     this.setState({ path: path ? path : '/' })
-    helper.setQuery('id', Number.parseInt(e.target.id) === 0 ? 'root' : folder._id)
+    helper.setQuery('id', Number.parseInt(e.target.id) === 0 ? 'root' : folder?._id)
   }
 
   componentDidMount = () => this.refresh() && !window.location.search && (window.location.search = 'id=root')
