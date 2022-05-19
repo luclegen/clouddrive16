@@ -5,6 +5,8 @@ const URL = `${process.env.REACT_APP_API}/folders/`
 class FoldersService {
   create = folder => API.post(URL, folder)
 
+  update = (id, folder) => API.put(`${URL}${id}`, folder)
+
   list = () => API.get(URL)
 }
 
