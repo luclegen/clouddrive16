@@ -117,9 +117,10 @@ export default class Files extends Component {
   access = e => {
     const index = Number.parseInt(e.target.id)
     const path = index === 1 ? '/' : this.state.path.split('/').slice(0, index).join('/')
-    const folder = this.state.folders.find(f => f.path === path)
+    const folder = this.state.folders.find(f => f.path === path && f.name === this.state.path.split('/')[index])
     this.setState({ path: path ? path : '/' })
     helper.setQuery('id', Number.parseInt(e.target.id) === 0 ? 'root' : folder?._id)
+    this.refresh()
   }
 
   componentDidMount = () => this.refresh() && !window.location.search && (window.location.search = 'id=root')
