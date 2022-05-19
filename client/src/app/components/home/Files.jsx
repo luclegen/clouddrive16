@@ -132,7 +132,7 @@ export default class Files extends Component {
     </ul>
     <nav className="left-nav col-2" id="leftNav">
       <div className="top-left-nav">
-        <label htmlFor="leftNav"><strong>{helper.getCookie('firstName') + ' ' + helper.getCookie('lastName')}</strong></label>
+        <label htmlFor="leftNav"><strong>{helper.getCookie('first_name') + ' ' + helper.getCookie('last_name')}</strong></label>
       </div>
       <ul className="list-group">
         <li className={`list-group-item-files ${!this.state.location && 'active'}`} onClick={this.return}><i className="material-icons">folder</i> My files</li>

@@ -5,8 +5,8 @@ import authService from '../../services/auth'
 import usersService from '../../services/users'
 
 const state = {
-  firstName: '',
-  lastName: '',
+  first_name: '',
+  last_name: '',
   email: '',
   password: '',
   confirm: '',
@@ -71,8 +71,8 @@ export default class Register extends Component {
     this.setState({ submitted: true })
 
     if (this.state.password === this.state.confirm &&
-      this.state.firstName &&
-      this.state.lastName &&
+      this.state.first_name &&
+      this.state.last_name &&
       this.state.email &&
       this.state.password &&
       this.state.confirm &&
@@ -93,7 +93,7 @@ export default class Register extends Component {
     }
   }
 
-  componentDidUpdate = () => window.onbeforeunload = () => this.state.firstName || this.state.lastName || this.state.email || this.state.password || this.state.day || this.state.month || this.state.year || this.state.sex ? true : undefined
+  componentDidUpdate = () => window.onbeforeunload = () => this.state.first_name || this.state.last_name || this.state.email || this.state.password || this.state.day || this.state.month || this.state.year || this.state.sex ? true : undefined
 
   render = () => <section className="section-register">
     <form className="form-register" onSubmit={this.onSubmit}>
@@ -102,12 +102,12 @@ export default class Register extends Component {
       </button>
       <h1 className="h1-register">Sign Up</h1>
       <div className="form-row">
-        <div className={`form-floating col-md-6 ${this.state.firstName && 'float'}`}>
-          <input className={`form-control ${this.state.firstName && (helper.isFirstName(this.state.firstName) ? 'is-valid' : 'is-invalid')}`} id="firstNameRegister" name="firstName" type="text" pattern={helper.firstNamePattern} onInput={this.enterFirstName} onInvalid={this.enterFirstName} onChange={this.setValue} required />
+        <div className={`form-floating col-md-6 ${this.state.first_name && 'float'}`}>
+          <input className={`form-control ${this.state.first_name && (helper.isFirstName(this.state.first_name) ? 'is-valid' : 'is-invalid')}`} id="firstNameRegister" name="first_name" type="text" pattern={helper.firstNamePattern} onInput={this.enterFirstName} onInvalid={this.enterFirstName} onChange={this.setValue} required />
           <label htmlFor="firstNameRegister">First name</label>
         </div>
-        <div className={`form-floating col-md-6 ${this.state.lastName && 'float'}`}>
-          <input className={`form-control ${this.state.lastName && (helper.isLastName(this.state.lastName) ? 'is-valid' : 'is-invalid')}`} id="lastNameRegister" name="lastName" type="text" pattern={helper.lastNamePattern} onInput={this.enterLastName} onInvalid={this.enterLastName} onChange={this.setValue} required />
+        <div className={`form-floating col-md-6 ${this.state.last_name && 'float'}`}>
+          <input className={`form-control ${this.state.last_name && (helper.isLastName(this.state.last_name) ? 'is-valid' : 'is-invalid')}`} id="lastNameRegister" name="last_name" type="text" pattern={helper.lastNamePattern} onInput={this.enterLastName} onInvalid={this.enterLastName} onChange={this.setValue} required />
           <label htmlFor="lastNameRegister">Last name</label>
         </div>
       </div>
