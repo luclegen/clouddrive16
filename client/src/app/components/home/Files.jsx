@@ -26,6 +26,20 @@ export default class Files extends Component {
     }
   }
 
+  refresh = () => foldersService.list()
+    .then(res => {
+      const folders = res.data.filter(f => helper.getQuery('location') === 'trash' ? f.inTrash : !f.inTrash)
+      const folder = helper.getQuery('id') === 'root' ? { path: '/', name: '' } : res.data.find(f => f._id === helper.getQuery('id'))
+      const path = folder.name === '' ? '/' : folder.path === '/' ? folder.path + folder.name : folder.path + '/' + folder.name
+
+      this.setState({ folders: folders, items: folders.filter(f => f.path === path), path: path })
+      // filesService.read()
+      //   .then(res => {
+      //     const files = res.data.files.filter(f => helper.getQuery('location') === 'trash' ? f.inTrash : !f.inTrash)
+      //     this.setState({ files: files, itemFiles: files.filter(f => f.path === path) })
+      //   })
+    })
+
   return = () => {
     helper.deleteQuery('location')
     this.setState({ location: '' })
@@ -110,23 +124,7 @@ export default class Files extends Component {
     helper.setQuery('id', Number.parseInt(e.target.id) === 0 ? 'root' : folder._id)
   }
 
-  componentDidMount = () => !window.location.search && (window.location.search = 'id=root')
-
-  componentDidUpdate = () => {
-    foldersService.read()
-      .then(res => {
-        const folders = res.data.folders.filter(f => helper.getQuery('location') === 'trash' ? f.inTrash : !f.inTrash)
-        const folder = helper.getQuery('id') === 'root' ? { path: '/', name: '' } : res.data.folders.find(f => f._id === helper.getQuery('id'))
-        const path = folder.name === '' ? '/' : folder.path === '/' ? folder.path + folder.name : folder.path + '/' + folder.name
-
-        this.setState({ folders: folders, items: folders.filter(f => f.path === path), path: path })
-        filesService.read()
-          .then(res => {
-            const files = res.data.files.filter(f => helper.getQuery('location') === 'trash' ? f.inTrash : !f.inTrash)
-            this.setState({ files: files, itemFiles: files.filter(f => f.path === path) })
-          })
-      })
-  }
+  componentDidMount = () => this.refresh() && !window.location.search && (window.location.search = 'id=root')
 
   render = () => <section className="section-files" onClick={this.clickOut} >
     <ul className="dropdown-menu-folder">
