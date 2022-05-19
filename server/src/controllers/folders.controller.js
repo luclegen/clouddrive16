@@ -30,7 +30,7 @@ module.exports.create = (req, res, next) =>
     })
     .catch(err => next(err))
 
-module.exports.read = (req, res, next) =>
-  Folder.find({ _uid: req._id })
-    .then(folders => res.status(201).send({ folders: folders }))
+module.exports.list = (req, res, next) =>
+  Folder.find({ _uid: req.payload })
+    .then(folders => res.send(folders))
     .catch(err => next(err))
