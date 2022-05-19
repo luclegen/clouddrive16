@@ -28,14 +28,14 @@ export default class Files extends Component {
 
   refresh = () => foldersService.list()
     .then(res => {
-      const folders = res.data.filter(f => helper.getQuery('location') === 'trash' ? f.inTrash : !f.inTrash)
+      const folders = res.data.filter(f => helper.getQuery('location') === 'trash' ? f.is_trash : !f.is_trash)
       const folder = helper.getQuery('id') === 'root' ? { path: '/', name: '' } : res.data.find(f => f._id === helper.getQuery('id'))
       const path = folder.name === '' ? '/' : folder.path === '/' ? folder.path + folder.name : folder.path + '/' + folder.name
 
       this.setState({ folders: folders, items: folders.filter(f => f.path === path), path: path })
       // filesService.read()
       //   .then(res => {
-      //     const files = res.data.files.filter(f => helper.getQuery('location') === 'trash' ? f.inTrash : !f.inTrash)
+      //     const files = res.data.files.filter(f => helper.getQuery('location') === 'trash' ? f.is_trash : !f.is_trash)
       //     this.setState({ files: files, itemFiles: files.filter(f => f.path === path) })
       //   })
     })
