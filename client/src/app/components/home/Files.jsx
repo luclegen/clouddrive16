@@ -40,15 +40,9 @@ export default class Files extends Component {
       //   })
     })
 
-  return = () => {
-    helper.deleteQuery('location')
-    this.setState({ location: '' })
-  }
+  return = () => helper.deleteQuery('location') || (this.refresh() && this.setState({ location: '' }))
 
-  setTrash = () => {
-    helper.setQuery('location', 'trash')
-    this.setState({ location: 'trash' })
-  }
+  setTrash = () => helper.setQuery('location', 'trash') || (this.refresh() && this.setState({ location: 'trash' }))
 
   save = e => {
     const formData = new FormData()
