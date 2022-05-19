@@ -1,4 +1,5 @@
 const fs = require('fs')
+const _ = require('lodash')
 const Folder = require('../models/folder.model')
 
 module.exports.create = (req, res, next) =>
@@ -28,6 +29,11 @@ module.exports.create = (req, res, next) =>
           .catch(err => next(err))
       }
     })
+    .catch(err => next(err))
+
+module.exports.read = (req, res, next) =>
+  Folder.findById(req.params.id)
+    .then(folder => res.send(_.pick(folder, ['path', 'name', 'is_trash'])))
     .catch(err => next(err))
 
 module.exports.list = (req, res, next) =>
