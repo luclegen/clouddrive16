@@ -2,7 +2,7 @@
 @email={{$dotenv EMAIL}}
 @password={{$dotenv PASSWORD}}
 @code={{$dotenv CODE}}
-
+@id={{$dotenv ID}}
 # @name available
 GET {{baseUrl}}/auth/l@email.test HTTP/1.1
 Content-Type: application/json
@@ -87,7 +87,7 @@ Cookie: {{cookie}}
 ###
 
 # @name readFolder
-GET {{baseUrl}}/folders/6284c2d22cde87a4e5a27da2 HTTP/1.1
+GET {{baseUrl}}/folders/{{id}} HTTP/1.1
 Content-Type: application/json
 Cookie: {{cookie}}
 
