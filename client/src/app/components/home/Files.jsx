@@ -74,7 +74,9 @@ export default class Files extends Component {
   delete = () =>
     this.state.type === 'folder'
       ? helper.getQuery('location') === 'trash'
-        ? folderService.deleteForever(this.state.id)
+        ? foldersService
+          .deleteForever(this.state.id)
+          .then(() => this.refresh())
         : foldersService
           .delete(this.state.id)
           .then(() => this.refresh())
