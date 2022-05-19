@@ -76,7 +76,9 @@ export default class Files extends Component {
 
   rename = () => {
     this.state.type === 'folder'
-      ? folderService.update(this.state.id, { name: prompt('Rename folder', this.state.name) })
+      ? foldersService
+        .update(this.state.id, { name: prompt('Rename folder', this.state.name) })
+        .then(() => this.refresh())
       : fileService.update(this.state.id, { name: prompt('Rename file', this.state.name) })
   }
 
