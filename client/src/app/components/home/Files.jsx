@@ -74,13 +74,11 @@ export default class Files extends Component {
     helper.setQuery('id', folder._id)
   }
 
-  rename = () => {
-    this.state.type === 'folder'
-      ? foldersService
-        .update(this.state.id, { name: prompt('Rename folder', this.state.name) })
-        .then(() => this.refresh())
-      : fileService.update(this.state.id, { name: prompt('Rename file', this.state.name) })
-  }
+  rename = () => this.state.type === 'folder'
+    ? foldersService
+      .update(this.state.id, { name: prompt('Rename folder', this.state.name) })
+      .then(() => this.refresh())
+    : fileService.update(this.state.id, { name: prompt('Rename file', this.state.name) })
 
   delete = () =>
     this.state.type === 'folder'
