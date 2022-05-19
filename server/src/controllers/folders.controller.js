@@ -63,6 +63,22 @@ module.exports.restore = (req, res, next) =>
     .then(folder => folder ? res.send() : res.status(404).send('Folder not found.'))
     .catch(err => next(err))
 
+module.exports.deleteForever = (req, res, next) =>
+  Folder.findById(req.params.id)
+    .then(folder =>
+      folder
+        ? folder.is_trash
+          ? Folder.findByIdAndDelete(req.params.id)
+            .then(folder => folder
+              ? fs.rm(process.env.UPLOADS + req._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name, { recursive: true }, err => err)
+              || res.send()
+              : res.status(404).send('Folder not found.'))
+            .catch(err => next(err))
+          : res.status(403).send('Folder isn\'t trash.')
+        : res.status(404).send('Folder not found.')
+    )
+    .catch(err => next(err))
+
 module.exports.list = (req, res, next) =>
   Folder.find({ _uid: req.payload })
     .then(folders => res.send(folders))
