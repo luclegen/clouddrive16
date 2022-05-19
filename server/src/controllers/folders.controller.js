@@ -36,6 +36,23 @@ module.exports.read = (req, res, next) =>
     .then(folder => res.send(_.pick(folder, ['path', 'name', 'is_trash'])))
     .catch(err => next(err))
 
+module.exports.update = (req, res, next) => req.body.name
+  ? Folder.findById(req.params.id)
+    .then(folder =>
+      Folder.find({ _uid: req.payload, name: req.body.name, path: folder.path })
+        .then(folders =>
+          folders.length
+            ? res.status(422).send('You already have a folder in the current path. Please a different name.')
+            : Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
+              .then(folderEdited =>
+                folderEdited
+                  ? fs.rename(process.env.UPLOADS + req.payload._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name, process.env.UPLOADS + req.payload._id + '/files' + (folderEdited.path === '/' ? folderEdited.path : folderEdited.path + '/') + folderEdited.name, err => err) || res.send()
+                  : res.status(404).send('Folder not found.'))
+              .catch(err => next(err)))
+        .catch(err => next(err)))
+    .catch(err => next(err))
+  : res.status(403).send('Name is required.')
+
 module.exports.list = (req, res, next) =>
   Folder.find({ _uid: req.payload })
     .then(folders => res.send(folders))
