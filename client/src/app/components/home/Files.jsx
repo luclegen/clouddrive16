@@ -85,7 +85,11 @@ export default class Files extends Component {
         ? fileService.deleteForever(this.state.id)
         : fileService.delete(this.state.id)
 
-  restore = () => this.state.type === 'folder' ? folderService.restore(this.state.id) : fileService.restore(this.state.id)
+  restore = () => this.state.type === 'folder'
+    ? foldersService
+      .restore(this.state.id)
+      .then(() => this.refresh())
+    : fileService.restore(this.state.id)
 
   choose = e => {
     e.preventDefault()
