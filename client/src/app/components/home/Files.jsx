@@ -1,6 +1,5 @@
 import { Component } from 'react'
 import helper from '../../services/helper'
-import folderService from '../../services/folder'
 import foldersService from '../../services/folders'
 import fileService from '../../services/file'
 import filesService from '../../services/files'

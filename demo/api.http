@@ -118,6 +118,13 @@ Cookie: {{cookie}}
 
 ###
 
+# @name deleteForeverFolder
+DELETE {{baseUrl}}/folders/{{id}} HTTP/1.1
+Content-Type: application/json
+Cookie: {{cookie}}
+
+###
+
 # @name listFolders
 GET {{baseUrl}}/folders/ HTTP/1.1
 Content-Type: application/json
