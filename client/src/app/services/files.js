@@ -1,11 +1,11 @@
-import PR from '../apis/private'
+import API from '../apis/api'
 
-const URL = `${process.env.REACT_APP_API}files/`
+const URL = `${process.env.REACT_APP_API}/files/`
 
 class FilesService {
-  create = files => PR.post(URL, files)
+  create = files => API.post(URL, files)
 
-  read = () => PR.get(URL)
+  read = () => API.get(URL)
 }
 
 export default new FilesService()
