@@ -1,19 +1,19 @@
 const File = require('../models/file.model')
 
 module.exports.create = (req, res, next) =>
-  File.find({ name: req.body.name, path: req.body.path })
+  File.find({ _uid: req.payload, name: req.body.name, path: req.body.path })
     .then(files => {
-      if (files.length) res.status(422).send({ msg: 'File is duplicate. Please choose another file.' })
+      if (files.length) res.status(422).send('File is duplicate. Please choose another file.')
       else {
         JSON.parse(req.body.names).forEach(name => {
           const file = new File()
 
-          file._uid = req._id
+          file._uid = req.payload
           file.path = req.body.path
           file.name = name
 
           file.save()
-            .then(() => res.status(201).send({ msg: 'File created.' }))
+            .then(() => res.status(201).send())
             .catch(err => next(err))
         })
       }

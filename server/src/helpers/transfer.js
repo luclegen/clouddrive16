@@ -8,7 +8,7 @@ module.exports.upload = (root, dir = '') => {
     destination: (req, file, callback) => {
       const path = [process.env.UPLOADS];
 
-      path[1] = path[0] + req._id
+      path[1] = path[0] + req.payload._id
 
       switch (dir) {
         case 'files':
@@ -21,7 +21,7 @@ module.exports.upload = (root, dir = '') => {
 
       callback(null, path[path.length - 1])
     },
-    filename: (req, file, callback) => callback(null, `${file.originalname}`)
+    filename: (req, file, callback) => callback(null, `${file.originalName}`)
   });
 
   return multer({ storage: storage });
