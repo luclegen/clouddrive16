@@ -145,8 +145,8 @@ export default class Files extends Component {
     <div className="right-content col-10">
       <div className="command-bar shadow-sm">
         <button className="btn-new-folder" onClick={this.create}><i className="material-icons">create_new_folder</i> New</button>
-        <input type="file" id="files" onChange={this.save} hidden />
-        <button className="btn-new-folder" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
+        <input type="file" id="files" onChange={this.save} multiple hidden />
+        <button className="btn-new-file" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
       </div>
       <div className="path-bar">
         {this.state.path === '/' ? <strong>My files</strong> : this.state.path.split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
