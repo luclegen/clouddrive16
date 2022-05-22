@@ -1,4 +1,6 @@
 import { Component } from 'react'
+import mime from 'mime-types'
+import API from '../../apis/api'
 import helper from '../../services/helper'
 import foldersService from '../../services/folders'
 import fileService from '../../services/file'
@@ -58,7 +60,9 @@ export default class Files extends Component {
 
   upload = () => document.getElementById("files").click()
 
-  download = () => window.location.href = process.env.REACT_APP_FILE + this.state.id
+  download = () => API
+    .get(`${process.env.REACT_APP_API}/files/d/` + this.state.id, { responseType: 'arraybuffer', headers: { 'Accept': mime.lookup(this.state.name) } })
+    .then(res => helper.downloadBlob(res.data, this.state.name))
 
   create = () => foldersService
     .create({ name: prompt('Create folder', 'New folder'), path: this.state.path })
