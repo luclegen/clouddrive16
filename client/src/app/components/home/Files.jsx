@@ -31,13 +31,13 @@ export default class Files extends Component {
       const folder = helper.getQuery('id') === 'root' ? { path: '/', name: '' } : res.data.find(f => f._id === helper.getQuery('id'))
       const path = folder?.name === '' ? '/' : folder?.path === '/' ? folder?.path + folder?.name : folder?.path + '/' + folder?.name
 
-      this.setState({ folders: folders, items: folders.filter(f => f.path === path), path: path })
+      this.setState({ folders: folders, items: helper.getQuery('location') === 'trash' ? folders : folders.filter(f => f.path === path), path: path })
 
       filesService.list()
         .then(res => {
           const files = res.data.filter(f => helper.getQuery('location') === 'trash' ? f.is_trash : !f.is_trash)
 
-          this.setState({ files: files, itemFiles: files.filter(f => f.path === path) })
+          this.setState({ files: files, itemFiles: helper.getQuery('location') === 'trash' ? files : files.filter(f => f.path === path) })
         })
     })
 
