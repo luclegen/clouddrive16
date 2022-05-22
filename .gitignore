@@ -105,3 +105,6 @@ dist
 
 # Temporary directory
 tmp/
+
+# Uploads directory
+uploads/
