@@ -150,9 +150,11 @@ export default class Files extends Component {
         <input type="file" id="files" onChange={this.save} multiple hidden />
         <button className="btn-new-file" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
       </div>
-      {helper.getQuery('location') !== 'trash' && <div className="path-bar">
-        {this.state.path === '/' ? <strong>My files</strong> : this.state.path.split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
-      </div>}
+      {helper.getQuery('location') === 'trash'
+        ? <div className="space-bar"></div>
+        : <div className="path-bar">
+          {this.state.path === '/' ? <strong>My files</strong> : this.state.path.split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
+        </div>}
       <ul className="ls-folder">
         {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} onClick={this.open} onContextMenu={this.choose}>
           <img className="bg-folder" src="svg/lg-bg.svg" alt="background folder" />
