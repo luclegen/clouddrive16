@@ -32,11 +32,13 @@ export default class Files extends Component {
       const path = folder?.name === '' ? '/' : folder?.path === '/' ? folder?.path + folder?.name : folder?.path + '/' + folder?.name
 
       this.setState({ folders: folders, items: folders.filter(f => f.path === path), path: path })
-      // filesService.read()
-      //   .then(res => {
-      //     const files = res.data.files.filter(f => helper.getQuery('location') === 'trash' ? f.is_trash : !f.is_trash)
-      //     this.setState({ files: files, itemFiles: files.filter(f => f.path === path) })
-      //   })
+
+      filesService.list()
+        .then(res => {
+          const files = res.data.filter(f => helper.getQuery('location') === 'trash' ? f.is_trash : !f.is_trash)
+
+          this.setState({ files: files, itemFiles: files.filter(f => f.path === path) })
+        })
     })
 
   return = () => helper.deleteQuery('location') || (this.refresh() && this.setState({ location: '' }))
@@ -51,7 +53,7 @@ export default class Files extends Component {
     Array.from(e.target.files).forEach(file => names.push(file.name) && formData.append("files", file, file.name))
     formData.append("names", JSON.stringify(names))
 
-    filesService.create(formData)
+    filesService.create(formData).then(() => this.refresh())
   }
 
   upload = () => document.getElementById("files").click()
@@ -158,8 +160,8 @@ export default class Files extends Component {
           {helper.isImages(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="foreground folder" onContextMenu={this.choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="foreground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
-        {this.state.itemFiles.map((v, i, a) => <li className="li-file" key={i} id={v._id} name={v.name} onContextMenu={this.choose}>
-          {helper.isImage(v.name) ? <img className="bg-img" src={`${process.env.REACT_APP_IMAGES}${helper.getPayload()._id}/files/${v.path}/${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
+        {this.state.itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} onContextMenu={this.choose}>
+          {/* {helper.isImage(v.name) ? <img className="bg-img" src={`${process.env.REACT_APP_IMAGES}${helper.getPayload()._id}/files/${v.path}/${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>} */}
           <label className="label-file" htmlFor={`folder${i}`}>{v.name}</label>
         </li>)}
       </ul>
