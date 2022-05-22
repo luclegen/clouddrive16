@@ -64,7 +64,7 @@ export default class Files extends Component {
     .create({ name: prompt('Create folder', 'New folder'), path: this.state.path })
     .then(() => this.refresh())
 
-  open = (e, folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)) => this.refresh() && helper.setQuery('id', folder?._id) && this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder?.name })
+  open = (e, folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)) => helper.getQuery('location') !== 'trash' && this.refresh() && helper.setQuery('id', folder?._id) && this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder?.name })
 
   rename = () => this.state.type === 'folder'
     ? foldersService
@@ -150,9 +150,9 @@ export default class Files extends Component {
         <input type="file" id="files" onChange={this.save} multiple hidden />
         <button className="btn-new-file" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
       </div>
-      <div className="path-bar">
+      {helper.getQuery('location') !== 'trash' && <div className="path-bar">
         {this.state.path === '/' ? <strong>My files</strong> : this.state.path.split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
-      </div>
+      </div>}
       <ul className="ls-folder">
         {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} onClick={this.open} onContextMenu={this.choose}>
           <img className="bg-folder" src="svg/lg-bg.svg" alt="background folder" />
