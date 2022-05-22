@@ -20,7 +20,7 @@ module.exports.create = (req, res, next) =>
     })
     .catch(err => next(err))
 
-module.exports.read = (req, res, next) =>
-  File.find({ _uid: req._id })
-    .then(files => res.status(201).send({ files: files }))
+module.exports.list = (req, res, next) =>
+  File.find({ _uid: req.payload })
+    .then(files => res.status(201).send(files))
     .catch(err => next(err))
