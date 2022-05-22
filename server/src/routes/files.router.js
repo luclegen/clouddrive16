@@ -3,7 +3,7 @@ const authorize = require('../middlewares/authorize');
 const transfer = require('../helpers/transfer')
 const filesController = require('../controllers/files.controller')
 
-router.post('/', authorize, transfer.upload(process.env.FILES, 'files').array('files'), filesController.create)
-router.get('/', authorize, filesController.read)
+router.post('/', authorize, transfer.upload('files').array('files'), filesController.create)
+router.get('/', authorize, filesController.list)
 
 module.exports = router
