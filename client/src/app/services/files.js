@@ -7,6 +7,8 @@ class FilesService {
 
   read = id => API.get(`${URL}${id}`)
 
+  update = (id, file) => API.put(`${URL}${id}`, file)
+
   list = () => API.get(URL)
 }
 
