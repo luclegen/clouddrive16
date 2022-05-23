@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import mime from 'mime-types'
+import { Progress } from 'reactstrap'
 import API from '../../apis/api'
 import helper from '../../services/helper'
 import foldersService from '../../services/folders'
@@ -24,6 +25,7 @@ export default class Files extends Component {
       ready: false,
       files: [],
       itemFiles: [],
+      percent: 0,
     }
   }
 
@@ -55,7 +57,20 @@ export default class Files extends Component {
     Array.from(e.target.files).forEach(file => names.push(file.name) && formData.append("files", file, file.name))
     formData.append("names", JSON.stringify(names))
 
-    filesService.create(formData).then(() => this.refresh())
+    API
+      .post(`${process.env.REACT_APP_API}/files/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        },
+        onUploadProgress: data => this.setState({ percent: Math.round(100 * (data.loaded / data.total)) }),
+      })
+      .then(() => this.refresh() && this.setState({ percent: 0 }))
+      .catch(err => err.response
+        ? alert(typeof err.response?.data === 'object'
+          ? JSON.stringify(err.response?.data)
+          : err.response?.data || err.response?.statusText)
+        || (err.response.status === 401 && (window.location.href = '/'))
+        : console.error(err))
   }
 
   upload = () => document.getElementById("files").click()
@@ -154,6 +169,7 @@ export default class Files extends Component {
         <input type="file" id="files" onChange={this.save} multiple hidden />
         <button className="btn-new-file" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
       </div>
+      {Boolean(this.state.percent) && < Progress value={this.state.percent} />}
       {helper.getQuery('location') === 'trash'
         ? <div className="space-bar"></div>
         : <div className="path-bar">
