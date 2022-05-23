@@ -4,7 +4,6 @@ import { Progress } from 'reactstrap'
 import API from '../../apis/api'
 import helper from '../../services/helper'
 import foldersService from '../../services/folders'
-import fileService from '../../services/file'
 import filesService from '../../services/files'
 
 export default class Files extends Component {
@@ -113,7 +112,9 @@ export default class Files extends Component {
           .delete(this.state.id)
           .then(() => this.refresh())
       : helper.getQuery('location') === 'trash'
-        ? fileService.deleteForever(this.state.id)
+        ? filesService
+          .deleteForever(this.state.id)
+          .then(() => this.refresh())
         : filesService
           .delete(this.state.id)
           .then(() => this.refresh())
