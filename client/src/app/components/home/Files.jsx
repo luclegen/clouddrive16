@@ -76,13 +76,11 @@ export default class Files extends Component {
   upload = () => document.getElementById("files").click()
 
   download = () => API
-    .get(`${process.env.REACT_APP_API}/files/d/` + this.state.id,
-      {
-        responseType: 'arraybuffer',
-        headers: { 'Accept': mime.lookup(this.state.name) },
-        onDownloadProgress: data => this.setState({ percent: Math.round(100 * (data.loaded / data.total)) })
-      },
-    )
+    .get(`${process.env.REACT_APP_API}/files/d/` + this.state.id, {
+      responseType: 'arraybuffer',
+      headers: { 'Accept': mime.lookup(this.state.name) },
+      onDownloadProgress: data => this.setState({ percent: Math.round(100 * (data.loaded / data.total)) })
+    })
     .then(res => helper.downloadBlob(res.data, this.state.name) || this.setState({ percent: 0 }))
     .catch(err => err.response
       ? alert(typeof err.response?.data === 'object'
@@ -190,7 +188,7 @@ export default class Files extends Component {
       <ul className="ls-folder">
         {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} onClick={this.open} onContextMenu={this.choose}>
           <img className="bg-folder" src="svg/lg-bg.svg" alt="background folder" />
-          {helper.isImages(this.state.files, v) ? <img className="img" src={`${process.env.REACT_APP_IMAGES}${helper.getPayload()._id}/files/${helper.getImage(this.state.files, v).path}/${helper.getImage(this.state.files, v).name}`} alt="foreground folder" /> : <div className="file"></div>}
+          {/* {helper.isImages(this.state.files, v) ? <img className="img" src={`${process.env.REACT_APP_IMAGES}${helper.getPayload()._id}/files/${helper.getImage(this.state.files, v).path}/${helper.getImage(this.state.files, v).name}`} alt="foreground folder" /> : <div className="file"></div>} */}
           {helper.isImages(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="foreground folder" onContextMenu={this.choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="foreground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
