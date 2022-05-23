@@ -20,8 +20,6 @@ export default class Files extends Component {
       folder: { _id: 'root', path: '/', name: 'root' },
       folders: [],
       items: [],
-      file: null,
-      ready: false,
       files: [],
       itemFiles: [],
       percent: 0,
