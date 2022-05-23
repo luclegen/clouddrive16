@@ -9,6 +9,8 @@ class FilesService {
 
   update = (id, file) => API.put(`${URL}${id}`, file)
 
+  delete = id => API.patch(`${URL}${id}`)
+
   list = () => API.get(URL)
 }
 
