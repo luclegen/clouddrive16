@@ -11,6 +11,8 @@ class FilesService {
 
   delete = id => API.patch(`${URL}${id}`)
 
+  restore = id => API.patch(`${URL}r/${id}`)
+
   list = () => API.get(URL)
 }
 

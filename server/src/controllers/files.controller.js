@@ -54,6 +54,11 @@ module.exports.delete = (req, res, next) =>
     .then(file => file ? res.send() : res.status(404).send('File not found.'))
     .catch(err => next(err))
 
+module.exports.restore = (req, res, next) =>
+  File.findByIdAndUpdate(req.params.id, { $set: { is_trash: false } }, { new: true })
+    .then(file => file ? res.send() : res.status(404).send('File not found.'))
+    .catch(err => next(err))
+
 module.exports.list = (req, res, next) =>
   File.find({ _uid: req.payload })
     .then(files => res.status(201).send(files))
