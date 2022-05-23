@@ -192,12 +192,12 @@ export default class Files extends Component {
       <ul className="ls-folder">
         {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} onClick={this.open} onContextMenu={this.choose}>
           <img className="bg-folder" src="svg/lg-bg.svg" alt="background folder" />
-          {/* {helper.isImages(this.state.files, v) ? <img className="img" src={`${process.env.REACT_APP_IMAGES}${helper.getPayload()._id}/files/${helper.getImage(this.state.files, v).path}/${helper.getImage(this.state.files, v).name}`} alt="foreground folder" /> : <div className="file"></div>} */}
+          {helper.isImages(this.state.files, v) ? <img className="img" src={`${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files/${helper.getImage(this.state.files, v).path}/${helper.getImage(this.state.files, v).name}`} alt="foreground folder" /> : <div className="file"></div>}
           {helper.isImages(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="foreground folder" onContextMenu={this.choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="foreground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
         {this.state.itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} onContextMenu={this.choose}>
-          {/* {helper.isImage(v.name) ? <img className="bg-img" src={`${process.env.REACT_APP_IMAGES}${helper.getPayload()._id}/files/${v.path}/${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>} */}
+          {helper.isImage(v.name) ? <img className="bg-img" src={`${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files/${v.path}/${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
           <label className="label-file" htmlFor={`folder${i}`}>{v.name}</label>
         </li>)}
       </ul>
