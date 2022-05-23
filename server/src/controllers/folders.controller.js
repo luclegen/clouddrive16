@@ -1,6 +1,7 @@
 const fs = require('fs')
 const _ = require('lodash')
 const Folder = require('../models/folder.model')
+const File = require('../models/file.model')
 
 module.exports.create = (req, res, next) =>
   Folder.find({ _uid: req.payload, name: req.body.name, path: req.body.path })
@@ -70,11 +71,16 @@ module.exports.deleteForever = (req, res, next) =>
         ? folder.is_trash
           ? Folder.findByIdAndDelete(req.params.id)
             .then(folder => folder
-              ? Folder.deleteMany({ path: new RegExp(folder.path + folder.name, 'g') })
+              ? Folder.deleteMany({ path: new RegExp(folder.path + '/' + folder.name, 'g') })
                 .then(folders => folders
-                  ? fs.rm(process.env.UPLOADS + req.payload._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name, { recursive: true }, err => err)
-                  || res.send()
+                  ? File.deleteMany({ path: new RegExp(folder.path + '/' + folder.name, 'g') })
+                    .then(files => files
+                      ? fs.rm(process.env.UPLOADS + req.payload._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name, { recursive: true }, err => err)
+                      || res.send()
+                      : res.status(404).send('Files not found.'))
+                    .catch(err => next(err))
                   : res.status(404).send('Folders not found.'))
+                .catch(err => next(err))
               : res.status(404).send('Folder not found.'))
             .catch(err => next(err))
           : res.status(403).send('Folder isn\'t trash.')
