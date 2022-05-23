@@ -1,6 +1,6 @@
 import { Component } from 'react'
-import mime from 'mime-types'
 import { Progress } from 'reactstrap'
+import mime from 'mime-types'
 import API from '../../apis/api'
 import helper from '../../services/helper'
 import foldersService from '../../services/folders'
@@ -22,6 +22,7 @@ export default class Files extends Component {
       files: [],
       itemFiles: [],
       percent: 0,
+      show: false,
     }
   }
 
@@ -89,7 +90,18 @@ export default class Files extends Component {
     .create({ name: prompt('Create folder', 'New folder'), path: this.state.path })
     .then(() => this.refresh())
 
-  open = (e, folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)) => helper.getQuery('location') !== 'trash' && this.refresh() && helper.setQuery('id', folder?._id) && this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder?.name })
+  open = e => {
+    if ((/img/g).test(e.target.className)) {
+      console.log(e.target.closest('.li-file'));
+    } else if ((/folder/g).test(e.target.className)) {
+      const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
+      if (helper.getQuery('location') !== 'trash') {
+        this.refresh()
+        helper.setQuery('id', folder?._id)
+        this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder?.name })
+      }
+    }
+  }
 
   rename = () => this.state.type === 'folder'
     ? foldersService
@@ -196,7 +208,7 @@ export default class Files extends Component {
           {helper.isImages(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="foreground folder" onContextMenu={this.choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="foreground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
-        {this.state.itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} onContextMenu={this.choose}>
+        {this.state.itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} onClick={this.open} onContextMenu={this.choose}>
           {helper.isImage(v.name) ? <img className="bg-img" src={`${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
           <label className="label-file" htmlFor={`folder${i}`}>{v.name}</label>
         </li>)}
