@@ -2,7 +2,7 @@ const fs = require('fs')
 const url = require('url')
 const transfer = require('../helpers/transfer')
 
-module.exports.read = (req, res, next) => {
+module.exports.list = (req, res, next) => {
   const img = url.parse(req.url, true).query.image
   const dir = process.env.UPLOADS
 
