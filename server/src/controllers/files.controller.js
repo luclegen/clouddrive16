@@ -1,5 +1,6 @@
-const File = require('../models/file.model')
 const _ = require('lodash')
+const fs = require("fs")
+const File = require('../models/file.model')
 
 module.exports.create = (req, res, next) =>
   JSON.parse(req.body.names).forEach(name =>
@@ -29,6 +30,24 @@ module.exports.read = (req, res, next) =>
   File.findById(req.params.id)
     .then(file => res.send(_.pick(file, ['path', 'name', 'is_trash'])))
     .catch(err => next(err))
+
+module.exports.update = (req, res, next) => req.body.name
+  ? File.findById(req.params.id)
+    .then(file =>
+      File.find({ _uid: req.payload, name: req.body.name, path: file.path })
+        .then(files =>
+          files.length
+            ? res.status(422).send('You already have a file in the current path. Please a different name.')
+            : File.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
+              .then(fileEdited =>
+                fileEdited
+                  ? fs.rename(process.env.UPLOADS + req.payload._id + '/files' + (file.path === '/' ? file.path : file.path + '/') + file.name, process.env.UPLOADS + req.payload._id + '/files' + (fileEdited.path === '/' ? fileEdited.path : fileEdited.path + '/') + fileEdited.name, err => err)
+                  || res.send()
+                  : res.status(404).send('File not found.'))
+              .catch(err => next(err)))
+        .catch(err => next(err)))
+    .catch(err => next(err))
+  : res.status(403).send('Name is required.')
 
 module.exports.list = (req, res, next) =>
   File.find({ _uid: req.payload })
