@@ -14,7 +14,6 @@ export default class Files extends Component {
       id: '',
       type: '',
       location: '',
-      opened: false,
       path: '/',
       name: '',
       folder: { _id: 'root', path: '/', name: 'root' },
