@@ -122,7 +122,9 @@ export default class Files extends Component {
     ? foldersService
       .restore(this.state.id)
       .then(() => this.refresh())
-    : fileService.restore(this.state.id)
+    : filesService
+      .restore(this.state.id)
+      .then(() => this.refresh())
 
   choose = e => {
     e.preventDefault()
