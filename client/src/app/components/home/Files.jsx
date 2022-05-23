@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import { Progress } from 'reactstrap'
 import mime from 'mime-types'
+import Image from '../img/Image'
 import API from '../../apis/api'
 import helper from '../../services/helper'
 import foldersService from '../../services/folders'
@@ -23,6 +24,7 @@ export default class Files extends Component {
       itemFiles: [],
       percent: 0,
       show: false,
+      img: '',
     }
   }
 
@@ -91,16 +93,18 @@ export default class Files extends Component {
     .then(() => this.refresh())
 
   open = e => {
-    if ((/img/g).test(e.target.className)) {
-      console.log(e.target.closest('.li-file'));
-    } else if ((/folder/g).test(e.target.className)) {
+    if ((/folder/g).test(e.target.className)) {
       const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
+
       if (helper.getQuery('location') !== 'trash') {
         this.refresh()
         helper.setQuery('id', folder?._id)
         this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder?.name })
       }
-    }
+    } else if (helper.isImage(e.target?.closest('.li-file').getAttribute('name')))
+      filesService
+        .read(e.target?.closest('.li-file').id)
+        .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), img: `${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}` }))
   }
 
   rename = () => this.state.type === 'folder'
@@ -203,16 +207,17 @@ export default class Files extends Component {
         </div>}
       <ul className="ls-folder">
         {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} onClick={this.open} onContextMenu={this.choose}>
-          <img className="bg-folder" src="svg/lg-bg.svg" alt="background folder" />
+          <img className="bg-folder" id={`folder${i}`} src="svg/lg-bg.svg" alt="background folder" />
           {helper.isImages(this.state.files, v) ? <img className="img" src={`${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files${helper.getImage(this.state.files, v).path === '/' ? '/' : helper.getImage(this.state.files, v).path + '/'}${helper.getImage(this.state.files, v).name}`} alt="foreground folder" /> : <div className="file"></div>}
           {helper.isImages(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="foreground folder" onContextMenu={this.choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="foreground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
         {this.state.itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} onClick={this.open} onContextMenu={this.choose}>
-          {helper.isImage(v.name) ? <img className="bg-img" src={`${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
-          <label className="label-file" htmlFor={`folder${i}`}>{v.name}</label>
+          {helper.isImage(v.name) ? <img className="bg-img" id={`file${i}`} src={`${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
+          <label className="label-file" htmlFor={`file${i}`} >{v.name}</label>
         </li>)}
       </ul>
     </div>
+    {this.state.img && <Image src={this.state.img} alt="Image" click={this.download} />}
   </section>
 }
