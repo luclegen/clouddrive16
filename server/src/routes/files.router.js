@@ -7,6 +7,7 @@ router.post('/', authorize, transfer.upload('files').array('files'), filesContro
 router.get('/d/:id', authorize, filesController.download)
 router.get('/:id', authorize, filesController.read)
 router.put('/:id', authorize, filesController.update)
+router.patch('/:id', authorize, filesController.delete)
 router.get('/', authorize, filesController.list)
 
 module.exports = router
