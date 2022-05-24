@@ -14,7 +14,7 @@ export default class Image extends Component {
     const bgImage = document.querySelector('.bg-image')
 
     image.clientWidth / image.clientHeight > bgImage.clientWidth / bgImage.clientHeight
-      ? image.style.width = '100%'
+      ? image.style.width = '100vw'
       : image.style.height = 'calc(100vh - 53px)'
   }
 
@@ -27,11 +27,11 @@ export default class Image extends Component {
     image.style.transform = 'rotate(' + (this.state.factor * 90) + 'deg)'
 
     this.state.factor % 2
-      ? image.clientWidth / image.clientHeight < bgImage.clientWidth / bgImage.clientHeight
-        ? image.style.width = 'calc(100vh - 53px)'
-        : image.style.height = '100%'
+      ? image.clientHeight / image.clientWidth > bgImage.clientWidth / bgImage.clientHeight
+        ? image.style.height = '100vw'
+        : image.style.width = 'calc(100vh - 53px)'
       : image.clientWidth / image.clientHeight > bgImage.clientWidth / bgImage.clientHeight
-        ? image.style.width = '100%'
+        ? image.style.width = '100vw'
         : image.style.height = 'calc(100vh - 53px)'
   }
 
