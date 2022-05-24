@@ -28,7 +28,7 @@ header
 .form-search
   @extend .input-group
 
-.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-new-folder, .btn-new-file
+.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-new-folder, .btn-new-file, .btn-download, .btn-close
   @extend .btn
 
 .btn-create-account, .btn-sign-up
@@ -67,25 +67,25 @@ header
 .form-floating
   @extend .position-relative
 
-.section-register, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder
+.section-register, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder, .section-floating
   @extend .position-absolute
 
-.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .command-bar, .dropdown-item
+.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .command-bar, .dropdown-item, .bg-image
   @extend .d-flex
 
 .form-only, .form-floating
   @extend .flex-xl-column
 
-.logo, .form-only, .section-register, .top-left-nav
+.logo, .form-only, .section-register, .top-left-nav, .bg-image
   @extend .align-items-center
 
 .list-group-item
   @extend .align-items-end
 
-.section-only, .form-only, .section-register, .form-row-sign-up, .form-group-password-strength
+.section-only, .form-only, .section-register, .form-row-sign-up, .form-group-password-strength, .bg-image
   @extend .justify-content-center
 
-.text-profile, .text-help, .text-logout
+.text-profile, .text-help, .text-logout, .span-space
   @extend .flex-fill
 
 .section-only, .section-register
@@ -108,7 +108,7 @@ header
 .input-search, .avatar, .input-email, .input-password
   @extend .border-0
 
-.form-check
+.form-check, .command-bar
   @extend .border-bottom
 
 .logo, .form-control-digit
@@ -140,6 +140,12 @@ header
 
 .dropdown-item-logout, .dropdown-item-delete
   @extend .bg-danger
+
+.section-floating
+  @extend .w-100
+
+.section-floating
+  @extend .bg-white
 
 .form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength, .text-profile, .text-help, .text-logout
   @extend .m-0
@@ -373,10 +379,13 @@ meter
   i
     margin-right: 5px
 
-.btn-new-folder, .btn-new-file
+.btn-new-folder, .btn-new-file, .btn-download, .btn-close
 
   &:hover
     background: #f3f2f1
+
+.bg-image
+  background: #f3f2f1
 
 .ls-folder
   display: grid

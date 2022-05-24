@@ -40,15 +40,19 @@ main
   overflow: hidden
   transition: height 0.8s
 
-.section-register
+.section-register, .section-floating
   top: 0
   width: 100vw
   height: 100vh
   background: #ffffffcc
+  z-index: 2
 
   form
     width: 500px
     background: white
+
+.bg-image
+  height: calc(100vh - 53px)
 
 meter
   width: 100%
