@@ -42,8 +42,8 @@ export default class Image extends Component {
   render = () => <section className="section-floating">
     <span className="command-bar">
       <button className="btn-download" type="button" onClick={this.props.download}><i className="material-icons">download</i>Download</button>
-      <button className="btn-close" type="button" onClick={this.rotateLeft}><i className="material-icons">rotate_90_degrees_ccw</i></button>
-      <button className="btn-close" type="button" onClick={this.rotateRight}><i className="material-icons">rotate_90_degrees_cw</i></button>
+      <button className="btn-rotate-left" type="button" onClick={this.rotateLeft}><i className="material-icons">rotate_90_degrees_ccw</i>Rotate left 90°</button>
+      <button className="btn-rotate-right" type="button" onClick={this.rotateRight}><i className="material-icons">rotate_90_degrees_cw</i>Rotate right 90°</button>
       <span className="span-space"></span>
       <button className="btn-close" type="button" onClick={this.props.close}><i className="material-icons">close</i></button>
     </span>
