@@ -37,8 +37,8 @@ const userSchema = new mongoose.Schema({
 
 //#region Validation
 
-userSchema.path('name.first').validate(v => checker.isfirst_name(v), 'Invalid first name')
-userSchema.path('name.last').validate(v => checker.islast_name(v), 'Invalid last name')
+userSchema.path('name.first').validate(v => checker.isFirstName(v), 'Invalid first name')
+userSchema.path('name.last').validate(v => checker.isLastName(v), 'Invalid last name')
 userSchema.path('email').validate(v => checker.isEmail(v), 'Invalid email')
 userSchema.path('password').validate(v => checker.isStrongPassword(v), 'Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters)')
 
