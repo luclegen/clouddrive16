@@ -93,7 +93,7 @@ export default class Files extends Component {
     .then(() => this.refresh())
 
   open = e => {
-    if ((/folder/g).test(e.target.className)) {
+    if ((/folder/g).test(e.target.className) || e.target.closest('.li-folder')) {
       const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
 
       if (helper.getQuery('location') !== 'trash') {
