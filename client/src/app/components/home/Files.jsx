@@ -107,6 +107,8 @@ export default class Files extends Component {
         .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), img: `${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}` }))
   }
 
+  close = () => this.setState({ img: '' })
+
   rename = () => this.state.type === 'folder'
     ? foldersService
       .update(this.state.id, { name: prompt('Rename folder', this.state.name) })
@@ -194,11 +196,11 @@ export default class Files extends Component {
       </ul>
     </nav>
     <div className="right-content col-10">
-      <div className="command-bar shadow-sm">
+      <span className="command-bar">
         <button className="btn-new-folder" onClick={this.create}><i className="material-icons">create_new_folder</i> New</button>
         <input type="file" id="files" onChange={this.save} multiple hidden />
         <button className="btn-new-file" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
-      </div>
+      </span>
       {Boolean(this.state.percent) && < Progress value={this.state.percent} />}
       {helper.getQuery('location') === 'trash'
         ? <div className="space-bar"></div>
@@ -218,6 +220,6 @@ export default class Files extends Component {
         </li>)}
       </ul>
     </div>
-    {this.state.img && <Image src={this.state.img} alt="Image" click={this.download} />}
+    {this.state.img && <Image src={this.state.img} alt="Image" download={this.download} close={this.close} />}
   </section>
 }
