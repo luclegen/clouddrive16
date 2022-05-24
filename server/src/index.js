@@ -39,7 +39,6 @@ api.use('/auth', require('./routes/auth.router'))
 api.use('/users', require('./routes/users.router'))
 api.use('/codes', require('./routes/codes.router'))
 api.use('/folders', require('./routes/folders.router'))
-api.use('/file', require('./routes/file.router'))
 api.use('/files', require('./routes/files.router'))
 api.use('/images', require('./routes/images.router'))
 
