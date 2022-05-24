@@ -20,11 +20,19 @@ export default class Image extends Component {
 
   refresh = () => {
     const image = document.querySelector('.image')
+    const bgImage = document.querySelector('.bg-image')
 
+    image.style.height = 'auto'
+    image.style.width = 'auto'
     image.style.transform = 'rotate(' + (this.state.factor * 90) + 'deg)'
+
     this.state.factor % 2
-      ? (image.style.width = 'calc(100vh - 53px)') && (image.style.height = 'auto')
-      : (image.style.width = '100%') && (image.style.height = 'auto')
+      ? image.clientWidth / image.clientHeight > bgImage.clientWidth / bgImage.clientHeight
+        ? image.style.width = 'calc(100vh - 53px)'
+        : image.style.height = '100%'
+      : image.clientWidth / image.clientHeight > bgImage.clientWidth / bgImage.clientHeight
+        ? image.style.width = '100%'
+        : image.style.height = 'calc(100vh - 53px)'
   }
 
   rotateLeft = () => this.setState({ factor: this.state.factor + 1 }) || setTimeout(() => this.refresh())
