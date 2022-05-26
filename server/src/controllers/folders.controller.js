@@ -49,7 +49,6 @@ module.exports.update = (req, res, next) => req.body.name
                 ? fs.rename(process.env.UPLOADS + req.payload._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name, process.env.UPLOADS + req.payload._id + '/files' + (editedFolder.path === '/' ? editedFolder.path : editedFolder.path + '/') + editedFolder.name, err => err)
                 || Folder.find({ path: new RegExp((folder.path === '/' ? '/' : folder.path + '/') + folder.name, 'g') })
                   .then(editedFolders => editedFolders.length
-                    // .then(editedFolders => editedFolders
                     ? editedFolders.forEach(f =>
                       (f.path = f.path?.replace((folder.path === '/' ? '/' : folder.path + '/') + folder.name, (editedFolder.path === '/' ? '/' : editedFolder.path + '/') + editedFolder.name))
                       && f
