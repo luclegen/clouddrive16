@@ -61,11 +61,11 @@ module.exports.update = (req, res, next) => req.body.name
                                   .then(editedFile => editedFile
                                     ? res.send()
                                     : res.status(404).send('File not found.')))
-                              : res.status(404).send('Files not found.'))
+                              : res.send())
                             .catch(err => next(err))
                           : res.status(404).send('Folder not found.'))
                         .catch(err => next(err)))
-                    : res.status(404).send('Folders not found.'))
+                    : res.send())
                   .catch(err => next(err))
                 : res.status(404).send('Folder not found.'))
               .catch(err => next(err)))
