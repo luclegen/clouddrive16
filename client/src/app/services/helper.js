@@ -27,6 +27,8 @@ class Helper {
 
   isImages = (files, value) => files.filter(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isImage(f.name)).length
 
+  isEmpty = (folders, files, value) => !folders.filter(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name)).length && !files.filter(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name)).length
+
   checkPassword = value => {
     let count = 0
     const strength = Object.freeze({
