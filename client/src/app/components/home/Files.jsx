@@ -144,7 +144,17 @@ export default class Files extends Component {
       .restore(this.state.id)
       .then(() => this.refresh())
 
-  empty = () => window.confirm('Empty all items from Trash?\nAll items in the Trash will be permanently deleted.')
+  restoreTrash = () => window.confirm('Restore all?\nAre you sure you want to restore all the items?')
+    && this.state.folders?.filter(f => f.is_trash)
+      .map(f => foldersService
+        .restore(f._id)
+        .then(() => this.refresh()))
+    && this.state.files?.filter(f => f.is_trash)
+      .map(f => filesService
+        .restore(f._id)
+        .then(() => this.refresh()))
+
+  empty = () => window.confirm('Empty all?\nAre you sure you want to permanently delete all of these items?')
     && this.state.folders?.filter(f => f.is_trash)
       .map(f => foldersService
         .deleteForever(f._id)
@@ -210,6 +220,7 @@ export default class Files extends Component {
     <main className="main-content col-10">
       {helper.getQuery('location') === 'trash'
         ? !this.isEmpty() && <span className="command-bar">
+          <button className="btn-restore" onClick={this.restoreTrash}><i className="material-icons">restore_from_trash</i> Restore</button>
           <button className="btn-empty" onClick={this.empty}><i className="material-icons">delete_forever</i> Empty</button>
         </span>
         : <span className="command-bar">
