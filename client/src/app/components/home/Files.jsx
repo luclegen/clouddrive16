@@ -48,6 +48,8 @@ export default class Files extends Component {
 
   setTrash = () => helper.setQuery('location', 'trash') || (this.refresh() && this.setState({ location: 'trash' }))
 
+  isEmpty = () => helper.getQuery('location') === 'trash' && !this.state?.folders.concat(this.state?.files).filter(f => f.is_trash).length
+
   save = e => {
     const formData = new FormData()
     const names = []
@@ -142,6 +144,16 @@ export default class Files extends Component {
       .restore(this.state.id)
       .then(() => this.refresh())
 
+  empty = () => window.confirm('Empty all items from Trash?\nAll items in the Trash will be permanently deleted.')
+    && this.state.folders?.filter(f => f.is_trash)
+      .map(f => foldersService
+        .deleteForever(f._id)
+        .then(() => this.refresh()))
+    && this.state.files?.filter(f => f.is_trash)
+      .map(f => filesService
+        .deleteForever(f._id)
+        .then(() => this.refresh()))
+
   choose = e => {
     e.preventDefault()
 
@@ -195,19 +207,23 @@ export default class Files extends Component {
         <li className={`list-group-item-trash ${this.state.location === 'trash' && 'active'}`} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
       </ul>
     </nav>
-    <main className="right-content col-10">
-      <span className="command-bar">
-        <button className="btn-new-folder" onClick={this.create}><i className="material-icons">create_new_folder</i> New</button>
-        <input type="file" id="files" onChange={this.save} multiple hidden />
-        <button className="btn-new-file" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
-      </span>
+    <main className="main-content col-10">
+      {helper.getQuery('location') === 'trash'
+        ? !this.isEmpty() && <span className="command-bar">
+          <button className="btn-empty" onClick={this.empty}><i className="material-icons">delete_forever</i> Empty</button>
+        </span>
+        : <span className="command-bar">
+          <button className="btn-new-folder" onClick={this.create}><i className="material-icons">create_new_folder</i> New</button>
+          <input type="file" id="files" onChange={this.save} multiple hidden />
+          <button className="btn-new-file" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
+        </span>}
       {Boolean(this.state.percent) && < Progress value={this.state.percent} />}
       {helper.getQuery('location') === 'trash'
-        ? <div className="space-bar"></div>
-        : <div className="path-bar">
+        ? !this.isEmpty() && <div className="space-bar"></div>
+        : <span className="path-bar">
           {this.state.path === '/' ? <strong>My files</strong> : this.state.path.split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
-        </div>}
-      <ul className="ls-folder">
+        </span>}
+      {!this.isEmpty() && <ul className="ls-folder">
         {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} onClick={this.open} onContextMenu={this.choose}>
           <img className="bg-folder" id={`folder${i}`} src="svg/lg-bg.svg" alt="background folder" />
           {helper.isImages(this.state.files, v) ? <img className="img" src={`${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files${helper.getImage(this.state.files, v).path === '/' ? '/' : helper.getImage(this.state.files, v).path + '/'}${helper.getImage(this.state.files, v).name}`} alt="foreground folder" /> : !helper.isEmpty(this.state.folders, this.state.files, v) && <div className="file"></div>}
@@ -218,7 +234,8 @@ export default class Files extends Component {
           {helper.isImage(v.name) ? <img className="bg-img" id={`file${i}`} src={`${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
           <label className="label-file" htmlFor={`file${i}`} >{v.name}</label>
         </li>)}
-      </ul>
+      </ul>}
+      {this.isEmpty() && <div className="empty-trash"><i class="material-icons">delete_outline</i><strong>Trash is Empty</strong></div>}
     </main>
     {this.state.img && <Image src={this.state.img} alt="Image" download={this.download} close={this.close} />}
   </section>
