@@ -89,11 +89,11 @@ module.exports.deleteForever = (req, res, next) =>
         ? folder.is_trash
           ? Folder.findByIdAndDelete(req.params.id)
             .then(folder => folder
-              ? Folder.deleteMany({ path: new RegExp(folder.path + '/' + folder.name, 'g') })
+              ? Folder.deleteMany({ path: new RegExp(folder.path + (folder.path === '/' ? '' : '/') + folder.name, 'g') })
                 .then(folders => folders
-                  ? File.deleteMany({ path: new RegExp(folder.path + '/' + folder.name, 'g') })
+                  ? File.deleteMany({ path: new RegExp(folder.path + (folder.path === '/' ? '' : '/') + folder.name, 'g') })
                     .then(files => files
-                      ? fs.rm(process.env.UPLOADS + req.payload._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name, { recursive: true }, err => err)
+                      ? fs.rm(process.env.UPLOADS + req.payload._id + '/files' + (folder.path === '/' ? '' : '/') + folder.name, { recursive: true }, err => err)
                       || res.send()
                       : res.status(404).send('Files not found.'))
                     .catch(err => next(err))
