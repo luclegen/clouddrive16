@@ -28,7 +28,7 @@ header
 .form-search
   @extend .input-group
 
-.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-new-folder, .btn-new-file, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right
+.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-new-folder, .btn-new-file, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore
   @extend .btn
 
 .btn-create-account, .btn-sign-up
@@ -70,19 +70,19 @@ header
 .section-register, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder, .section-floating
   @extend .position-absolute
 
-.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .command-bar, .dropdown-item, .bg-image
+.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .command-bar, .dropdown-item, .bg-image, .empty-trash
   @extend .d-flex
 
-.form-only, .form-floating
+.form-only, .form-floating, .empty-trash
   @extend .flex-xl-column
 
-.logo, .form-only, .section-register, .top-left-nav, .bg-image
+.logo, .form-only, .section-register, .top-left-nav, .bg-image, .empty-trash
   @extend .align-items-center
 
 .list-group-item
   @extend .align-items-end
 
-.section-only, .form-only, .section-register, .form-row-sign-up, .form-group-password-strength, .bg-image
+.section-only, .form-only, .section-register, .form-row-sign-up, .form-group-password-strength, .bg-image, .empty-trash
   @extend .justify-content-center
 
 .text-profile, .text-help, .text-logout, .span-space
@@ -165,7 +165,7 @@ header
 .h1-only, .form-check-remember, .h1-register
   @extend .mb-3
 
-.avatar, .section-files, .right-content
+.avatar, .section-files, .main-content
   @extend .p-0
 
 header, .float label
@@ -379,7 +379,7 @@ meter
   i
     margin-right: 5px
 
-.btn-new-folder, .btn-new-file, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right
+.btn-new-folder, .btn-new-file, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore
 
   &:hover
     background: #f3f2f1
