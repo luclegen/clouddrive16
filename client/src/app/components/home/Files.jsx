@@ -168,7 +168,9 @@ export default class Files extends Component {
     e.preventDefault()
 
     const type = (/file|img/g).test(e.target.className)
-      ? 'file'
+      ? e.target.closest('.li-folder')
+        ? 'folder'
+        : 'file'
       : (/folder/g).test(e.target.className)
         ? 'folder'
         : null
@@ -182,7 +184,7 @@ export default class Files extends Component {
       name: e.target.closest('.li-' + type).getAttribute('name')
     })
 
-    document.querySelector('.dropdown-item-download').style.setProperty('display', (/folder/g).test(e.target.className) ? 'none' : 'flex', 'important')
+    document.querySelector('.dropdown-item-download').style.setProperty('display', type === 'folder' ? 'none' : 'flex', 'important')
   }
 
   clickOut = e => this.getMenuFolder().style.display = 'none'
