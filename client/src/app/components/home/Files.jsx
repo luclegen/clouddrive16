@@ -195,7 +195,7 @@ export default class Files extends Component {
         <li className={`list-group-item-trash ${this.state.location === 'trash' && 'active'}`} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
       </ul>
     </nav>
-    <div className="right-content col-10">
+    <main className="right-content col-10">
       <span className="command-bar">
         <button className="btn-new-folder" onClick={this.create}><i className="material-icons">create_new_folder</i> New</button>
         <input type="file" id="files" onChange={this.save} multiple hidden />
@@ -219,7 +219,7 @@ export default class Files extends Component {
           <label className="label-file" htmlFor={`file${i}`} >{v.name}</label>
         </li>)}
       </ul>
-    </div>
+    </main>
     {this.state.img && <Image src={this.state.img} alt="Image" download={this.download} close={this.close} />}
   </section>
 }
