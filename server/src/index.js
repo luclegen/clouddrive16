@@ -30,7 +30,7 @@ if (process.env.NODE_ENV == 'production') web.use(express.static(path.resolve(__
 api.use(express.json())
 api.use(require('passport').initialize())
 api.use(session(sess))
-api.use(require('cors')({ origin: process.env.WEB, credentials: true }))
+api.use(require('cors')({ origin: [process.env.WEB1, process.env.WEB2], credentials: true }))
 api.use(require('cookie-parser')(process.env.SECRET))
 require('./middlewares/passport')
 
