@@ -1,6 +1,6 @@
 import API from '../apis/api'
 
-const URL = `${process.env.REACT_APP_API}/folders/`
+const URL = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/folders/`
 
 class FoldersService {
   create = folder => API.post(URL, folder)
