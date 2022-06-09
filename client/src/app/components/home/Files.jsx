@@ -59,7 +59,7 @@ export default class Files extends Component {
     formData.append("names", JSON.stringify(names))
 
     API
-      .post(`${process.env.REACT_APP_API}/files/`, formData, {
+      .post(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data"
         },
@@ -77,7 +77,7 @@ export default class Files extends Component {
   upload = () => document.getElementById("files").click()
 
   download = () => API
-    .get(`${process.env.REACT_APP_API}/files/d/` + this.state.id, {
+    .get(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + this.state.id, {
       responseType: 'arraybuffer',
       headers: { 'Accept': mime.lookup(this.state.name) },
       onDownloadProgress: data => this.setState({ percent: Math.round(100 * (data.loaded / data.total)) })
@@ -106,7 +106,7 @@ export default class Files extends Component {
     } else if (helper.isImage(e.target?.closest('.li-file').getAttribute('name')))
       filesService
         .read(e.target?.closest('.li-file').id)
-        .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), img: `${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}` }))
+        .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), img: `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/images/?image=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}` }))
   }
 
   close = () => this.setState({ img: '' })
@@ -239,12 +239,12 @@ export default class Files extends Component {
       {!this.isEmpty() && <ul className="ls-folder">
         {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} onClick={this.open} onContextMenu={this.choose}>
           <img className="bg-folder" id={`folder${i}`} src="svg/lg-bg.svg" alt="background folder" />
-          {helper.isImages(this.state.files, v) ? <img className="img" src={`${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files${helper.getImage(this.state.files, v).path === '/' ? '/' : helper.getImage(this.state.files, v).path + '/'}${helper.getImage(this.state.files, v).name}`} alt="foreground folder" /> : !helper.isEmpty(this.state.folders, this.state.files, v) && <div className="file"></div>}
+          {helper.isImages(this.state.files, v) ? <img className="img" src={`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/images/?image=${helper.getCookie('id')}/files${helper.getImage(this.state.files, v).path === '/' ? '/' : helper.getImage(this.state.files, v).path + '/'}${helper.getImage(this.state.files, v).name}`} alt="foreground folder" /> : !helper.isEmpty(this.state.folders, this.state.files, v) && <div className="file"></div>}
           {helper.isImages(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="foreground folder" onContextMenu={this.choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="foreground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
         {this.state.itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} onClick={this.open} onContextMenu={this.choose}>
-          {helper.isImage(v.name) ? <img className="bg-img" id={`file${i}`} src={`${process.env.REACT_APP_IMAGES}${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
+          {helper.isImage(v.name) ? <img className="bg-img" id={`file${i}`} src={`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/images/?image=${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
           <label className="label-file" htmlFor={`file${i}`} >{v.name}</label>
         </li>)}
       </ul>}
