@@ -107,7 +107,7 @@ export default class Files extends Component {
     } else if (helper.isImage(e.target?.closest('.li-file').getAttribute('name')))
       filesService
         .read(e.target?.closest('.li-file').id)
-        .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), img: `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API} /images/ ? image = ${helper.getCookie('id')} /files${res.data?.path === '/' ? ' / ' : res.data?.path + ' / '}${res.data?.name}` }))
+        .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), img: `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/images/?image=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}` }))
   }
 
   close = () => this.setState({ img: '' })
