@@ -250,6 +250,6 @@ export default class Files extends Component {
       </ul>}
       {this.isEmpty() && <div className="empty-trash"><i class="material-icons">delete_outline</i><strong>Trash is Empty</strong></div>}
     </main>
-    {this.state.img && <Image src={this.state.img} alt="Image" download={this.download} close={this.close} />}
+    {this.state.img && <Image src={this.state.img} alt="Image" download={this.download} percent={this.state.percent} close={this.close} />}
   </section>
 }
