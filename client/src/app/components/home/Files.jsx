@@ -230,7 +230,7 @@ export default class Files extends Component {
           <input type="file" id="files" onChange={this.save} multiple hidden />
           <button className="btn-update" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
         </span>}
-      {!!this.state.percent && < Progress value={this.state.percent} />}
+      {!!this.state.percent && <Progress value={this.state.percent} />}
       {helper.getQuery('location') === 'trash'
         ? !this.isEmpty() && <div className="space-bar"></div>
         : <span className="path-bar">
