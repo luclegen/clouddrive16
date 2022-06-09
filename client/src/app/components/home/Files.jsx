@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import { Progress } from 'reactstrap'
-import mime from 'mime-types'
+// import mime from 'mime-types'
 import Image from '../img/Image'
 import API from '../../apis/api'
 import helper from '../../services/helper'
