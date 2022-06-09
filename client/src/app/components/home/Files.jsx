@@ -76,19 +76,7 @@ export default class Files extends Component {
 
   upload = () => document.getElementById("files").click()
 
-  download = () => API
-    .get(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + this.state.id, {
-      responseType: 'arraybuffer',
-      headers: { 'Accept': mime.lookup(this.state.name) },
-      onDownloadProgress: data => this.setState({ percent: Math.round(100 * (data.loaded / data.total)) })
-    })
-    .then(res => helper.downloadBlob(res.data, this.state.name) || this.setState({ percent: 0 }))
-    .catch(err => err.response
-      ? alert(typeof err.response?.data === 'object'
-        ? JSON.stringify(err.response?.data)
-        : err.response?.data || err.response?.statusText)
-      || (err.response.status === 401 && (window.location.href = '/'))
-      : console.error(err))
+  download = () => window.location.href = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + this.state.id
 
   create = () => foldersService
     .create({ name: prompt('Create folder', 'New folder'), path: this.state.path })
@@ -106,7 +94,7 @@ export default class Files extends Component {
     } else if (helper.isImage(e.target?.closest('.li-file').getAttribute('name')))
       filesService
         .read(e.target?.closest('.li-file').id)
-        .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), img: `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/images/?image=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}` }))
+        .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), img: `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API} /images/ ? image = ${helper.getCookie('id')} /files${res.data?.path === '/' ? ' / ' : res.data?.path + ' / '}${res.data?.name}` }))
   }
 
   close = () => this.setState({ img: '' })
