@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Progress } from 'reactstrap'
 
 export default class Image extends Component {
   constructor(props) {
@@ -47,6 +48,7 @@ export default class Image extends Component {
       <span className="span-space"></span>
       <button className="btn-close" type="button" onClick={this.props.close}><i className="material-icons">close</i></button>
     </span>
+    {!!this.props.percent && <Progress value={this.props.percent} />}
     <span className="bg-image">
       <img className="image" src={this.props.src} alt={this.props.alt} />
     </span>
