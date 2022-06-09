@@ -77,6 +77,19 @@ export default class Files extends Component {
   upload = () => document.getElementById("files").click()
 
   download = () => window.location.href = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + this.state.id
+  // API
+  //   .get(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d / ` + this.state.id, {
+  //     responseType: 'arraybuffer',
+  //     headers: { 'Accept': mime.lookup(this.state.name) },
+  //     onDownloadProgress: data => this.setState({ percent: Math.round(100 * (data.loaded / data.total)) })
+  //   })
+  //   .then(res => helper.downloadBlob(res.data, this.state.name) || this.setState({ percent: 0 }))
+  //   .catch(err => err.response
+  //     ? alert(typeof err.response?.data === 'object'
+  //       ? JSON.stringify(err.response?.data)
+  //       : err.response?.data || err.response?.statusText)
+  //     || (err.response.status === 401 && (window.location.href = '/'))
+  //     : console.error(err))
 
   create = () => foldersService
     .create({ name: prompt('Create folder', 'New folder'), path: this.state.path })
