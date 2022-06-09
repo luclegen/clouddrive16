@@ -110,7 +110,7 @@ class Helper {
 
   isExpired = () => this.isLogin() ? this.getPayload().exp ? this.getPayload().exp * 1000 < Date.now() : false : true
 
-  isLogin = () => Boolean(this.getCookie('id'))
+  isLogin = () => !!this.getCookie('id')
 
   remembered = () => localStorage.getItem('remembered') === 'true' || sessionStorage.getItem('remembered') === 'true' ? true : localStorage.getItem('remembered') === 'false' || sessionStorage.getItem('remembered') === 'false' ? false : null
 
