@@ -91,7 +91,7 @@ export default class Login extends Component {
         <input className="remember-me-input" id="rememberLogin" type="checkbox" name="remember" value={this.state.remember} onChange={this.setChecked} />
         <label className="remember-me-label" htmlFor="rememberLogin">Keep me signed in</label>
       </div>
-      <a href="/find-account" target="_blank" rel="noopener noreferrer">Forgotten password? <i className="fas fa-external-link-alt"></i></a>
+      <a className="link-find-account" href="/find-account" target="_blank" rel="noopener noreferrer">Forgotten password? <i class="material-icons">open_in_new</i></a>
       <button className="btn-create-account" type="button" onClick={this.open}>Create New Account</button>
     </form>
     {this.state.isOpen && <Register close={this.close}></Register>}
