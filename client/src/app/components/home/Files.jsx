@@ -228,7 +228,7 @@ export default class Files extends Component {
         : <span className="command-bar">
           <button className="btn-new-folder" onClick={this.create}><i className="material-icons">create_new_folder</i> New</button>
           <input type="file" id="files" onChange={this.save} multiple hidden />
-          <button className="btn-new-file" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
+          <button className="btn-update" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
         </span>}
       {Boolean(this.state.percent) && < Progress value={this.state.percent} />}
       {helper.getQuery('location') === 'trash'
