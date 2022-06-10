@@ -2,6 +2,7 @@ import { Component } from 'react'
 import { Progress } from 'reactstrap'
 // import mime from 'mime-types'
 import Image from '../img/Image'
+import Video from '../video/Video'
 import API from '../../apis/api'
 import helper from '../../services/helper'
 import foldersService from '../../services/folders'
@@ -24,7 +25,7 @@ export default class Files extends Component {
       itemFiles: [],
       percent: 0,
       show: false,
-      img: '',
+      media: '',
     }
   }
 
@@ -104,13 +105,14 @@ export default class Files extends Component {
         helper.setQuery('id', folder?._id)
         this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder?.name })
       }
-    } else if (helper.isImage(e.target?.closest('.li-file').getAttribute('name')))
+    } else if (helper.isImage(e.target?.closest('.li-file').getAttribute('name')) || helper.isVideo(e.target?.closest('.li-file').getAttribute('name'))) {
       filesService
         .read(e.target?.closest('.li-file').id)
-        .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), img: `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/images/?image=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}` }))
+        .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), media: `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/images/?image=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}` }))
+    }
   }
 
-  close = () => this.setState({ img: '' })
+  close = () => this.setState({ media: '' })
 
   rename = () => this.state.type === 'folder'
     ? foldersService
@@ -245,12 +247,12 @@ export default class Files extends Component {
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
         {this.state.itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} title={v.name} onClick={this.open} onContextMenu={this.choose}>
-          {helper.isImage(v.name) ? <img className="bg-img" id={`file${i}`} src={`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/images/?image=${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`} alt={`Img ${i}`} /> : <i className="material-icons bg-file">description</i>}
-          <label className="label-file" htmlFor={`file${i}`} >{v.name}</label>
+          {helper.isImage(v.name) ? <img className="bg-img" id={`file${i}`} src={`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/images/?image=${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`} alt={`Img ${i}`} /> : helper.isVideo(v.name) ? <video width="118" height="86" src={`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/images/?image=${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`}></video> : <i className="material-icons bg-file">description</i>}
+          <label className="label-file" htmlFor={`file${i}`} style={{ marginTop: helper.isVideo(v.name) ? '-8px' : '85px' }} >{v.name}</label>
         </li>)}
       </ul>}
       {this.isEmpty() && <div className="empty-trash"><i class="material-icons">delete_outline</i><strong>Trash is Empty</strong></div>}
     </main>
-    {this.state.img && <Image src={this.state.img} alt="Image" download={this.download} percent={this.state.percent} close={this.close} />}
+    {this.state.media && (helper.isImage(this.state.name) ? <Image src={this.state.media} alt="Image" download={this.download} percent={this.state.percent} close={this.close} /> : <Video src={this.state.media} alt="Image" download={this.download} percent={this.state.percent} close={this.close} />)}
   </section>
 }
