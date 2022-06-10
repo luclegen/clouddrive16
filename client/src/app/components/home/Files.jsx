@@ -180,9 +180,9 @@ export default class Files extends Component {
     this.getMenuFolder().style.top = `${e.clientY}px`
     this.getMenuFolder().style.left = `${e.clientX}px`
     this.setState({
-      id: e.target.closest('.li-' + type).id,
+      id: e.target.closest('.li-' + type)?.id,
       type: type,
-      name: e.target.closest('.li-' + type).getAttribute('name')
+      name: e.target.closest('.li-' + type)?.getAttribute('name')
     })
 
     document.querySelector('.dropdown-item-download').style.setProperty('display', type === 'folder' ? 'none' : 'flex', 'important')
