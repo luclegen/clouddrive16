@@ -3,6 +3,7 @@ import { Progress } from 'reactstrap'
 // import mime from 'mime-types'
 import Image from '../img/Image'
 import Video from '../video/Video'
+import Audio from '../audio/Audio'
 import API from '../../apis/api'
 import helper from '../../services/helper'
 import foldersService from '../../services/folders'
@@ -105,7 +106,7 @@ export default class Files extends Component {
         helper.setQuery('id', folder?._id)
         this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder?.name })
       }
-    } else if (helper.isImage(e.target?.closest('.li-file').getAttribute('name')) || helper.isVideo(e.target?.closest('.li-file').getAttribute('name'))) {
+    } else if (helper.isImage(e.target?.closest('.li-file').getAttribute('name')) || helper.isVideo(e.target?.closest('.li-file').getAttribute('name')) || helper.isAudio(e.target?.closest('.li-file').getAttribute('name'))) {
       filesService
         .read(e.target?.closest('.li-file').id)
         .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), media: `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/images/?image=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}` }))
@@ -253,6 +254,6 @@ export default class Files extends Component {
       </ul>}
       {this.isEmpty() && <div className="empty-trash"><i class="material-icons">delete_outline</i><strong>Trash is Empty</strong></div>}
     </main>
-    {this.state.media && (helper.isImage(this.state.name) ? <Image src={this.state.media} alt="Image" download={this.download} percent={this.state.percent} close={this.close} /> : <Video src={this.state.media} alt="Image" download={this.download} percent={this.state.percent} close={this.close} />)}
+    {this.state.media && (helper.isImage(this.state.name) ? <Image src={this.state.media} alt="Image" download={this.download} percent={this.state.percent} close={this.close} /> : helper.isVideo(this.state.name) ? <Video src={this.state.media} download={this.download} percent={this.state.percent} close={this.close} /> : <Audio src={this.state.media} download={this.download} percent={this.state.percent} close={this.close} />)}
   </section>
 }
