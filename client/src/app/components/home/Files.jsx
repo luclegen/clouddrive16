@@ -110,6 +110,10 @@ export default class Files extends Component {
       filesService
         .read(e.target?.closest('.li-file').id)
         .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), media: `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}` }))
+    } else if (helper.isPDF(e.target?.closest('.li-file').getAttribute('name'))) {
+      filesService
+        .read(e.target?.closest('.li-file').id)
+        .then(res => window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}`))
     }
   }
 
