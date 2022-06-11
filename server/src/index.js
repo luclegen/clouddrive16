@@ -40,7 +40,7 @@ api.use('/users', require('./routes/users.router'))
 api.use('/codes', require('./routes/codes.router'))
 api.use('/folders', require('./routes/folders.router'))
 api.use('/files', require('./routes/files.router'))
-api.use('/images', require('./routes/images.router'))
+api.use('/media', require('./routes/media.router'))
 
 // Client
 if (process.env.NODE_ENV == 'production')
