@@ -21,7 +21,7 @@ class Helper {
 
   isDigits = v => /^\d+$/.test(v)
 
-  isImage = value => /\.(gif|jpe?g|tiff?|png|webp|bmp|ico)$/i.test(value)
+  isImage = value => /\.(apng|avif|gif|jpe?g|jpe|jf?if|pjp(eg)?|png|webp|bmp|ico|cur)$/i.test(value)
 
   isVideo = value => /\.(mp4|3gp|ogg|wmv|webm|flv|avi*|wav|vob*)$/i.test(value)
 
