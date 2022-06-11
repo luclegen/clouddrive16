@@ -23,11 +23,15 @@ class Helper {
 
   isImage = value => /\.(apng|avif|gif|jpe?g|jpe|jf?if|pjp(eg)?|png|webp|bmp|ico|cur)$/i.test(value)
 
+  getImage = (files, value) => files.find(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isImage(f.name))
+
   isVideo = value => /\.(mp4|3gp|ogg|wmv|webm|flv|avi*|wav|vob*)$/i.test(value)
 
-  isAudio = value => /\.(?:wav|mp3)$/i.test(value)
+  isVideos = (files, value) => files.filter(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isVideo(f.name)).length
 
-  getImage = (files, value) => files.find(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isImage(f.name))
+  getVideo = (files, value) => files.find(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isVideo(f.name))
+
+  isAudio = value => /\.(?:wav|mp3)$/i.test(value)
 
   isImages = (files, value) => files.filter(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isImage(f.name)).length
 
