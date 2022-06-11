@@ -33,6 +33,8 @@ class Helper {
 
   isAudio = value => /\.(aac|flac|mp3|m4a|oga|wav)$/i.test(value)
 
+  isMedia = value => this.isImage(value) || this.isVideo(value) || this.isAudio(value)
+
   isPDF = value => /\.pdf$/i.test(value)
 
   isImages = (files, value) => files.filter(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isImage(f.name)).length
