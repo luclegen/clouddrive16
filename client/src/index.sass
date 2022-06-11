@@ -28,7 +28,7 @@ header
 .form-search
   @extend .input-group
 
-.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-new-folder, .btn-update, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore
+.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-new-folder, .btn-update, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next
   @extend .btn
 
 .btn-create-account, .btn-sign-up
@@ -70,25 +70,25 @@ header
 .form-floating
   @extend .position-relative
 
-.section-register, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder, .section-floating, .bg-video, .bg-audio, .video-preview
+.section-register, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder, .section-floating, .video-preview
   @extend .position-absolute
 
-.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .command-bar, .dropdown-item, .bg-image, .empty-trash, .link-find-account, .bg-video, .bg-audio
+.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .command-bar, .dropdown-item, .bg-media, .empty-trash, .link-find-account, .primary-command, .middle-command, .secondary-command, .span-index
   @extend .d-flex
 
 .form-only, .form-floating, .empty-trash
   @extend .flex-xl-column
 
-.logo, .form-only, .section-register, .top-left-nav, .bg-image, .empty-trash, .link-find-account, .bg-video, .bg-audio
+.logo, .form-only, .section-register, .top-left-nav, .bg-media, .empty-trash, .link-find-account, .middle-command, .span-index
   @extend .align-items-center
 
 .list-group-item
   @extend .align-items-end
 
-.section-only, .form-only, .section-register, .form-row-sign-up, .form-group-password-strength, .bg-image, .empty-trash, .bg-video, .bg-audio
+.section-only, .form-only, .section-register, .form-row-sign-up, .form-group-password-strength, .bg-media, .empty-trash, .middle-command
   @extend .justify-content-center
 
-.text-profile, .text-help, .text-logout, .span-space
+.text-profile, .text-help, .text-logout, .middle-command
   @extend .flex-fill
 
 .section-only, .section-register
@@ -145,10 +145,13 @@ header
   @extend .bg-danger
 
 .section-floating
-  @extend .w-100
+  @extend .bg-white
 
 .section-floating
-  @extend .bg-white
+  @extend .overflow-hidden
+
+.section-floating
+  @extend .w-100
 
 .form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength, .text-profile, .text-help, .text-logout
   @extend .m-0
@@ -382,12 +385,12 @@ meter
   i
     margin-right: 5px
 
-.btn-new-folder, .btn-update, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore
+.btn-new-folder, .btn-update, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next
 
   &:hover
     background: #f3f2f1
 
-.bg-image, .bg-video, .bg-audio
+.bg-media
   background: #f3f2f1
 
 .ls-folder
