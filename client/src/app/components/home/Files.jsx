@@ -1,9 +1,7 @@
 import { Component } from 'react'
 import { Progress } from 'reactstrap'
 // import mime from 'mime-types'
-import Image from '../img/Image'
-import Video from '../video/Video'
-import Audio from '../audio/Audio'
+import Media from '../others/Media'
 import API from '../../apis/api'
 import helper from '../../services/helper'
 import foldersService from '../../services/folders'
@@ -27,6 +25,7 @@ export default class Files extends Component {
       percent: 0,
       show: false,
       media: '',
+      index: '',
     }
   }
 
@@ -97,7 +96,7 @@ export default class Files extends Component {
     .create({ name: prompt('Create folder', 'New folder'), path: this.state.path })
     .then(() => this.refresh())
 
-  open = e => {
+  open = (e, medias = this.getMedias()) => {
     if ((/folder/g).test(e.target.className) || e.target.closest('.li-folder')) {
       const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
 
@@ -106,10 +105,10 @@ export default class Files extends Component {
         helper.setQuery('id', folder?._id)
         this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder?.name })
       }
-    } else if (helper.isImage(e.target?.closest('.li-file').getAttribute('name')) || helper.isVideo(e.target?.closest('.li-file').getAttribute('name')) || helper.isAudio(e.target?.closest('.li-file').getAttribute('name'))) {
+    } else if (helper.isMedia(e.target?.closest('.li-file').getAttribute('name'))) {
       filesService
         .read(e.target?.closest('.li-file').id)
-        .then(res => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), media: `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}` }))
+        .then((res, media = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}`) => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), index: this.getMedias().findIndex(v => v === media) + 1, media: media }))
     } else if (helper.isPDF(e.target?.closest('.li-file').getAttribute('name'))) {
       filesService
         .read(e.target?.closest('.li-file').id)
@@ -209,6 +208,18 @@ export default class Files extends Component {
     this.refresh()
   }
 
+  getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`
+
+  getMedias = () => this.state.files.filter(v => v.path === this.state.path && helper.isMedia(v.name)).map(v => this.getMedia(v))
+
+  prev = (e, medias = this.getMedias()) =>
+    medias.findIndex(v => v === this.state.media) > 0
+    && this.setState({ index: this.state.index - 1, media: medias[medias.findIndex(v => v === this.state.media) - 1] })
+
+  next = (e, medias = this.getMedias()) =>
+    medias.findIndex(v => v === this.state.media) < medias.length - 1
+    && this.setState({ index: this.state.index + 1, media: medias[medias.findIndex(v => v === this.state.media) + 1] })
+
   componentDidMount = () => this.refresh() && !window.location.search && (window.location.search = 'id=root')
 
   render = () => <section className="section-files" onClick={this.clickOut} >
@@ -252,12 +263,12 @@ export default class Files extends Component {
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
         {this.state.itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} title={v.name} onClick={this.open} onContextMenu={this.choose}>
-          {helper.isImage(v.name) ? <img className="bg-img" id={`file${i}`} src={`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`} alt={`Img ${i}`} /> : helper.isVideo(v.name) ? <video width="118" height="86" src={`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`}></video> : <i className="material-icons bg-file">{helper.isAudio(v.name) ? 'audio_file' : 'description'}</i>}
+          {helper.isImage(v.name) ? <img className="bg-img" id={`file${i}`} src={this.getMedia(v)} alt={`Img ${i}`} /> : helper.isVideo(v.name) ? <video width="118" height="86" src={this.getMedia(v)}></video> : <i className="material-icons bg-file">{helper.isAudio(v.name) ? 'audio_file' : 'description'}</i>}
           <label className="label-file" htmlFor={`file${i}`} style={{ marginTop: helper.isVideo(v.name) ? '-8px' : '85px' }} >{v.name}</label>
         </li>)}
       </ul>}
       {this.isEmpty() && <div className="empty-trash"><i class="material-icons">delete_outline</i><strong>Trash is Empty</strong></div>}
     </main>
-    {this.state.media && (helper.isImage(this.state.name) ? <Image src={this.state.media} alt="Image" download={this.download} percent={this.state.percent} close={this.close} /> : helper.isVideo(this.state.name) ? <Video src={this.state.media} download={this.download} percent={this.state.percent} close={this.close} /> : <Audio src={this.state.media} download={this.download} percent={this.state.percent} close={this.close} />)}
+    {this.state.media && <Media src={this.state.media} type={helper.isImage(this.state.media) ? 'image' : helper.isVideo(this.state.media) ? 'video' : helper.isAudio(this.state.media) ? 'audio' : 'none'} download={this.download} percent={this.state.percent} next={this.next} prev={this.prev} index={this.state.index} count={this.getMedias().length} close={this.close} />}
   </section>
 }
