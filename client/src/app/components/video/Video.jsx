@@ -10,7 +10,7 @@ export default class Video extends Component {
     </span>
     {!!this.props.percent && <Progress value={this.props.percent} />}
     <span className="bg-video">
-      <video className="video" src={this.props.src} controls></video>
+      <video className="video" src={this.props.src} autoPlay controls></video>
     </span>
   </section>
 }
