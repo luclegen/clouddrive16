@@ -25,7 +25,7 @@ class Helper {
 
   getImage = (files, value) => files.find(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isImage(f.name))
 
-  isVideo = value => /\.(3gp|mp4|m4v|m4p|ogv|ogg|mov|webm|)$/i.test(value)
+  isVideo = value => /\.(3gp|mp4|m4v|m4p|ogv|ogg|mov|webm)$/i.test(value)
 
   isVideos = (files, value) => files.filter(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isVideo(f.name)).length
 
