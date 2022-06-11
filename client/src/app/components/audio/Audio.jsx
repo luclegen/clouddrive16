@@ -10,7 +10,7 @@ export default class Audio extends Component {
     </span>
     {!!this.props.percent && <Progress value={this.props.percent} />}
     <span className="bg-audio">
-      <audio className="audio" src={this.props.src} controls></audio>
+      <audio className="audio" src={this.props.src} autoPlay controls></audio>
     </span>
   </section>
 }
