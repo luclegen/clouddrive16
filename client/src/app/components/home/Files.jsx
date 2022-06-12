@@ -96,7 +96,7 @@ export default class Files extends Component {
     .create({ name: prompt('Create folder', 'New folder'), path: this.state.path })
     .then(() => this.refresh())
 
-  open = (e, medias = this.getMedias()) => {
+  open = e => {
     if ((/folder/g).test(e.target.className) || e.target.closest('.li-folder')) {
       const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
 
