@@ -23,7 +23,32 @@ export default class Media extends Component {
     }
   }
 
-  componentDidMount = () => this.init()
+  componentDidMount = e => {
+    window.onkeyup = e => {
+      switch (e.keyCode) {
+        case 32:
+          this.props.type === 'video'
+            && (document.querySelector('.video').paused
+              ? document.querySelector('.video').play()
+              : document.querySelector('.video').pause())
+          this.props.type === 'audio'
+            && (document.querySelector('.audio').paused
+              ? document.querySelector('.audio').play()
+              : document.querySelector('.audio').pause())
+          break;
+        case 37:
+          this.props.prev()
+          break;
+        case 39:
+          this.props.next()
+          break;
+
+        default:
+          break;
+      }
+    }
+    this.init()
+  }
 
   componentDidUpdate = () => this.init()
 
