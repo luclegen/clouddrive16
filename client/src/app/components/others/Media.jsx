@@ -18,6 +18,8 @@ export default class Media extends Component {
       image.clientWidth / image.clientHeight > bgMedia.clientWidth / bgMedia.clientHeight
         ? image.style.width = '100vw'
         : image.style.height = 'calc(100vh - 53px)'
+
+      document.querySelector('body').style.overflow = 'hidden'
     }
   }
 
