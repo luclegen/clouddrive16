@@ -106,6 +106,7 @@ module.exports.deleteForever = (req, res, next) =>
     )
     .catch(err => next(err))
 
-module.exports.list = (req, res, next) => Folder.find({ _uid: req.payload, name: new RegExp(req.query.name, 'ig') })
-  .then(folders => res.send(folders))
-  .catch(err => next(err))
+module.exports.list = (req, res, next) =>
+  Folder.find({ _uid: req.payload, name: new RegExp(req.query.name, 'ig') })
+    .then(folders => res.send(folders))
+    .catch(err => next(err))
