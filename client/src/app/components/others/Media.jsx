@@ -23,7 +23,7 @@ export default class Media extends Component {
     }
   }
 
-  componentDidMount = e => {
+  componentDidMount = () => {
     window.onkeyup = e => {
       switch (e.keyCode) {
         case 32:
