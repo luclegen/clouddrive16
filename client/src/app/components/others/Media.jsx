@@ -46,6 +46,12 @@ export default class Media extends Component {
 
   rotateRight = () => this.setState({ factor: this.state.factor - 1 }) || setTimeout(() => this.refresh())
 
+  prev = () => new Promise(resolve => this.setState({ factor: 0 }) || resolve())
+    .then(() => this.props.prev() || this.refresh())
+
+  next = () => new Promise(resolve => this.setState({ factor: 0 }) || resolve())
+    .then(() => this.props.next() || this.refresh())
+
   componentDidMount = () => {
     window.onkeyup = e => {
       switch (e.keyCode) {
@@ -89,9 +95,9 @@ export default class Media extends Component {
       </span>
       <span className="secondary-command">
         {this.props.type === 'image' && <span className="right-space" style={{ width: '270px' }}></span>}
-        <button className="btn-prev" type="button" disabled={this.props.index === 1} onClick={this.props.prev}><i className="material-icons">skip_previous</i></button>
+        <button className="btn-prev" type="button" disabled={this.props.index === 1} onClick={this.prev}><i className="material-icons">skip_previous</i></button>
         <span className="span-index">&nbsp;&nbsp;{this.props.index + '/' + this.props.count}&nbsp;&nbsp;</span>
-        <button className="btn-next" type="button" disabled={this.props.index === this.props.count} onClick={this.props.next}><i className="material-icons">skip_next</i></button>
+        <button className="btn-next" type="button" disabled={this.props.index === this.props.count} onClick={this.next}><i className="material-icons">skip_next</i></button>
         <button className="btn-close" type="button" onClick={this.props.close}><i className="material-icons">close</i></button>
       </span>
     </span>
