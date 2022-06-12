@@ -67,7 +67,7 @@ module.exports.deleteForever = (req, res, next) =>
           ? File.findByIdAndDelete(req.params.id)
             .then(file =>
               file
-                ? fs.rm(process.env.UPLOADS + req.payload._id + '/files' + (file.path === '/' ? file.path : file.path + '/') + file.name, { recursive: true }, err => err)
+                ? fs.rm(process.env.UPLOADS + req.payload._id + '/files' + file.path + (file.path === '/' ? '' : '/') + file.name, { recursive: true }, err => err)
                 || res.send()
                 : res.status(404).send('File not found.'))
             .catch(err => next(err))
@@ -76,6 +76,6 @@ module.exports.deleteForever = (req, res, next) =>
     .catch(err => next(err))
 
 module.exports.list = (req, res, next) =>
-  File.find({ _uid: req.payload })
+  File.find({ _uid: req.payload, name: new RegExp(req.query.name, 'ig') })
     .then(files => res.status(201).send(files))
     .catch(err => next(err))
