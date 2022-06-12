@@ -211,17 +211,21 @@ export default class Files extends Component {
     this.refresh()
   }
 
+  getMediaFiles = () => this.state.files.filter(v => v.path === this.state.path && helper.isMedia(v.name))
+
   getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`
 
-  getMedias = () => this.state.files.filter(v => v.path === this.state.path && helper.isMedia(v.name)).map(v => this.getMedia(v))
+  getMedias = () => this.getMediaFiles().map(v => this.getMedia(v))
 
-  prev = (e, medias = this.getMedias()) =>
+  prev = (e, medias = this.getMedias(), files = this.getMediaFiles()) =>
     medias.findIndex(v => v === this.state.media) > 0
-    && this.setState({ index: this.state.index - 1, media: medias[medias.findIndex(v => v === this.state.media) - 1] })
+    && (helper.setQuery('fid', files[this.state.index - 2]._id)
+      || (this.setState({ index: this.state.index - 1, media: medias[medias.findIndex(v => v === this.state.media) - 1] })))
 
-  next = (e, medias = this.getMedias()) =>
+  next = (e, medias = this.getMedias(), files = this.getMediaFiles()) =>
     medias.findIndex(v => v === this.state.media) < medias.length - 1
-    && this.setState({ index: this.state.index + 1, media: medias[medias.findIndex(v => v === this.state.media) + 1] })
+    && (helper.setQuery('fid', files[this.state.index]._id)
+      || this.setState({ index: this.state.index + 1, media: medias[medias.findIndex(v => v === this.state.media) + 1] }))
 
   componentDidMount = () => this.refresh() && !window.location.search && (window.location.search = 'id=root')
 
