@@ -2,6 +2,7 @@ import { Component } from 'react'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
 import helper from '../../services/helper'
 import authService from '../../services/auth'
+import foldersService from '../../services/folders'
 
 export default class Header extends Component {
   constructor(props) {
@@ -11,6 +12,7 @@ export default class Header extends Component {
 
     this.state = {
       avatar: '',
+      folders: [],
       isHover: false,
       selected: false,
       opened: false,
@@ -71,6 +73,14 @@ export default class Header extends Component {
 
   logout = () => authService.logout().then(() => window.location.href = '/')
 
+  search = e => e.target.value
+    ? foldersService.list(e.target.value)
+      .then(res => this.setState({ folders: res.data }))
+    : this.setState({ folders: [] })
+
+  access = e => /folder/g.test(e.target.className)
+    && (window.location.href = `?id=${e.target.id}`)
+
   componentDidUpdate = () => window.onresize = () => {
     this.setState({ width: window.innerWidth })
     this.reset(this.state.width < 801)
@@ -83,13 +93,22 @@ export default class Header extends Component {
       <img className={`logo-img ${this.state.width > 560 && 'mr-1'}`} src="logo.hover.svg" alt="Hover logo" hidden={!this.state.isHover} />
       {this.state.width > 560 && process.env.REACT_APP_NAME}
     </a>
-    <div className="search-bar" onMouseEnter={this.coloring} onMouseLeave={this.coloring}>
+    <div className="search-bar" onMouseEnter={this.coloring} onMouseLeave={this.coloring} onInput={this.search}>
       <form className="form-search">
         <button className="btn-search" type={this.state.width > 800 ? 'submit' : this.state.opened && this.state.keyword ? 'submit' : 'button'} disabled={this.state.width > 800 && !this.state.keyword} onClick={this.open}>
           <i className="material-icons">search</i>
         </button>
         <input className="input-search" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setKeyword} />
       </form>
+      <div className="list-group-search">
+        {this.state.folders?.map((v, i) => <button type="button" className="list-group-item-folder list-group-item list-group-item-action" id={v._id} key={i} onClick={this.access}>
+          <img className="folder" src="/svg/folder.svg" alt="Folder" /> &nbsp;&nbsp;{v.name}
+        </button>)}
+        {/* {this.state.foundChats?.map((v, i) => )} */}
+        {/* <button type="button" className="list-group-item list-group-item-action" id="{v.id}" key="{i}" onClick={this.access}>
+          &nbsp;&nbsp;Test
+        </button> */}
+      </div>
     </div>
     <Dropdown className="dropdown-avatar" isOpen={this.state.dropdownOpened} toggle={this.toggleDropdown}>
       {helper.isLogin() ? <DropdownToggle className="avatar" title={helper.getCookie('first_name')}>{this.state.avatar ? <img className="avatar-img" src={this.state.avatar} alt={`${this.state.first_name}'s avatar`} /> : this.state.role === 'root' ? <i className="material-icons">security</i> : this.state.role === 'admin' ? <i className="material-icons">local_police</i> : <i className="material-icons">account_circle</i>}</DropdownToggle> : <a className="link-help" href="/help" target="_blank"><i className="material-icons">help_outline</i></a>}
