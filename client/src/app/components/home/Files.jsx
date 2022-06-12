@@ -106,9 +106,11 @@ export default class Files extends Component {
         this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder?.name })
       }
     } else if (helper.isMedia(e.target?.closest('.li-file').getAttribute('name'))) {
+      helper.setQuery('fid', e.target?.closest('.li-file').id)
       filesService
         .read(e.target?.closest('.li-file').id)
-        .then((res, media = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}`) => this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), index: this.getMedias().findIndex(v => v === media) + 1, media: media }))
+        .then((res, media = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}`) =>
+          this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), index: this.getMedias().findIndex(v => v === media) + 1, media: media }))
     } else if (helper.isPDF(e.target?.closest('.li-file').getAttribute('name'))) {
       filesService
         .read(e.target?.closest('.li-file').id)
@@ -117,7 +119,7 @@ export default class Files extends Component {
   }
 
   close = () => (document.querySelector('body').style.overflow = 'visible')
-    && this.setState({ media: '' })
+    && (helper.deleteQuery('fid') || this.setState({ media: '' }))
 
   rename = () => this.state.type === 'folder'
     ? foldersService
