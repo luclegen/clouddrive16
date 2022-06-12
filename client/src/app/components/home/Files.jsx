@@ -42,6 +42,12 @@ export default class Files extends Component {
           const files = res.data.filter(f => helper.getQuery('location') === 'trash' ? f.is_trash : !f.is_trash)
 
           this.setState({ files: files, itemFiles: helper.getQuery('location') === 'trash' ? files : files.filter(f => f.path === path) })
+
+          if (helper.getQuery('fid')) {
+            const media = this.getMedia(files.find(v => v._id === helper.getQuery('fid')))
+
+            this.setState({ index: this.getMedias().findIndex(v => v === media) + 1, media: media })
+          }
         })
     })
 
