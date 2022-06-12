@@ -23,6 +23,29 @@ export default class Media extends Component {
     }
   }
 
+  refresh = () => {
+    if (this.props.type === 'image') {
+      const image = document.querySelector('.image')
+      const bgMedia = document.querySelector('.bg-media')
+
+      image.style.height = 'auto'
+      image.style.width = 'auto'
+      image.style.transform = 'rotate(' + (this.state.factor * 90) + 'deg)'
+
+      this.state.factor % 2
+        ? image.clientHeight / image.clientWidth > bgMedia.clientWidth / bgMedia.clientHeight
+          ? image.style.height = '100vw'
+          : image.style.width = 'calc(100vh - 53px)'
+        : image.clientWidth / image.clientHeight > bgMedia.clientWidth / bgMedia.clientHeight
+          ? image.style.width = '100vw'
+          : image.style.height = 'calc(100vh - 53px)'
+    }
+  }
+
+  rotateLeft = () => this.setState({ factor: this.state.factor + 1 }) || setTimeout(() => this.refresh())
+
+  rotateRight = () => this.setState({ factor: this.state.factor - 1 }) || setTimeout(() => this.refresh())
+
   componentDidMount = () => {
     window.onkeyup = e => {
       switch (e.keyCode) {
@@ -51,29 +74,6 @@ export default class Media extends Component {
   }
 
   componentDidUpdate = () => this.init()
-
-  refresh = () => {
-    if (this.props.type === 'image') {
-      const image = document.querySelector('.image')
-      const bgMedia = document.querySelector('.bg-media')
-
-      image.style.height = 'auto'
-      image.style.width = 'auto'
-      image.style.transform = 'rotate(' + (this.state.factor * 90) + 'deg)'
-
-      this.state.factor % 2
-        ? image.clientHeight / image.clientWidth > bgMedia.clientWidth / bgMedia.clientHeight
-          ? image.style.height = '100vw'
-          : image.style.width = 'calc(100vh - 53px)'
-        : image.clientWidth / image.clientHeight > bgMedia.clientWidth / bgMedia.clientHeight
-          ? image.style.width = '100vw'
-          : image.style.height = 'calc(100vh - 53px)'
-    }
-  }
-
-  rotateLeft = () => this.setState({ factor: this.state.factor + 1 }) || setTimeout(() => this.refresh())
-
-  rotateRight = () => this.setState({ factor: this.state.factor - 1 }) || setTimeout(() => this.refresh())
 
   render = () => <section className="section-floating">
     <span className="command-bar">
