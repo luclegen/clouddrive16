@@ -70,7 +70,7 @@ export default class Header extends Component {
     }
   }
 
-  setValue = e => this.setState({ keyword: e.target.value })
+  setValue = e => this.setState({ [e.target.name]: e.target.value })
 
   logout = () => authService.logout().then(() => window.location.href = '/')
 
@@ -108,7 +108,7 @@ export default class Header extends Component {
         <button className="btn-search" type={this.state.width > 800 ? 'submit' : this.state.opened && this.state.keyword ? 'submit' : 'button'} disabled={this.state.width > 800 && !this.state.keyword} onClick={this.open}>
           <i className="material-icons">search</i>
         </button>
-        <input className="input-search" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setValue} />
+        <input className="input-search" name="keyword" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setValue} />
       </form>
       <div className="list-group-search">
         {this.state.foundFolders?.map((v, i) => <button type="button" className="list-group-item-folder" id={v._id} key={i} onClick={this.access}>
