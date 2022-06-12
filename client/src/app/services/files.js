@@ -15,7 +15,7 @@ class FilesService {
 
   deleteForever = id => API.delete(`${URL}${id}`)
 
-  list = () => API.get(URL)
+  list = name => API.get(name ? `${URL}?name=${name}` : URL)
 }
 
 export default new FilesService()
