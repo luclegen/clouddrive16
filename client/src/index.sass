@@ -7,7 +7,10 @@ $spacer: 16px
 .section-files
   @extend .container-fluid
 
-.list-group-item-files, .list-group-item-trash
+.list-group-search
+  @extend .list-group
+
+.list-group-item-files, .list-group-item-trash, .list-group-item-folder
   @extend .list-group-item
 
 .list-group-item-files, .list-group-item-trash
@@ -70,7 +73,7 @@ header
 .form-floating
   @extend .position-relative
 
-.section-register, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder, .video-preview
+.section-register, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder, .video-preview, .list-group-search
   @extend .position-absolute
 
 .section-floating
