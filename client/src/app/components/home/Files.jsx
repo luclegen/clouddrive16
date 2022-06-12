@@ -116,7 +116,8 @@ export default class Files extends Component {
     }
   }
 
-  close = () => this.setState({ media: '' })
+  close = () => (document.querySelector('body').style.overflow = 'visible')
+    && this.setState({ media: '' })
 
   rename = () => this.state.type === 'folder'
     ? foldersService
