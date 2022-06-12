@@ -3,16 +3,17 @@ import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap
 import helper from '../../services/helper'
 import authService from '../../services/auth'
 import foldersService from '../../services/folders'
+import filesService from '../../services/files'
 
 export default class Header extends Component {
   constructor(props) {
     super(props)
 
-    this.setKeyword = this.setKeyword.bind(this)
-
     this.state = {
       avatar: '',
       folders: [],
+      foundFolders: [],
+      foundFiles: [],
       isHover: false,
       selected: false,
       opened: false,
@@ -69,17 +70,26 @@ export default class Header extends Component {
     }
   }
 
-  setKeyword = e => this.setState({ keyword: e.target.value })
+  setValue = e => this.setState({ keyword: e.target.value })
 
   logout = () => authService.logout().then(() => window.location.href = '/')
 
   search = e => e.target.value
     ? foldersService.list(e.target.value)
-      .then(res => this.setState({ folders: res.data }))
-    : this.setState({ folders: [] })
+      .then(res => new Promise(resolve => this.setState({ foundFolders: res.data }) || resolve())
+        .then(() => filesService.list(e.target.value)
+          .then(res => this.setState({ foundFiles: res.data }))))
+    : this.setState({ foundFolders: [], foundFiles: [] })
 
   access = e => /folder/g.test(e.target.className)
-    && (window.location.href = `?id=${e.target.id}`)
+    ? (window.location.href = `?id=${e.target.id}`)
+    : /file/g.test(e.target.className)
+    && (window.location.href = `?id=${e.target.value === '/' ? 'root' : this.state.folders.find(v => v.path + (v.path === '/' ? '' : '/') + v.name === e.target.value)._id}${helper.isMedia(e.target.name) ? `&fid=${e.target.id}` : ''}`)
+    && helper.isPDF(e.target.name)
+    && window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${e.target.value === '/' ? '/' : e.target.value + '/'}${e.target.name}`)
+
+  componentDidMount = () => foldersService.list()
+    .then(res => this.setState({ folders: res.data }))
 
   componentDidUpdate = () => window.onresize = () => {
     this.setState({ width: window.innerWidth })
@@ -98,16 +108,15 @@ export default class Header extends Component {
         <button className="btn-search" type={this.state.width > 800 ? 'submit' : this.state.opened && this.state.keyword ? 'submit' : 'button'} disabled={this.state.width > 800 && !this.state.keyword} onClick={this.open}>
           <i className="material-icons">search</i>
         </button>
-        <input className="input-search" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setKeyword} />
+        <input className="input-search" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setValue} />
       </form>
       <div className="list-group-search">
-        {this.state.folders?.map((v, i) => <button type="button" className="list-group-item-folder list-group-item list-group-item-action" id={v._id} key={i} onClick={this.access}>
+        {this.state.foundFolders?.map((v, i) => <button type="button" className="list-group-item-folder" id={v._id} key={i} onClick={this.access}>
           <img className="folder" src="/svg/folder.svg" alt="Folder" /> &nbsp;&nbsp;{v.name}
         </button>)}
-        {/* {this.state.foundChats?.map((v, i) => )} */}
-        {/* <button type="button" className="list-group-item list-group-item-action" id="{v.id}" key="{i}" onClick={this.access}>
-          &nbsp;&nbsp;Test
-        </button> */}
+        {this.state.foundFiles?.map((v, i) => <button type="button" className="list-group-item-file" id={v._id} key={i} name={v.name} value={v.path} onClick={this.access}>
+          <i className="material-icons">{helper.isImage(v.name) ? 'image' : helper.isVideo(v.name) ? 'video_file' : helper.isAudio(v.name) ? 'audio_file' : 'description'}</i>&nbsp;&nbsp;{v.name}
+        </button>)}
       </div>
     </div>
     <Dropdown className="dropdown-avatar" isOpen={this.state.dropdownOpened} toggle={this.toggleDropdown}>
