@@ -89,7 +89,7 @@ export default class Header extends Component {
     && window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${e.target.value === '/' ? '/' : e.target.value + '/'}${e.target.name}`)
 
   componentDidMount = () => foldersService.list()
-    .then(res => this.setState({ folders: res.data }))
+    .then(res => this.setState({ folders: res.data, keyword: helper.getQuery('keyword') }))
 
   componentDidUpdate = () => window.onresize = () => {
     this.setState({ width: window.innerWidth })
@@ -108,7 +108,7 @@ export default class Header extends Component {
         <button className="btn-search" type={this.state.width > 800 ? 'submit' : this.state.opened && this.state.keyword ? 'submit' : 'button'} disabled={this.state.width > 800 && !this.state.keyword} onClick={this.open}>
           <i className="material-icons">search</i>
         </button>
-        <input className="input-search" name="keyword" type="search" placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setValue} />
+        <input className="input-search" name="keyword" type="search" value={this.state.keyword} placeholder="Search for anything" onSelect={this.coloring} onBlur={this.coloring} onInput={this.setValue} />
       </form>
       <div className="list-group-search">
         {this.state.foundFolders?.map((v, i) => <button type="button" className="list-group-item-folder" id={v._id} key={i} onClick={this.access}>
