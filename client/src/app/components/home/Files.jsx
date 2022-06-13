@@ -124,11 +124,10 @@ export default class Files extends Component {
     .then(() => this.refresh())
 
   open = e => {
-    helper.deleteQuery('keyword')
-
     if ((/folder/g).test(e.target.className) || e.target.closest('.li-folder')) {
       const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
 
+      helper.deleteQuery('keyword')
       if (helper.getQuery('location') !== 'trash') {
         this.refresh()
         helper.setQuery('id', folder?._id)
