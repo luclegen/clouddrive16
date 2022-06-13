@@ -84,7 +84,7 @@ export default class Header extends Component {
   access = e => /folder/g.test(e.target.className)
     ? (window.location.href = `?id=${e.target.id}`)
     : /file/g.test(e.target.className)
-    && (window.location.href = `?id=${e.target.value === '/' ? 'root' : this.state.folders.find(v => v.path + (v.path === '/' ? '' : '/') + v.name === e.target.value)._id}${helper.isMedia(e.target.name) ? `&fid=${e.target.id}` : ''}`)
+    && (window.location.href = `?id=${e.target.value === '/' ? 'root' : this.state.folders.find(v => v.path + (v.path === '/' ? '' : '/') + v.name === e.target.value)._id}${e.target.getAttribute('data-trash') === 'true' ? '&location=trash' : ''}${helper.isMedia(e.target.name) ? `&fid=${e.target.id}` : ''}`)
     && helper.isPDF(e.target.name)
     && window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${e.target.value === '/' ? '/' : e.target.value + '/'}${e.target.name}`)
 
@@ -114,7 +114,7 @@ export default class Header extends Component {
         {this.state.foundFolders?.map((v, i) => <button type="button" className="list-group-item-folder" id={v._id} key={i} onClick={this.access}>
           <img className="folder" src="/svg/folder.svg" alt="Folder" /> &nbsp;&nbsp;{v.name}
         </button>)}
-        {this.state.foundFiles?.map((v, i) => <button type="button" className="list-group-item-file" id={v._id} key={i} name={v.name} value={v.path} onClick={this.access}>
+        {this.state.foundFiles?.map((v, i) => <button type="button" className="list-group-item-file" id={v._id} key={i} name={v.name} value={v.path} data-trash={v.is_trash} onClick={this.access}>
           <i className="material-icons">{helper.isImage(v.name) ? 'image' : helper.isVideo(v.name) ? 'video_file' : helper.isAudio(v.name) ? 'audio_file' : 'description'}</i>&nbsp;&nbsp;{v.name}
         </button>)}
       </div>
