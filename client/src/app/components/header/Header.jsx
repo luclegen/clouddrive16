@@ -88,7 +88,7 @@ export default class Header extends Component {
     && helper.isPDF(e.target.name)
     && window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${e.target.value === '/' ? '/' : e.target.value + '/'}${e.target.name}`)
 
-  componentDidMount = () => foldersService.list()
+  componentDidMount = () => helper.isLogin() && foldersService.list()
     .then(res => this.setState({ folders: res.data, keyword: helper.getQuery('keyword') || '' }))
 
   componentDidUpdate = () => window.onresize = () => {
@@ -103,7 +103,7 @@ export default class Header extends Component {
       <img className={`logo-img ${this.state.width > 560 && 'mr-1'}`} src="logo.hover.svg" alt="Hover logo" hidden={!this.state.isHover} />
       {this.state.width > 560 && process.env.REACT_APP_NAME}
     </a>
-    <div className="search-bar" onMouseEnter={this.coloring} onMouseLeave={this.coloring} onInput={this.search}>
+    {helper.isLogin() && <div className="search-bar" onMouseEnter={this.coloring} onMouseLeave={this.coloring} onInput={this.search}>
       <form className="form-search">
         <button className="btn-search" type={this.state.width > 800 ? 'submit' : this.state.opened && this.state.keyword ? 'submit' : 'button'} disabled={this.state.width > 800 && !this.state.keyword} onClick={this.open}>
           <i className="material-icons">search</i>
@@ -118,7 +118,7 @@ export default class Header extends Component {
           <i className="material-icons">{helper.isImage(v.name) ? 'image' : helper.isVideo(v.name) ? 'video_file' : helper.isAudio(v.name) ? 'audio_file' : 'description'}</i>&nbsp;&nbsp;{v.name}
         </button>)}
       </div>
-    </div>
+    </div>}
     <Dropdown className="dropdown-avatar" isOpen={this.state.dropdownOpened} toggle={this.toggleDropdown}>
       {helper.isLogin() ? <DropdownToggle className="avatar" title={helper.getCookie('first_name')}>{this.state.avatar ? <img className="avatar-img" src={this.state.avatar} alt={`${this.state.first_name}'s avatar`} /> : this.state.role === 'root' ? <i className="material-icons">security</i> : this.state.role === 'admin' ? <i className="material-icons">local_police</i> : <i className="material-icons">account_circle</i>}</DropdownToggle> : <a className="link-help" href="/help" target="_blank"><i className="material-icons">help_outline</i></a>}
       <DropdownMenu className="dropdown-menu-avatar">
