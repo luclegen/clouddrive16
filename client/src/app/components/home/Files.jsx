@@ -105,7 +105,7 @@ export default class Files extends Component {
 
   upload = () => document.getElementById("files").click()
 
-  download = () => window.location.href = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + this.state.id
+  download = () => window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + this.state.id)
   // API
   //   .get(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + this.state.id, {
   //     responseType: 'arraybuffer',
