@@ -89,7 +89,7 @@ export default class Header extends Component {
     && window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${e.target.value === '/' ? '/' : e.target.value + '/'}${e.target.name}`)
 
   componentDidMount = () => foldersService.list()
-    .then(res => this.setState({ folders: res.data, keyword: helper.getQuery('keyword') }))
+    .then(res => this.setState({ folders: res.data, keyword: helper.getQuery('keyword') || '' }))
 
   componentDidUpdate = () => window.onresize = () => {
     this.setState({ width: window.innerWidth })
