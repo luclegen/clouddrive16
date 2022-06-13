@@ -95,7 +95,7 @@ export default class Register extends Component {
 
   componentDidUpdate = () => window.onbeforeunload = () => this.state.first_name || this.state.last_name || this.state.email || this.state.password || this.state.day || this.state.month || this.state.year || this.state.sex ? true : undefined
 
-  render = () => <section className="section-register">
+  render = () => <section className="section-floating-center">
     <form className="form-register" onSubmit={this.onSubmit}>
       <button className="close" type="reset" onClick={this.props.close}>
         <i className="material-icons">close</i>
