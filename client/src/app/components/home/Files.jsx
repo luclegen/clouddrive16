@@ -14,6 +14,7 @@ export default class Files extends Component {
     this.state = {
       id: '',
       type: '',
+      parent: '',
       location: '',
       path: '/',
       name: '',
@@ -106,7 +107,7 @@ export default class Files extends Component {
 
   download = () => window.location.href = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + this.state.id
   // API
-  //   .get(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d / ` + this.state.id, {
+  //   .get(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + this.state.id, {
   //     responseType: 'arraybuffer',
   //     headers: { 'Accept': mime.lookup(this.state.name) },
   //     onDownloadProgress: data => this.setState({ percent: Math.round(100 * (data.loaded / data.total)) })
@@ -145,6 +146,9 @@ export default class Files extends Component {
         .then(res => window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}`))
     }
   }
+
+  openLocation = (e, parent = this.state.folders.find(v => this.state.parent === v.path + (v.path === '/' ? '' : '/') + v.name)) =>
+    window.location.href = `?id=${parent ? parent._id : 'root'}`
 
   close = () => (document.querySelector('body').style.overflow = 'visible')
     && (helper.deleteQuery('fid') || this.setState({ media: '' }))
@@ -217,9 +221,10 @@ export default class Files extends Component {
     this.getMenuFolder().style.top = `${e.clientY}px`
     this.getMenuFolder().style.left = `${e.clientX}px`
     this.setState({
-      id: e.target.closest('.li-' + type)?.id,
+      id: e.target.closest(`.li-${type}`)?.id,
       type: type,
-      name: e.target.closest('.li-' + type)?.getAttribute('name')
+      name: e.target.closest(`.li-${type}`)?.getAttribute('name'),
+      parent: e.target.closest(`.li-${type}`)?.getAttribute('value')
     })
 
     document.querySelector('.dropdown-item-download').style.setProperty('display', type === 'folder' ? 'none' : 'flex', 'important')
@@ -263,6 +268,8 @@ export default class Files extends Component {
       <li className="dropdown-item-rename" onClick={this.rename}><i className="material-icons">drive_file_rename_outline</i>Rename</li>
       {helper.getQuery('location') === 'trash' && <li className="dropdown-item-restore" onClick={this.restore}><i className="material-icons">restore</i>Restore</li>}
       <li className="dropdown-item-delete" onClick={this.delete}><i className="material-icons">{helper.getQuery('location') === 'trash' ? 'delete_forever' : 'delete'}</i>Delete {helper.getQuery('location') === 'trash' && 'forever'}</li>
+      {helper.getQuery('keyword') && <li><hr className="dropdown-divider" /></li>}
+      {helper.getQuery('keyword') && <li className="dropdown-item-location" onClick={this.openLocation}><i className="material-icons">location_on</i>Open item location</li>}
     </ul>
     <nav className="left-nav col-2" id="leftNav">
       <div className="top-left-nav">
@@ -270,7 +277,7 @@ export default class Files extends Component {
       </div>
       <ul className="list-group">
         <li className={`list-group-item-files ${!this.state.location && 'active'}`} onClick={this.return}><i className="material-icons">folder</i> My files</li>
-        <li className={`list-group-item-trash ${this.state.location === 'trash' && 'active'}`} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
+        <li className={`list-group-item-trash ${this.state.location === 'trash' && 'active'} `} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
       </ul>
     </nav>
     <main className="main-content col-10">
@@ -293,19 +300,33 @@ export default class Files extends Component {
           </span>
           : helper.getQuery('keyword') && <h5 className="title-bar"><strong>{`Search results for "${helper.getQuery('keyword')}"`}</strong></h5>}
       {!this.isEmpty() && <ul className="ls-folder">
-        {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} title={v.name} onClick={this.open} onContextMenu={this.choose}>
+        {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} title={v.name} value={v.path} onClick={this.open} onContextMenu={this.choose}>
           <img className="bg-folder" id={`folder${i}`} src="svg/lg-bg.svg" alt="background folder" />
-          {helper.isImages(this.state.files, v) ? <img className="img" src={`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${helper.getImage(this.state.files, v).path === '/' ? '/' : helper.getImage(this.state.files, v).path + '/'}${helper.getImage(this.state.files, v).name}`} alt="foreground folder" /> : helper.isVideos(this.state.files, v) ? <video className="video-preview" src={`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${helper.getVideo(this.state.files, v).path === '/' ? '/' : helper.getVideo(this.state.files, v).path + '/'}${helper.getVideo(this.state.files, v).name}`} ></video > : !helper.isEmpty(this.state.folders, this.state.files, v) && <div className="file"></div>}
+          {helper.isImages(this.state.files, v)
+            ? <img className="img" src={`${process.env.NODE_ENV === 'production'
+              ? window.location.origin + '/api'
+              : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${helper.getImage(this.state.files, v).path === '/'
+                ? '/' : helper.getImage(this.state.files, v).path + '/'}${helper.getImage(this.state.files, v).name}`} alt="foreground folder" />
+            : helper.isVideos(this.state.files, v)
+              ? <video className="video-preview" src={`${process.env.NODE_ENV === 'production'
+                ? window.location.origin + '/api'
+                : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${helper.getVideo(this.state.files, v).path === '/'
+                  ? '/'
+                  : helper.getVideo(this.state.files, v).path + '/'}${helper.getVideo(this.state.files, v).name}`} ></video >
+              : !helper.isEmpty(this.state.folders, this.state.files, v)
+              && <div className="file"></div>}
           {helper.isImages(this.state.files, v) || helper.isVideos(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="foreground folder" onContextMenu={this.choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="foreground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
-        </li> : <li>This folder is empty</li>)}
-        {this.state.itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} title={v.name} onClick={this.open} onContextMenu={this.choose}>
-          {helper.isImage(v.name) ? <img className="bg-img" id={`file${i}`} src={this.getMedia(v)} alt={`Img ${i}`} /> : helper.isVideo(v.name) ? <video className="bg-video" src={this.getMedia(v)}></video> : <i className="material-icons bg-file">{helper.isAudio(v.name) ? 'audio_file' : 'description'}</i>}
-          <label className="label-file" htmlFor={`file${i}`} style={{ marginTop: helper.isVideo(v.name) ? '-8px' : '85px' }} >{v.name}</label>
-        </li>)}
-      </ul>}
+        </li > : <li>This folder is empty</li>)}
+        {
+          this.state.itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} value={v.path} title={v.name} onClick={this.open} onContextMenu={this.choose}>
+            {helper.isImage(v.name) ? <img className="bg-img" id={`file${i}`} src={this.getMedia(v)} alt={`Img ${i}`} /> : helper.isVideo(v.name) ? <video className="bg-video" src={this.getMedia(v)}></video> : <i className="material-icons bg-file">{helper.isAudio(v.name) ? 'audio_file' : 'description'}</i>}
+            <label className="label-file" htmlFor={`file${i}`} style={{ marginTop: helper.isVideo(v.name) ? '-8px' : '85px' }} >{v.name}</label>
+          </li>)
+        }
+      </ul >}
       {this.isEmpty() && <div className="empty-trash"><i className="material-icons">delete_outline</i><strong>Trash is Empty</strong></div>}
-    </main>
+    </main >
     {this.state.media && <Media src={this.state.media} type={helper.isImage(this.state.media) ? 'image' : helper.isVideo(this.state.media) ? 'video' : helper.isAudio(this.state.media) ? 'audio' : 'none'} download={this.download} percent={this.state.percent} next={this.next} prev={this.prev} index={this.state.index} count={this.getMedias().length} close={this.close} />}
-  </section>
+  </section >
 }
