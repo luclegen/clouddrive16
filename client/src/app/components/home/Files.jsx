@@ -35,13 +35,28 @@ export default class Files extends Component {
       const folder = helper.getQuery('id') === 'root' ? { path: '/', name: '' } : res.data.find(f => f._id === helper.getQuery('id'))
       const path = folder?.name === '' ? '/' : folder?.path === '/' ? folder?.path + folder?.name : folder?.path + '/' + folder?.name
 
-      this.setState({ folders: folders, items: helper.getQuery('location') === 'trash' ? folders : folders.filter(f => f.path === path), path: path })
+      this.setState({
+        folders: folders,
+        items: helper.getQuery('location') === 'trash'
+          ? folders
+          : helper.getQuery('keyword')
+            ? folders.filter(v => new RegExp(helper.getQuery('keyword'), 'ig').test(v.name))
+            : folders.filter(f => f.path === path),
+        path: path
+      })
 
       filesService.list()
         .then(res => {
           const files = res.data.filter(f => helper.getQuery('location') === 'trash' ? f.is_trash : !f.is_trash)
 
-          this.setState({ files: files, itemFiles: helper.getQuery('location') === 'trash' ? files : files.filter(f => f.path === path) })
+          this.setState({
+            files: files,
+            itemFiles: helper.getQuery('location') === 'trash'
+              ? files
+              : helper.getQuery('keyword')
+                ? files.filter(v => new RegExp(helper.getQuery('keyword'), 'ig').test(v.name))
+                : files.filter(f => f.path === path)
+          })
 
           if (helper.getQuery('fid')) {
             const media = this.getMedia(files.find(v => v._id === helper.getQuery('fid')))
@@ -103,6 +118,8 @@ export default class Files extends Component {
     .then(() => this.refresh())
 
   open = e => {
+    helper.deleteQuery('keyword')
+
     if ((/folder/g).test(e.target.className) || e.target.closest('.li-folder')) {
       const folder = this.state.folders.find(f => f._id === e.target.closest('.li-folder').id)
 
@@ -265,9 +282,11 @@ export default class Files extends Component {
       {!!this.state.percent && <Progress value={this.state.percent} />}
       {helper.getQuery('location') === 'trash'
         ? !this.isEmpty() && <div className="space-bar"></div>
-        : <span className="path-bar">
-          {this.state.path === '/' ? <strong>My files</strong> : this.state.path.split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
-        </span>}
+        : helper.getQuery('id')
+          ? <span className="path-bar">
+            {this.state.path === '/' ? <strong>My files</strong> : this.state.path.split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
+          </span>
+          : helper.getQuery('keyword') && <h5 className="title-bar"><strong>{`Search results for "${helper.getQuery('keyword')}"`}</strong></h5>}
       {!this.isEmpty() && <ul className="ls-folder">
         {this.state.items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} title={v.name} onClick={this.open} onContextMenu={this.choose}>
           <img className="bg-folder" id={`folder${i}`} src="svg/lg-bg.svg" alt="background folder" />
