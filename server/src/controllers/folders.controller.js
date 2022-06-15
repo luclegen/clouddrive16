@@ -48,27 +48,30 @@ module.exports.update = (req, res, next) => req.body.name
             ? res.status(422).send('You already have a folder in the current path. Please a different name.')
             : Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
               .then(editedFolder => editedFolder
-                ? fs.rename(process.env.UPLOADS + req.payload._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name, process.env.UPLOADS + req.payload._id + '/files' + (editedFolder.path === '/' ? editedFolder.path : editedFolder.path + '/') + editedFolder.name, err => err)
-                || Folder.find({ path: new RegExp((folder.path === '/' ? '/' : folder.path + '/') + folder.name, 'g') })
-                  .then(editedFolders => editedFolders.length
-                    ? editedFolders.forEach(f =>
-                      (f.path = f.path?.replace((folder.path === '/' ? '/' : folder.path + '/') + folder.name, (editedFolder.path === '/' ? '/' : editedFolder.path + '/') + editedFolder.name))
-                      && f
-                        .save()
-                        .then(savedFolder => savedFolder
-                          ? File.find({ path: new RegExp((folder.path === '/' ? '/' : folder.path + '/') + folder.name, 'g') })
-                            .then(files => files.length
-                              ? files.forEach(file => (file.path = file.path?.replace((folder.path === '/' ? '/' : folder.path + '/') + folder.name, (editedFolder.path === '/' ? '/' : editedFolder.path + '/') + editedFolder.name))
-                                && file.save()
-                                  .then(editedFile => editedFile
-                                    ? res.send()
-                                    : res.status(404).send('File not found.')))
-                              : res.send())
-                            .catch(err => next(err))
-                          : res.status(404).send('Folder not found.'))
-                        .catch(err => next(err)))
-                    : res.send())
-                  .catch(err => next(err))
+                ? fs.rename(
+                  process.env.UPLOADS + req.payload._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name,
+                  process.env.UPLOADS + req.payload._id + '/files' + (editedFolder.path === '/' ? editedFolder.path : editedFolder.path + '/') + editedFolder.name,
+                  err => err
+                    ? console.error(err)
+                    : Folder.find({ path: new RegExp((folder.path === '/' ? '/' : folder.path + '/') + folder.name, 'g') })
+                      .then(editedFolders => editedFolders.length
+                        ? editedFolders.forEach(f =>
+                          (f.path = f.path?.replace((folder.path === '/' ? '/' : folder.path + '/') + folder.name, (editedFolder.path === '/' ? '/' : editedFolder.path + '/') + editedFolder.name))
+                          && f
+                            .save()
+                            .then(savedFolder => !savedFolder && res.status(404).send('Folder not found.'))
+                            .catch(err => next(err)))
+                        || File.find({ path: new RegExp((folder.path === '/' ? '/' : folder.path + '/') + folder.name, 'g') })
+                          .then(files => files.length
+                            ? files.forEach(file => (file.path = file.path?.replace((folder.path === '/' ? '/' : folder.path + '/') + folder.name, (editedFolder.path === '/' ? '/' : editedFolder.path + '/') + editedFolder.name))
+                              && file.save()
+                                .then(editedFile => !editedFile && res.status(404).send('File not found.'))
+                                .catch(err => next(err)))
+                            || res.send()
+                            : res.send())
+                          .catch(err => next(err))
+                        : res.send())
+                      .catch(err => next(err)))
                 : res.status(404).send('Folder not found.'))
               .catch(err => next(err)))
         .catch(err => next(err)))
