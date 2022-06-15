@@ -49,21 +49,21 @@ module.exports.update = (req, res, next) => req.body.name
             : Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
               .then(editedFolder => editedFolder
                 ? fs.rename(
-                  process.env.UPLOADS + req.payload._id + '/files' + (folder.path === '/' ? folder.path : folder.path + '/') + folder.name,
-                  process.env.UPLOADS + req.payload._id + '/files' + (editedFolder.path === '/' ? editedFolder.path : editedFolder.path + '/') + editedFolder.name,
+                  converter.toUploadPath(req.payload._id, folder),
+                  converter.toUploadPath(req.payload._id, editedFolder),
                   err => err
                     ? console.error(err)
-                    : Folder.find({ path: new RegExp((folder.path === '/' ? '/' : folder.path + '/') + folder.name, 'g') })
+                    : Folder.find({ path: new RegExp(converter.toPath(folder), 'g') })
                       .then(editedFolders => editedFolders.length
                         ? editedFolders.forEach(f =>
-                          (f.path = f.path?.replace((folder.path === '/' ? '/' : folder.path + '/') + folder.name, (editedFolder.path === '/' ? '/' : editedFolder.path + '/') + editedFolder.name))
+                          (f.path = f.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
                           && f
                             .save()
                             .then(savedFolder => !savedFolder && res.status(404).send('Folder not found.'))
                             .catch(err => next(err)))
-                        || File.find({ path: new RegExp((folder.path === '/' ? '/' : folder.path + '/') + folder.name, 'g') })
+                        || File.find({ path: new RegExp(converter.toPath(folder), 'g') })
                           .then(files => files.length
-                            ? files.forEach(file => (file.path = file.path?.replace((folder.path === '/' ? '/' : folder.path + '/') + folder.name, (editedFolder.path === '/' ? '/' : editedFolder.path + '/') + editedFolder.name))
+                            ? files.forEach(file => (file.path = file.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
                               && file.save()
                                 .then(editedFile => !editedFile && res.status(404).send('File not found.'))
                                 .catch(err => next(err)))
