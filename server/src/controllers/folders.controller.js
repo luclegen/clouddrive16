@@ -1,7 +1,9 @@
 const fs = require('fs')
 const _ = require('lodash')
+const fse = require('fs-extra')
 const Folder = require('../models/folder.model')
 const File = require('../models/file.model')
+const converter = require('../helpers/converter')
 
 module.exports.create = (req, res, next) =>
   Folder.find({ _uid: req.payload, name: req.body.name, path: req.body.path })
@@ -81,6 +83,40 @@ module.exports.restore = (req, res, next) =>
   Folder.findByIdAndUpdate(req.params.id, { $set: { is_trash: false } }, { new: true })
     .then(folder => folder ? res.send() : res.status(404).send('Folder not found.'))
     .catch(err => next(err))
+
+module.exports.move = (req, res, next) => Folder.findById(req.params.id)
+  .then(async (folder, destFolder = undefined) =>
+    (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did))
+      + folder
+      ? Folder.find({ _uid: req.payload, name: folder.name, path: destFolder ? converter.toPath(destFolder) : '/' })
+        .then(folders => folders.length
+          ? res.status(422).send('You already have a folder in the current path! Please choose another folder.')
+          : Folder.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true })
+            .then(movedFolder => movedFolder
+              ? Folder.find({ path: new RegExp(converter.toPath(folder), 'g') })
+                .then(oldFolders => oldFolders.forEach(oldFolder =>
+                  (oldFolder.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
+                  && oldFolder.save()
+                    .then(movedFolder1 => movedFolder1
+                      ? File.find({ path: new RegExp(converter.toPath(folder), 'g') })
+                        .then(oldFiles => oldFiles.forEach(oldFile =>
+                          (oldFile.path = oldFile.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
+                          && oldFile.save()
+                            .then(movedFile => movedFile
+                              ? fse.move(
+                                converter.toUploadPath(req.payload._id, folder),
+                                (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + folder.name,
+                                err => err
+                                  ? next(err)
+                                  : res.send('Done.'))
+                              : res.status(404).send('Moved file not found!'))
+                            .catch(err => next(err))))
+                      : res.status(404).send('Moved folder not found!'))
+                    .catch(err => next(err))))
+              : res.status(404).send('Moved folder not found!'))
+            .catch(err => next(err)))
+      : res.status(404).send('Folder not found!'))
+  .catch(err => next(err))
 
 module.exports.deleteForever = (req, res, next) =>
   Folder.findById(req.params.id)
