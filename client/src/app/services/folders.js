@@ -11,6 +11,8 @@ class FoldersService {
 
   restore = id => API.patch(`${URL}r/${id}`)
 
+  move = (id, did) => API.patch(`${URL}m/${id}`, did)
+
   deleteForever = id => API.delete(`${URL}${id}`)
 
   list = name => API.get(name ? `${URL}?name=${name}` : URL)
