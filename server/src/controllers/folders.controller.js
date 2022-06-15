@@ -1,6 +1,5 @@
 const fs = require('fs')
 const _ = require('lodash')
-const fse = require('fs-extra')
 const Folder = require('../models/folder.model')
 const File = require('../models/file.model')
 const converter = require('../helpers/converter')
@@ -108,7 +107,7 @@ module.exports.move = (req, res, next) => Folder.findById(req.params.id)
                       && oldFile.save()
                         .then(movedFile => !movedFile && res.status(404).send('Moved file not found!'))
                         .catch(err => next(err)))
-                      || fse.move(
+                      || fs.rename(
                         converter.toUploadPath(req.payload._id, folder),
                         (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + folder.name,
                         err => err
