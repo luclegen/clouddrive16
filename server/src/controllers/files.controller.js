@@ -89,7 +89,7 @@ module.exports.deleteForever = (req, res, next) =>
           ? File.findByIdAndDelete(req.params.id)
             .then(file =>
               file
-                ? fs.rm(process.env.UPLOADS + req.payload._id + '/files' + file.path + (file.path === '/' ? '' : '/') + file.name,
+                ? fs.rm(converter.toUploadPath(req.payload._id, file),
                   { recursive: true },
                   err => err
                     ? console.error(err)
