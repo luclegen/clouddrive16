@@ -74,6 +74,7 @@ module.exports.update = (req, res, next) => req.body.name
                 : res.status(404).send('Folder not found.'))
               .catch(err => next(err)))
         .catch(err => next(err)))
+    .catch(err => next(err))
   : res.status(403).send('Name is required.')
 
 module.exports.delete = (req, res, next) =>
