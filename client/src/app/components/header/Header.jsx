@@ -84,7 +84,7 @@ export default class Header extends Component {
   access = e => /folder/g.test(e.target.className)
     ? (window.location.href = `?id=${e.target.id}`)
     : /file/g.test(e.target.className)
-    && (window.location.href = `?id=${e.target.value === '/' ? 'root' : this.state.folders.find(v => v.path + (v.path === '/' ? '' : '/') + v.name === e.target.value)._id}${e.target.getAttribute('data-trash') === 'true' ? '&location=trash' : ''}${helper.isMedia(e.target.name) ? `&fid=${e.target.id}` : ''}`)
+    && (window.location.href = `?id=${e.target.value === '/' ? 'root' : this.state.folders.find(v => helper.toPath(v) === e.target.value)._id}${e.target.getAttribute('data-trash') === 'true' ? '&location=trash' : ''}${helper.isMedia(e.target.name) ? `&fid=${e.target.id}` : ''}`)
     && helper.isPDF(e.target.name)
     && window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${e.target.value === '/' ? '/' : e.target.value + '/'}${e.target.name}`)
 
