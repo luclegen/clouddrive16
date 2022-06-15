@@ -25,7 +25,7 @@ module.exports.create = (req, res, next) =>
 
 module.exports.download = (req, res, next) =>
   File.findById(req.params.id)
-    .then(file => res.download(process.env.UPLOADS + file._uid + '/files' + file.path + '/' + file.name))
+    .then(file => res.download(converter.toUploadPath(file._uid, file)))
     .catch(err => next(err))
 
 module.exports.read = (req, res, next) =>
