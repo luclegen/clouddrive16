@@ -7,6 +7,7 @@ router.get('/:id', authorize, foldersController.read)
 router.put('/:id', authorize, foldersController.update)
 router.patch('/:id', authorize, foldersController.delete)
 router.patch('/r/:id', authorize, foldersController.restore)
+router.patch('/m/:id', authorize, foldersController.move)
 router.delete('/:id', authorize, foldersController.deleteForever)
 router.get('/', authorize, foldersController.list)
 
