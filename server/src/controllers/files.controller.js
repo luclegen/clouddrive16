@@ -82,6 +82,7 @@ module.exports.move = (req, res, next) => File.findById(req.params.id)
                   : res.send('Done.'))
               : res.status(404).send('Moved folder not found!'))
             .catch(err => next(err)))
+        .catch(err => next(err))
       : res.status(404).send('Folder not found!'))
   .catch(err => next(err))
 
