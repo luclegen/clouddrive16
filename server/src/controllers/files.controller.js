@@ -43,8 +43,12 @@ module.exports.update = (req, res, next) => req.body.name
             : File.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
               .then(fileEdited =>
                 fileEdited
-                  ? fs.rename(process.env.UPLOADS + req.payload._id + '/files' + (file.path === '/' ? file.path : file.path + '/') + file.name, process.env.UPLOADS + req.payload._id + '/files' + (fileEdited.path === '/' ? fileEdited.path : fileEdited.path + '/') + fileEdited.name, err => err)
-                  || res.send()
+                  ? fs.rename(
+                    converter.toUploadPath(req.payload._id, file),
+                    converter.toUploadPath(req.payload._id, fileEdited),
+                    err => err
+                      ? console.error(err)
+                      : res.send())
                   : res.status(404).send('File not found.'))
               .catch(err => next(err)))
         .catch(err => next(err)))
