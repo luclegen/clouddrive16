@@ -1,6 +1,8 @@
 const _ = require('lodash')
 const fs = require("fs")
 const File = require('../models/file.model')
+const Folder = require('../models/folder.model')
+const converter = require('../helpers/converter')
 
 module.exports.create = (req, res, next) =>
   JSON.parse(req.body.names).forEach(name =>
@@ -58,6 +60,26 @@ module.exports.restore = (req, res, next) =>
   File.findByIdAndUpdate(req.params.id, { $set: { is_trash: false } }, { new: true })
     .then(file => file ? res.send() : res.status(404).send('File not found.'))
     .catch(err => next(err))
+
+module.exports.move = (req, res, next) => File.findById(req.params.id)
+  .then(async (file, destFolder = undefined) =>
+    (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did))
+      + file
+      ? File.find({ _uid: req.payload, name: file.name, path: destFolder ? converter.toPath(destFolder) : '/' })
+        .then(files => files.length
+          ? res.status(422).send('You already have a file in the current path! Please choose another file.')
+          : File.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true })
+            .then(movedFile => movedFile
+              ? fs.rename(
+                converter.toUploadPath(req.payload._id, file),
+                (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + file.name,
+                err => err
+                  ? console.error(err)
+                  : res.send('Done.'))
+              : res.status(404).send('Moved folder not found!'))
+            .catch(err => next(err)))
+      : res.status(404).send('Folder not found!'))
+  .catch(err => next(err))
 
 module.exports.deleteForever = (req, res, next) =>
   File.findById(req.params.id)
