@@ -107,7 +107,7 @@ module.exports.move = (req, res, next) => Folder.findById(req.params.id)
                                 converter.toUploadPath(req.payload._id, folder),
                                 (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + folder.name,
                                 err => err
-                                  ? next(err)
+                                  ? console.error(err)
                                   : res.send('Done.'))
                               : res.status(404).send('Moved file not found!'))
                             .catch(err => next(err))))
