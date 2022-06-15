@@ -97,22 +97,20 @@ module.exports.move = (req, res, next) => Folder.findById(req.params.id)
                 .then(oldFolders => oldFolders.forEach(oldFolder =>
                   (oldFolder.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
                   && oldFolder.save()
-                    .then(movedFolder1 => movedFolder1
-                      ? File.find({ path: new RegExp(converter.toPath(folder), 'g') })
-                        .then(oldFiles => oldFiles.forEach(oldFile =>
-                          (oldFile.path = oldFile.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
-                          && oldFile.save()
-                            .then(movedFile => movedFile
-                              ? fse.move(
-                                converter.toUploadPath(req.payload._id, folder),
-                                (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + folder.name,
-                                err => err
-                                  ? console.error(err)
-                                  : res.send('Done.'))
-                              : res.status(404).send('Moved file not found!'))
-                            .catch(err => next(err))))
-                      : res.status(404).send('Moved folder not found!'))
-                    .catch(err => next(err))))
+                    .then(movedFolder1 => !movedFolder1 && res.status(404).send('Moved folder not found!'))
+                    .catch(err => next(err)))
+                  || File.find({ path: new RegExp(converter.toPath(folder), 'g') })
+                    .then(oldFiles => oldFiles.forEach(oldFile =>
+                      (oldFile.path = oldFile.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
+                      && oldFile.save()
+                        .then(movedFile => !movedFile && res.status(404).send('Moved file not found!'))
+                        .catch(err => next(err)))
+                      || fse.move(
+                        converter.toUploadPath(req.payload._id, folder),
+                        (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + folder.name,
+                        err => err
+                          ? console.error(err)
+                          : res.send('Done.'))))
               : res.status(404).send('Moved folder not found!'))
             .catch(err => next(err)))
       : res.status(404).send('Folder not found!'))
