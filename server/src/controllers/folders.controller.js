@@ -111,11 +111,12 @@ module.exports.move = (req, res, next) => Folder.findById(req.params.id)
                         .then(movedFolder1 => !movedFolder1 && res.status(404).send('Moved folder not found!'))
                         .catch(err => next(err)))
                     || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
-                      .then(oldFiles => oldFiles.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder)).forEach(oldFile =>
-                        (oldFile.path = oldFile.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
-                        && oldFile.save()
-                          .then(movedFile => !movedFile && res.status(404).send('Moved file not found!'))
-                          .catch(err => next(err)))
+                      .then(oldFiles => oldFiles.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+                        .forEach(oldFile =>
+                          (oldFile.path = oldFile.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
+                          && oldFile.save()
+                            .then(movedFile => !movedFile && res.status(404).send('Moved file not found!'))
+                            .catch(err => next(err)))
                         || fs.rename(
                           converter.toUploadPath(req.payload._id, folder),
                           (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + folder.name,
