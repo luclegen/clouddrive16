@@ -53,7 +53,7 @@ module.exports.update = (req, res, next) => req.body.name
                   converter.toUploadPath(req.payload._id, editedFolder),
                   err => err
                     ? console.error(err)
-                    : Folder.find({ path: new RegExp(converter.toPath(folder), 'g') })
+                    : Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
                       .then(editedFolders => editedFolders.length
                         ? editedFolders.forEach(f =>
                           (f.path = f.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
@@ -61,7 +61,7 @@ module.exports.update = (req, res, next) => req.body.name
                             .save()
                             .then(savedFolder => !savedFolder && res.status(404).send('Folder not found.'))
                             .catch(err => next(err)))
-                        || File.find({ path: new RegExp(converter.toPath(folder), 'g') })
+                        || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
                           .then(files => files.length
                             ? files.forEach(file => (file.path = file.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
                               && file.save()
