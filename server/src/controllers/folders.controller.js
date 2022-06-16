@@ -104,13 +104,14 @@ module.exports.move = (req, res, next) => Folder.findById(req.params.id)
             : Folder.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true })
               .then(movedFolder => movedFolder
                 ? Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
-                  .then(oldFolders => oldFolders.forEach(oldFolder =>
-                    (oldFolder.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
-                    && oldFolder.save()
-                      .then(movedFolder1 => !movedFolder1 && res.status(404).send('Moved folder not found!'))
-                      .catch(err => next(err)))
+                  .then(oldFolders => oldFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+                    .forEach(oldFolder =>
+                      (oldFolder.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
+                      && oldFolder.save()
+                        .then(movedFolder1 => !movedFolder1 && res.status(404).send('Moved folder not found!'))
+                        .catch(err => next(err)))
                     || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
-                      .then(oldFiles => oldFiles.forEach(oldFile =>
+                      .then(oldFiles => oldFiles.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder)).forEach(oldFile =>
                         (oldFile.path = oldFile.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
                         && oldFile.save()
                           .then(movedFile => !movedFile && res.status(404).send('Moved file not found!'))
