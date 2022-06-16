@@ -90,36 +90,40 @@ module.exports.restore = (req, res, next) =>
 module.exports.move = (req, res, next) => Folder.findById(req.params.id)
   .then(async (folder, destFolder = undefined) =>
     (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did))
-      + folder
-      ? Folder.find({ _uid: req.payload, name: folder.name, path: destFolder ? converter.toPath(destFolder) : '/' })
-        .then(folders => folders.length
-          ? res.status(422).send('You already have a folder in the current path! Please choose another folder.')
-          : Folder.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true })
-            .then(movedFolder => movedFolder
-              ? Folder.find({ path: new RegExp(converter.toPath(folder), 'g') })
-                .then(oldFolders => oldFolders.forEach(oldFolder =>
-                  (oldFolder.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
-                  && oldFolder.save()
-                    .then(movedFolder1 => !movedFolder1 && res.status(404).send('Moved folder not found!'))
-                    .catch(err => next(err)))
-                  || File.find({ path: new RegExp(converter.toPath(folder), 'g') })
-                    .then(oldFiles => oldFiles.forEach(oldFile =>
-                      (oldFile.path = oldFile.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
-                      && oldFile.save()
-                        .then(movedFile => !movedFile && res.status(404).send('Moved file not found!'))
-                        .catch(err => next(err)))
-                      || fs.rename(
-                        converter.toUploadPath(req.payload._id, folder),
-                        (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + folder.name,
-                        err => err
-                          ? console.error(err)
-                          : res.send('Done.')))
-                    .catch(err => next(err)))
-                .catch(err => next(err))
-              : res.status(404).send('Moved folder not found!'))
-            .catch(err => next(err)))
-        .catch(err => next(err))
-      : res.status(404).send('Folder not found!'))
+    + (folder
+      ? (destFolder
+        ? converter.toPath(folder) === converter.toPath(destFolder)
+        : converter.toPath(folder) === '/')
+        ? res.status(422).send('You already have a folder in the current path! Please choose another folder.')
+        : Folder.find({ _uid: req.payload, name: folder.name, path: destFolder ? converter.toPath(destFolder) : '/' })
+          .then(folders => folders.length
+            ? res.status(422).send('You already have a folder in the current path! Please choose another folder.')
+            : Folder.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true })
+              .then(movedFolder => movedFolder
+                ? Folder.find({ path: new RegExp(converter.toPath(folder), 'g') })
+                  .then(oldFolders => oldFolders.forEach(oldFolder =>
+                    (oldFolder.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
+                    && oldFolder.save()
+                      .then(movedFolder1 => !movedFolder1 && res.status(404).send('Moved folder not found!'))
+                      .catch(err => next(err)))
+                    || File.find({ path: new RegExp(converter.toPath(folder), 'g') })
+                      .then(oldFiles => oldFiles.forEach(oldFile =>
+                        (oldFile.path = oldFile.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
+                        && oldFile.save()
+                          .then(movedFile => !movedFile && res.status(404).send('Moved file not found!'))
+                          .catch(err => next(err)))
+                        || fs.rename(
+                          converter.toUploadPath(req.payload._id, folder),
+                          (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + folder.name,
+                          err => err
+                            ? console.error(err)
+                            : res.send('Done.')))
+                      .catch(err => next(err)))
+                  .catch(err => next(err))
+                : res.status(404).send('Moved folder not found!'))
+              .catch(err => next(err)))
+          .catch(err => next(err))
+      : res.status(404).send('Folder not found!')))
   .catch(err => next(err))
 
 module.exports.deleteForever = (req, res, next) =>
