@@ -25,6 +25,48 @@
 .input-email, .input-password
   width: 260px
 
+body
+  margin-top: 53px
+
+header
+  top: 0
+  left: 0
+  z-index: 4
+
+header, .main-command-bar
+  width: 100vw
+
+.main-command-bar
+  z-index: 2
+
+.main-command-bar, .left-nav, .section-floating-aside
+  top: 53px
+
+.left-nav, .section-floating-aside, .section-floating
+  left: 0
+
+.left-nav
+  height: 100vh
+
+.section-floating-aside
+  height: calc(100vh - 53px)
+  z-index: 3
+
+.main-command-bar
+  height: 53px
+
+.section-floating
+  top: 0
+
+.section-files
+  height: calc(100vh - 53px)
+
+.main-content
+  margin-top: 53px
+  margin-left: 265px
+  width: 100%
+  min-height: calc(100vh - 106px)
+
 main
   min-height: calc(100vh - 53px)
 
@@ -40,12 +82,11 @@ main
   overflow: hidden
   transition: height 0.8s
 
-.section-register, .section-floating
+.section-floating, .section-floating-center
   top: 0
   width: 100vw
   height: 100vh
-  background: #ffffffcc
-  z-index: 2
+  z-index: 4
 
   form
     width: 500px
@@ -53,6 +94,10 @@ main
 
 .bg-media
   height: calc(100vh - 53px)
+
+.main-folder-tree
+  max-height: calc(100vh - 106px)
+  padding-bottom: 50px
 
 meter
   width: 100%
@@ -68,9 +113,6 @@ meter
   width: 50px
   height: 50px
   font-size: 30px
-
-.section-files
-  min-height: calc(100vh - 53px)
 
 .left-nav
 

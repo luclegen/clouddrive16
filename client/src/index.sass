@@ -4,7 +4,7 @@ $spacer: 16px
 
 // Bootstrap
 
-.section-files
+.section-files, .section-floating-aside
   @extend .container-fluid
 
 .list-group-search
@@ -19,7 +19,7 @@ $spacer: 16px
 .dropdown-menu-folder
   @extend .dropdown-menu
 
-.dropdown-item-download, .dropdown-item-rename, .dropdown-item-delete, .dropdown-item-restore, .dropdown-item-location
+.dropdown-item-download, .dropdown-item-rename, .dropdown-item-delete, .dropdown-item-restore, .dropdown-item-location, .dropdown-item-move, .dropdown-item-copy
   @extend .dropdown-item
 
 .menu-folder
@@ -31,8 +31,11 @@ header
 .form-search
   @extend .input-group
 
-.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-new-folder, .btn-update, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next
+.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-new-folder, .btn-update, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next, .submit-create, .btn-move, .btn-copy
   @extend .btn
+
+.submit-create, .btn-move, .btn-copy
+  @extend .btn-primary
 
 .btn-create-account, .btn-sign-up
   @extend .btn-success
@@ -73,31 +76,31 @@ header
 .form-floating
   @extend .position-relative
 
-.section-register, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder, .video-preview, .list-group-search
+.section-floating-center, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder, .video-preview, .list-group-search
   @extend .position-absolute
 
-.section-floating
+header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
   @extend .position-fixed
 
-.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-register, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .command-bar, .dropdown-item, .bg-media, .empty-trash, .link-find-account, .primary-command, .middle-command, .secondary-command, .span-index, .title-bar
+.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-floating-center, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .main-command-bar, .dropdown-item, .bg-media, .empty-trash, .link-find-account, .primary-command, .middle-command, .secondary-command, .span-index, .title-bar, .section-floating-aside, .form-horizontal, .command-bar
   @extend .d-flex
 
 .form-only, .form-floating, .empty-trash
   @extend .flex-xl-column
 
-.logo, .form-only, .section-register, .top-left-nav, .bg-media, .empty-trash, .link-find-account, .middle-command, .span-index
+.logo, .form-only, .section-floating-center, .top-left-nav, .bg-media, .empty-trash, .link-find-account, .middle-command, .span-index
   @extend .align-items-center
 
 .list-group-item
   @extend .align-items-end
 
-.section-only, .form-only, .section-register, .form-row-sign-up, .form-group-password-strength, .bg-media, .empty-trash, .middle-command
+.section-only, .form-only, .section-floating-center, .form-row-sign-up, .form-group-password-strength, .bg-media, .empty-trash, .middle-command
   @extend .justify-content-center
 
 .text-profile, .text-help, .text-logout, .middle-command
   @extend .flex-fill
 
-.section-only, .section-register
+.section-only, .section-floating-center
 
   h1
     @extend .text-center
@@ -117,7 +120,10 @@ header
 .input-search, .avatar, .input-email, .input-password
   @extend .border-0
 
-.form-check, .command-bar
+.aside-right
+  @extend .border-left
+
+.form-check, .command-bar, .main-command-bar
   @extend .border-bottom
 
 .logo, .form-control-digit
@@ -135,13 +141,13 @@ header
 .search-bar
   @extend .rounded-pill
 
-.form-register
+.form-register, .section-floating-aside
   @extend .shadow
 
 .input-search, .btn-search, .avatar, .input-email, .input-password, .btn-input, .form-floating input, select, .form-control-digit
   @extend .shadow-none
 
-.command-bar
+.command-bar, .main-command-bar
   @extend .shadow-sm
 
 .input-search, .form-floating input, .avatar
@@ -150,8 +156,11 @@ header
 .dropdown-item-logout, .dropdown-item-delete
   @extend .bg-danger
 
-.section-floating
+.section-floating, .aside-right, .command-bar, .main-command-bar
   @extend .bg-white
+
+.main-folder-tree
+  @extend .overflow-auto
 
 .section-floating
   @extend .overflow-hidden
@@ -161,6 +170,9 @@ header
 
 .form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength, .text-profile, .text-help, .text-logout
   @extend .m-0
+
+.btn-move, .btn-copy
+  @extend .m-1
 
 .path-bar, .title-bar
   @extend .m-3
@@ -177,7 +189,7 @@ header
 .h1-only, .form-check-remember, .h1-register
   @extend .mb-3
 
-.avatar, .section-files, .main-content
+.avatar, .section-files, .main-content, .section-floating-aside, .aside-right
   @extend .p-0
 
 header, .float label
@@ -189,7 +201,7 @@ header, .float label
 .logo
   @extend .px-1
 
-.dropdown-item-profile, .dropdown-item-logout, .command-bar, .path-bar, .title-bar
+.dropdown-item-profile, .dropdown-item-logout, .command-bar, .path-bar, .title-bar, .main-command-bar
   @extend .px-3
 
 .input-search
@@ -446,3 +458,6 @@ meter
   &:hover
     color: black
     background: #edebe9
+
+.section-floating-center, .section-floating-aside
+  background: #ffffffcc !important
