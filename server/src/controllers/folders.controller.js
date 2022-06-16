@@ -101,13 +101,13 @@ module.exports.move = (req, res, next) => Folder.findById(req.params.id)
             ? res.status(422).send('You already have a folder in the current path! Please choose another folder.')
             : Folder.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true })
               .then(movedFolder => movedFolder
-                ? Folder.find({ path: new RegExp(converter.toPath(folder), 'g') })
+                ? Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
                   .then(oldFolders => oldFolders.forEach(oldFolder =>
                     (oldFolder.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
                     && oldFolder.save()
                       .then(movedFolder1 => !movedFolder1 && res.status(404).send('Moved folder not found!'))
                       .catch(err => next(err)))
-                    || File.find({ path: new RegExp(converter.toPath(folder), 'g') })
+                    || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
                       .then(oldFiles => oldFiles.forEach(oldFile =>
                         (oldFile.path = oldFile.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
                         && oldFile.save()
