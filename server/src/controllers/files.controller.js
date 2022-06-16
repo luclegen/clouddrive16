@@ -86,6 +86,36 @@ module.exports.move = (req, res, next) => File.findById(req.params.id)
       : res.status(404).send('Folder not found!'))
   .catch(err => next(err))
 
+module.exports.copy = (req, res, next) => File.findById(req.params.id)
+  .then(async (file, destFolder = undefined) =>
+    (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did))
+      + file
+      ? File.find({ _uid: req.payload, name: file.name, path: destFolder ? converter.toPath(destFolder) : '/' })
+        .then(files => {
+          if (files.length)
+            res.status(422).send('You already have a file in the current path! Please choose another file.')
+          else {
+            const newFile = File()
+
+            newFile._uid = req.payload
+            newFile.name = file.name
+            newFile.path = destFolder ? converter.toPath(destFolder) : '/'
+
+            newFile.save()
+              .then(copiedFile => copiedFile
+                ? fs.cp(
+                  converter.toUploadPath(req.payload._id, file),
+                  (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + file.name,
+                  err => err
+                    ? console.error(err)
+                    : res.send('Done.'))
+                : res.status(404).send('File isn\'t copied!'))
+          }
+        })
+        .catch(err => next(err))
+      : res.status(404).send('Folder not found!'))
+  .catch(err => next(err))
+
 module.exports.deleteForever = (req, res, next) =>
   File.findById(req.params.id)
     .then(file =>
