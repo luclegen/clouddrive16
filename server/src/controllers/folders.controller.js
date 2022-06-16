@@ -4,6 +4,7 @@ const _ = require('lodash')
 const Folder = require('../models/folder.model')
 const File = require('../models/file.model')
 const converter = require('../helpers/converter')
+const checker = require('../helpers/checker')
 
 module.exports.create = (req, res, next) =>
   Folder.find({ _uid: req.payload, name: req.body.name, path: req.body.path })
@@ -40,44 +41,46 @@ module.exports.read = (req, res, next) =>
     .catch(err => next(err))
 
 module.exports.update = (req, res, next) => req.body.name
-  ? Folder.findById(req.params.id)
-    .then(folder =>
-      Folder.find({ _uid: req.payload, name: req.body.name, path: folder.path })
-        .then(folders =>
-          folders.length
-            ? res.status(422).send('You already have a folder in the current path. Please a different name.')
-            : Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
-              .then(editedFolder => editedFolder
-                ? fs.rename(
-                  converter.toUploadPath(req.payload._id, folder),
-                  converter.toUploadPath(req.payload._id, editedFolder),
-                  err => err
-                    ? console.error(err)
-                    : Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
-                      .then(editedFolders => editedFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder)).length
-                        ? editedFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-                          .forEach(f =>
-                            (f.path = f.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
-                            && f
-                              .save()
-                              .then(savedFolder => !savedFolder && res.status(404).send('Folder not found.'))
-                              .catch(err => next(err)))
-                        || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
-                          .then(files => files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder)).length
-                            ? files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-                              .forEach(file => (file.path = file.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
-                                && file.save()
-                                  .then(editedFile => !editedFile && res.status(404).send('File not found.'))
-                                  .catch(err => next(err)))
-                            || res.send()
-                            : res.send())
-                          .catch(err => next(err))
-                        : res.send())
-                      .catch(err => next(err)))
-                : res.status(404).send('Folder not found.'))
-              .catch(err => next(err)))
-        .catch(err => next(err)))
-    .catch(err => next(err))
+  ? checker.isFolder(req.body.name)
+    ? Folder.findById(req.params.id)
+      .then(folder =>
+        Folder.find({ _uid: req.payload, name: req.body.name, path: folder.path })
+          .then(folders =>
+            folders.length
+              ? res.status(422).send('You already have a folder in the current path. Please a different name.')
+              : Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
+                .then(editedFolder => editedFolder
+                  ? fs.rename(
+                    converter.toUploadPath(req.payload._id, folder),
+                    converter.toUploadPath(req.payload._id, editedFolder),
+                    err => err
+                      ? console.error(err)
+                      : Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
+                        .then(editedFolders => editedFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder)).length
+                          ? editedFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+                            .forEach(f =>
+                              (f.path = f.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
+                              && f
+                                .save()
+                                .then(savedFolder => !savedFolder && res.status(404).send('Folder not found.'))
+                                .catch(err => next(err)))
+                          || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
+                            .then(files => files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder)).length
+                              ? files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+                                .forEach(file => (file.path = file.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
+                                  && file.save()
+                                    .then(editedFile => !editedFile && res.status(404).send('File not found.'))
+                                    .catch(err => next(err)))
+                              || res.send()
+                              : res.send())
+                            .catch(err => next(err))
+                          : res.send())
+                        .catch(err => next(err)))
+                  : res.status(404).send('Folder not found.'))
+                .catch(err => next(err)))
+          .catch(err => next(err)))
+      .catch(err => next(err))
+    : res.status(400).send('Invalid folder name!')
   : res.status(403).send('Name is required.')
 
 module.exports.delete = (req, res, next) =>
