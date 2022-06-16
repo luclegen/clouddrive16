@@ -143,7 +143,7 @@ module.exports.copy = (req, res, next) => Folder.findById(req.params.id)
               const newFolder = new Folder()
 
               newFolder._uid = req.payload
-              newFolder.path = converter.toPath(destFolder)
+              newFolder.path = destFolder ? converter.toPath(destFolder) : '/'
               newFolder.name = folder.name
 
               newFolder.save()
