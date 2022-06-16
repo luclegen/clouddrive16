@@ -10,6 +10,7 @@ router.put('/:id', authorize, filesController.update)
 router.patch('/:id', authorize, filesController.delete)
 router.patch('/r/:id', authorize, filesController.restore)
 router.patch('/m/:id', authorize, filesController.move)
+router.patch('/c/:id', authorize, filesController.copy)
 router.delete('/:id', authorize, filesController.deleteForever)
 router.get('/', authorize, filesController.list)
 
