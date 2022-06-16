@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import { Progress } from 'reactstrap'
 // import mime from 'mime-types'
+import FolderTree from '../folder/FolderTree'
 import Media from '../others/Media'
 import API from '../../apis/api'
 import helper from '../../services/helper'
@@ -25,6 +26,7 @@ export default class Files extends Component {
       itemFiles: [],
       percent: 0,
       show: false,
+      action: '',
       media: '',
       index: '',
     }
@@ -38,9 +40,7 @@ export default class Files extends Component {
         : res.data.find(f => f._id === helper.getQuery('id'))
       const path = folder?.name === ''
         ? '/'
-        : folder?.path === '/'
-          ? folder?.path + folder?.name
-          : folder?.path + '/' + folder?.name
+        : helper.toPath(folder)
 
       this.setState({
         folders: folders,
@@ -147,11 +147,20 @@ export default class Files extends Component {
     }
   }
 
-  openLocation = (e, parent = this.state.folders.find(v => this.state.parent === v.path + (v.path === '/' ? '' : '/') + v.name)) =>
+  openLocation = (e, parent = this.state.folders.find(v => this.state.parent === helper.toPath(v))) =>
     window.location.href = `?id=${parent ? parent._id : 'root'}`
 
   close = () => (document.querySelector('body').style.overflow = 'visible')
     && (helper.deleteQuery('fid') || this.setState({ media: '' }))
+
+  move = () => (document.body.style.overflow = 'hidden')
+    && this.setState({ show: true, action: 'move' })
+
+  copy = () => (document.body.style.overflow = 'hidden')
+    && this.setState({ show: true, action: 'copy' })
+
+  closeFolderTree = () => (document.body.style.overflow = 'visible')
+    && this.setState({ show: false })
 
   rename = () => this.state.type === 'folder'
     ? foldersService
@@ -264,6 +273,9 @@ export default class Files extends Component {
 
   render = () => <section className="section-files" onClick={this.clickOut} >
     <ul className="dropdown-menu-folder">
+      {!helper.getQuery('location') && <li className="dropdown-item-move" onClick={this.move}><i className="material-icons">drive_file_move</i>Move to...</li>}
+      {!helper.getQuery('location') && <li className="dropdown-item-copy" onClick={this.copy}><i className="material-icons">{this.state.type === 'folder' ? 'folder_copy' : 'file_copy'}</i>Copy to...</li>}
+      {!helper.getQuery('location') && <li><hr className="dropdown-divider" /></li>}
       <li className="dropdown-item-download" onClick={this.download}><i className="material-icons">file_download</i>Download</li>
       <li className="dropdown-item-rename" onClick={this.rename}><i className="material-icons">drive_file_rename_outline</i>Rename</li>
       {helper.getQuery('location') === 'trash' && <li className="dropdown-item-restore" onClick={this.restore}><i className="material-icons">restore</i>Restore</li>}
@@ -280,13 +292,13 @@ export default class Files extends Component {
         <li className={`list-group-item-trash ${this.state.location === 'trash' && 'active'} `} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
       </ul>
     </nav>
-    <main className="main-content col-10">
+    <main className="main-content">
       {helper.getQuery('location') === 'trash'
-        ? !this.isEmpty() && <span className="command-bar">
+        ? !this.isEmpty() && <span className="main-command-bar">
           <button className="btn-restore" onClick={this.restoreTrash}><i className="material-icons">restore_from_trash</i> Restore</button>
           <button className="btn-empty" onClick={this.empty}><i className="material-icons">delete_forever</i> Empty</button>
         </span>
-        : <span className="command-bar">
+        : <span className="main-command-bar">
           <button className="btn-new-folder" onClick={this.create}><i className="material-icons">create_new_folder</i> New</button>
           <input type="file" id="files" onChange={this.save} multiple hidden />
           <button className="btn-update" onClick={this.upload}><i className="material-icons">publish</i> Upload</button>
@@ -328,5 +340,6 @@ export default class Files extends Component {
       {this.isEmpty() && <div className="empty-trash"><i className="material-icons">delete_outline</i><strong>Trash is Empty</strong></div>}
     </main >
     {this.state.media && <Media src={this.state.media} type={helper.isImage(this.state.media) ? 'image' : helper.isVideo(this.state.media) ? 'video' : helper.isAudio(this.state.media) ? 'audio' : 'none'} download={this.download} percent={this.state.percent} next={this.next} prev={this.prev} index={this.state.index} count={this.getMedias().length} close={this.close} />}
+    {this.state.show && <FolderTree id={this.state.id} name={this.state.name} type={this.state.type} parent={this.state.parent} action={this.state.action} refresh={this.refresh} folders={this.state.folders} close={this.closeFolderTree} />}
   </section >
 }
