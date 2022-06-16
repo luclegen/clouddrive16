@@ -54,19 +54,21 @@ module.exports.update = (req, res, next) => req.body.name
                   err => err
                     ? console.error(err)
                     : Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
-                      .then(editedFolders => editedFolders.length
-                        ? editedFolders.forEach(f =>
-                          (f.path = f.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
-                          && f
-                            .save()
-                            .then(savedFolder => !savedFolder && res.status(404).send('Folder not found.'))
-                            .catch(err => next(err)))
+                      .then(editedFolders => editedFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder)).length
+                        ? editedFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+                          .forEach(f =>
+                            (f.path = f.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
+                            && f
+                              .save()
+                              .then(savedFolder => !savedFolder && res.status(404).send('Folder not found.'))
+                              .catch(err => next(err)))
                         || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
-                          .then(files => files.length
-                            ? files.forEach(file => (file.path = file.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
-                              && file.save()
-                                .then(editedFile => !editedFile && res.status(404).send('File not found.'))
-                                .catch(err => next(err)))
+                          .then(files => files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder)).length
+                            ? files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+                              .forEach(file => (file.path = file.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
+                                && file.save()
+                                  .then(editedFile => !editedFile && res.status(404).send('File not found.'))
+                                  .catch(err => next(err)))
                             || res.send()
                             : res.send())
                           .catch(err => next(err))
