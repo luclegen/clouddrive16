@@ -206,13 +206,13 @@ module.exports.deleteForever = (req, res, next) =>
             .then(folder => folder
               ? Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
                 .then(folders => folders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder)).length
-                  ? folders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+                  + folders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                     .forEach(readyFolder => readyFolder.remove()
                       .then(deletedFolder => !deletedFolder && res.status(404).send('Folder isn\'t deleted.'))
                       .catch(err => next(err)))
                   || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
                     .then(files => files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder)).length
-                      ? files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+                      + files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                         .forEach(readyFile => readyFile.remove()
                           .then(deletedFile => !deletedFile && res.status(404).send.send('File isn\'t deleted.'))
                           .catch(err => next(err)))
@@ -221,10 +221,8 @@ module.exports.deleteForever = (req, res, next) =>
                         { recursive: true },
                         err => err
                           ? console.error(err)
-                          : res.send())
-                      : res.status(404).send('Files not found.'))
-                    .catch(err => next(err))
-                  : res.status(404).send('Folders not found.'))
+                          : res.send()))
+                    .catch(err => next(err)))
                 .catch(err => next(err))
               : res.status(404).send('Folder not found.'))
             .catch(err => next(err))
