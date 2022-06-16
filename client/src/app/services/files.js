@@ -15,6 +15,8 @@ class FilesService {
 
   move = (id, did) => API.patch(`${URL}m/${id}`, did)
 
+  copy = (id, did) => API.patch(`${URL}c/${id}`, did)
+
   deleteForever = id => API.delete(`${URL}${id}`)
 
   list = name => API.get(name ? `${URL}?name=${name}` : URL)
