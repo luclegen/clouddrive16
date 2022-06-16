@@ -29,7 +29,7 @@ const folderSchema = new mongoose.Schema({
 
 //#region Validation
 
-folderSchema.path('name').validate(v => checker.isFolder(v), 'Invalid folder')
+folderSchema.path('name').validate(v => checker.isFolder(v), 'Invalid folder name')
 
 //#endregion Validation
 
