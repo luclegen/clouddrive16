@@ -272,7 +272,7 @@ export default class Files extends Component {
       || this.setState({ index: this.state.index + 1, media: medias[medias.findIndex(v => v === this.state.media) + 1] }))
 
   componentDidMount = () => this.refresh()
-    .then(() => (document.title = `My files - ${process.env.REACT_APP_NAME}`)
+    .then(() => (document.title = `${helper.getQuery('location') === 'trash' ? 'Trash' : helper.getQuery('id') === 'root' && 'My files'} - ${process.env.REACT_APP_NAME}`)
       && !window.location.search && (window.location.search = 'id=root'))
 
   render = () => <section className="section-files" onClick={this.clickOut} >
