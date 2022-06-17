@@ -54,7 +54,7 @@ module.exports.update = (req, res, next) => req.body.name
                     converter.toUploadPath(req.payload._id, folder),
                     converter.toUploadPath(req.payload._id, editedFolder),
                     err => err
-                      ? console.error(err)
+                      ? next(err)
                       : Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
                         .then(editedFolders => editedFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                           .forEach(f =>
