@@ -74,7 +74,10 @@ export default class Files extends Component {
     })
 
   return = () => helper.deleteQuery('location') || this.refresh()
-    .then(() => (document.title = `My files - ${process.env.REACT_APP_NAME}`)
+    .then(() => (document.title = `${helper.getQuery('id') === 'root'
+      ? 'My files'
+      : this.state.folders.find(v => v._id === helper.getQuery('id'))?.name}
+      - ${process.env.REACT_APP_NAME} `)
       && this.setState({ location: '' }))
 
   setTrash = () => helper.setQuery('location', 'trash') || this.refresh()
