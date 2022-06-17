@@ -201,17 +201,15 @@ module.exports.deleteForever = (req, res, next) =>
           ? Folder.findByIdAndDelete(req.params.id)
             .then(folder => folder
               ? Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
-                .then(folders => folders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder)).length
-                  + folders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-                    .forEach(readyFolder => readyFolder.remove()
-                      .then(deletedFolder => !deletedFolder && res.status(404).send('Folder isn\'t deleted.'))
-                      .catch(err => next(err)))
+                .then(folders => folders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+                  .forEach(readyFolder => readyFolder.remove()
+                    .then(deletedFolder => !deletedFolder && res.status(404).send('Folder isn\'t deleted.'))
+                    .catch(err => next(err)))
                   || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
-                    .then(files => files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder)).length
-                      + files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-                        .forEach(readyFile => readyFile.remove()
-                          .then(deletedFile => !deletedFile && res.status(404).send.send('File isn\'t deleted.'))
-                          .catch(err => next(err)))
+                    .then(files => files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+                      .forEach(readyFile => readyFile.remove()
+                        .then(deletedFile => !deletedFile && res.status(404).send.send('File isn\'t deleted.'))
+                        .catch(err => next(err)))
                       || fs.rm(
                         converter.toUploadPath(req.payload._id, folder),
                         { recursive: true },
