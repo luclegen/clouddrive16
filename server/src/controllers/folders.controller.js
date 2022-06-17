@@ -181,7 +181,7 @@ module.exports.copy = (req, res, next) => Folder.findById(req.params.id)
                             converter.toUploadPath(req.payload._id, folder),
                             (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + folder.name,
                             err => err
-                              ? console.error(err)
+                              ? next(err)
                               : res.send('Done.')))
                         .catch(err => next(err)))
                     .catch(err => next(err))
@@ -214,7 +214,7 @@ module.exports.deleteForever = (req, res, next) =>
                         converter.toUploadPath(req.payload._id, folder),
                         { recursive: true },
                         err => err
-                          ? console.error(err)
+                          ? next(err)
                           : res.send()))
                     .catch(err => next(err)))
                 .catch(err => next(err))

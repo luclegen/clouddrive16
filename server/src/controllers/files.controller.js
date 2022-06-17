@@ -47,7 +47,7 @@ module.exports.update = (req, res, next) => req.body.name
                     converter.toUploadPath(req.payload._id, file),
                     converter.toUploadPath(req.payload._id, fileEdited),
                     err => err
-                      ? console.error(err)
+                      ? next(err)
                       : res.send())
                   : res.status(404).send('File not found.'))
               .catch(err => next(err)))
@@ -78,7 +78,7 @@ module.exports.move = (req, res, next) => File.findById(req.params.id)
                 converter.toUploadPath(req.payload._id, file),
                 (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + file.name,
                 err => err
-                  ? console.error(err)
+                  ? next(err)
                   : res.send('Done.'))
               : res.status(404).send('Moved folder not found!'))
             .catch(err => next(err)))
@@ -107,7 +107,7 @@ module.exports.copy = (req, res, next) => File.findById(req.params.id)
                   converter.toUploadPath(req.payload._id, file),
                   (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + file.name,
                   err => err
-                    ? console.error(err)
+                    ? next(err)
                     : res.send('Done.'))
                 : res.status(404).send('File isn\'t copied!'))
           }
@@ -127,7 +127,7 @@ module.exports.deleteForever = (req, res, next) =>
                 ? fs.rm(converter.toUploadPath(req.payload._id, file),
                   { recursive: true },
                   err => err
-                    ? console.error(err)
+                    ? next(err)
                     : res.send())
                 : res.status(404).send('File not found.'))
             .catch(err => next(err))
