@@ -134,9 +134,10 @@ export default class Files extends Component {
 
       helper.deleteQuery('keyword')
       if (helper.getQuery('location') !== 'trash') {
-        this.refresh()
         helper.setQuery('id', folder?._id)
         this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder?.name })
+        document.title = `${folder?.name} - ${process.env.REACT_APP_NAME}`
+        this.refresh()
       }
     } else if (helper.isMedia(e.target?.closest('.li-file').getAttribute('name'))) {
       helper.setQuery('fid', e.target?.closest('.li-file').id)
