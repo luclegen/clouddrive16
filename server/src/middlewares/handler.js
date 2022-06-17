@@ -3,8 +3,7 @@ const converter = require('../helpers/converter')
 module.exports = (err, req, res, next) => {
   let code = 500, msg = 'Server error!'
 
-  if (err.code === 11000)
-    return res.status(422).send(converter.capitalize(Object.keys(err.keyValue)[0] + ' is taken!'))
+  // return console.log(typeof err, err, err.message);
 
   switch (err.name) {
     case 'ValidationError':
@@ -23,7 +22,20 @@ module.exports = (err, req, res, next) => {
       break
 
     default:
-      return res.status(code).send(Object.entries(err).length ? err : converter.capitalize(msg))
+      switch (err.code) {
+        case 11000:
+          code = 422
+          msg = converter.capitalize(Object.keys(err.keyValue)[0] + ' is taken!')
+          break
+
+        case 'ENOENT':
+          code = 501
+          msg = err.message
+          break
+
+        default:
+          return res.status(code).send(Object.entries(err).length ? err : converter.capitalize(msg))
+      }
   }
 
   return res.status(code).send(converter.capitalize(msg))
