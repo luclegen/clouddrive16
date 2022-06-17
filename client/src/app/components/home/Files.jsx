@@ -280,7 +280,7 @@ export default class Files extends Component {
       ? 'Trash'
       : helper.getQuery('id') === 'root'
         ? 'My files'
-        : this.state.folders.find(v => v._id === helper.getQuery('id')).name}
+        : this.state.folders.find(v => v._id === helper.getQuery('id'))?.name}
          - ${process.env.REACT_APP_NAME}`)
       && !window.location.search && (window.location.search = 'id=root'))
 
