@@ -73,7 +73,9 @@ export default class Files extends Component {
         })
     })
 
-  return = () => helper.deleteQuery('location') || (this.refresh() && this.setState({ location: '' }))
+  return = () => helper.deleteQuery('location') || this.refresh()
+    .then(() => (document.title = `My files - ${process.env.REACT_APP_NAME}`)
+      && this.setState({ location: '' }))
 
   setTrash = () => helper.setQuery('location', 'trash') || this.refresh()
     .then(() => (document.title = `Trash - ${process.env.REACT_APP_NAME}`)
@@ -292,8 +294,8 @@ export default class Files extends Component {
         <label htmlFor="leftNav"><strong>{helper.getCookie('first_name') + ' ' + helper.getCookie('last_name')}</strong></label>
       </div>
       <ul className="list-group">
-        <li className={`list-group-item-files ${!this.state.location && !helper.getQuery('location') && 'active'}`} onClick={this.return}><i className="material-icons">folder</i> My files</li>
-        <li className={`list-group-item-trash ${(this.state.location === 'trash' || helper.getQuery('location') === 'trash') && 'active'} `} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
+        <li className={`list-group-item-files ${!helper.getQuery('location') && 'active'}`} onClick={this.return}><i className="material-icons">folder</i> My files</li>
+        <li className={`list-group-item-trash ${helper.getQuery('location') === 'trash' && 'active'} `} onClick={this.setTrash}><i className="material-icons">delete</i> Trash</li>
       </ul>
     </nav>
     <main className="main-content">
