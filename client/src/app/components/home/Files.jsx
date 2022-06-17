@@ -253,6 +253,7 @@ export default class Files extends Component {
     const path = index === 1 ? '/' : this.state.path.split('/').slice(0, index).join('/')
     const folder = this.state.folders.find(f => f.path === path && f.name === this.state.path.split('/')[index])
 
+    document.title = `${index === 0 ? 'My files' : folder.name} - ${process.env.REACT_APP_NAME}`
     this.setState({ path: path ? path : '/' })
     helper.setQuery('id', Number.parseInt(e.target.id) === 0 ? 'root' : folder?._id)
     this.refresh()
