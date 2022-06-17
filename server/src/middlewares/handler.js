@@ -3,8 +3,6 @@ const converter = require('../helpers/converter')
 module.exports = (err, req, res, next) => {
   let code = 500, msg = 'Server error!'
 
-  // return console.log(typeof err, err, err.message);
-
   switch (err.name) {
     case 'ValidationError':
       code = 400
@@ -29,6 +27,7 @@ module.exports = (err, req, res, next) => {
           break
 
         case 'ENOENT':
+        case 'ENOTEMPTY':
           code = 501
           msg = err.message
           break
