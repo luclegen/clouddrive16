@@ -120,7 +120,7 @@ module.exports.move = (req, res, next) => Folder.findById(req.params.id)
                           converter.toUploadPath(req.payload._id, folder),
                           (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + folder.name,
                           err => err
-                            ? console.error(err)
+                            ? next(err)
                             : res.send('Done.')))
                       .catch(err => next(err)))
                   .catch(err => next(err))
