@@ -269,7 +269,9 @@ export default class Files extends Component {
     && (helper.setQuery('fid', files[this.state.index]._id)
       || this.setState({ index: this.state.index + 1, media: medias[medias.findIndex(v => v === this.state.media) + 1] }))
 
-  componentDidMount = () => this.refresh() && !window.location.search && (window.location.search = 'id=root')
+  componentDidMount = () => this.refresh()
+    .then(() => (document.title = `My files - ${process.env.REACT_APP_NAME}`)
+      && !window.location.search && (window.location.search = 'id=root'))
 
   render = () => <section className="section-files" onClick={this.clickOut} >
     <ul className="dropdown-menu-folder">
