@@ -1,7 +1,7 @@
 const User = require('../models/user.model')
 const Code = require('../models/code.model')
 const _ = require('lodash')
-const Client = require('node-rest-client').Client
+const axios = require('axios')
 const generator = require('../helpers/generator')
 
 module.exports.create = (req, res, next) => User.findById(req.payload)
@@ -18,29 +18,25 @@ module.exports.create = (req, res, next) => User.findById(req.payload)
       code.attempts = 3
 
       code.save()
-        .then(code => {
-          if (user) {
-            if (code) {
-              const args = {
-                data: {
-                  email: user.email,
-                  title: 'Verify email',
-                  code: body
-                },
+        .then(code => user
+          ? code
+            ? axios
+              .post(process.env.MAILER, {
+                email: user.email,
+                title: 'Verify email',
+                code: body
+              }, {
                 headers: {
                   "Content-Type": "application/json",
                   "Authorization": `Bearer ${process.env.TOKEN}`
                 }
-              }
-              const client = new Client()
-
-              client.post(process.env.MAILER, args, (data, response) =>
-                response.statusCode === 201
-                  ? res.status(201).send(data.toString(process.env.PLAIN))
-                  : res.stats(503).send('Mailer server not started or crashed!'))
-            } else res.status(404).send('Code not found.')
-          } else res.status(404).send('User not found.')
-        })
+              })
+              .then(response => response.status === 201
+                ? res.status(201).send(response.data)
+                : res.status(503).send('Mailer server not started or crashed!'))
+              .catch(err => next(err))
+            : res.status(404).send('Code not found.')
+          : res.status(404).send('User not found.'))
         .catch(err => next(err))
     }))
   .catch(err => next(err))
