@@ -19,6 +19,11 @@ module.exports = (err, req, res, next) => {
       msg = err.message
       break
 
+    case 'AxiosError':
+      code = 401
+      msg = err.message
+      break
+
     default:
       switch (err.code) {
         case 11000:
