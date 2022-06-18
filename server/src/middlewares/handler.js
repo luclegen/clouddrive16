@@ -32,6 +32,11 @@ module.exports = (err, req, res, next) => {
           msg = err.message
           break
 
+        case 'ECONNREFUSED':
+          code = 503
+          msg = err.message
+          break
+
         default:
           return res.status(code).send(Object.entries(err).length ? err : converter.capitalize(msg))
       }
