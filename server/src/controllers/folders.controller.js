@@ -5,6 +5,7 @@ const Folder = require('../models/folder.model')
 const File = require('../models/file.model')
 const converter = require('../helpers/converter')
 const checker = require('../helpers/checker')
+const duplicator = require('../helpers/duplicator')
 
 module.exports.create = (req, res, next) =>
   Folder.find({ _uid: req.payload, name: req.body.name, path: req.body.path })
@@ -134,62 +135,54 @@ module.exports.copy = (req, res, next) => Folder.findById(req.params.id)
   .then(async (folder, destFolder = undefined) =>
     (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did))
     + (folder
-      ? (destFolder
-        ? converter.toPath(folder) === converter.toPath(destFolder)
-        : converter.toPath(folder) === '/')
-        ? res.status(422).send('You already have a folder in the current path! Please choose another folder.')
-        : Folder.find({ _uid: req.payload, name: folder.name, path: destFolder ? converter.toPath(destFolder) : '/' })
-          .then(folders => {
-            if (folders.length)
-              res.status(422).send('You already have a folder in the current path! Please choose another folder.')
-            else {
-              const newFolder = new Folder()
+      ? Folder.find({ _uid: req.payload, name: folder.name, path: destFolder ? converter.toPath(destFolder) : '/' })
+        .then(folders => {
+          const newFolder = new Folder()
 
-              newFolder._uid = req.payload
-              newFolder.path = destFolder ? converter.toPath(destFolder) : '/'
-              newFolder.name = folder.name
+          newFolder._uid = req.payload
+          newFolder.path = destFolder ? converter.toPath(destFolder) : '/'
+          newFolder.name = duplicator.copyFolderInFolder(folder.name, folders.map(v => v.name))
 
-              newFolder.save()
-                .then(copiedFolder => copiedFolder
-                  ? Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
-                    .then(oldFolders => oldFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-                      .forEach(oldFolder => {
-                        const newFolder1 = new Folder()
+          newFolder.save()
+            .then(copiedFolder => copiedFolder
+              ? Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
+                .then(oldFolders => oldFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+                  .forEach(oldFolder => {
+                    const newFolder1 = new Folder()
 
-                        newFolder1._uid = req.payload
-                        newFolder1.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(copiedFolder))
-                        newFolder1.name = oldFolder.name
+                    newFolder1._uid = req.payload
+                    newFolder1.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(copiedFolder))
+                    newFolder1.name = oldFolder.name
 
-                        newFolder1.save()
-                          .then(copiedFolder1 => !copiedFolder1 && res.status(404).send('Copied folder not found!'))
+                    newFolder1.save()
+                      .then(copiedFolder1 => !copiedFolder1 && res.status(404).send('Copied folder not found!'))
+                      .catch(err => next(err))
+                  })
+                  || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
+                    .then(copiedFiles => copiedFiles.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+                      .forEach(copiedFile => {
+                        const newFile = new File()
+
+                        newFile._uid = req.payload
+                        newFile.path = copiedFile.path.replace(converter.toPath(folder), converter.toPath(copiedFolder))
+                        newFile.name = copiedFile.name
+
+                        newFile.save()
+                          .then(copiedFile => !copiedFile && res.status(404).send('Copied file not found!'))
                           .catch(err => next(err))
                       })
-                      || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
-                        .then(copiedFiles => copiedFiles.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-                          .forEach(copiedFile => {
-                            const newFile = new File()
-
-                            newFile._uid = req.payload
-                            newFile.path = copiedFile.path.replace(converter.toPath(folder), converter.toPath(copiedFolder))
-                            newFile.name = copiedFile.name
-
-                            newFile.save()
-                              .then(copiedFile => !copiedFile && res.status(404).send('Copied file not found!'))
-                              .catch(err => next(err))
-                          })
-                          || fse.copy(
-                            converter.toUploadPath(req.payload._id, folder),
-                            (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + folder.name,
-                            err => err
-                              ? next(err)
-                              : res.send('Done.')))
-                        .catch(err => next(err)))
-                    .catch(err => next(err))
-                  : res.status(404).send('Copied folder not found!'))
+                      || fse.copy(
+                        converter.toUploadPath(req.payload._id, folder),
+                        (destFolder ? converter.toUploadPath(req.payload._id, destFolder, folders.map(v => v.name)) : process.env.UPLOADS + req.payload._id + '/files') + '/' + duplicator.copyFolderInFolder(folder.name, folders.map(v => v.name)),
+                        err => err
+                          ? next(err)
+                          : res.send('Done.')))
+                    .catch(err => next(err)))
                 .catch(err => next(err))
-            }
-          })
-          .catch(err => next(err))
+              : res.status(404).send('Copied folder not found!'))
+            .catch(err => next(err))
+        })
+        .catch(err => next(err))
       : res.status(404).send('Folder not found!')))
   .catch(err => next(err))
 
