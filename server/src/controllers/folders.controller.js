@@ -193,12 +193,12 @@ module.exports.deleteForever = (req, res, next) =>
         ? folder.is_trash
           ? Folder.findByIdAndDelete(req.params.id)
             .then(folder => folder
-              ? Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
+              ? Folder.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder).replace('(', '\\(').replace(')', '\\)'), 'g') })
                 .then(folders => folders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                   .forEach(readyFolder => readyFolder.remove()
                     .then(deletedFolder => !deletedFolder && res.status(404).send('Folder isn\'t deleted.'))
                     .catch(err => next(err)))
-                  || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder), 'g') })
+                  || File.find({ _uid: req.payload, path: new RegExp(converter.toPath(folder).replace('(', '\\(').replace(')', '\\)'), 'g') })
                     .then(files => files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                       .forEach(readyFile => readyFile.remove()
                         .then(deletedFile => !deletedFile && res.status(404).send.send('File isn\'t deleted.'))
