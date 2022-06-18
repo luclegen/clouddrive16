@@ -35,5 +35,5 @@ module.exports.read = (req, res, next) =>
       Profile.findOne({ _uid: req.payload })
         .then(profile => user
           ? res.send({ ..._.pick(user, ['avatar', 'email', 'is_activate']), ..._.pick(profile, ['name', 'dob', 'sex']) })
-          : res.status(404).json({ msg: 'User not found.' })))
+          : res.status(404).send('User not found.')))
     .catch(err => next(err))
