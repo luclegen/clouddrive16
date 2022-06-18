@@ -135,7 +135,7 @@ module.exports.copy = (req, res, next) => Folder.findById(req.params.id)
   .then(async (folder, destFolder = undefined) =>
     (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did))
     + (folder
-      ? Folder.find({ _uid: req.payload, name: folder.name, path: destFolder ? converter.toPath(destFolder) : '/' })
+      ? Folder.find({ _uid: req.payload, path: destFolder ? converter.toPath(destFolder) : '/' })
         .then(folders => {
           const newFolder = new Folder()
 
