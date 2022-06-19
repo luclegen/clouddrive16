@@ -1,3 +1,3 @@
 const converter = require('./converter')
 
-module.exports.copyFolderInFolder = (name = '', array = [], indexes = name.split(' ').filter(v => /\(\d\)/.test(v)), len = name => name.split(' ').filter(v => /\(\d\)/.test(v)).length, getIndex = (name, indexes = name.split(' ').filter(v => /\(\d\)/.test(v))) => indexes[indexes.length - 1].match(/\d/)[0], filterArray = array.filter(v => (v.length > name.length && v.slice(0, name.length) === name) && (len(v) === indexes.length + 1)).map(v => parseInt(getIndex(v)))) => array.includes(name) ? `${name} (${filterArray.length ? Math.max(...filterArray) + 1 : 1})` : name
+module.exports.copyFolderInFolder = (name, array, filterArray = array.filter(v => new RegExp(`^${converter.toRegex(name)}(\\s\\(\\d\\))$`).test(v)).map(v => parseInt(v.match(/\(\d\)$/)[0].replace('(', '').replace(')', '')))) => array.includes(name) ? `${name} (${filterArray.length ? Math.max(...filterArray) + 1 : 1})` : name
