@@ -32,6 +32,7 @@ module.exports = (err, req, res, next) => {
           break
 
         case 'ENOENT':
+        case 'ENOTDIR':
         case 'ENOTEMPTY':
           code = 501
           msg = err.message
