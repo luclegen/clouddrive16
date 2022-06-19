@@ -25,7 +25,7 @@ module.exports.create = (req, res, next) =>
             path[1] = path[0] + req.payload._id
             path[2] = path[1] + `/files`
             path[3] = path[2] + `${folder.path === '/' ? '' : folder.path}`
-            path[4] = path[3] + `${'/' + folder.name}`
+            path[4] = path[3] + `/${folder.name}`
 
             path.forEach(p => !fs.existsSync(p) && fs.mkdirSync(p))
 
