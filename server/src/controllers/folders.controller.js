@@ -56,7 +56,7 @@ module.exports.update = (req, res, next) => req.body.name
                     converter.toUploadPath(req.payload._id, editedFolder),
                     err => err
                       ? next(err)
-                      : Folder.find({ _uid: req.payload, path: new RegExp('^' + converter.toPath(folder).replaceAll('(', '\\(').replaceAll(')', '\\)') + '$', 'g') })
+                      : Folder.find({ _uid: req.payload, path: new RegExp('^' + converter.toPath(folder).replaceAll('(', '\\(').replaceAll(')', '\\)'), 'g') })
                         .then(editedFolders => editedFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                           .forEach(f =>
                             (f.path = f.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
@@ -103,7 +103,7 @@ module.exports.move = (req, res, next) => Folder.findById(req.params.id)
             ? res.status(422).send('You already have a folder in the current path! Please choose another folder.')
             : Folder.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true })
               .then(movedFolder => movedFolder
-                ? Folder.find({ _uid: req.payload, path: new RegExp('^' + converter.toPath(folder).replaceAll('(', '\\(').replaceAll(')', '\\)') + '$', 'g') })
+                ? Folder.find({ _uid: req.payload, path: new RegExp('^' + converter.toPath(folder).replaceAll('(', '\\(').replaceAll(')', '\\)'), 'g') })
                   .then(oldFolders => oldFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                     .forEach(oldFolder =>
                       (oldFolder.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
@@ -145,7 +145,7 @@ module.exports.copy = (req, res, next) => Folder.findById(req.params.id)
 
           newFolder.save()
             .then(copiedFolder => copiedFolder
-              ? Folder.find({ _uid: req.payload, path: new RegExp('^' + converter.toPath(folder).replaceAll('(', '\\(').replaceAll(')', '\\)') + '$', 'g') })
+              ? Folder.find({ _uid: req.payload, path: new RegExp('^' + converter.toPath(folder).replaceAll('(', '\\(').replaceAll(')', '\\)'), 'g') })
                 .then(oldFolders => oldFolders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                   .forEach(oldFolder => {
                     const newFolder1 = new Folder()
@@ -193,7 +193,7 @@ module.exports.deleteForever = (req, res, next) =>
         ? folder.is_trash
           ? Folder.findByIdAndDelete(req.params.id)
             .then(folder => folder
-              ? Folder.find({ _uid: req.payload, path: new RegExp('^' + converter.toPath(folder).replaceAll('(', '\\(').replaceAll(')', '\\)') + '$', 'g') })
+              ? Folder.find({ _uid: req.payload, path: new RegExp('^' + converter.toPath(folder).replaceAll('(', '\\(').replaceAll(')', '\\)'), 'g') })
                 .then(folders => folders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                   .forEach(readyFolder => readyFolder.remove()
                     .then(deletedFolder => !deletedFolder && res.status(404).send('Folder isn\'t deleted.'))
