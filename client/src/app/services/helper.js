@@ -21,17 +21,17 @@ class Helper {
 
   isDigits = v => /^\d+$/.test(v)
 
-  toPath = value => value?.path + (value?.path === '/' ? '' : '/') + value?.name
+  toPath = value => value?.path + value?.name + '/'
 
   isImage = value => /\.(apng|avif|gif|jpe?g|jpe|jf?if|pjp(eg)?|png|webp|bmp|ico|cur)$/i.test(value)
 
-  getImage = (files, value) => files.find(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isImage(f.name))
+  getImage = (files, value) => files.find(f => f.path === this.toPath(value) && this.isImage(f.name))
 
   isVideo = value => /\.(3gp|mp4|m4v|m4p|ogv|ogg|mov|webm)$/i.test(value)
 
-  isVideos = (files, value) => files.filter(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isVideo(f.name)).length
+  isVideos = (files, value) => files.filter(f => f.path === this.toPath(value) && this.isVideo(f.name)).length
 
-  getVideo = (files, value) => files.find(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isVideo(f.name))
+  getVideo = (files, value) => files.find(f => f.path === this.toPath(value) && this.isVideo(f.name))
 
   isAudio = value => /\.(aac|flac|mp3|m4a|oga|wav)$/i.test(value)
 
@@ -39,9 +39,9 @@ class Helper {
 
   isPDF = value => /\.pdf$/i.test(value)
 
-  isImages = (files, value) => files.filter(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name) && this.isImage(f.name)).length
+  isImages = (files, value) => files.filter(f => f.path === this.toPath(value) && this.isImage(f.name)).length
 
-  isEmpty = (folders, files, value) => !folders.filter(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name)).length && !files.filter(f => f.path === (value.path + (value.path === '/' ? '' : '/') + value.name)).length
+  isEmpty = (folders, files, value) => !folders.filter(f => f.path === this.toPath(value)).length && !files.filter(f => f.path === this.toPath(value)).length
 
   checkPassword = value => {
     let count = 0
