@@ -138,7 +138,7 @@ export default class Files extends Component {
       helper.deleteQuery('keyword')
       if (helper.getQuery('location') !== 'trash') {
         helper.setQuery('id', folder?._id)
-        this.setState({ path: (this.state.path === '/' ? this.state.path : this.state.path + '/') + folder?.name })
+        this.setState({ path: this.state.path + folder?.name })
         document.title = `${folder?.name} - ${process.env.REACT_APP_NAME}`
         this.refresh()
       }
@@ -146,12 +146,12 @@ export default class Files extends Component {
       helper.setQuery('fid', e.target?.closest('.li-file').id)
       filesService
         .read(e.target?.closest('.li-file').id)
-        .then((res, media = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}`) =>
+        .then((res, media = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${res.data?.path}${res.data?.name}`) =>
           this.setState({ id: e.target?.closest('.li-file').id, name: e.target?.closest('.li-file').getAttribute('name'), index: this.getMedias().findIndex(v => v === media) + 1, media: media }))
     } else if (helper.isPDF(e.target?.closest('.li-file').getAttribute('name'))) {
       filesService
         .read(e.target?.closest('.li-file').id)
-        .then(res => window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${res.data?.path === '/' ? '/' : res.data?.path + '/'}${res.data?.name}`))
+        .then(res => window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${res.data?.path}${res.data?.name}`))
     }
   }
 
@@ -256,7 +256,7 @@ export default class Files extends Component {
     const path = index === 1 ? '/' : this.state.path.split('/').slice(0, index).join('/')
     const folder = this.state.folders.find(f => f.path === path && f.name === this.state.path.split('/')[index])
 
-    document.title = `${index === 0 ? 'My files' : folder.name} - ${process.env.REACT_APP_NAME}`
+    document.title = `${index === 0 ? 'My files' : folder?.name} - ${process.env.REACT_APP_NAME}`
     this.setState({ path: path ? path : '/' })
     helper.setQuery('id', Number.parseInt(e.target.id) === 0 ? 'root' : folder?._id)
     this.refresh()
@@ -264,7 +264,7 @@ export default class Files extends Component {
 
   getMediaFiles = () => this.state.files.filter(v => v.path === this.state.path && helper.isMedia(v.name))
 
-  getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${v.path === '/' ? '/' : v.path + '/'}${v.name}`
+  getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${v.path}${v.name}`
 
   getMedias = () => this.getMediaFiles().map(v => this.getMedia(v))
 
@@ -336,13 +336,14 @@ export default class Files extends Component {
             ? <img className="img" src={`${process.env.NODE_ENV === 'production'
               ? window.location.origin + '/api'
               : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${helper.getImage(this.state.files, v).path === '/'
-                ? '/' : helper.getImage(this.state.files, v).path + '/'}${helper.getImage(this.state.files, v).name}`} alt="foreground folder" />
+                ? '/'
+                : helper.getImage(this.state.files, v).path}${helper.getImage(this.state.files, v).name}`} alt="foreground folder" />
             : helper.isVideos(this.state.files, v)
               ? <video className="video-preview" src={`${process.env.NODE_ENV === 'production'
                 ? window.location.origin + '/api'
                 : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${helper.getVideo(this.state.files, v).path === '/'
                   ? '/'
-                  : helper.getVideo(this.state.files, v).path + '/'}${helper.getVideo(this.state.files, v).name}`} ></video >
+                  : helper.getVideo(this.state.files, v).path}${helper.getVideo(this.state.files, v).name}`} ></video >
               : !helper.isEmpty(this.state.folders, this.state.files, v)
               && <div className="file"></div>}
           {helper.isImages(this.state.files, v) || helper.isVideos(this.state.files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="foreground folder" onContextMenu={this.choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="foreground folder" />}
