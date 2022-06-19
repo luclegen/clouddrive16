@@ -148,13 +148,13 @@ export default class FolderTree extends Component {
           {this.state.showedFolders
             .sort((a, b) => helper.toPath(a) === helper.toPath(b) ? 0 : helper.toPath(a) < helper.toPath(b) ? -1 : 1)
             .map((v, i) => <div key={i}>
-              <button type="button" className="list-group-item list-group-item-action" id={v._id} key={i} style={{ marginLeft: `${(helper.toPath(v).match(/\//g) || []).length * 40}px` }} onClick={this.select}>
+              <button type="button" className="list-group-item list-group-item-action" id={v._id} key={i} style={{ marginLeft: `${((helper.toPath(v).match(/\//g) || []).length - 1) * 40}px` }} onClick={this.select}>
                 {!!this.state.folders.filter(s => s.path === helper.toPath(v)).length
                   ? <i className="material-icons">{this.state.showedFolders.filter(s => s.path === helper.toPath(v)).length ? 'expand_more' : 'navigate_next'}</i>
                   : <span style={{ width: '29px' }}></span>}
                 <img className="folder" src="/svg/folder.svg" alt="" />&nbsp;&nbsp;{v.name}
               </button>
-              {(this.state.new && this.state.id === v._id) && <button type="button" className="list-group-item list-group-item-action" style={{ marginLeft: `${((helper.toPath(v).match(/\//g) || []).length + 1) * 40}px` }}>
+              {(this.state.new && this.state.id === v._id) && <button type="button" className="list-group-item list-group-item-action" style={{ marginLeft: `${((helper.toPath(v).match(/\//g) || []).length) * 40}px` }}>
                 <form className="form-horizontal" onSubmit={this.submit}>
                   <img className="folder" src="/svg/folder.svg" alt="" />
                   &nbsp;&nbsp;
