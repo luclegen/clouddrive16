@@ -253,8 +253,8 @@ export default class Files extends Component {
 
   access = e => {
     const index = Number.parseInt(e.target.id)
-    const path = index === 1 ? '/' : this.state.path.split('/').slice(0, index).join('/')
-    const folder = this.state.folders.find(f => f.path === path && f.name === this.state.path.split('/')[index])
+    const path = index === 1 ? '/' : this.state.path.replace(/\/$/, '').split('/').slice(0, index).join('/')
+    const folder = this.state.folders.find(f => f.path.replace(/\/$/, '') === path.replace(/\/$/, '') && f.name === this.state.path.split('/')[index])
 
     document.title = `${index === 0 ? 'My files' : folder?.name} - ${process.env.REACT_APP_NAME}`
     this.setState({ path: path ? path : '/' })
@@ -326,7 +326,7 @@ export default class Files extends Component {
         ? !this.isEmpty() && <div className="space-bar"></div>
         : helper.getQuery('id')
           ? <span className="path-bar">
-            {this.state.path === '/' ? <strong>My files</strong> : this.state.path.split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
+            {this.state.path === '/' ? <strong>My files</strong> : this.state.path.replace(/\/$/, '').split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={this.access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
           </span>
           : helper.getQuery('keyword') && <h5 className="title-bar"><strong>{`Search results for "${helper.getQuery('keyword')}"`}</strong></h5>}
       {!this.isEmpty() && <ul className="ls-folder">
