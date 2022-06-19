@@ -3,6 +3,7 @@ const fs = require("fs")
 const File = require('../models/file.model')
 const Folder = require('../models/folder.model')
 const converter = require('../helpers/converter')
+const duplicator = require('../helpers/duplicator')
 
 module.exports.create = (req, res, next) =>
   JSON.parse(req.body.names).forEach(name =>
@@ -25,7 +26,7 @@ module.exports.create = (req, res, next) =>
 
 module.exports.download = (req, res, next) =>
   File.findById(req.params.id)
-    .then(file => res.download(converter.toUploadPath(file._uid, file)))
+    .then(file => res.download(converter.toUploadFilePath(file._uid, file)))
     .catch(err => next(err))
 
 module.exports.read = (req, res, next) =>
@@ -44,8 +45,8 @@ module.exports.update = (req, res, next) => req.body.name
               .then(fileEdited =>
                 fileEdited
                   ? fs.rename(
-                    converter.toUploadPath(req.payload._id, file),
-                    converter.toUploadPath(req.payload._id, fileEdited),
+                    converter.toUploadFilePath(req.payload._id, file),
+                    converter.toUploadFilePath(req.payload._id, fileEdited),
                     err => err
                       ? next(err)
                       : res.send())
@@ -75,7 +76,7 @@ module.exports.move = (req, res, next) => File.findById(req.params.id)
           : File.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true })
             .then(movedFile => movedFile
               ? fs.rename(
-                converter.toUploadPath(req.payload._id, file),
+                converter.toUploadFilePath(req.payload._id, file),
                 (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + file.name,
                 err => err
                   ? next(err)
@@ -90,27 +91,23 @@ module.exports.copy = (req, res, next) => File.findById(req.params.id)
   .then(async (file, destFolder = undefined) =>
     (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did))
       + file
-      ? File.find({ _uid: req.payload, name: file.name, path: destFolder ? converter.toPath(destFolder) : '/' })
+      ? File.find({ _uid: req.payload, path: destFolder ? converter.toPath(destFolder) : '/' })
         .then(files => {
-          if (files.length)
-            res.status(422).send('You already have a file in the current path! Please choose another file.')
-          else {
-            const newFile = File()
+          const newFile = File()
 
-            newFile._uid = req.payload
-            newFile.name = file.name
-            newFile.path = destFolder ? converter.toPath(destFolder) : '/'
+          newFile._uid = req.payload
+          newFile.name = duplicator.copyFileInFolder(file.name, files.map(v => v.name))
+          newFile.path = destFolder ? converter.toPath(destFolder) : '/'
 
-            newFile.save()
-              .then(copiedFile => copiedFile
-                ? fs.cp(
-                  converter.toUploadPath(req.payload._id, file),
-                  (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + file.name,
-                  err => err
-                    ? next(err)
-                    : res.send('Done.'))
-                : res.status(404).send('File isn\'t copied!'))
-          }
+          newFile.save()
+            .then(copiedFile => copiedFile
+              ? fs.cp(
+                converter.toUploadFilePath(req.payload._id, file),
+                (destFolder ? converter.toUploadPath(req.payload._id, destFolder, files.map(v => v.name)) : process.env.UPLOADS + req.payload._id + '/files') + '/' + duplicator.copyFileInFolder(file.name, files.map(v => v.name)),
+                err => err
+                  ? next(err)
+                  : res.send('Done.'))
+              : res.status(404).send('File isn\'t copied!'))
         })
         .catch(err => next(err))
       : res.status(404).send('Folder not found!'))
@@ -124,7 +121,7 @@ module.exports.deleteForever = (req, res, next) =>
           ? File.findByIdAndDelete(req.params.id)
             .then(file =>
               file
-                ? fs.rm(converter.toUploadPath(req.payload._id, file),
+                ? fs.rm(converter.toUploadFilePath(req.payload._id, file),
                   { recursive: true },
                   err => err
                     ? next(err)
