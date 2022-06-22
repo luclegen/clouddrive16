@@ -63,7 +63,7 @@ export default class Activate extends Component {
 
   render = () => <section className="section-only">
     <form className="form-only" onSubmit={this.onSubmit}>
-      <img className='logo-img' src="/logo.png" alt={process.env.REACT_APP_NAME + ' logo'} />
+      <img className='logo-img' src="/logo.svg" alt={process.env.REACT_APP_NAME + ' logo'} />
       <h1 className="h1-only">Activate your account</h1>
       <p>We sent a code to your email. Please enter the verification code.</p>
       <div className="form-row">
