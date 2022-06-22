@@ -13,9 +13,7 @@ API.interceptors.response.use(res => res, err => {
     ? alert(typeof err.response?.data === 'object'
       ? JSON.stringify(err.response?.data)
       : err.response?.data || err.response?.statusText)
-    || (err.response.status === 401
-      ? (window.location.href = '/')
-      : err.response.status === 501 && window.location.reload())
+    || (err.response.status === 501 && window.location.reload())
     : console.error(err)
 
   return Promise.reject(err)
