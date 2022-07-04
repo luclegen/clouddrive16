@@ -1,0 +1,80 @@
+import React, { useCallback, useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { selectOpened, open, close } from './slice'
+import {
+  check,
+  login,
+  selectAvailable,
+  setRemember,
+  selectRemember,
+} from '../Home/slice'
+import Register from '../Register'
+import helper from '../../services/helper'
+import authService from '../../services/auth'
+
+export default function Login() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const remember = useSelector(selectRemember)
+  const opened = useSelector(selectOpened)
+  const available = useSelector(selectAvailable)
+  const [visible, setVisible] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const enterEmail = e => e.target.value && new Promise(async resolve => {
+    dispatch(check(e.target.value))
+      .then(action => e.target.setCustomValidity(
+        helper.isEmail(e.target.value)
+          ? action.payload
+            ? 'Email not registered'
+            : ''
+          : 'Invalid email!'))
+    setVisible(false)
+    setPassword('')
+    resolve()
+  })
+    .then(() => {
+      if (document.querySelector('.form-group-password'))
+        document.querySelector('.form-group-password').style.height = 0
+      document.querySelector('.input-email').style.width = 260 + 'px'
+    })
+
+  const submit = e => e.preventDefault() || (email && new Promise(resolve => setVisible(true) || resolve())
+    .then(() => {
+      document.querySelector('.form-group-password').style.height = 39 + 'px'
+      document.querySelector('.input-email').style.width = 327 + 'px'
+      document.querySelector('.input-password').focus()
+
+      password && dispatch(login({ email, password, remember }))
+    }))
+
+  return <section className="section-only">
+    <form className="form-only" onSubmit={submit}>
+      <img className='logo-img' src="/logo.svg" alt={process.env.REACT_APP_NAME + ' logo'} />
+      <h1 className="h1-only">Sign in to {process.env.REACT_APP_NAME}</h1>
+      <div className={`form-group-email ${visible ? 'rounded-top' : 'rounded'}`}>
+        <input className="input-email" type="email" name="email" placeholder="Email" value={email} pattern={helper.emailPattern} onInput={enterEmail} onInvalid={enterEmail} onChange={e => setEmail(e.target.value)} title="Please fill out this field." required />
+        {!visible && <button className="btn-input" type="submit" disabled={!email} hidden={true}>
+          <i className="material-icons">input</i>
+        </button>}
+      </div>
+      <div className="form-group-container">
+        {visible && email && <div className="form-group-password">
+          <input className="input-password" type="password" name="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
+          <button className="btn-input" type="submit" disabled={!password}>
+            <i className="material-icons">input</i>
+          </button>
+        </div>}
+      </div>
+      <div className="form-check-remember">
+        <input className="remember-me-input" id="rememberLogin" type="checkbox" name="remember" value={remember} onChange={e => dispatch(setRemember(e.target.checked))} />
+        <label className="remember-me-label" htmlFor="rememberLogin">Keep me signed in</label>
+      </div>
+      <a className="link-find-account" href="/find-account" target="_blank" rel="noopener noreferrer">Forgotten password? <i className="material-icons">open_in_new</i></a>
+      <button className="btn-create-account" type="button" onClick={() => dispatch(open())}>Create New Account</button>
+    </form>
+    {opened && <Register />}
+  </section>
+}
