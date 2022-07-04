@@ -31,7 +31,10 @@ header
 .form-search
   @extend .input-group
 
-.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-new-folder, .btn-update, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next, .submit-create, .btn-move, .btn-copy
+.form-floating-email
+  @extend .form-floating
+
+.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-new-folder, .btn-update, .btn-download, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next, .submit-create, .btn-move, .btn-copy
   @extend .btn
 
 .submit-create, .btn-move, .btn-copy
@@ -43,11 +46,21 @@ header
 .logo, .search-from
   @extend .card-link
 
-.form-row-sign-up
-  @extend .form-row
+.row-name, .row-password, .row-dob, .row-gender, .row-code, .row-email
+  @extend .row
+  @extend .g-2
 
-.form-group-email, .form-group-password, .form-floating, .form-group-password-strength
-  @extend .form-group
+.col-md-close, .col-md-sign-up, .col-md-digit
+  @extend .col-md
+
+// .form-row-sign-up
+//   @extend .form-row
+
+// .form-group-email, .form-group-password, .form-group-password-strength
+//   @extend .form-group
+
+.form-floating-name, .form-floating-surname, .form-floating-email, .form-floating-password, .form-floating-confirm, .form-floating-day, .form-floating-month, .form-floating-year
+  @extend .form-floating
 
 .input-search, .input-email, .input-password, .form-control-day, .form-control-month, .form-control-year, .form-control-digit
   @extend .form-control
@@ -57,6 +70,12 @@ header
 
 .form-check-female, .form-check-male, .form-check-other
   @extend .form-check-inline
+
+.label-female, .label-male, .label-other
+  @extend .form-check-label
+
+.input-female, .input-male, .input-other
+  @extend .form-check-input
 
 .remember-me-input
   @extend .form-check-input
@@ -73,31 +92,31 @@ header
 .label-folder, .label-file, .middle-command
   @extend .text-truncate
 
-.form-floating
-  @extend .position-relative
-
-.section-floating-center, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder, .video-preview, .list-group-search
+.section-floating-center, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder, .video-preview, .list-group-search
   @extend .position-absolute
 
 header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
   @extend .position-fixed
 
-.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-floating-center, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .main-command-bar, .dropdown-item, .bg-media, .empty-trash, .link-find-account, .primary-command, .middle-command, .secondary-command, .span-index, .title-bar, .section-floating-aside, .form-horizontal, .command-bar
+.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-floating-center, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .main-command-bar, .dropdown-item, .bg-media, .empty-trash, .link-find-account, .primary-command, .middle-command, .secondary-command, .span-index, .title-bar, .section-floating-aside, .form-horizontal, .command-bar, .form-check-female, .form-check-male, .form-check-other, .col-md-close, .col-md-sign-up
   @extend .d-flex
 
-.form-only, .form-floating, .empty-trash
+.form-only, .empty-trash
   @extend .flex-xl-column
 
-.logo, .form-only, .section-floating-center, .top-left-nav, .bg-media, .empty-trash, .link-find-account, .middle-command, .span-index
+.logo, .form-only, .section-floating-center, .top-left-nav, .bg-media, .empty-trash, .link-find-account, .middle-command, .span-index, .section-loader, .form-check-female, .form-check-male, .form-check-other
   @extend .align-items-center
 
 .list-group-item
   @extend .align-items-end
 
-.section-only, .form-only, .section-floating-center, .form-row-sign-up, .form-group-password-strength, .bg-media, .empty-trash, .middle-command
+.section-only, .form-only, .section-floating-center, .form-row-sign-up, .form-group-password-strength, .bg-media, .empty-trash, .middle-command, .col-md-sign-up
   @extend .justify-content-center
 
-.text-profile, .text-help, .text-logout, .middle-command
+.col-md-close
+  @extend .justify-content-end
+
+.text-profile, .text-help, .text-logout, .middle-command, .label-female, .label-male, .label-other
   @extend .flex-fill
 
 .section-only, .section-floating-center
@@ -120,17 +139,14 @@ header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
 .input-search, .avatar, .input-email, .input-password
   @extend .border-0
 
-.aside-right
-  @extend .border-left
+// .aside-right
+//   @extend .border-left
 
 .form-check, .command-bar, .main-command-bar
   @extend .border-bottom
 
-.logo, .form-control-digit
+.form-register, .logo, .form-control-digit, .form-check-female, .form-check-male, .form-check-other
   @extend .rounded
-
-.form-register, .form-floating, .form-check-female, .form-check-male, .form-check-other
-  @extend .rounded-lg
 
 .form-group-password
   @extend .rounded-bottom
@@ -144,13 +160,13 @@ header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
 .form-register, .section-floating-aside
   @extend .shadow
 
-.input-search, .btn-search, .avatar, .input-email, .input-password, .btn-input, .form-floating input, select, .form-control-digit
+.input-search, .btn-search, .avatar, .input-email, .input-password, .btn-input, select, .form-control-digit
   @extend .shadow-none
 
 .command-bar, .main-command-bar
   @extend .shadow-sm
 
-.input-search, .form-floating input, .avatar
+.input-search, .avatar
   @extend .bg-transparent
 
 .dropdown-item-logout, .dropdown-item-delete
@@ -168,7 +184,7 @@ header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
 .section-floating
   @extend .w-100
 
-.form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength, .text-profile, .text-help, .text-logout
+.form-group-email, .form-check-female, .form-check-male, .form-check-other, .password-strength, .text-profile, .text-help, .text-logout, .col-md-digit
   @extend .m-0
 
 .btn-move, .btn-copy
@@ -180,19 +196,28 @@ header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
 .form-control-digit
   @extend .mx-1
 
-.dropdown-menu-avatar
-  @extend .mt-2
+.input-female, .input-male, .input-other
+  @extend .mt-0
 
 .form-check-remember, .btn-create-account
   @extend .mt-1
 
+.dropdown-menu-avatar
+  @extend .mt-2
+
+.row-name, .form-floating-email, .row-dob, .row-gender, .row-code
+  @extend .mb-2
+
 .h1-only, .form-check-remember, .h1-register
   @extend .mb-3
 
-.avatar, .section-files, .main-content, .section-floating-aside, .aside-right
+.input-female, .input-male, .input-other
+  @extend .ms-0
+
+.avatar, .section-files, .main-content, .section-floating-aside, .aside-right, .form-check-female, .form-check-male, .form-check-other, .col-md-digit
   @extend .p-0
 
-header, .float label
+header
   @extend .p-1
 
 .form-register
@@ -204,17 +229,17 @@ header, .float label
 .dropdown-item-profile, .dropdown-item-logout, .command-bar, .path-bar, .title-bar, .main-command-bar
   @extend .px-3
 
-.input-search
-  @extend .pl-1
+.label-female, .label-male, .label-other
+  @extend .py-3
 
-.btn-search
-  @extend .pr-0
+// .input-search
+//   @extend .pl-1
 
-.input-search
-  @extend .pr-3
+// .btn-search
+//   @extend .pr-0
 
-.form-check
-  @extend .pb-3
+// .input-search
+//   @extend .pr-3
 
 // Custom
 
@@ -267,6 +292,9 @@ header, .float label
 header
   background: blue
 
+a
+  text-decoration: none !important
+
 .logo
   color: blue
   background: aqua
@@ -298,32 +326,6 @@ header
 
   &:hover
     color: blue
-
-.float
-
-  label
-    transform: translate(4px, -12px) scale(0.7) !important
-
-.form-floating
-
-  &:focus-within
-    @extend .float
-
-    input, select
-      border: 2px solid blue !important
-
-    label
-      color: blue !important
-
-  label
-    padding: 0 12px
-    pointer-events: none
-    transform-origin: top left
-    transition: all 0.2s ease-out
-    transform: translate(1px, 8px) scale(1)
-    background: white
-    color: #999
-    z-index: 1
 
 meter
 
@@ -426,7 +428,7 @@ meter
   i
     margin-right: 5px
 
-.btn-new-folder, .btn-update, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next
+.btn-new-folder, .btn-update, .btn-download, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next
 
   &:hover
     background: #f3f2f1
@@ -461,3 +463,6 @@ meter
 
 .section-floating-center, .section-floating-aside
   background: #ffffffcc !important
+
+.section-loader
+  cursor: wait
