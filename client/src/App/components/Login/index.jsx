@@ -5,23 +5,21 @@ import { selectOpened, open, close } from './slice'
 import {
   check,
   login,
-  selectAvailable,
   setRemember,
   selectRemember,
 } from '../Home/slice'
 import Register from '../Register'
 import helper from '../../services/helper'
-import authService from '../../services/auth'
 
 export default function Login() {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const remember = useSelector(selectRemember)
   const opened = useSelector(selectOpened)
-  const available = useSelector(selectAvailable)
   const [visible, setVisible] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  useEffect(() => window.onbeforeunload = () => email || password || remember ? true : undefined)
 
   const enterEmail = e => e.target.value && new Promise(async resolve => {
     dispatch(check(e.target.value))
