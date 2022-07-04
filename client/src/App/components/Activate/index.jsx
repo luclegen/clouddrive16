@@ -7,7 +7,10 @@ export default function Activate() {
   const dispatch = useDispatch()
   const sent = useSelector(selectSent)
 
-  useEffect(() => window.onbeforeunload = () => getCode() ? true : undefined)
+  useEffect(() => {
+    document.title = `Activate - ${process.env.REACT_APP_NAME}`
+    window.onbeforeunload = () => getCode() ? true : undefined
+  })
 
   const getIndex = target => Array.from(document.querySelector('.row-code').children).findIndex(i => i === target)
 
