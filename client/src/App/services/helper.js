@@ -1,5 +1,3 @@
-import mime from 'mime-types'
-
 class Helper {
   constructor() {
     this.firstNamePattern = '^[A-Z]{1}[a-z]*$'
@@ -65,16 +63,6 @@ class Helper {
     }
   }
 
-  downloadBlob(blob, filename) {
-    const url = URL.createObjectURL(new Blob([blob], { type: `${mime.lookup(filename)}` }));
-    const a = document.createElement('a');
-
-    a.href = url;
-    a.download = filename || 'download';
-
-    a.click();
-  }
-
   getQuery = name => (new URLSearchParams(window.location.search)).get(name)
 
   setQuery = (name, value) => {
@@ -124,7 +112,7 @@ class Helper {
 
   isExpired = () => this.isLogin() ? this.getPayload().exp ? this.getPayload().exp * 1000 < Date.now() : false : true
 
-  isLogin = () => !!this.getCookie('id')
+  loggedIn = () => !!this.getCookie('id')
 
   remembered = () => localStorage.getItem('remembered') === 'true' || sessionStorage.getItem('remembered') === 'true' ? true : localStorage.getItem('remembered') === 'false' || sessionStorage.getItem('remembered') === 'false' ? false : null
 
