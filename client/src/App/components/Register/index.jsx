@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Sex from '../../models/Sex'
 import helper from '../../services/helper'
@@ -20,6 +20,19 @@ export default function Register() {
   const [year, setYear] = useState((new Date()).getFullYear().toString())
   const [sex, setSex] = useState('')
   const [submitted, setSubmitted] = useState('')
+
+  useEffect(() => window.onbeforeunload = () =>
+    first_name
+      || last_name
+      || email
+      || password
+      || confirm
+      || day !== (new Date()).getDate().toString()
+      || month !== (new Date()).getMonth().toString()
+      || year !== (new Date()).getFullYear().toString()
+      || sex
+      ? true
+      : undefined)
 
   const enterFirstName = e => e.target.setCustomValidity(e.target.value ? helper.isFirstName(e.target.value) ? '' : 'Invalid first name.' : 'This field is required.')
 
