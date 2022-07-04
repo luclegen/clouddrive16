@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { selectOpened, open, close } from './slice'
+import { selectOpened, open } from './slice'
 import {
   check,
   login,
@@ -45,7 +44,13 @@ export default function Login() {
       document.querySelector('.input-email').style.width = 327 + 'px'
       document.querySelector('.input-password').focus()
 
-      password && dispatch(login({ email, password, remember }))
+      password && new Promise(resolve => {
+        setEmail('')
+        setPassword('')
+
+        resolve()
+      })
+        .then(() => dispatch(login({ email, password, remember })))
     }))
 
   return <section className="section-only">
