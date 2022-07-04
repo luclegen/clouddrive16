@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { create, verify, selectSent } from './slice'
 import helper from '../../services/helper'
@@ -6,6 +6,8 @@ import helper from '../../services/helper'
 export default function Activate() {
   const dispatch = useDispatch()
   const sent = useSelector(selectSent)
+
+  useEffect(() => window.onbeforeunload = () => getCode() ? true : undefined)
 
   const getIndex = target => Array.from(document.querySelector('.row-code').children).findIndex(i => i === target)
 
@@ -45,9 +47,11 @@ export default function Activate() {
 
   const send = e => e.preventDefault() || dispatch(create())
 
+  const getCode = () => Array.from(document.querySelectorAll('.form-control-digit')).map(e => e.value).join('')
+
   const isSubmit = () => '0'.repeat(6).split('').map((v, i) => v = document.querySelectorAll('.form-control-digit')[i].value).filter(v => helper.isDigit(v)).length === 6
 
-  const submit = e => dispatch(verify({ code: Array.from(document.querySelectorAll('.form-control-digit')).map(e => e.value).join('') }))
+  const submit = e => dispatch(verify({ code: getCode() }))
 
   return <section className="section-only">
     <form className="form-only" onSubmit={submit}>
