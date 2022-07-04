@@ -22,6 +22,9 @@ export const homeSlice = createSlice({
     .addCase(check.fulfilled, (state, action) => {
       state.available = action.payload
     })
+    .addCase(login.pending, state => {
+      state.remember = false
+    })
     .addCase(login.fulfilled, (state, action) => {
       new Promise(resolve => {
         helper.setCookies(action.payload, state.remember ? 365 * 24 * 60 * 60 : 0)
