@@ -1,4 +1,4 @@
-import API from '../apis/api'
+import API from '../apis/json'
 
 const URL = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/auth/`
 
