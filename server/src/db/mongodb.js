@@ -1,18 +1,6 @@
-const { error, info } = require('console')
 const mongoose = require('mongoose')
-
-mongoose.set('useCreateIndex', true)
-mongoose.set('useUnifiedTopology', true)
-mongoose.set('useNewUrlParser', true)
-mongoose.set('useFindAndModify', false)
+const { info, error } = require('console')
 
 mongoose.connect(process.env.MONGODB)
-
-mongoose.connection.on('error', err => error(err))
-mongoose.connection.once('open', () => info('Connected to MongoDB'))
-
-require('../models/user.model')
-require('../models/profile.model')
-require('../models/code.model')
-require('../models/folder.model')
-require('../models/file.model')
+  .then(() => info('Connected to MongoDB.'))
+  .catch(err => error('Could not connect to MongoDB:', err))
