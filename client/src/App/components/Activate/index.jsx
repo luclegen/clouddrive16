@@ -5,6 +5,7 @@ import helper from '../../services/helper'
 
 export default function Activate() {
   const dispatch = useDispatch()
+
   const sent = useSelector(selectSent)
 
   useEffect(() => {

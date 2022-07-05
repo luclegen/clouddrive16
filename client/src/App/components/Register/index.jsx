@@ -8,7 +8,9 @@ import { create } from './slice'
 
 export default function Register() {
   const dispatch = useDispatch()
+
   const available = useSelector(selectAvailable)
+
   const [first_name, setFirstName] = useState('')
   const [last_name, setLastName] = useState('')
   const [email, setEmail] = useState('')
