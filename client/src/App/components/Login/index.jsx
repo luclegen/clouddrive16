@@ -35,15 +35,15 @@ export default function Login() {
     resolve()
   })
     .then(() => {
-      if (document.querySelector('.form-group-password'))
-        document.querySelector('.form-group-password').style.height = 0
+      if (document.querySelector('.input-group-password'))
+        document.querySelector('.input-group-password').style.height = 0
       document.querySelector('.input-email').style.width = 260 + 'px'
     })
 
   const submit = e => e.preventDefault() || (email && new Promise(resolve => setVisible(true) || resolve())
     .then(() => {
-      document.querySelector('.form-group-password').style.height = 39 + 'px'
-      document.querySelector('.input-email').style.width = 327 + 'px'
+      document.querySelector('.input-group-password').style.height = 39 + 'px'
+      document.querySelector('.input-email').style.width = 322 + 'px'
       document.querySelector('.input-password').focus()
 
       password && new Promise(resolve => {
@@ -59,14 +59,14 @@ export default function Login() {
     <form className="form-only" onSubmit={submit}>
       <img className='logo-img' src="/logo.svg" alt={process.env.REACT_APP_NAME + ' logo'} />
       <h1 className="h1-only">Sign in to {process.env.REACT_APP_NAME}</h1>
-      <div className={`form-group-email ${visible ? 'rounded-top' : 'rounded'}`}>
+      <div className={`input-group-email ${visible ? 'rounded-top' : 'rounded'}`}>
         <input className="input-email" type="email" name="email" placeholder="Email" value={email} pattern={helper.emailPattern} onInput={enterEmail} onInvalid={enterEmail} onChange={e => setEmail(e.target.value)} title="Please fill out this field." required />
         {!visible && <button className="btn-input" type="submit" disabled={!email} hidden={true}>
           <i className="material-icons">input</i>
         </button>}
       </div>
-      <div className="form-group-container">
-        {visible && email && <div className="form-group-password">
+      <div className="input-group-container">
+        {visible && email && <div className="input-group-password">
           <input className="input-password" type="password" name="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
           <button className="btn-input" type="submit" disabled={!password}>
             <i className="material-icons">input</i>

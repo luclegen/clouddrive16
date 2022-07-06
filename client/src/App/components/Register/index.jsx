@@ -167,7 +167,7 @@ export default function Register() {
         </div>
       </div>
       <meter id="passwordStrengthRegister" title="Use 8 or more characters with a mix of letters, numbers & symbols" max="4" value="0"></meter>
-      <div className="form-group-password-strength">
+      <div className="input-group-password-strength">
         {strength && <label className="password-strength" htmlFor="passwordStrengthRegister">{helper.checkPassword(password).strength}</label>}
       </div>
       <label className={`label-group ${isValidDob()}`} htmlFor="dobRegister">Date of birth</label>
