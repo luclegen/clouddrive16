@@ -124,7 +124,27 @@ export default function Files() {
     refresh()
   }
 
-  const choose = () => { }
+  const choose = e => {
+    e.preventDefault()
+
+    const type = (/file|img|video/g).test(e.target.className)
+      ? e.target.closest('.li-folder')
+        ? 'folder'
+        : 'file'
+      : (/folder/g).test(e.target.className)
+        ? 'folder'
+        : null
+
+    getMenuFolder().style.display = 'block'
+    getMenuFolder().style.top = `${e.clientY}px`
+    getMenuFolder().style.left = `${e.clientX}px`
+    setID(e.target.closest(`.li-${type}`)?.id)
+    setType(type)
+    setName(e.target.closest(`.li-${type}`)?.getAttribute('name'))
+    setParent(e.target.closest(`.li-${type}`)?.getAttribute('value'))
+
+    document.querySelector('.dropdown-item-download').style.setProperty('display', type === 'folder' ? 'none' : 'flex', 'important')
+  }
 
   const next = () => { }
 
@@ -155,7 +175,6 @@ export default function Files() {
         <li className={`list-group-item-trash ${helper.getQuery('location') === 'trash' && 'active'} `} onClick={setTrash}><i className="material-icons">delete</i> Trash</li>
       </ul>
     </nav>
-    {/* {console.log('T')} */}
     <main className="main-content">
       {helper.getQuery('location') === 'trash'
         ? !isEmpty() && <span className="main-command-bar">
