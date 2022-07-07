@@ -26,7 +26,7 @@
   width: 260px
 
 body
-  margin-top: 53px !important
+  margin-top: 53px
 
 header
   top: 0
@@ -63,6 +63,7 @@ header, .main-command-bar
 
 .main-content
   margin-top: 53px
+  margin-left: 265px
   width: 100%
   min-height: calc(100vh - 106px)
 
@@ -73,10 +74,10 @@ main
     height: calc(100vh - 106px)
     margin-bottom: 53px
 
-.input-group-container
+.form-group-container
   height: 40px
 
-.input-group-password
+.form-group-password
   height: 0
   overflow: hidden
   transition: height 0.8s
@@ -101,11 +102,9 @@ main
 meter
   width: 100%
 
-.label-female, .label-male, .label-other
-  padding-left: 12px !important
-
-.input-female, .input-male, .input-other
-  margin-right: 12px !important
+.form-check-female, .form-check-male, .form-check-other
+  width: 100%
+  padding: 6px 12px !important
 
 .label-group
   width: 100%
@@ -142,6 +141,7 @@ meter
   font-size: 25px
 
   i
+
     font-size: 200px
 
 .img, .video-preview
@@ -187,9 +187,6 @@ meter
 
 .folder
   width: 30px
-
-.row-code
-  max-width: 348px
 
 @media (max-width: 1024px)
   .search-bar

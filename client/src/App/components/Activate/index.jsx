@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { create, verify, selectSent } from './slice'
+import { create, selectSent } from './slice'
+import { verify } from '../Home/slice'
 import helper from '../../services/helper'
 
 export default function Activate() {

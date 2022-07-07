@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { selectLoggedIn } from './slice'
-import { selectIsActivate } from '../Activate/slice'
+import { selectLoggedIn, selectIsActivate } from './slice'
 import Login from '../Login'
 import Files from '../Files'
 import Activate from '../Activate'

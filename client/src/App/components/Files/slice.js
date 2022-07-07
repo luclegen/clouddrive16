@@ -1,0 +1,76 @@
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import helper from '../../services/helper'
+import foldersService from '../../services/folders'
+import filesService from '../../services/files'
+
+const initialState = {
+  folders: [],
+  files: [],
+  items: [],
+  itemFiles: [],
+  path: '',
+  media: '',
+  index: -1,
+  type: 'none',
+}
+
+export const list = createAsyncThunk('files/list', async () => ({ folders: (await foldersService.list()).data, files: (await filesService.list()).data }))
+export const readFile = createAsyncThunk('files/readFile', async id => (await filesService.read(id)).data)
+export const openFile = createAsyncThunk('files/openFile', async media => (await filesService.open(media)).data)
+
+export const filesSlice = createSlice({
+  name: 'files',
+  initialState,
+  reducers: {
+    setPath: (state, action) => { state.path = action.payload },
+    reset: state => { state.folders = state.files = [] },
+  },
+  extraReducers: builder => builder
+    .addCase(list.fulfilled, (state, action) => {
+      [state.folders, state.files] = Object.values(action.payload)
+
+      const folder = helper.getQuery('id') === 'root'
+        ? { path: '/', name: '' }
+        : state.folders.find(f => f._id === helper.getQuery('id'))
+
+      state.path = folder?.name === ''
+        ? '/'
+        : helper.toPath(folder)
+
+      state.items = helper.getQuery('location') === 'trash'
+        ? state.folders
+        : helper.getQuery('keyword')
+          ? state.folders.filter(v => new RegExp(helper.getQuery('keyword'), 'ig').test(v.name))
+          : state.folders.filter(f => f.path === state.path)
+
+      state.itemFiles = helper.getQuery('location') === 'trash'
+        ? state.files
+        : helper.getQuery('keyword')
+          ? state.files.filter(v => new RegExp(helper.getQuery('keyword'), 'ig').test(v.name))
+          : state.files.filter(f => f.path === state.path)
+    })
+    .addCase(readFile.fulfilled, (state, action) => {
+      state.media = helper.getMedia(action.payload)
+      state.index = state.files
+        .filter(v => v.path === state.path && helper.isMedia(v.name))
+        .map(v => helper.getMedia(v))
+        .findIndex(v => v === state.media) + 1
+    })
+    .addCase(openFile.fulfilled, state => {
+      window.open(state.media)
+    })
+})
+
+export const { setPath, reset } = filesSlice.actions
+
+export const selectFolders = state => state.files.folders
+export const selectFiles = state => state.files.files
+export const selectItems = state => state.files.items
+export const selectItemFiles = state => state.files.itemFiles
+export const selectPath = state => state.files.path
+export const selectMedia = state => state.files.media
+export const selectMediaFiles = state => state.files.files.filter(v => v.path === state.path && helper.isMedia(v.name))
+export const selectMedias = state => state.files.files.filter(v => v.path === state.path && helper.isMedia(v.name)).map(v => helper.getMedia(v))
+export const selectIndex = state => state.files.index
+
+export default filesSlice.reducer
