@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Progress } from 'reactstrap'
 import {
+  createFolder,
   list,
   openFile,
   readFile,
@@ -62,7 +63,8 @@ export default function Files() {
 
   const clickOut = () => getMenuFolder().style.display = 'none'
 
-  const create = () => { }
+  const create = () => dispatch(createFolder({ name: prompt('Create folder', 'New folder'), path: path }))
+    .then(action => action.type === 'files/createFolder/fulfilled' && refresh())
 
   const move = () => { }
 
