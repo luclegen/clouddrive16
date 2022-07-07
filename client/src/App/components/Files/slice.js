@@ -48,6 +48,17 @@ export const filesSlice = createSlice({
         : helper.getQuery('keyword')
           ? state.files.filter(v => new RegExp(helper.getQuery('keyword'), 'ig').test(v.name))
           : state.files.filter(f => f.path === state.path)
+
+      document.title = `${helper.getQuery('keyword')
+        ? `Search results for "${helper.getQuery('keyword')}"`
+        : helper.getQuery('location') === 'trash'
+          ? 'Trash'
+          : helper.getQuery('id') === 'root'
+            ? 'My files'
+            : state.folders.find(v => v._id === helper.getQuery('id'))?.name}
+         - ${process.env.REACT_APP_NAME}`
+
+      !window.location.search && helper.setQuery('id', 'root')
     })
     .addCase(readFile.fulfilled, (state, action) => {
       state.media = helper.getMedia(action.payload)
