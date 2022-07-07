@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API = axios.create({
+const jsonAPI = axios.create({
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -8,7 +8,7 @@ const API = axios.create({
   },
 })
 
-API.interceptors.response.use(res => res, err => {
+jsonAPI.interceptors.response.use(res => res, err => {
   err.response
     ? alert(typeof err.response?.data === 'object'
       ? JSON.stringify(err.response?.data)
@@ -19,4 +19,4 @@ API.interceptors.response.use(res => res, err => {
   return Promise.reject(err)
 })
 
-export default API
+export default jsonAPI
