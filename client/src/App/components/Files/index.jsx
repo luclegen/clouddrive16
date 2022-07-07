@@ -52,15 +52,6 @@ export default function Files() {
     document.title = `My files - ${process.env.REACT_APP_NAME}`
     setMainContent()
     refresh()
-      .then(() => (document.title = `${helper.getQuery('keyword')
-        ? `Search results for "${helper.getQuery('keyword')}"`
-        : helper.getQuery('location') === 'trash'
-          ? 'Trash'
-          : helper.getQuery('id') === 'root'
-            ? 'My files'
-            : folders.find(v => v._id === helper.getQuery('id'))?.name}
-         - ${process.env.REACT_APP_NAME}`)
-        && !window.location.search && helper.setQuery('id', 'root'))
   }, [])
 
   const refresh = () => dispatch(list())
