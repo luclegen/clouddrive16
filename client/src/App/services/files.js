@@ -7,6 +7,8 @@ class FilesService {
 
   read = id => API.get(`${URL}${id}`)
 
+  open = media => API.get(media)
+
   update = (id, file) => API.put(`${URL}${id}`, file)
 
   delete = id => API.patch(`${URL}${id}`)
