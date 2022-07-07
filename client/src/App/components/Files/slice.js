@@ -15,6 +15,7 @@ const initialState = {
 }
 
 export const list = createAsyncThunk('files/list', async () => ({ folders: (await foldersService.list()).data, files: (await filesService.list()).data }))
+export const createFolder = createAsyncThunk('files/createFolder', async folder => (await foldersService.create(folder)).data)
 export const readFile = createAsyncThunk('files/readFile', async id => (await filesService.read(id)).data)
 export const openFile = createAsyncThunk('files/openFile', async media => (await filesService.open(media)).data)
 
