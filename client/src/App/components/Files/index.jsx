@@ -92,8 +92,6 @@ export default function Files() {
 
   const save = () => { }
 
-  const access = () => { }
-
   const open = e => {
     if ((/folder/g).test(e.target.className) || e.target.closest('.li-folder')) {
       const folder = folders.find(f => f._id === e.target.closest('.li-folder').id)
@@ -113,6 +111,17 @@ export default function Files() {
     } else if (helper.isPDF(e.target?.closest('.li-file').getAttribute('name')))
       dispatch(readFile(e.target?.closest('.li-file').id))
         .then(action => dispatch(openFile(helper.getMedia(action.payload))))
+  }
+
+  const access = e => {
+    const index = parseInt(e.target.id)
+    const newpath = index === 1 ? '/' : path.replace(/\/$/, '').split('/').slice(0, index).join('/')
+    const folder = folders.find(f => f.path.replace(/\/$/, '') === newpath.replace(/\/$/, '') && f.name === path.split('/')[index])
+
+    document.title = `${index === 0 ? 'My files' : folder?.name} - ${process.env.REACT_APP_NAME}`
+    setPath(newpath ? newpath : '/')
+    helper.setQuery('id', parseInt(e.target.id) === 0 ? 'root' : folder?._id)
+    refresh()
   }
 
   const choose = () => { }
