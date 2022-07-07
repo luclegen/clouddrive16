@@ -35,6 +35,8 @@ class Helper {
 
   isMedia = value => this.isImage(value) || this.isVideo(value) || this.isAudio(value)
 
+  getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${this.getCookie('id')}/files${v?.path}${v?.name}`
+
   isPDF = value => /\.pdf$/i.test(value)
 
   isImages = (files, value) => files.filter(f => f.path === this.toPath(value) && this.isImage(f.name)).length
@@ -115,12 +117,6 @@ class Helper {
   loggedIn = () => !!this.getCookie('id')
 
   remembered = () => localStorage.getItem('remembered') === 'true' || sessionStorage.getItem('remembered') === 'true' ? true : localStorage.getItem('remembered') === 'false' || sessionStorage.getItem('remembered') === 'false' ? false : null
-
-  logout = () => {
-    localStorage.clear()
-    sessionStorage.clear()
-    window.location.reload()
-  }
 }
 
 export default new Helper()
