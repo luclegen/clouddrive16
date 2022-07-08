@@ -1,6 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import authService from '../../services/auth'
-import helper from '../../services/helper'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   opened: false,
