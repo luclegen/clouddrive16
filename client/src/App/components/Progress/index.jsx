@@ -20,7 +20,7 @@ export default function Progress(props) {
         <span className="middle-command">
         </span>
         <span className="secondary-command">
-          <button className="btn-progress-close" type="button" onClick={() => dispatch(hideProgress())}><i className="material-icons">close</i></button>
+          <button className="btn-close-progress" type="button" onClick={() => dispatch(hideProgress())}><i className="material-icons">close</i></button>
         </span>
       </span>
       <main className="main-aside">
