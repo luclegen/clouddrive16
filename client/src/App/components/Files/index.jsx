@@ -15,12 +15,21 @@ import {
   selectMediaFiles,
   selectMedias,
   selectPath,
-  setPath
+  setPath,
 } from './slice'
 import {
   setWidth,
 } from '../Header/slice'
-import { setValue, selectShowProgress, hideProgress, showProgressComponent, setUploadFiles, selectUploadFiles, selectControllers } from '../Progress/slice'
+import {
+  setValue,
+  selectShowProgress,
+  showProgressComponent,
+  setUploadFiles,
+  startUpload,
+  finishUpload,
+  selectUploading,
+  setSuccess,
+} from '../Progress/slice'
 import formDataAPI from '../../apis/form-data'
 import Media from '../Media'
 import FolderTree from '../FolderTree'
@@ -39,6 +48,7 @@ export default function Files() {
   const media = useSelector(selectMedia)
   const index = useSelector(selectIndex)
   const showProgress = useSelector(selectShowProgress)
+  const uploading = useSelector(selectUploading)
 
   const controllers = useRef(null)
 
@@ -52,10 +62,12 @@ export default function Files() {
   useEffect(() => {
     window.onresize = () => {
       setMainContent()
+      setMainCommandBar()
       dispatch(setWidth())
     }
     document.title = `My files - ${process.env.REACT_APP_NAME}`
     setMainContent()
+    setMainCommandBar()
     refresh()
   }, [])
 
@@ -65,6 +77,8 @@ export default function Files() {
 
   const setMainContent = () => document.querySelector('.main-content').style.marginLeft = document.querySelector('.left-nav').clientWidth + 'px'
 
+  const setMainCommandBar = () => document.querySelector('.main-command-bar').style.width = (window.innerWidth - document.querySelector('.left-nav').clientWidth) + 'px'
+
   const clickOut = () => getMenuFolder().style.display = 'none'
 
   const create = () => dispatch(createFolder({ name: prompt('Create folder', 'New folder'), path: path }))
@@ -73,26 +87,29 @@ export default function Files() {
   const upload = () => document.getElementById("files").click()
 
   const save = async e => {
-    const files = Array.from(e.target.files).map(v => ({ name: v.name, value: 0, show: true, cancel: false }))
+    const files = Array.from(e.target.files).map(v => ({ name: v.name, value: 0, show: true, cancel: false, success: false, done: false }))
     controllers.current = '0'.repeat(files.length).split('').map(() => new AbortController())
 
     await dispatch(setUploadFiles(files))
     await dispatch(showProgressComponent())
 
-    controllers.current.length && Array.from(e.target.files)
-      .forEach((v, i) => {
-        const formData = new FormData()
+    controllers.current.length
+      && dispatch(startUpload())
+      && Array.from(e.target.files)
+        .forEach((v, i, a) => {
+          const formData = new FormData()
 
-        formData.append("path", path)
-        formData.append("files", v, v.name)
-        formData.append("names", JSON.stringify([v.name]))
+          formData.append("path", path)
+          formData.append("files", v, v.name)
+          formData.append("names", JSON.stringify([v.name]))
 
-        formDataAPI.post(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/`, formData, {
-          signal: controllers.current[i].signal,
-          onUploadProgress: data => dispatch(setValue({ index: i, value: Math.round(100 * (data.loaded / data.total)) })),
+          formDataAPI.post(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/`, formData, {
+            signal: controllers.current[i].signal,
+            onUploadProgress: data => dispatch(setValue({ index: i, value: Math.round(100 * (data.loaded / data.total)) })),
+          })
+            .then(() => dispatch(setSuccess(i)))
+            .finally(async () => (await dispatch(finishUpload(i))) && refresh())
         })
-          .then(() => refresh() && dispatch(setUploadFiles([])) && dispatch(hideProgress()))
-      })
   }
 
   const move = () => { }
@@ -209,9 +226,16 @@ export default function Files() {
           <button className="btn-empty" onClick={empty}><i className="material-icons">delete_forever</i> Empty</button>
         </span>
         : <span className="main-command-bar">
-          <button className="btn-new-folder" onClick={create}><i className="material-icons">create_new_folder</i> New</button>
-          <input type="file" id="files" onChange={save} multiple hidden />
-          <button className="btn-upload" onClick={upload}><i className="material-icons">publish</i> Upload</button>
+          <span className="primary-command">
+            <button className="btn-new-folder" onClick={create}><i className="material-icons">create_new_folder</i> New</button>
+            <input type="file" id="files" onChange={save} multiple hidden />
+            <button className="btn-upload" onClick={upload}><i className="material-icons">publish</i> Upload</button>
+          </span>
+          <span className="middle-command">
+          </span>
+          <span className="secondary-command">
+            {uploading && <button className="btn-show-progress" type="button" onClick={() => dispatch(showProgressComponent())}><i className="material-icons">backup</i>Uploading...</button>}
+          </span>
         </span>}
       {helper.getQuery('location') === 'trash'
         ? !isEmpty() && <div className="space-bar"></div>
