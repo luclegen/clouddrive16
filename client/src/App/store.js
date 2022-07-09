@@ -5,6 +5,7 @@ import loginReducer from './components/Login/slice'
 import registerReducer from './components/Register/slice'
 import activateReducer from './components/Activate/slice'
 import filesReducer from './components/Files/slice'
+import progressReducer from './components/Progress/slice'
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     register: registerReducer,
     activate: activateReducer,
     files: filesReducer,
+    progress: progressReducer,
   },
 })
