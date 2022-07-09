@@ -29,9 +29,13 @@ export default function Progress(props) {
             <li key={i} className="list-group-item-upload">
               <label className="label-upload-item" title={v.name}>{v.name}</label>
               {v.show
-                ? <span onMouseEnter={() => dispatch(showCancel(i))}><CircularProgressbar className="circular-progressbar" value={v.value} text={`${v.value}%`} /></span>
+                ? v.done
+                  ? v.success
+                    ? <i className="material-icons" title="Done">check_circle</i>
+                    : <i className="material-icons" title="Failed">error</i>
+                  : <span onMouseEnter={() => dispatch(showCancel(i))}><CircularProgressbar className="circular-progressbar" value={v.value} text={`${v.value}%`} /></span>
                 : v.cancel
-                  ? <span>Canceled</span>
+                  ? <span><i className="material-icons" title="Canceled">cancel</i></span>
                   : <span className="btn-cancel-upload" title="Cancel" onMouseLeave={() => dispatch(hideCancel(i))} onClick={cancel(i)}></span>}
             </li>)}
         </ul>}
