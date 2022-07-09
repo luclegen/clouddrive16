@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   show: false,
   uploadFiles: [],
+  uploading: false,
 }
 
 export const progressSlice = createSlice({
@@ -38,21 +39,54 @@ export const progressSlice = createSlice({
       }
     },
     cancelUpload: (state, action) => {
-      if (state.uploadFiles.length) {
+      if (state.uploading) {
         const newArr = [...state.uploadFiles]
 
         newArr[action.payload].cancel = true
+        newArr[action.payload].done = true
 
         state.uploadFiles = newArr
       }
     },
+    startUpload: state => {
+      state.uploading = true
+    },
+    setSuccess: (state, action) => {
+      const newArr = [...state.uploadFiles]
+
+      newArr[action.payload].success = true
+
+      state.uploadFiles = newArr
+    },
+    finishUpload: (state, action) => {
+      if (state.uploading) {
+        const newArr = [...state.uploadFiles]
+
+        newArr[action.payload].done = true
+
+        state.uploadFiles = newArr
+      }
+
+      state.uploading = !state.uploadFiles.every(v => v.done)
+    },
   },
 })
 
-export const { showProgressComponent, hideProgress, setUploadFiles, setValue, showCancel, hideCancel, cancelUpload } = progressSlice.actions
+export const {
+  showProgressComponent,
+  hideProgress,
+  setUploadFiles,
+  setValue,
+  showCancel,
+  hideCancel,
+  startUpload,
+  setSuccess,
+  finishUpload,
+  cancelUpload,
+} = progressSlice.actions
 
 export const selectShowProgress = state => state.progress.show
 export const selectUploadFiles = state => state.progress.uploadFiles
-export const selectControllers = state => state.progress.controllers
+export const selectUploading = state => state.progress.uploading
 
 export default progressSlice.reducer
