@@ -12,7 +12,7 @@ formDataAPI.interceptors.response.use(res => res, err => {
   err.response
     ? alert(typeof err.response?.data === 'object'
       ? JSON.stringify(err.response?.data)
-      : err.response?.data || err.response?.statusText)
+      : err.response?.data || err.response?.statusText || err.message)
     || (err.response.status === 501 && window.location.reload())
     : console.error(err)
 
