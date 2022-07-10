@@ -24,7 +24,18 @@ export const filesSlice = createSlice({
   initialState,
   reducers: {
     setPath: (state, action) => { state.path = action.payload },
-    reset: state => { state.folders = state.files = [] },
+    reset: state => {
+      document.querySelectorAll('.img')
+        .forEach(v => v.setAttribute('src', ''))
+      document.querySelectorAll('.video-preview')
+        .forEach(v => v.setAttribute('src', ''))
+      document.querySelectorAll('.bg-img')
+        .forEach(v => v.setAttribute('src', ''))
+      document.querySelectorAll('.bg-video')
+        .forEach(v => v.setAttribute('src', ''))
+
+      state.items = state.itemFiles = []
+    },
   },
   extraReducers: builder => builder
     .addCase(list.fulfilled, (state, action) => {
