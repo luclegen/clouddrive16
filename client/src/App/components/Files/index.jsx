@@ -264,12 +264,15 @@ export default function Files() {
           {helper.isImages(files, v) || helper.isVideos(files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="foreground folder" onContextMenu={choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="foreground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
-        {
-          itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} value={v.path} title={v.name} onClick={open} onContextMenu={choose}>
-            {helper.isImage(v.name) ? <img className="bg-img" id={`file${i}`} src={helper.getMedia(v)} alt={`Img ${i}`} /> : helper.isVideo(v.name) ? <video className="bg-video" src={helper.getMedia(v)}></video> : <i className="material-icons bg-file">{helper.isAudio(v.name) ? 'audio_file' : 'description'}</i>}
-            <label className="label-file" htmlFor={`file${i}`} style={{ marginTop: helper.isVideo(v.name) ? '-8px' : '85px' }}>{v.name}</label>
-          </li>)
-        }
+        {itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} value={v.path} title={v.name} onClick={open} onContextMenu={choose}>
+          {helper.isImage(v.name)
+            ? <img className="bg-img" id={`file${i}`} src={helper.getMedia(v)} alt={`Img ${i}`} />
+            : helper.isVideo(v.name)
+              ? <video className="bg-video" src={helper.getMedia(v)}></video>
+              : <i className="material-icons bg-file">{helper.isAudio(v.name) ? 'audio_file' : 'description'}</i>
+          }
+          <label className="label-file" htmlFor={`file${i}`} style={{ marginTop: helper.isVideo(v.name) ? '-8px' : '85px' }}>{v.name}</label>
+        </li>)}
       </ul>}
       {isEmpty() && <div className="empty-trash"><i className="material-icons">delete_outline</i><strong>Trash is Empty</strong></div>}
     </main>
