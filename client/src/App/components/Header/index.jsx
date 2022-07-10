@@ -113,7 +113,7 @@ export default function Header() {
         <hr className="dropdown-divider" />
         <Link className="dropdown-item-normal dropdown-item" to="/help" onClick={() => dispatch(toggleDropdown())}><p className="text-help">Help</p><i className="material-icons">help_outline</i></Link>
         <hr className="dropdown-divider" />
-        <Link className="dropdown-item-danger dropdown-item" to="/" onClick={async () => await dispatch(reset()) && dispatch(logout())}><p className="text-logout">Sign out</p><i className="material-icons">logout</i></Link>
+        <Link className="dropdown-item-danger dropdown-item" to="/?id=root" onClick={() => dispatch(reset()) && dispatch(logout())}><p className="text-logout">Sign out</p><i className="material-icons">logout</i></Link>
       </ul>}
     </div>
   </header>
