@@ -183,12 +183,10 @@ export default function Files() {
     const item = {
       index,
       id: target.id,
-      type: (/file|img|video/g).test(e.target.className)
-        ? e.target.closest('.li-folder')
-          ? 'folder'
-          : 'file'
-        : (/folder/g).test(e.target.className)
-          ? 'folder'
+      type: /li-folder/.test(target.className)
+        ? 'folder'
+        : /li-file/.test(target.className)
+          ? 'file'
           : null,
       name: target?.getAttribute('name'),
       parent: target?.getAttribute('value'),
