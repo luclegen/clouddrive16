@@ -264,7 +264,6 @@ export default function Files() {
       dispatch(setItems([item]))
       dispatch(setItemPrev(item))
     }
-
   }
 
   const choose = e => {
