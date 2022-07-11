@@ -148,7 +148,7 @@ header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
 .form-check, .command-bar, .main-command-bar
   @extend .border-bottom
 
-.form-register, .logo, .form-control-digit, .form-check-female, .form-check-male, .form-check-other
+.form-register, .logo, .form-control-digit, .form-check-female, .form-check-male, .form-check-other, .li-folder, .li-file
   @extend .rounded
 
 .input-group-password
@@ -229,8 +229,11 @@ header
 .form-register
   @extend .p-3
 
-.logo
+.logo, .li-folder, .li-file
   @extend .px-1
+
+.li-folder, .li-file
+  @extend .pt-1
 
 .dropdown-item-normal, .dropdown-item-danger, .command-bar, .path-bar, .title-bar, .main-command-bar, .top-left-nav
   @extend .px-3
@@ -446,7 +449,7 @@ meter
 .bg-media
   background: #f3f2f1
 
-.ls-folder
+.ls-items
   display: grid
   list-style: none
   grid-gap: 40px
