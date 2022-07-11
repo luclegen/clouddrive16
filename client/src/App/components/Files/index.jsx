@@ -174,6 +174,11 @@ export default function Files() {
     refresh()
   }
 
+  const clear = () => document.querySelectorAll('.li-folder')
+    .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
+    || document.querySelectorAll('.li-file')
+      .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
+
   const select = index => e => {
     const target = (e.target.closest('.li-folder') || e.target.closest('.li-file'))
     const item = {
@@ -187,11 +192,6 @@ export default function Files() {
           ? 'folder'
           : null
     }
-
-    const clear = () => document.querySelectorAll('.li-folder')
-      .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
-      || document.querySelectorAll('.li-file')
-        .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
 
     if (e.ctrlKey) {
       const arr = [...items]
@@ -292,7 +292,7 @@ export default function Files() {
       {helper.getQuery('keyword') && <li><hr className="dropdown-divider" /></li>}
       {helper.getQuery('keyword') && <li className="dropdown-item-location" onClick={openLocation}><i className="material-icons">location_on</i>Open item location</li>}
     </ul>
-    <nav className="left-nav col-2" id="leftNav">
+    <nav className="left-nav col-2" id="leftNav" onClick={clear}>
       <div className="top-left-nav">
         <label htmlFor="leftNav"><strong>{helper.getCookie('first_name') + ' ' + helper.getCookie('last_name')}</strong></label>
       </div>
@@ -303,11 +303,11 @@ export default function Files() {
     </nav>
     <main className="main-content">
       {helper.getQuery('location') === 'trash'
-        ? !isEmpty() && <span className="main-command-bar">
+        ? !isEmpty() && <span className="main-command-bar" onClick={clear}>
           <button className="btn-restore" onClick={restoreTrash}><i className="material-icons">restore_from_trash</i> Restore</button>
           <button className="btn-empty" onClick={empty}><i className="material-icons">delete_forever</i> Empty</button>
         </span>
-        : <span className="main-command-bar">
+        : <span className="main-command-bar" onClick={clear}>
           <span className="primary-command">
             <button className="btn-new-folder" onClick={create}><i className="material-icons">create_new_folder</i> New</button>
             <input type="file" id="files" onChange={save} multiple hidden />
@@ -322,11 +322,11 @@ export default function Files() {
       {helper.getQuery('location') === 'trash'
         ? !isEmpty() && <div className="space-bar"></div>
         : helper.getQuery('id')
-          ? <span className="path-bar">
+          ? <span className="path-bar" onClick={clear}>
             {path === '/' ? <strong>My files</strong> : path.replace(/\/$/, '').split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
           </span>
           : helper.getQuery('keyword') && <h5 className="title-bar"><strong>{`Search results for "${helper.getQuery('keyword')}"`}</strong></h5>}
-      {!isEmpty() && <ul className="ls-folder">
+      {!isEmpty() && <ul className="ls-items">
         {itemFolders.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} title={v.name} value={v.path} onClick={select(i)} onDoubleClick={open} onContextMenu={choose}>
           <img className="bg-folder" id={`folder${i}`} src="svg/lg-bg.svg" alt="background folder" />
           {helper.isImages(files, v)
