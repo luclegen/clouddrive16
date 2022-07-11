@@ -266,22 +266,41 @@ export default function Files() {
     }
   }
 
-  const choose = e => {
-    !e.ctrlKey && e.preventDefault()
+  const choose = index => e => {
+    const target = (e.target.closest('.li-folder') || e.target.closest('.li-file'))
+    const item = {
+      index,
+      id: target.id,
+      type: /li-folder/.test(target.className)
+        ? 'folder'
+        : /li-file/.test(target.className)
+          ? 'file'
+          : null,
+      name: target?.getAttribute('name'),
+      parent: target?.getAttribute('value'),
+    }
 
-    const type = (/file|img|video/g).test(e.target.className)
-      ? e.target.closest('.li-folder')
-        ? 'folder'
-        : 'file'
-      : (/folder/g).test(e.target.className)
-        ? 'folder'
-        : null
+    !e.ctrlKey && e.preventDefault()
 
     getMenuFolder().style.display = 'block'
     getMenuFolder().style.top = `${e.clientY}px`
     getMenuFolder().style.left = `${e.clientX}px`
+    document.querySelector('.dropdown-item-download')
+      .style.setProperty(
+        'display',
+        item.type === 'folder'
+          ? 'none'
+          : 'flex',
+        'important')
 
-    document.querySelector('.dropdown-item-download').style.setProperty('display', type === 'folder' ? 'none' : 'flex', 'important')
+    if (!items.some(v => v.type === item.type && v.id === item.id)) {
+      clear()
+
+      target.classList.add('bg-info')
+
+      dispatch(setItems([item]))
+      dispatch(setItemPrev(item))
+    }
   }
 
   const next = () => { }
@@ -339,7 +358,7 @@ export default function Files() {
           </span>
           : helper.getQuery('keyword') && <h5 className="title-bar"><strong>{`Search results for "${helper.getQuery('keyword')}"`}</strong></h5>}
       {!isEmpty() && <ul className="ls-items">
-        {itemFolders.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} title={v.name} value={v.path} onClick={select(i)} onDoubleClick={open} onContextMenu={choose}>
+        {itemFolders.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} title={v.name} value={v.path} onClick={select(i)} onDoubleClick={open} onContextMenu={choose(i)}>
           <img className="bg-folder" id={`folder${i}`} src="svg/lg-bg.svg" alt="background folder" />
           {helper.isImages(files, v)
             ? <img className="img" src={`${process.env.NODE_ENV === 'production'
@@ -355,10 +374,10 @@ export default function Files() {
                   : helper.getVideo(files, v).path}${helper.getVideo(files, v).name}`}></video>
               : !helper.isEmpty(folders, files, v)
               && <div className="file"></div>}
-          {helper.isImages(files, v) || helper.isVideos(files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="foreground folder" onContextMenu={choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="foreground folder" />}
+          {helper.isImages(files, v) || helper.isVideos(files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="foreground folder" onContextMenu={choose(i)} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="foreground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
-        {itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} value={v.path} title={v.name} onClick={select(i)} onDoubleClick={open} onContextMenu={choose}>
+        {itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} value={v.path} title={v.name} onClick={select(i)} onDoubleClick={open} onContextMenu={choose(i)}>
           {helper.isImage(v.name)
             ? <img className="bg-img" id={`file${i}`} src={helper.getMedia(v)} alt={`Img ${i}`} />
             : helper.isVideo(v.name)
