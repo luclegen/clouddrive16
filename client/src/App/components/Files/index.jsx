@@ -251,7 +251,7 @@ export default function Files() {
   }
 
   const choose = e => {
-    e.preventDefault()
+    !e.ctrlKey && e.preventDefault()
 
     const type = (/file|img|video/g).test(e.target.className)
       ? e.target.closest('.li-folder')
