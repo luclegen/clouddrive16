@@ -189,7 +189,9 @@ export default function Files() {
           : 'file'
         : (/folder/g).test(e.target.className)
           ? 'folder'
-          : null
+          : null,
+      name: target?.getAttribute('name'),
+      parent: target?.getAttribute('value'),
     }
 
     if (e.ctrlKey) {
@@ -212,7 +214,13 @@ export default function Files() {
           clear()
           for (let i = itemPrev.index; itemPrev.index < item.index ? i <= item.index : i >= item.index; itemPrev.index < item.index ? i++ : i--) {
             document.querySelectorAll(`.li-${item.type}`)[i].classList.add('bg-info')
-            arr.push({ index: i, id: document.querySelectorAll(`.li-${item.type}`)[i].id, type: item.type })
+            arr.push({
+              index: i,
+              id: document.querySelectorAll(`.li-${item.type}`)[i].id,
+              type: item.type,
+              name: document.querySelectorAll(`.li-${item.type}`)[i]?.getAttribute('name'),
+              parent: document.querySelectorAll(`.li-${item.type}`)[i]?.getAttribute('value'),
+            })
           }
 
           dispatch(setItems(arr))
@@ -223,11 +231,23 @@ export default function Files() {
           clear()
           for (let i = (itemPrev.type === 'folder' ? itemPrev : item).index; i < document.querySelectorAll('.li-folder').length; i++) {
             document.querySelectorAll('.li-folder')[i].classList.add('bg-info')
-            arr.push({ index: i, id: document.querySelectorAll('.li-folder')[i].id, type: 'folder' })
+            arr.push({
+              index: i,
+              id: document.querySelectorAll('.li-folder')[i].id,
+              type: 'folder',
+              name: document.querySelectorAll('.li-folder')[i]?.getAttribute('name'),
+              parent: document.querySelectorAll('.li-folder')[i]?.getAttribute('value'),
+            })
           }
           for (let i = 0; i <= (itemPrev.type === 'file' ? itemPrev : item).index; i++) {
             document.querySelectorAll('.li-file')[i].classList.add('bg-info')
-            arr.push({ index: i, id: document.querySelectorAll('.li-file')[i].id, type: 'file' })
+            arr.push({
+              index: i,
+              id: document.querySelectorAll('.li-file')[i].id,
+              type: 'file',
+              name: document.querySelectorAll('.li-file')[i]?.getAttribute('name'),
+              parent: document.querySelectorAll('.li-file')[i]?.getAttribute('value'),
+            })
           }
 
           dispatch(setItems(arr))
