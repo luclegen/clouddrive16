@@ -278,7 +278,7 @@ export default function Files() {
   return <section className="section-files" onClick={clickOut}>
     <ul className="dropdown-menu-folder">
       {!helper.getQuery('location') && <li className="dropdown-item-move" onClick={move}><i className="material-icons">drive_file_move</i>Move to...</li>}
-      {!helper.getQuery('location') && <li className="dropdown-item-copy" onClick={copy}><i className="material-icons">{type === 'folder' ? 'folder_copy' : 'file_copy'}</i>Copy to...</li>}
+      {!helper.getQuery('location') && <li className="dropdown-item-copy" onClick={copy}><i className="material-icons">{`${items.every(v => v.type === 'file') ? 'file' : 'folder'}_copy`}</i>Copy to...</li>}
       {!helper.getQuery('location') && <li><hr className="dropdown-divider" /></li>}
       <li className="dropdown-item-download" onClick={download}><i className="material-icons">file_download</i>Download</li>
       <li className="dropdown-item-rename" onClick={rename}><i className="material-icons">drive_file_rename_outline</i>Rename</li>
@@ -354,7 +354,7 @@ export default function Files() {
       {isEmpty() && <div className="empty-trash"><i className="material-icons">delete_outline</i><strong>Trash is Empty</strong></div>}
     </main>
     {media && <Media src={media} type={helper.isImage(media) ? 'image' : helper.isVideo(media) ? 'video' : helper.isAudio(media) ? 'audio' : 'none'} download={download} next={next} prev={prev} index={index} count={medias?.length} close={close} />}
-    {showFolderTree && <FolderTree id={id} name={name} type={type} parent={parent} action={action} refresh={refresh} folders={folders} close={closeFolderTree} />}
+    {showFolderTree && <FolderTree item={items?.[0]} action={action} refresh={refresh} folders={folders} close={closeFolderTree} />}
     {showProgress && <Progress controllers={controllers} />}
   </section>
 }
