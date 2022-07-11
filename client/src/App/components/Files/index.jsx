@@ -58,11 +58,7 @@ export default function Files() {
 
   const controllers = useRef(null)
 
-  const [id, setID] = useState('')
-  const [type, setType] = useState('')
   const [showFolderTree, setShowFolderTree] = useState(false)
-  const [name, setName] = useState('')
-  const [parent, setParent] = useState('')
   const [action, setAction] = useState('')
 
   useEffect(() => {
@@ -156,8 +152,6 @@ export default function Files() {
     } else if (helper.isMedia(e.target?.closest('.li-file').getAttribute('name'))) {
       helper.setQuery('fid', e.target?.closest('.li-file').id)
       dispatch(readFile(e.target?.closest('.li-file').id))
-      setID(e.target?.closest('.li-file').id)
-      setName(e.target?.closest('.li-file').getAttribute('name'))
     } else if (helper.isPDF(e.target?.closest('.li-file').getAttribute('name')))
       dispatch(readFile(e.target?.closest('.li-file').id))
         .then(action => dispatch(openFile(helper.getMedia(action.payload))))
@@ -203,7 +197,7 @@ export default function Files() {
 
       target.classList.contains('bg-info')
         ? target.classList.remove('bg-info')
-        || (arr.splice(arr.findIndex(v => v.id === item.id && v.type === type), 1)
+        || (arr.splice(arr.findIndex(v => v.id === item.id && v.type === item.type), 1)
           && dispatch(setItemPrev(arr?.length ? arr[arr?.length - 1] : null)))
         : target.classList.add('bg-info')
         || (arr.push(item)
@@ -269,10 +263,6 @@ export default function Files() {
     getMenuFolder().style.display = 'block'
     getMenuFolder().style.top = `${e.clientY}px`
     getMenuFolder().style.left = `${e.clientX}px`
-    setID(e.target.closest(`.li-${type}`)?.id)
-    setType(type)
-    setName(e.target.closest(`.li-${type}`)?.getAttribute('name'))
-    setParent(e.target.closest(`.li-${type}`)?.getAttribute('value'))
 
     document.querySelector('.dropdown-item-download').style.setProperty('display', type === 'folder' ? 'none' : 'flex', 'important')
   }
