@@ -174,10 +174,15 @@ export default function Files() {
     refresh()
   }
 
-  const clear = () => document.querySelectorAll('.li-folder')
-    .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
-    || document.querySelectorAll('.li-file')
+  const clear = () => {
+    document.querySelectorAll('.li-folder')
       .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
+    document.querySelectorAll('.li-file')
+      .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
+
+    dispatch(setItems([]))
+    dispatch(setItemPrev(null))
+  }
 
   const select = index => e => {
     const target = (e.target.closest('.li-folder') || e.target.closest('.li-file'))
