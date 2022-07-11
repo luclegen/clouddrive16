@@ -7,7 +7,9 @@ const initialState = {
   folders: [],
   files: [],
   items: [],
+  itemFolders: [],
   itemFiles: [],
+  itemPrev: null,
   path: '',
   media: '',
   index: -1,
@@ -24,6 +26,8 @@ export const filesSlice = createSlice({
   initialState,
   reducers: {
     setPath: (state, action) => { state.path = action.payload },
+    setItems: (state, action) => { state.items = action.payload },
+    setItemPrev: (state, action) => { state.itemPrev = action.payload },
     reset: state => {
       document.querySelectorAll('.img')
         .forEach(v => v.setAttribute('src', ''))
@@ -34,7 +38,7 @@ export const filesSlice = createSlice({
       document.querySelectorAll('.bg-video')
         .forEach(v => v.setAttribute('src', ''))
 
-      state.items = state.itemFiles = []
+      state.itemFolders = state.itemFiles = []
     },
   },
   extraReducers: builder => builder
@@ -49,7 +53,7 @@ export const filesSlice = createSlice({
         ? '/'
         : helper.toPath(folder)
 
-      state.items = helper.getQuery('location') === 'trash'
+      state.itemFolders = helper.getQuery('location') === 'trash'
         ? state.folders
         : helper.getQuery('keyword')
           ? state.folders.filter(v => new RegExp(helper.getQuery('keyword'), 'ig').test(v.name))
@@ -84,12 +88,14 @@ export const filesSlice = createSlice({
     })
 })
 
-export const { setPath, reset } = filesSlice.actions
+export const { setPath, setItems, setItemPrev, reset } = filesSlice.actions
 
 export const selectFolders = state => state.files.folders
 export const selectFiles = state => state.files.files
 export const selectItems = state => state.files.items
+export const selectItemFolders = state => state.files.itemFolders
 export const selectItemFiles = state => state.files.itemFiles
+export const selectItemPrev = state => state.files.itemPrev
 export const selectPath = state => state.files.path
 export const selectMedia = state => state.files.media
 export const selectMediaFiles = state => state.files.files.filter(v => v.path === state.path && helper.isMedia(v.name))
