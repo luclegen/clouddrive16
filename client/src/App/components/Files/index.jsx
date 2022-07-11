@@ -10,11 +10,15 @@ import {
   selectFolders,
   selectIndex,
   selectItemFiles,
+  selectItemFolders,
+  selectItemPrev,
   selectItems,
   selectMedia,
   selectMediaFiles,
   selectMedias,
   selectPath,
+  setItemPrev,
+  setItems,
   setPath,
 } from './slice'
 import {
@@ -41,7 +45,9 @@ export default function Files() {
   const folders = useSelector(selectFolders)
   const files = useSelector(selectFiles)
   const items = useSelector(selectItems)
+  const itemFolders = useSelector(selectItemFolders)
   const itemFiles = useSelector(selectItemFiles)
+  const itemPrev = useSelector(selectItemPrev)
   const path = useSelector(selectPath)
   const mediaFiles = useSelector(selectMediaFiles)
   const medias = useSelector(selectMedias)
@@ -168,6 +174,82 @@ export default function Files() {
     refresh()
   }
 
+  const select = index => e => {
+    const target = (e.target.closest('.li-folder') || e.target.closest('.li-file'))
+    const item = {
+      index,
+      id: target.id,
+      type: (/file|img|video/g).test(e.target.className)
+        ? e.target.closest('.li-folder')
+          ? 'folder'
+          : 'file'
+        : (/folder/g).test(e.target.className)
+          ? 'folder'
+          : null
+    }
+
+    const clear = () => document.querySelectorAll('.li-folder')
+      .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
+      || document.querySelectorAll('.li-file')
+        .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
+
+    if (e.ctrlKey) {
+      const arr = [...items]
+
+      target.classList.contains('bg-info')
+        ? target.classList.remove('bg-info')
+        || (arr.splice(arr.findIndex(v => v.id === item.id && v.type === type), 1)
+          && dispatch(setItemPrev(arr?.length ? arr[arr?.length - 1] : null)))
+        : target.classList.add('bg-info')
+        || (arr.push(item)
+          && dispatch(setItemPrev(item)))
+
+      dispatch(setItems(arr))
+    } else if (e.shiftKey) {
+      if (itemPrev) {
+        if (itemPrev.type === item.type) {
+          const arr = []
+
+          clear()
+          for (let i = itemPrev.index; itemPrev.index < item.index ? i <= item.index : i >= item.index; itemPrev.index < item.index ? i++ : i--) {
+            document.querySelectorAll(`.li-${item.type}`)[i].classList.add('bg-info')
+            arr.push({ index: i, id: document.querySelectorAll(`.li-${item.type}`)[i].id, type: item.type })
+          }
+
+          dispatch(setItems(arr))
+          dispatch(setItemPrev(item))
+        } else {
+          const arr = []
+
+          clear()
+          for (let i = (itemPrev.type === 'folder' ? itemPrev : item).index; i < document.querySelectorAll('.li-folder').length; i++) {
+            document.querySelectorAll('.li-folder')[i].classList.add('bg-info')
+            arr.push({ index: i, id: document.querySelectorAll('.li-folder')[i].id, type: 'folder' })
+          }
+          for (let i = 0; i <= (itemPrev.type === 'file' ? itemPrev : item).index; i++) {
+            document.querySelectorAll('.li-file')[i].classList.add('bg-info')
+            arr.push({ index: i, id: document.querySelectorAll('.li-file')[i].id, type: 'file' })
+          }
+
+          dispatch(setItems(arr))
+          dispatch(setItemPrev(item))
+        }
+      } else {
+        target.classList.add('bg-info')
+
+        dispatch(setItems([item]))
+        dispatch(setItemPrev(item))
+      }
+    } else {
+      clear()
+      target.classList.add('bg-info')
+
+      dispatch(setItems([item]))
+      dispatch(setItemPrev(item))
+    }
+
+  }
+
   const choose = e => {
     e.preventDefault()
 
@@ -245,7 +327,7 @@ export default function Files() {
           </span>
           : helper.getQuery('keyword') && <h5 className="title-bar"><strong>{`Search results for "${helper.getQuery('keyword')}"`}</strong></h5>}
       {!isEmpty() && <ul className="ls-folder">
-        {items.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} title={v.name} value={v.path} onDoubleClick={open} onContextMenu={choose}>
+        {itemFolders.map((v, i, a) => a.length ? <li className="li-folder" key={i} id={v._id} name={v.name} title={v.name} value={v.path} onClick={select(i)} onDoubleClick={open} onContextMenu={choose}>
           <img className="bg-folder" id={`folder${i}`} src="svg/lg-bg.svg" alt="background folder" />
           {helper.isImages(files, v)
             ? <img className="img" src={`${process.env.NODE_ENV === 'production'
@@ -264,7 +346,7 @@ export default function Files() {
           {helper.isImages(files, v) || helper.isVideos(files, v) ? <img className="fg-folder" src="svg/lg-fg-media.svg" alt="foreground folder" onContextMenu={choose} /> : <img className="fg-folder" src="svg/lg-fg.svg" alt="foreground folder" />}
           <label className="label-folder" htmlFor={`folder${i}`}>{v.name}</label>
         </li> : <li>This folder is empty</li>)}
-        {itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} value={v.path} title={v.name} onDoubleClick={open} onContextMenu={choose}>
+        {itemFiles.map((v, i) => <li className="li-file" key={i} id={v._id} name={v.name} value={v.path} title={v.name} onClick={select(i)} onDoubleClick={open} onContextMenu={choose}>
           {helper.isImage(v.name)
             ? <img className="bg-img" id={`file${i}`} src={helper.getMedia(v)} alt={`Img ${i}`} />
             : helper.isVideo(v.name)
