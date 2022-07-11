@@ -139,6 +139,8 @@ export default function Files() {
   const empty = () => { }
 
   const open = e => {
+    clear()
+
     if ((/folder/g).test(e.target.className) || e.target.closest('.li-folder')) {
       const folder = folders.find(f => f._id === e.target.closest('.li-folder').id)
 
