@@ -5,6 +5,8 @@ const URL = `${process.env.NODE_ENV === 'production' ? window.location.origin + 
 class FilesService {
   create = files => API.post(URL, files)
 
+  createPlaintext = file => API.post(`${URL}p`, file)
+
   read = id => API.get(`${URL}${id}`)
 
   open = media => API.get(media)
