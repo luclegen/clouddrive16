@@ -37,6 +37,8 @@ class Helper {
 
   getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${this.getCookie('id')}/files${v?.path}${v?.name}`
 
+  isPlaintext = value => /\.(txt)$/i.test(value)
+
   isPDF = value => /\.pdf$/i.test(value)
 
   isImages = (files, value) => files.filter(f => f.path === this.toPath(value) && this.isImage(f.name)).length
