@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
 import Progress from '../Progress'
 import {
   createFolder,
@@ -83,7 +84,7 @@ export default function Files() {
 
   const clickOut = () => getMenuFolder().style.display = 'none'
 
-  const create = () => dispatch(createFolder({ name: prompt('Create folder', 'New folder'), path: path }))
+  const createNewFolder = () => dispatch(createFolder({ name: prompt('Create folder', 'New folder'), path: path }))
     .then(action => action.type === 'files/createFolder/fulfilled' && refresh())
 
   const upload = () => document.getElementById("files").click()
@@ -342,7 +343,19 @@ export default function Files() {
         </span>
         : <span className="main-command-bar" onClick={clear}>
           <span className="primary-command">
-            <button className="btn-new-folder" onClick={create}><i className="material-icons">create_new_folder</i> New</button>
+            <UncontrolledDropdown className="dropdown-new">
+              <DropdownToggle className="dropdown-toggle-new" caret>
+                <i className="material-icons">add</i>New
+              </DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem className="dropdown-item-normal" onClick={createNewFolder}>
+                  <img src="/svg/folder.svg" alt="Folder" />
+                  Folder
+                </DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem><img src="/svg/txt.svg" alt="Plain text document" /> Plain text document</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
             <input type="file" id="files" onChange={save} multiple hidden />
             <button className="btn-upload" onClick={upload}><i className="material-icons">publish</i> Upload</button>
           </span>
