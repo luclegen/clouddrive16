@@ -2,6 +2,7 @@ const _ = require('lodash')
 const fs = require("fs")
 const File = require('../models/file.model')
 const Folder = require('../models/folder.model')
+const checker = require('../helpers/checker')
 const converter = require('../helpers/converter')
 const duplicator = require('../helpers/duplicator')
 
@@ -23,6 +24,27 @@ module.exports.create = (req, res, next) =>
         }
       })
       .catch(err => next(err)))
+
+module.exports.createPlaintext = (req, res, next) =>
+  checker.isPlaintext(req.body.name)
+    ? File.find({ _uid: req.payload, name: req.body.name, path: req.body.path })
+      .then(files => {
+        if (files.length) res.status(422).send('File is duplicate. Please choose another file.')
+        else {
+          const file = new File()
+
+          file._uid = req.payload
+          file.path = req.body.path
+          file.name = req.body.name
+
+          file.save()
+            .then(() => fs.open(`${converter.toUploadFilePath(req.payload._id, { path: req.body.path, name: req.body.name })}`, 'w', err =>
+              err ? next(err) : res.status(201).send()))
+            .catch(err => next(err))
+        }
+      })
+      .catch(err => next(err))
+    : res.status(403).send('Invalid plain text document file!')
 
 module.exports.download = (req, res, next) =>
   File.findById(req.params.id)
