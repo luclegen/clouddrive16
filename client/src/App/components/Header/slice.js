@@ -28,11 +28,12 @@ export const headerSlice = createSlice({
     toggle: state => { state.hover = !state.hover },
     setOpened: (state, action) => { state.opened = action.payload },
     toggleDropdown: state => { state.isOpen = !state.isOpen },
+    hideDropdown: state => { state.isOpen && (state.isOpen = false) },
     setWidth: state => { state.width = window.innerWidth },
   },
 })
 
-export const { toggle, toggleDropdown, setOpened, setWidth } = headerSlice.actions
+export const { toggle, toggleDropdown, hideDropdown, setOpened, setWidth } = headerSlice.actions
 
 export const selectHover = state => state.header.hover
 export const selectWidth = state => state.header.width
