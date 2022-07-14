@@ -4,6 +4,7 @@ import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from
 import Progress from '../Progress'
 import {
   createFolder,
+  createPlaintext,
   list,
   openFile,
   readFile,
@@ -86,6 +87,9 @@ export default function Files() {
 
   const createNewFolder = () => dispatch(createFolder({ name: prompt('Create folder', 'New folder'), path: path }))
     .then(action => action.type === 'files/createFolder/fulfilled' && refresh())
+
+  const createNewPlaintext = () => dispatch(createPlaintext({ name: prompt('Create plain text document', 'New plain text.txt'), path: path }))
+    .then(action => action.type === 'files/createPlaintext/fulfilled' && refresh())
 
   const upload = () => document.getElementById("files").click()
 
@@ -353,7 +357,7 @@ export default function Files() {
                   Folder
                 </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem><img src="/svg/txt.svg" alt="Plain text document" /> Plain text document</DropdownItem>
+                <DropdownItem onClick={createNewPlaintext}><img src="/svg/txt.svg" alt="Plain text document" /> Plain text document</DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
             <input type="file" id="files" onChange={save} multiple hidden />
