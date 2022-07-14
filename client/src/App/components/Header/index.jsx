@@ -104,10 +104,16 @@ export default function Header() {
         </button>)}
       </div> */}
     </div>}
-    <div className="dropdown dropdown-avatar" onClick={() => dispatch(toggleDropdown())}>
+    <div className="dropdown dropdown-avatar">
       {loggedIn
-        ? <button className="dropdown-toggle avatar" title={helper.getCookie('first_name')}>{avatar ? <img className="avatar-img" src={avatar} alt={`${helper.getCookie('first_name')}'s avatar`} /> : <i className="material-icons">account_circle</i>}</button>
-        : <a className="link-help" href="/help" target="_blank"><i className="material-icons">help_outline</i></a>}
+        ? <button className="dropdown-toggle avatar" title={helper.getCookie('first_name')} onClick={() => dispatch(toggleDropdown())}>
+          {avatar
+            ? <img className="avatar-img" src={avatar} alt={`${helper.getCookie('first_name')}'s avatar`} />
+            : <i className="material-icons">account_circle</i>}
+        </button>
+        : <a className="link-help" href="/help" target="_blank">
+          <i className="material-icons">help_outline</i>
+        </a>}
       {isOpen && <ul className="dropdown-menu dropdown-menu-avatar" aria-labelledby="dropdownMenuButton1">
         <Link className="dropdown-item-normal dropdown-item" to="/profile" onClick={() => dispatch(toggleDropdown())}><p className="text-profile">My profile</p><i className="material-icons">info</i></Link>
         <hr className="dropdown-divider" />
