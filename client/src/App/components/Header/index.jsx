@@ -12,6 +12,7 @@ import {
   setOpened,
   setWidth,
   selectIsOpen,
+  hideDropdown,
 } from './slice'
 import {
   list,
@@ -37,6 +38,9 @@ export default function Header() {
 
   useEffect(() => {
     window.onresize = () => dispatch(setWidth())
+    window.onclick = e => !e.target.closest('.dropdown-toggle-avatar')
+      && !e.target.closest('.dropdown-menu-avatar')
+      && dispatch(hideDropdown())
   }, [])
 
   const coloring = e => {
@@ -106,7 +110,7 @@ export default function Header() {
     </div>}
     <div className="dropdown dropdown-avatar">
       {loggedIn
-        ? <button className="dropdown-toggle avatar" title={helper.getCookie('first_name')} onClick={() => dispatch(toggleDropdown())}>
+        ? <button className="dropdown-toggle dropdown-toggle-avatar" title={helper.getCookie('first_name')} onClick={() => dispatch(toggleDropdown())}>
           {avatar
             ? <img className="avatar-img" src={avatar} alt={`${helper.getCookie('first_name')}'s avatar`} />
             : <i className="material-icons">account_circle</i>}
@@ -114,7 +118,7 @@ export default function Header() {
         : <a className="link-help" href="/help" target="_blank">
           <i className="material-icons">help_outline</i>
         </a>}
-      {isOpen && <ul className="dropdown-menu dropdown-menu-avatar" aria-labelledby="dropdownMenuButton1">
+      {isOpen && <ul className="dropdown-menu dropdown-menu-avatar">
         <Link className="dropdown-item-normal dropdown-item" to="/profile" onClick={() => dispatch(toggleDropdown())}><p className="text-profile">My profile</p><i className="material-icons">info</i></Link>
         <hr className="dropdown-divider" />
         <Link className="dropdown-item-normal dropdown-item" to="/help" onClick={() => dispatch(toggleDropdown())}><p className="text-help">Help</p><i className="material-icons">help_outline</i></Link>
