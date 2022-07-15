@@ -119,11 +119,11 @@ export default function Header() {
           <i className="material-icons">help_outline</i>
         </a>}
       {isOpen && <ul className="dropdown-menu dropdown-menu-avatar">
-        <Link className="dropdown-item-normal dropdown-item" to="/profile" onClick={() => dispatch(toggleDropdown())}><p className="text-profile">My profile</p><i className="material-icons">info</i></Link>
+        <Link className="dropdown-item-normal dropdown-item" to="/profile" onClick={() => dispatch(hideDropdown())}><p className="text-profile">My profile</p><i className="material-icons">info</i></Link>
         <hr className="dropdown-divider" />
-        <Link className="dropdown-item-normal dropdown-item" to="/help" onClick={() => dispatch(toggleDropdown())}><p className="text-help">Help</p><i className="material-icons">help_outline</i></Link>
+        <Link className="dropdown-item-normal dropdown-item" to="/help" onClick={() => dispatch(hideDropdown())}><p className="text-help">Help</p><i className="material-icons">help_outline</i></Link>
         <hr className="dropdown-divider" />
-        <Link className="dropdown-item-danger dropdown-item" to="/?id=root" onClick={() => dispatch(reset()) && dispatch(logout())}><p className="text-logout">Sign out</p><i className="material-icons">logout</i></Link>
+        <Link className="dropdown-item-danger dropdown-item" to="/?id=root" onClick={() => dispatch(reset()) && dispatch(logout()) && dispatch(hideDropdown())}><p className="text-logout">Sign out</p><i className="material-icons">logout</i></Link>
       </ul>}
     </div>
   </header>
