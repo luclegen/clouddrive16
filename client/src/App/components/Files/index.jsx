@@ -83,8 +83,6 @@ export default function Files() {
 
   const setMainCommandBar = () => document.querySelector('.main-command-bar').style.width = (window.innerWidth - document.querySelector('.left-nav').clientWidth) + 'px'
 
-  const clickOut = () => getMenuFolder().style.display = 'none'
-
   const createNewFolder = () => dispatch(createFolder({ name: prompt('Create folder', 'New folder'), path: path }))
     .then(action => action.type === 'files/createFolder/fulfilled' && refresh())
 
@@ -318,7 +316,7 @@ export default function Files() {
 
   const closeFolderTree = () => { }
 
-  return <section className="section-files" onClick={clickOut}>
+  return <section className="section-files">
     <ul className="dropdown-menu-folder">
       {!helper.getQuery('location') && <li className="dropdown-item-move" onClick={move}><i className="material-icons">drive_file_move</i>Move to...</li>}
       {!helper.getQuery('location') && <li className="dropdown-item-copy" onClick={copy}><i className="material-icons">{`${items.every(v => v.type === 'file') ? 'file' : 'folder'}_copy`}</i>Copy to...</li>}
