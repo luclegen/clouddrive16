@@ -1,0 +1,214 @@
+.logo, .avatar
+
+  img
+    height: 45px
+
+.logo
+  font-size: 30px
+
+.logo-img
+  height: 64px
+
+.dropdown-avatar
+  min-width: 45px
+  max-height: 45px
+
+.avatar, .link-help
+  margin-left: 193px
+
+  i
+    font-size: 45px
+
+.search-bar
+  width: 500px
+
+.input-email, .input-password
+  width: 260px
+
+body
+  margin-top: 53px
+
+header
+  top: 0
+  left: 0
+  z-index: 4
+
+header, .main-command-bar
+  width: 100vw
+
+.main-command-bar
+  z-index: 2
+
+.main-command-bar, .left-nav, .section-floating-aside
+  top: 53px
+
+.left-nav, .section-floating-aside, .section-floating
+  left: 0
+
+.left-nav
+  height: 100vh
+
+.section-floating-aside
+  height: calc(100vh - 53px)
+  z-index: 3
+
+.main-command-bar
+  height: 53px
+
+.section-floating
+  top: 0
+
+.section-files
+  height: calc(100vh - 53px)
+
+.main-content
+  margin-top: 53px
+  margin-left: 265px
+  width: 100%
+  min-height: calc(100vh - 106px)
+
+main
+  min-height: calc(100vh - 53px)
+
+  .section-only
+    height: calc(100vh - 106px)
+    margin-bottom: 53px
+
+.form-group-container
+  height: 40px
+
+.form-group-password
+  height: 0
+  overflow: hidden
+  transition: height 0.8s
+
+.section-floating, .section-floating-center
+  top: 0
+  width: 100vw
+  height: 100vh
+  z-index: 4
+
+  form
+    width: 500px
+    background: white
+
+.bg-media
+  height: calc(100vh - 53px)
+
+.main-folder-tree
+  max-height: calc(100vh - 106px)
+  padding-bottom: 50px
+
+meter
+  width: 100%
+
+.form-check-female, .form-check-male, .form-check-other
+  width: 100%
+  padding: 6px 12px !important
+
+.label-group
+  width: 100%
+
+.form-control-digit
+  width: 50px
+  height: 50px
+  font-size: 30px
+
+.left-nav
+
+  .top-left-nav
+    height: 53px
+
+.list-group-search
+  width: 500px
+
+.list-group-item-files, .list-group-item-trash
+  display: flex !important
+  align-items: flex-end !important
+  cursor: pointer
+
+  &.active
+    cursor: auto
+
+.command-bar
+  height: 53px
+  width: 100%
+
+.btn-new-folder, .btn-empty, .empty-trash
+  height: 100%
+
+.empty-trash
+  font-size: 25px
+
+  i
+
+    font-size: 200px
+
+.img, .video-preview
+  max-width: 100px
+  max-height: 55px
+  margin: 13px 0 0 10px
+
+.file
+  width: 100px
+  height: 60px
+  margin: 13px 0 0 10px
+
+.label-folder, .label-file
+  max-width: 150px
+  margin-top: 85px
+
+.li-folder
+  padding-left: 16px
+
+.li-file
+
+  .bg-file
+    padding-left: 20px
+
+  .bg-img, .bg-video
+    max-width: 150px
+    max-height: 85px
+
+  i
+    font-size: 90px
+
+.menu-folder
+  display: none
+  background: white
+  cursor: pointer
+  z-index: 1
+
+.space-bar
+  height: 30px
+
+.list-group-search
+  z-index: 1
+
+.folder
+  width: 30px
+
+@media (max-width: 1024px)
+  .search-bar
+    width: 250px
+
+@media (max-width: 800px)
+  .search-bar
+    width: auto
+    background: blue
+    border: 1px solid blue !important
+
+    .btn-search
+      color: white
+      background: none
+
+      &:disabled
+        opacity: 1
+
+    .input-search
+      display: none
+
+@media (max-width: 560px)
+
+  .avatar
+    margin-left: 8px

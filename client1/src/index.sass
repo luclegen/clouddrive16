@@ -1,0 +1,463 @@
+@import '~bootstrap/scss/bootstrap.scss'
+
+$spacer: 16px
+
+// Bootstrap
+
+.section-files, .section-floating-aside
+  @extend .container-fluid
+
+.list-group-search
+  @extend .list-group
+
+.list-group-item-files, .list-group-item-trash, .list-group-item-folder, .list-group-item-file
+  @extend .list-group-item
+
+.list-group-item-files, .list-group-item-trash, .list-group-item-folder, .list-group-item-file
+  @extend .list-group-item-action
+
+.dropdown-menu-folder
+  @extend .dropdown-menu
+
+.dropdown-item-download, .dropdown-item-rename, .dropdown-item-delete, .dropdown-item-restore, .dropdown-item-location, .dropdown-item-move, .dropdown-item-copy
+  @extend .dropdown-item
+
+.menu-folder
+  @extend .list-group
+
+header
+  @extend .navbar
+
+.form-search
+  @extend .input-group
+
+.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-new-folder, .btn-update, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next, .submit-create, .btn-move, .btn-copy
+  @extend .btn
+
+.submit-create, .btn-move, .btn-copy
+  @extend .btn-primary
+
+.btn-create-account, .btn-sign-up
+  @extend .btn-success
+
+.logo, .search-from
+  @extend .card-link
+
+.form-row-sign-up
+  @extend .form-row
+
+.form-group-email, .form-group-password, .form-floating, .form-group-password-strength
+  @extend .form-group
+
+.input-search, .input-email, .input-password, .form-control-day, .form-control-month, .form-control-year, .form-control-digit
+  @extend .form-control
+
+.form-check-remember, .form-check-female, .form-check-male, .form-check-other
+  @extend .form-check
+
+.form-check-female, .form-check-male, .form-check-other
+  @extend .form-check-inline
+
+.remember-me-input
+  @extend .form-check-input
+
+.remember-me-label
+  @extend .form-check-label
+
+.label-group
+  @extend .text-secondary
+
+.dropdown-item-logout, .dropdown-item-delete
+  @extend .text-white
+
+.label-folder, .label-file, .middle-command
+  @extend .text-truncate
+
+.form-floating
+  @extend .position-relative
+
+.section-floating-center, .form-floating label, .bg-folder, .file, .img, .fg-folder, .bg-file, .bg-img, .menu-folder, .video-preview, .list-group-search
+  @extend .position-absolute
+
+header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
+  @extend .position-fixed
+
+.logo, .btn-search, .btn-input, .section-only, .form-only, .form-group-email, .form-group-password, .section-floating-center, .form-floating, .form-row-sign-up, .form-group-password-strength, .dropdown-item-profile, .dropdown-item-logout, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .main-command-bar, .dropdown-item, .bg-media, .empty-trash, .link-find-account, .primary-command, .middle-command, .secondary-command, .span-index, .title-bar, .section-floating-aside, .form-horizontal, .command-bar
+  @extend .d-flex
+
+.form-only, .form-floating, .empty-trash
+  @extend .flex-xl-column
+
+.logo, .form-only, .section-floating-center, .top-left-nav, .bg-media, .empty-trash, .link-find-account, .middle-command, .span-index
+  @extend .align-items-center
+
+.list-group-item
+  @extend .align-items-end
+
+.section-only, .form-only, .section-floating-center, .form-row-sign-up, .form-group-password-strength, .bg-media, .empty-trash, .middle-command
+  @extend .justify-content-center
+
+.text-profile, .text-help, .text-logout, .middle-command
+  @extend .flex-fill
+
+.section-only, .section-floating-center
+
+  h1
+    @extend .text-center
+
+.form-control-digit
+  @extend .text-center
+
+.search-bar, .form-group-email, .form-group-password, .form-check-female, .form-check-male, .form-check-other, .form-control-digit
+  @extend .border
+
+.form-control-digit
+  @extend .border-secondary
+
+.form-group-password
+  @extend .border-top-0
+
+.input-search, .avatar, .input-email, .input-password
+  @extend .border-0
+
+.aside-right
+  @extend .border-left
+
+.form-check, .command-bar, .main-command-bar
+  @extend .border-bottom
+
+.logo, .form-control-digit
+  @extend .rounded
+
+.form-register, .form-floating, .form-check-female, .form-check-male, .form-check-other
+  @extend .rounded-lg
+
+.form-group-password
+  @extend .rounded-bottom
+
+.avatar-img
+  @extend .rounded-circle
+
+.search-bar
+  @extend .rounded-pill
+
+.form-register, .section-floating-aside
+  @extend .shadow
+
+.input-search, .btn-search, .avatar, .input-email, .input-password, .btn-input, .form-floating input, select, .form-control-digit
+  @extend .shadow-none
+
+.command-bar, .main-command-bar
+  @extend .shadow-sm
+
+.input-search, .form-floating input, .avatar
+  @extend .bg-transparent
+
+.dropdown-item-logout, .dropdown-item-delete
+  @extend .bg-danger
+
+.section-floating, .aside-right, .command-bar, .main-command-bar
+  @extend .bg-white
+
+.main-folder-tree
+  @extend .overflow-auto
+
+.section-floating
+  @extend .overflow-hidden
+
+.section-floating
+  @extend .w-100
+
+.form-group-email, .form-floating label, .form-check-female, .form-check-male, .form-check-other, .form-floating-password, .form-floating-confirm, .password-strength, .text-profile, .text-help, .text-logout
+  @extend .m-0
+
+.btn-move, .btn-copy
+  @extend .m-1
+
+.path-bar, .title-bar
+  @extend .m-3
+
+.form-control-digit
+  @extend .mx-1
+
+.dropdown-menu-avatar
+  @extend .mt-2
+
+.form-check-remember, .btn-create-account
+  @extend .mt-1
+
+.h1-only, .form-check-remember, .h1-register
+  @extend .mb-3
+
+.avatar, .section-files, .main-content, .section-floating-aside, .aside-right
+  @extend .p-0
+
+header, .float label
+  @extend .p-1
+
+.form-register
+  @extend .p-3
+
+.logo
+  @extend .px-1
+
+.dropdown-item-profile, .dropdown-item-logout, .command-bar, .path-bar, .title-bar, .main-command-bar
+  @extend .px-3
+
+.input-search
+  @extend .pl-1
+
+.btn-search
+  @extend .pr-0
+
+.input-search
+  @extend .pr-3
+
+.form-check
+  @extend .pb-3
+
+// Custom
+
+.btn
+  display: flex
+  font-weight: 700
+  align-items: center
+
+  i
+    margin-right: 5px
+
+.form-group-email, .form-group-password
+
+  &:focus-within
+    border: 2px solid blue !important
+
+.dropdown-item
+  cursor: pointer
+
+  i
+    margin-right: 5px
+
+.dropdown-item-logout, .dropdown-item-delete
+
+  &:hover
+    background: #bd2130 !important
+
+// New
+
+// Scrollbar
+
+// Width
+\::-webkit-scrollbar
+  width: 5px
+  height: 5px
+
+// Track
+\::-webkit-scrollbar-track
+  box-shadow: inset 0 0 5px grey
+  border-radius: 10px
+
+// Handle
+\::-webkit-scrollbar-thumb
+  background: gray
+  border-radius: 10px
+
+  &:hover
+    background: black
+
+header
+  background: blue
+
+.logo
+  color: blue
+  background: aqua
+
+  &:hover
+    color: navy
+
+.search-bar
+  background: #e1dfdd
+
+  form
+
+    button
+      color: blue
+
+      &:hover
+        color: navy
+
+.avatar-img
+  border: 1px solid blue
+
+  &:hover
+    border: 1px solid white
+
+.btn-input
+
+  &:disabled
+    @extend .text-secondary
+
+  &:hover
+    color: blue
+
+.float
+
+  label
+    transform: translate(4px, -12px) scale(0.7) !important
+
+.form-floating
+
+  &:focus-within
+    @extend .float
+
+    input, select
+      border: 2px solid blue !important
+
+    label
+      color: blue !important
+
+  label
+    padding: 0 12px
+    pointer-events: none
+    transform-origin: top left
+    transition: all 0.2s ease-out
+    transform: translate(1px, 8px) scale(1)
+    background: white
+    color: #999
+    z-index: 1
+
+meter
+
+  &[value="1"]::-webkit-meter-optimum-value
+    background: red
+  &[value="2"]::-webkit-meter-optimum-value
+    background: yellow
+  &[value="3"]::-webkit-meter-optimum-value
+    background: orange
+  &[value="4"]::-webkit-meter-optimum-value
+    background: green
+
+  &[value="1"]::-moz-meter-bar
+    background: red
+  &[value="2"]::-moz-meter-bar
+    background: yellow
+  &[value="3"]::-moz-meter-bar
+    background: orange
+  &[value="4"]::-moz-meter-bar
+    background: green
+
+.form-check-female, .form-check-male, .form-check-other
+  color: #495057
+
+  &.is-valid
+    border-color: #28a745 !important
+
+  &.is-invalid
+    border-color: #dc3545 !important
+
+.label-group
+
+  &.is-valid
+    padding-right: calc(1.5em + 0.75rem)
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='M2.3 6.73L.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e")
+    background-repeat: no-repeat
+    background-position: right calc(0.375em + 0.1875rem) center
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem)
+
+  &.is-invalid
+    padding-right: calc(1.5em + 0.75rem)
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e")
+    background-repeat: no-repeat
+    background-position: right calc(0.375em + 0.1875rem) center
+    background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem)
+
+.form-control-day, .form-control-month, .form-control-year
+  background: none !important
+
+.link-help, .avatar
+  color: white
+
+  &:hover
+    color: navy
+
+.dropdown-menu-avatar
+  position: relative
+
+  &:before, &:after
+    content: ''
+    display: block
+    position: absolute
+    bottom: 100%
+    width: 0
+    height: 0
+
+  &:before
+    right: 10px
+    border: 12px solid transparent
+    border-bottom-color: rgba(0, 0, 0, 0.15)
+
+  &:after
+    right: 12px
+    border: 10px solid transparent
+    border-bottom-color: white
+
+.form-control-digit
+
+  &::-webkit-inner-spin-button
+    -moz-appearance: none
+    -webkit-appearance: none
+    -ms-progress-appearance: none
+    appearance: none
+
+  &:focus
+    border: 2px solid blue !important
+
+.left-nav
+  background: #f3f2f1
+
+.list-group-item
+
+  &.active
+    background: none
+    font-weight: 700
+    background-color: #e1dfdd
+    color: black
+    border: none
+
+  i
+    margin-right: 5px
+
+.btn-new-folder, .btn-update, .btn-download, .btn-close, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next
+
+  &:hover
+    background: #f3f2f1
+
+.bg-media
+  background: #f3f2f1
+
+.ls-folder
+  display: grid
+  list-style: none
+  grid-gap: 40px
+  grid-template-columns: repeat(auto-fill, 120px) 10%
+
+.file
+  background: white
+
+.li-folder, .li-file
+  width: 150px
+  cursor: pointer
+
+  &:hover
+    background: #e1dfdd
+
+.dir-parent
+  cursor: pointer
+  color: black
+  text-decoration: none !important
+
+  &:hover
+    color: black
+    background: #edebe9
+
+.section-floating-center, .section-floating-aside
+  background: #ffffffcc !important
