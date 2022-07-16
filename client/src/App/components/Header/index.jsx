@@ -15,6 +15,7 @@ import {
   hideDropdown,
 } from './slice'
 import {
+  clear,
   list,
   reset,
 } from '../Files/slice'
@@ -38,9 +39,15 @@ export default function Header() {
 
   useEffect(() => {
     window.onresize = () => dispatch(setWidth())
-    window.onclick = e => !e.target.closest('.dropdown-toggle-avatar')
-      && !e.target.closest('.dropdown-menu-avatar')
-      && dispatch(hideDropdown())
+    window.onclick = e => {
+      !e.target.closest('.dropdown-toggle-avatar')
+        && !e.target.closest('.dropdown-menu-avatar')
+        && dispatch(hideDropdown())
+      !e.target.closest('.dropdown-menu-folder')
+        && (document.querySelector('.dropdown-menu-folder').style.display = 'none')
+      !e.target.closest('.li-folder') && !e.target.closest('.li-file')
+        && dispatch(clear())
+    }
   }, [])
 
   const coloring = e => {
