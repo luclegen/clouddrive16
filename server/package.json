@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "CloudDrive16 server",
-  "main": "src/index.js",
+  "main": "src",
   "scripts": {
     "start": "nodemon"
   },
