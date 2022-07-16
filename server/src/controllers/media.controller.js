@@ -16,7 +16,7 @@ module.exports.list = (req, res, next) => {
     fs.readFile(dir + file, function (err, content) {
       if (err) {
         res.writeHead(400, { 'Content-type': 'text/html' })
-        res.end('No such image')
+        res.end('No such media!')
       } else {
         res.writeHead(200, { 'Content-type': mime.lookup(file) })
         res.end(content)
