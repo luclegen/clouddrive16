@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
 import Progress from '../Progress'
 import {
+  clear,
   createFolder,
   createPlaintext,
   list,
@@ -142,7 +143,7 @@ export default function Files() {
   const empty = () => { }
 
   const open = e => {
-    clear()
+    dispatch(clear())
 
     if ((/folder/g).test(e.target.className) || e.target.closest('.li-folder')) {
       const folder = folders.find(f => f._id === e.target.closest('.li-folder').id)
@@ -171,16 +172,6 @@ export default function Files() {
     setPath(newpath ? newpath : '/')
     helper.setQuery('id', parseInt(e.target.id) === 0 ? 'root' : folder?._id)
     refresh()
-  }
-
-  const clear = () => {
-    document.querySelectorAll('.li-folder')
-      .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
-    document.querySelectorAll('.li-file')
-      .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
-
-    dispatch(setItems([]))
-    dispatch(setItemPrev(null))
   }
 
   const select = index => e => {
@@ -214,7 +205,7 @@ export default function Files() {
         if (itemPrev.type === item.type) {
           const arr = []
 
-          clear()
+          dispatch(clear())
           for (let i = itemPrev.index; itemPrev.index < item.index ? i <= item.index : i >= item.index; itemPrev.index < item.index ? i++ : i--) {
             document.querySelectorAll(`.li-${item.type}`)[i].classList.add('bg-info')
             arr.push({
@@ -231,7 +222,7 @@ export default function Files() {
         } else {
           const arr = []
 
-          clear()
+          dispatch(clear())
           for (let i = (itemPrev.type === 'folder' ? itemPrev : item).index; i < document.querySelectorAll('.li-folder').length; i++) {
             document.querySelectorAll('.li-folder')[i].classList.add('bg-info')
             arr.push({
@@ -263,7 +254,7 @@ export default function Files() {
         dispatch(setItemPrev(item))
       }
     } else {
-      clear()
+      dispatch(clear())
       target.classList.add('bg-info')
 
       dispatch(setItems([item]))
@@ -299,7 +290,7 @@ export default function Files() {
         'important')
 
     if (!items.some(v => v.type === item.type && v.id === item.id)) {
-      clear()
+      dispatch(clear())
 
       target.classList.add('bg-info')
 
@@ -328,7 +319,7 @@ export default function Files() {
       {helper.getQuery('keyword') && <li><hr className="dropdown-divider" /></li>}
       {helper.getQuery('keyword') && <li className="dropdown-item-location" onClick={openLocation}><i className="material-icons">location_on</i>Open item location</li>}
     </ul>
-    <nav className="left-nav col-2" id="leftNav" onClick={clear}>
+    <nav className="left-nav col-2" id="leftNav">
       <div className="top-left-nav">
         <label htmlFor="leftNav"><strong>{helper.getCookie('first_name') + ' ' + helper.getCookie('last_name')}</strong></label>
       </div>
@@ -339,11 +330,11 @@ export default function Files() {
     </nav>
     <main className="main-content">
       {helper.getQuery('location') === 'trash'
-        ? !isEmpty() && <span className="main-command-bar" onClick={clear}>
+        ? !isEmpty() && <span className="main-command-bar">
           <button className="btn-restore" onClick={restoreTrash}><i className="material-icons">restore_from_trash</i> Restore</button>
           <button className="btn-empty" onClick={empty}><i className="material-icons">delete_forever</i> Empty</button>
         </span>
-        : <span className="main-command-bar" onClick={clear}>
+        : <span className="main-command-bar">
           <span className="primary-command">
             <UncontrolledDropdown className="dropdown-new">
               <DropdownToggle className="dropdown-toggle-new" caret>
@@ -370,7 +361,7 @@ export default function Files() {
       {helper.getQuery('location') === 'trash'
         ? !isEmpty() && <div className="space-bar"></div>
         : helper.getQuery('id')
-          ? <span className="path-bar" onClick={clear}>
+          ? <span className="path-bar">
             {path === '/' ? <strong>My files</strong> : path.replace(/\/$/, '').split('/').map((v, i, a) => <div key={i}>{i === 0 ? <div className="dir"><p className="dir-parent" id={i} onClick={access}>My files</p><p>&nbsp;&gt;&nbsp;</p></div> : i === a.length - 1 ? <p><strong>{v}</strong></p> : <div className="dir"><p className="dir-parent" id={i} onClick={access}>{v}</p><p>&nbsp;&gt;&nbsp;</p></div>}</div>)}
           </span>
           : helper.getQuery('keyword') && <h5 className="title-bar"><strong>{`Search results for "${helper.getQuery('keyword')}"`}</strong></h5>}
