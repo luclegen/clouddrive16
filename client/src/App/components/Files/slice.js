@@ -11,8 +11,8 @@ const initialState = {
   itemFiles: [],
   itemPrev: null,
   path: '',
-  media: '',
   index: -1,
+  media: '',
   type: 'none',
 }
 
@@ -99,6 +99,7 @@ export const selectItemFiles = state => state.files.itemFiles
 export const selectItemPrev = state => state.files.itemPrev
 export const selectPath = state => state.files.path
 export const selectMedia = state => state.files.media
+export const selectType = state => state.files.type
 export const selectMediaFiles = state => state.files.files.filter(v => v.path === state.path && helper.isMedia(v.name))
 export const selectMedias = state => state.files.files.filter(v => v.path === state.path && helper.isMedia(v.name)).map(v => helper.getMedia(v))
 export const selectIndex = state => state.files.index
