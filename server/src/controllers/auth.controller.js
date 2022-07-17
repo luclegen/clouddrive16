@@ -49,7 +49,7 @@ module.exports.verify = (req, res, next) => User.findById(req.payload)
   )
   .catch(err => next(err))
 
-module.exports.logout = (req, res, next) =>
+module.exports.logout = (req, res) =>
   res
     .clearCookie('connect.sid')
     .clearCookie('id')
