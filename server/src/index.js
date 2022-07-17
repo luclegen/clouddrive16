@@ -1,8 +1,6 @@
 const path = require('path')
 const { info } = require('console')
 const express = require('express')
-const session = require('express-session')
-const MongoStore = require('connect-mongo')
 
 // Environment Variables
 !process.env.NODE_ENV && require('dotenv').config()
@@ -14,12 +12,12 @@ require('./db/mongodb')
 const api = express()
 const web = express()
 const PORT = process.env.PORT || 5000
-const sess = {
+const session = {
   secret: process.env.SECRET,
   resave: true,
   saveUninitialized: true,
   cookie: {},
-  store: MongoStore.create({ mongoUrl: process.env.MONGODB, crypto: process.env.SECRET })
+  store: require('connect-mongo').create({ mongoUrl: process.env.MONGODB, crypto: process.env.SECRET })
 }
 
 // Trust proxy
@@ -29,7 +27,7 @@ api.get('env') === 'production' && api.set('trust proxy', 1)
 if (process.env.NODE_ENV == 'production') web.use(express.static(path.resolve(__dirname, './views')))
 api.use(express.json())
 api.use(require('passport').initialize())
-api.use(session(sess))
+api.use(require('express-session')(session))
 api.use(require('cors')({ origin: [process.env.WEB1, process.env.WEB2], credentials: true }))
 api.use(require('cookie-parser')(process.env.SECRET))
 require('./middlewares/passport')
