@@ -20,8 +20,8 @@ module.exports = (err, req, res, next) => {
       break
 
     case 'AxiosError':
-      code = 401
-      msg = err.message
+      code = 501
+      msg = err.response?.data?.response || err.response?.data || err.message
       break
 
     default:
