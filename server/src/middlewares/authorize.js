@@ -13,7 +13,9 @@ module.exports = (req, res, next) => req.session?.token
         .status(401)
         .send('Login session has expired!')
       : next(err)
-    : (req.method === 'PUT' || req.method === 'DELETE') && req.baseUrl === '/api/auth' || payload.is_activate
+    : (req.method === 'PUT' || req.method === 'DELETE') && req.baseUrl === '/api/auth'
+      || req.method === 'POST' && req.baseUrl === '/api/codes'
+      || payload.is_activate
       ? (req.payload = payload) && next()
       : res.sendStatus(401))
 
