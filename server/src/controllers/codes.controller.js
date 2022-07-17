@@ -5,21 +5,21 @@ const axios = require('axios')
 const generator = require('../helpers/generator')
 
 module.exports.create = (req, res, next) => User.findById(req.payload)
-  .then(user => Code.findOne({ _uid: req.payload })
-    .then(code => {
-      const body = generator.genCode(6)
+  .then(user => user
+    ? Code.findOne({ _uid: req.payload })
+      .then(code => {
+        const body = generator.genCode(6)
 
-      if (!code) {
-        code = new Code()
-        code._uid = user
-      }
+        if (!code) {
+          code = new Code()
+          code._uid = user
+        }
 
-      code.body = body
-      code.attempts = 3
+        code.body = body
+        code.attempts = 3
 
-      code.save()
-        .then(code => user
-          ? code
+        code.save()
+          .then(code => code
             ? axios
               .post(process.env.MAILER, {
                 email: user.email,
@@ -35,8 +35,9 @@ module.exports.create = (req, res, next) => User.findById(req.payload)
                 ? res.status(201).send(response.data)
                 : res.status(503).send('Mailer server not started or crashed!'))
               .catch(err => next(err))
-            : res.status(404).send('Code not found.')
-          : res.status(404).send('User not found.'))
-        .catch(err => next(err))
-    }))
+            : res.status(404).send('Code not found.'))
+          .catch(err => next(err))
+      })
+      .catch(err => next(err))
+    : res.status(404).send('User not found.'))
   .catch(err => next(err))
