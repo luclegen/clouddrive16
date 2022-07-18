@@ -22,6 +22,7 @@ import {
 import {
   selectLoggedIn,
   logout,
+  selectIsActivate,
 } from '../Home/slice'
 import helper from '../../services/helper'
 
@@ -34,6 +35,7 @@ export default function Header() {
   const isOpen = useSelector(selectIsOpen)
   const avatar = useSelector(selectAvatar)
   const loggedIn = useSelector(selectLoggedIn)
+  const activated = useSelector(selectIsActivate)
 
   const [keyword, setKeyword] = useState('')
 
@@ -44,6 +46,7 @@ export default function Header() {
         && !e.target.closest('.dropdown-menu-avatar')
         && dispatch(hideDropdown())
       !e.target.closest('.dropdown-menu-folder')
+        && document.querySelector('.dropdown-menu-folder')
         && (document.querySelector('.dropdown-menu-folder').style.display = 'none')
       !e.target.closest('.li-folder') && !e.target.closest('.li-file')
         && dispatch(clear())
@@ -94,7 +97,7 @@ export default function Header() {
   //   : setState({ foundFolders: [], foundFiles: [] })
 
   return <header>
-    <Link className="logo" to="/?id=root" onClick={() => loggedIn && dispatch(list())} onMouseEnter={() => dispatch(toggle())} onMouseLeave={() => dispatch(toggle())}>
+    <Link className="logo" to={`/${loggedIn && activated ? '?id=root' : ''}`} onClick={() => loggedIn && activated && dispatch(list())} onMouseEnter={() => dispatch(toggle())} onMouseLeave={() => dispatch(toggle())}>
       <img className={`logo-img ${width > 560 && 'me-1'}`} src="logo.svg" alt="Logo" hidden={hover} />
       <img className={`logo-img ${width > 560 && 'me-1'}`} src="logo.hover.svg" alt="Hover logo" hidden={!hover} />
       {width > 560 && process.env.REACT_APP_NAME}
@@ -130,7 +133,7 @@ export default function Header() {
         <hr className="dropdown-divider" />
         <Link className="dropdown-item-normal dropdown-item" to="/help" onClick={() => dispatch(hideDropdown())}><p className="text-help">Help</p><i className="material-icons">help_outline</i></Link>
         <hr className="dropdown-divider" />
-        <Link className="dropdown-item-danger dropdown-item" to="/?id=root" onClick={() => dispatch(reset()) && dispatch(logout()) && dispatch(hideDropdown())}><p className="text-logout">Sign out</p><i className="material-icons">logout</i></Link>
+        <Link className="dropdown-item-danger dropdown-item" to="/" onClick={() => dispatch(reset()) && dispatch(logout()) && dispatch(hideDropdown())}><p className="text-logout">Sign out</p><i className="material-icons">logout</i></Link>
       </ul>}
     </div>
   </header>
