@@ -41,6 +41,7 @@ import formDataAPI from '../../apis/form-data'
 import Media from '../Media'
 import FolderTree from '../FolderTree'
 import helper from '../../services/helper'
+import ItemType from '../../models/ItemType'
 
 export default function Files() {
   const dispatch = useDispatch()
@@ -186,7 +187,7 @@ export default function Files() {
       type: /li-folder/.test(target.className)
         ? 'folder'
         : /li-file/.test(target.className)
-          ? 'file'
+          ? ItemType.FILE
           : null,
       name: target?.getAttribute('name'),
       parent: target?.getAttribute('value'),
@@ -237,12 +238,12 @@ export default function Files() {
               parent: document.querySelectorAll('.li-folder')[i]?.getAttribute('value'),
             })
           }
-          for (let i = 0; i <= (itemPrev.type === 'file' ? itemPrev : item).index; i++) {
+          for (let i = 0; i <= (itemPrev.type === ItemType.FILE ? itemPrev : item).index; i++) {
             document.querySelectorAll('.li-file')[i].classList.add('bg-info')
             arr.push({
               index: i,
               id: document.querySelectorAll('.li-file')[i].id,
-              type: 'file',
+              type: ItemType.FILE,
               name: document.querySelectorAll('.li-file')[i]?.getAttribute('name'),
               parent: document.querySelectorAll('.li-file')[i]?.getAttribute('value'),
             })
@@ -274,7 +275,7 @@ export default function Files() {
       type: /li-folder/.test(target.className)
         ? 'folder'
         : /li-file/.test(target.className)
-          ? 'file'
+          ? ItemType.FILE
           : null,
       name: target?.getAttribute('name'),
       parent: target?.getAttribute('value'),
@@ -314,7 +315,7 @@ export default function Files() {
   return <section className="section-files">
     <ul className="dropdown-menu-folder">
       {!helper.getQuery('location') && <li className="dropdown-item-move" onClick={move}><i className="material-icons">drive_file_move</i>Move to...</li>}
-      {!helper.getQuery('location') && <li className="dropdown-item-copy" onClick={copy}><i className="material-icons">{`${items.every(v => v.type === 'file') ? 'file' : 'folder'}_copy`}</i>Copy to...</li>}
+      {!helper.getQuery('location') && <li className="dropdown-item-copy" onClick={copy}><i className="material-icons">{`${items.every(v => v.type === ItemType.FILE) ? ItemType.FILE : 'folder'}_copy`}</i>Copy to...</li>}
       {!helper.getQuery('location') && <li><hr className="dropdown-divider" /></li>}
       <li className="dropdown-item-download" onClick={download}><i className="material-icons">file_download</i>Download</li>
       <li className="dropdown-item-rename" onClick={rename}><i className="material-icons">drive_file_rename_outline</i>Rename</li>
