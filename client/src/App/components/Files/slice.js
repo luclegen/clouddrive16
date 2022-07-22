@@ -13,6 +13,7 @@ const initialState = {
   path: '',
   index: -1,
   media: '',
+  body: '',
   type: 'none',
 }
 
@@ -93,8 +94,11 @@ export const filesSlice = createSlice({
         .map(v => helper.getMedia(v))
         .findIndex(v => v === state.media) + 1
     })
-    .addCase(openFile.fulfilled, state => {
-      window.open(state.media)
+    .addCase(openFile.fulfilled, (state, action) => {
+      helper.isPDF(state.media)
+        && window.open(state.media)
+      helper.isPlaintext(state.media)
+        && (state.body = action.payload)
     })
 })
 
