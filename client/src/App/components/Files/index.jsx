@@ -158,6 +158,10 @@ export default function Files() {
     } else if (helper.isMedia(e.target?.closest('.li-file').getAttribute('name'))) {
       helper.setQuery('fid', e.target?.closest('.li-file').id)
       dispatch(readFile(e.target?.closest('.li-file').id))
+    } else if (helper.isPlaintext(e.target?.closest('.li-file').getAttribute('name'))) {
+      helper.setQuery('fid', e.target?.closest('.li-file').id)
+      dispatch(readFile(e.target?.closest('.li-file').id))
+        .then(action => dispatch(openFile(helper.getMedia(action.payload))))
     } else if (helper.isPDF(e.target?.closest('.li-file').getAttribute('name')))
       dispatch(readFile(e.target?.closest('.li-file').id))
         .then(action => dispatch(openFile(helper.getMedia(action.payload))))
