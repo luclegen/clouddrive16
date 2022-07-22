@@ -6,6 +6,10 @@ import {
   clear,
   createFolder,
   createPlaintext,
+  deleteFile,
+  deleteFolder,
+  deleteForeverFile,
+  deleteForeverFolder,
   list,
   openFile,
   readFile,
@@ -129,13 +133,32 @@ export default function Files() {
 
   const restore = () => { }
 
-  const _delete = () => { }
+  const _delete = () => Promise.all([
+    ...items
+      .filter(v => v.type === ItemType.FOLDER)
+      .map(v => helper.getQuery('location') === 'trash'
+        ? dispatch(deleteForeverFolder(v.id))
+        : dispatch(deleteFolder(v.id))),
+    ...items
+      .filter(v => v.type === ItemType.FILE)
+      .map(v => helper.getQuery('location') === 'trash'
+        ? dispatch(deleteForeverFile(v.id))
+        : dispatch(deleteFile(v.id)))
+  ])
+    .then(() => refresh())
 
   const openLocation = () => { }
 
-  const back = () => { }
+  const back = () => helper.deleteQuery('location')
+    || refresh()
+      .then(() => document.title = `${helper.getQuery('id') === 'root'
+        ? 'My files'
+        : folders.find(v => v._id === helper.getQuery('id'))?.name}
+      - ${process.env.REACT_APP_NAME} `)
 
-  const setTrash = () => { }
+  const setTrash = () => helper.setQuery('location', 'trash')
+    || refresh()
+      .then(() => document.title = `Trash - ${process.env.REACT_APP_NAME}`)
 
   const isEmpty = () => false
 
@@ -286,13 +309,6 @@ export default function Files() {
     getMenuFolder().style.display = 'block'
     getMenuFolder().style.top = `${e.clientY}px`
     getMenuFolder().style.left = `${e.clientX}px`
-    document.querySelector('.dropdown-item-download')
-      .style.setProperty(
-        'display',
-        item.type === ItemType.FOLDER
-          ? 'none'
-          : 'flex',
-        'important')
 
     if (!items.some(v => v.type === item.type && v.id === item.id)) {
       dispatch(clear())
@@ -314,23 +330,23 @@ export default function Files() {
 
   return <section className="section-files">
     <ul className="dropdown-menu-folder">
-      {!helper.getQuery('location') && <li className="dropdown-item-move" onClick={move}><i className="material-icons">drive_file_move</i>Move to...</li>}
-      {!helper.getQuery('location') && <li className="dropdown-item-copy" onClick={copy}><i className="material-icons">{`${items.every(v => v.type === ItemType.FILE) ? ItemType.FILE : ItemType.FOLDER}_copy`}</i>Copy to...</li>}
+      {!helper.getQuery('location') && <li className="dropdown-item-normal" onClick={move}><i className="material-icons">drive_file_move</i>Move to...</li>}
+      {!helper.getQuery('location') && <li className="dropdown-item-normal" onClick={copy}><i className="material-icons">{`${items.every(v => v.type === ItemType.FILE) ? ItemType.FILE : ItemType.FOLDER}_copy`}</i>Copy to...</li>}
       {!helper.getQuery('location') && <li><hr className="dropdown-divider" /></li>}
-      <li className="dropdown-item-download" onClick={download}><i className="material-icons">file_download</i>Download</li>
-      <li className="dropdown-item-rename" onClick={rename}><i className="material-icons">drive_file_rename_outline</i>Rename</li>
-      {helper.getQuery('location') === 'trash' && <li className="dropdown-item-restore" onClick={restore}><i className="material-icons">restore</i>Restore</li>}
-      <li className="dropdown-item-delete" onClick={_delete}><i className="material-icons">{helper.getQuery('location') === 'trash' ? 'delete_forever' : 'delete'}</i>Delete {helper.getQuery('location') === 'trash' && 'forever'}</li>
+      <li className="dropdown-item-normal" onClick={download}><i className="material-icons">file_download</i>Download</li>
+      <li className="dropdown-item-normal" onClick={rename}><i className="material-icons">drive_file_rename_outline</i>Rename</li>
+      {helper.getQuery('location') === 'trash' && <li className="dropdown-item-normal" onClick={restore}><i className="material-icons">restore</i>Restore</li>}
+      <li className="dropdown-item-danger" onClick={_delete}><i className="material-icons">{helper.getQuery('location') === 'trash' ? 'delete_forever' : 'delete'}</i>Delete {helper.getQuery('location') === 'trash' && 'forever'}</li>
       {helper.getQuery('keyword') && <li><hr className="dropdown-divider" /></li>}
-      {helper.getQuery('keyword') && <li className="dropdown-item-location" onClick={openLocation}><i className="material-icons">location_on</i>Open item location</li>}
+      {helper.getQuery('keyword') && <li className="dropdown-item-normal" onClick={openLocation}><i className="material-icons">location_on</i>Open item location</li>}
     </ul>
     <nav className="left-nav col-2" id="leftNav">
       <div className="top-left-nav">
         <label htmlFor="leftNav"><strong>{helper.getCookie('first_name') + ' ' + helper.getCookie('last_name')}</strong></label>
       </div>
       <ul className="list-group">
-        <li className={`list-group-item-files ${!helper.getQuery('location') && 'active'}`} onClick={back}><i className="material-icons">folder</i> My files</li>
-        <li className={`list-group-item-trash ${helper.getQuery('location') === 'trash' && 'active'} `} onClick={setTrash}><i className="material-icons">delete</i> Trash</li>
+        <li className={`list-group-item-files ${helper.getQuery('location') ? '' : 'active'}`} onClick={back}><i className="material-icons">folder</i> My files</li>
+        <li className={`list-group-item-trash ${helper.getQuery('location') === 'trash' ? 'active' : ''}`} onClick={setTrash}><i className="material-icons">delete</i> Trash</li>
       </ul>
     </nav>
     <main className="main-content">
