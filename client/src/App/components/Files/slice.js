@@ -19,9 +19,13 @@ const initialState = {
 
 export const list = createAsyncThunk('files/list', async () => ({ folders: (await foldersService.list()).data, files: (await filesService.list()).data }))
 export const createFolder = createAsyncThunk('files/createFolder', async folder => (await foldersService.create(folder)).data)
+export const deleteFolder = createAsyncThunk('files/deleteFolder', async id => (await foldersService.delete(id)).data)
+export const deleteForeverFolder = createAsyncThunk('files/deleteForeverFolder', async id => (await foldersService.deleteForever(id)).data)
 export const createPlaintext = createAsyncThunk('files/createPlaintext', async file => (await filesService.createPlaintext(file)).data)
 export const readFile = createAsyncThunk('files/readFile', async id => (await filesService.read(id)).data)
 export const openFile = createAsyncThunk('files/openFile', async media => (await filesService.open(media)).data)
+export const deleteFile = createAsyncThunk('files/deleteFile', async id => (await filesService.delete(id)).data)
+export const deleteForeverFile = createAsyncThunk('files/deleteForeverFile', async id => (await filesService.deleteForever(id)).data)
 
 export const filesSlice = createSlice({
   name: 'files',
