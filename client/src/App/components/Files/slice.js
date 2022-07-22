@@ -65,16 +65,16 @@ export const filesSlice = createSlice({
         : helper.toPath(folder)
 
       state.itemFolders = helper.getQuery('location') === 'trash'
-        ? state.folders
+        ? state.folders.filter(v => v.is_trash)
         : helper.getQuery('keyword')
-          ? state.folders.filter(v => new RegExp(helper.getQuery('keyword'), 'ig').test(v.name))
-          : state.folders.filter(f => f.path === state.path)
+          ? state.folders.filter(v => !v.is_trash && (new RegExp(helper.getQuery('keyword'), 'ig').test(v.name)))
+          : state.folders.filter(v => !v.is_trash && v.path === state.path)
 
       state.itemFiles = helper.getQuery('location') === 'trash'
-        ? state.files
+        ? state.files.filter(v => v.is_trash)
         : helper.getQuery('keyword')
-          ? state.files.filter(v => new RegExp(helper.getQuery('keyword'), 'ig').test(v.name))
-          : state.files.filter(f => f.path === state.path)
+          ? state.files.filter(v => !v.is_trash && (new RegExp(helper.getQuery('keyword'), 'ig').test(v.name)))
+          : state.files.filter(v => !v.is_trash && v.path === state.path)
 
       document.title = `${helper.getQuery('keyword')
         ? `Search results for "${helper.getQuery('keyword')}"`
