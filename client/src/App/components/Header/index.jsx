@@ -45,9 +45,12 @@ export default function Header() {
       !e.target.closest('.dropdown-toggle-avatar')
         && !e.target.closest('.dropdown-menu-avatar')
         && dispatch(hideDropdown())
-      !e.target.closest('.dropdown-menu-folder')
-        && document.querySelector('.dropdown-menu-folder')
+
+      e.target.closest('.dropdown-menu-folder')
+        ? (e.target.closest('.dropdown-item-normal') || e.target.closest('.dropdown-item-danger'))
         && (document.querySelector('.dropdown-menu-folder').style.display = 'none')
+        : (document.querySelector('.dropdown-menu-folder').style.display = 'none')
+
       !e.target.closest('.li-folder') && !e.target.closest('.li-file')
         && dispatch(clear())
     }
