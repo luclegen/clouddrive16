@@ -15,6 +15,7 @@ const initialState = {
   media: '',
   body: '',
   type: 'none',
+  factor: 0,
 }
 
 export const list = createAsyncThunk('files/list', async () => ({ folders: (await foldersService.list()).data, files: (await filesService.list()).data }))
@@ -139,5 +140,6 @@ export const selectType = state => state.files.type
 export const selectMediaFiles = state => state.files.files.filter(v => v.path === state.files.path && helper.isMedia(v.name))
 export const selectMedias = state => state.files.files.filter(v => v.path === state.files.path && helper.isMedia(v.name)).map(v => helper.getMedia(v))
 export const selectIndex = state => state.files.index
+export const selectFactor = state => state.files.factor
 
 export default filesSlice.reducer
