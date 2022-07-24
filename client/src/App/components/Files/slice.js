@@ -119,6 +119,7 @@ export const filesSlice = createSlice({
     .addCase(openFile.fulfilled, (state, action) => {
       helper.isPDF(state.media)
         && window.open(state.media)
+        && (state.media = '')
       helper.isPlaintext(state.media)
         && (state.body = action.payload)
     })
