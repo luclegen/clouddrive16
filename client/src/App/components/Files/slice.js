@@ -90,6 +90,17 @@ export const filesSlice = createSlice({
          - ${process.env.REACT_APP_NAME}`
 
       !window.location.search && helper.setQuery('id', 'root')
+
+      if (helper.getQuery('fid')) {
+        const media = helper.getMedia(state.files.find(v => v._id === helper.getQuery('fid')))
+
+        state.index = state.files
+          .filter(v => v.path === state.path && helper.isMedia(v.name))
+          .map(v => helper.getMedia(v))
+          .findIndex(v => v === media) + 1
+        state.media = media
+        state.type = helper.getFileType(media)
+      }
     })
     .addCase(readFile.fulfilled, (state, action) => {
       state.media = helper.getMedia(action.payload)
