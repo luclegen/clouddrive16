@@ -1,3 +1,5 @@
+import FileType from '../models/FileType'
+
 class Helper {
   constructor() {
     this.firstNamePattern = '^[A-Z]{1}[a-z]*$'
@@ -44,6 +46,19 @@ class Helper {
   isImages = (files, value) => files.filter(f => f.path === this.toPath(value) && this.isImage(f.name)).length
 
   isEmpty = (folders, files, value) => !folders.filter(f => f.path === this.toPath(value)).length && !files.filter(f => f.path === this.toPath(value)).length
+
+  getFileType = media =>
+    this.isPDF(media)
+      ? FileType.PDF
+      : this.isPlaintext(media)
+        ? FileType.TXT
+        : this.isImage(media)
+          ? FileType.IMAGE
+          : this.isVideo(media)
+            ? FileType.VIDEO
+            : this.isAudio(media)
+              ? FileType.AUDIO
+              : FileType.NONE
 
   checkPassword = value => {
     let count = 0
