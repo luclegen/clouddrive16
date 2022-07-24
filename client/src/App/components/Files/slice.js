@@ -55,6 +55,12 @@ export const filesSlice = createSlice({
 
       state.itemFolders = state.itemFiles = []
     },
+    close: state => {
+      document.querySelector('body').style.overflow = 'visible'
+      helper.deleteQuery('fid')
+        || (state.media = '')
+    }
+
   },
   extraReducers: builder => builder
     .addCase(list.fulfilled, (state, action) => {
@@ -118,7 +124,7 @@ export const filesSlice = createSlice({
     })
 })
 
-export const { setPath, setItems, setItemPrev, clear, reset } = filesSlice.actions
+export const { setPath, setItems, setItemPrev, clear, reset, close } = filesSlice.actions
 
 export const selectFolders = state => state.files.folders
 export const selectFiles = state => state.files.files
