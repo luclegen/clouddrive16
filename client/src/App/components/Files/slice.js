@@ -93,6 +93,7 @@ export const filesSlice = createSlice({
     })
     .addCase(readFile.fulfilled, (state, action) => {
       state.media = helper.getMedia(action.payload)
+      state.type = helper.getFileType(state.media)
       state.index = state.files
         .filter(v => v.path === state.path && helper.isMedia(v.name))
         .map(v => helper.getMedia(v))
