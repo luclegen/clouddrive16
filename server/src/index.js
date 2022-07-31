@@ -24,7 +24,7 @@ const session = {
 api.get('env') === 'production' && api.set('trust proxy', 1)
 
 // Middlewares
-if (process.env.NODE_ENV == 'production') web.use(express.static(path.resolve(__dirname, './views')))
+if (process.env.NODE_ENV == 'production') web.use(express.static(path.resolve(__dirname, '../public')))
 api.use(express.json())
 api.use(require('passport').initialize())
 api.use(require('express-session')(session))
@@ -42,7 +42,7 @@ api.use('/media', require('./routes/media.router'))
 
 // Client
 if (process.env.NODE_ENV == 'production')
-  web.get(['/find-account'], (req, res) => res.sendFile(path.join(__dirname, './views', "index.html")))
+  web.get(['/find-account'], (req, res) => res.sendFile(path.join(__dirname, '../public', "index.html")))
 else
   api.get('/', (req, res) => res.send(`Started ${process.env.NAME} server is successfully!`))
 
