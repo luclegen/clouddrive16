@@ -40,6 +40,7 @@
     "mime-types": "^2.1.35",
     "mongoose": "^6.4.2",
     "multer": "^1.4.2",
+    "nodemon": "^2.0.19",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "rimraf": "^3.0.2"
