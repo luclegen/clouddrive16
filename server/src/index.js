@@ -24,7 +24,7 @@ const session = {
 api.get('env') === 'production' && api.set('trust proxy', 1)
 
 // Middlewares
-if (process.env.NODE_ENV == 'production') web.use(express.static(path.resolve(__dirname, '../public')))
+api.get('env') === 'production' && web.use(express.static(path.resolve(__dirname, '../public')))
 api.use(express.json())
 api.use(require('passport').initialize())
 api.use(require('express-session')(session))
