@@ -41,10 +41,9 @@ api.use('/files', require('./routes/files.router'))
 api.use('/media', require('./routes/media.router'))
 
 // Client
-if (process.env.NODE_ENV == 'production')
-  web.get(['/find-account'], (req, res) => res.sendFile(path.join(__dirname, '../public', "index.html")))
-else
-  api.get('/', (req, res) => res.send(`Started ${process.env.NAME} server is successfully!`))
+api.get('env') === 'production'
+  ? web.get(['/find-account'], (req, res) => res.sendFile(path.join(__dirname, '../public', "index.html")))
+  : api.get('/', (req, res) => res.send(`Started ${process.env.NAME} server is successfully!`))
 
 // Error handle
 api.use(require('./middlewares/handler'))
