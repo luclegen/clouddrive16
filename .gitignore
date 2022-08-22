@@ -106,5 +106,8 @@ dist
 # Temporary directory
 tmp/
 
-# Uploads directory
+# Uploads of dode
 uploads/
+
+# Data of mongo
+data/
