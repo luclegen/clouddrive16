@@ -40,16 +40,18 @@ api.use('/folders', require('./routes/folders.router'))
 api.use('/files', require('./routes/files.router'))
 api.use('/media', require('./routes/media.router'))
 
+// Add api to web
+web.use('/api', api)
+
 // Client
 api.get('env') === 'production'
-  ? web.get(['/find-account'], (req, res) => res.sendFile(path.join(__dirname, '../public', "index.html")))
-  : api.get('/', (req, res) => res.send(`Started ${process.env.NAME} server is successfully!`))
+  ? web.get('*', (req, res) => 
+    res.sendFile(path.join(__dirname, '../public', "index.html")))
+  : api.get('/', (req, res) =>
+    res.send(`Started ${process.env.NAME} server is successfully!`))
 
 // Error handle
 api.use(require('./middlewares/handler'))
-
-// Add api to web
-web.use('/api', api)
 
 // Start server
 web.listen(PORT, () => info(`Server started at http://localhost:${PORT}`))
