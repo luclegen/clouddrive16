@@ -4,6 +4,7 @@ import { Suspense, lazy } from 'react'
 import './App.sass'
 import Header from './components/Header'
 import Loader from './components/Loader'
+import NotFound from './pages/NotFound'
 
 const Home = lazy(() => import('./components/Home'))
 
@@ -13,6 +14,7 @@ export default function App() {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route exact path="/" element={<Home />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   </BrowserRouter>
