@@ -1,6 +1,7 @@
 const path = require('path')
 const { info } = require('console')
 const express = require('express')
+const bodyParser = require("body-parser")
 
 // Environment Variables
 !process.env.NODE_ENV && require('dotenv').config()
@@ -25,7 +26,8 @@ api.get('env') === 'production' && api.set('trust proxy', 1)
 
 // Middlewares
 api.get('env') === 'production' && web.use(express.static(path.resolve(__dirname, '../public')))
-api.use(express.json())
+api.use(bodyParser.urlencoded({ extended: false }))
+api.use(bodyParser.json())
 api.use(require('passport').initialize())
 api.use(require('express-session')(session))
 api.use(require('cors')({ origin: [process.env.WEB1, process.env.WEB2], credentials: true }))
