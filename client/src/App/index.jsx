@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Suspense, lazy } from 'react'
 import './App.sass'
 import Header from './components/Header'
-import Loader from './components/Loader'
+import Loader from './pages/Loader'
 import NotFound from './pages/NotFound'
 
 const Home = lazy(() => import('./pages/Home'))
