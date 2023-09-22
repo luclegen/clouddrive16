@@ -34,8 +34,11 @@ api.use(require('cors')({ origin: [process.env.WEB1, process.env.WEB2], credenti
 api.use(require('cookie-parser')(process.env.SECRET))
 require('./middlewares/passport')
 
+// Add routes
+api.use(require('./routes'))
+
 // Add api to web
-web.use('/api', require('./routes'))
+web.use('/api', api)
 
 // Client
 api.get('env') === 'production'
