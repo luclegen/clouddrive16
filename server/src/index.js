@@ -34,16 +34,8 @@ api.use(require('cors')({ origin: [process.env.WEB1, process.env.WEB2], credenti
 api.use(require('cookie-parser')(process.env.SECRET))
 require('./middlewares/passport')
 
-// Routes
-api.use('/auth', require('./routes/auth.router'))
-api.use('/users', require('./routes/users.router'))
-api.use('/codes', require('./routes/codes.router'))
-api.use('/folders', require('./routes/folders.router'))
-api.use('/files', require('./routes/files.router'))
-api.use('/media', require('./routes/media.router'))
-
 // Add api to web
-web.use('/api', api)
+web.use('/api', require('./routes'))
 
 // Client
 api.get('env') === 'production'
