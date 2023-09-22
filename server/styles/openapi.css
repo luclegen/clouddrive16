@@ -1,0 +1,6 @@
+.topbar-wrapper .link {
+  content: url('http://localhost:3000/logo.svg');
+  max-width: 64px !important;
+  height: 64px;
+  margin-right: 8px;
+}​
