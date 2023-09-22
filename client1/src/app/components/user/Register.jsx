@@ -18,7 +18,7 @@ const state = {
   submitted: false
 }
 
-export default class Register extends Component {
+export default class Registration extends Component {
   constructor(props) {
     super(props)
 
@@ -58,11 +58,11 @@ export default class Register extends Component {
   enterConfirm = e => e.target.setCustomValidity(e.target.value ? e.target.value === this.state.password ? '' : 'The passwords do not match.' : 'This field is required.')
 
   chooseDateOfBirth = e => {
-    document.querySelector('#dayRegister').setCustomValidity(helper.isDate(e.target.id === 'yearRegister' ? e.target.value : this.state.year, e.target.id === 'monthRegister' ? e.target.value : this.state.month, e.target.id === 'dayRegister' ? e.target.value : this.state.day) ? '' : 'Invalid date of birth.')
-    document.querySelector('#yearRegister').setCustomValidity((new Date()).getFullYear() - parseInt(e.target.id === 'yearRegister' ? e.target.value : this.state.year) >= 5 ? '' : 'You must be 5 years or older')
+    document.querySelector('#dayRegistration').setCustomValidity(helper.isDate(e.target.id === 'yearRegistration' ? e.target.value : this.state.year, e.target.id === 'monthRegistration' ? e.target.value : this.state.month, e.target.id === 'dayRegistration' ? e.target.value : this.state.day) ? '' : 'Invalid date of birth.')
+    document.querySelector('#yearRegistration').setCustomValidity((new Date()).getFullYear() - parseInt(e.target.id === 'yearRegistration' ? e.target.value : this.state.year) >= 5 ? '' : 'You must be 5 years or older')
   }
 
-  chooseSex = () => document.querySelector('#female-register').setCustomValidity(this.state.sex ? '' : 'Please select one of these options')
+  chooseSex = () => document.querySelector('#female-registration').setCustomValidity(this.state.sex ? '' : 'Please select one of these options')
 
   getIsValidDateOfBirth = () => (this.state.submitted || this.state.day !== (new Date()).getDate().toString() || this.state.month !== (new Date()).getMonth().toString() || this.state.year !== (new Date()).getFullYear().toString()) && (helper.isDate(this.state.year, this.state.month, this.state.day) && helper.isOldEnough(this.state.year) ? 'is-valid' : 'is-invalid')
 
@@ -80,13 +80,13 @@ export default class Register extends Component {
       this.state.month &&
       this.state.year
     ) {
-      document.querySelector('#female-register').setCustomValidity(this.state.sex ? '' : 'Please select one of these options')
-      document.querySelector('#yearRegister').setCustomValidity(helper.isOldEnough(this.state.year) ? '' : 'You must be 5 years or older')
+      document.querySelector('#female-registration').setCustomValidity(this.state.sex ? '' : 'Please select one of these options')
+      document.querySelector('#yearRegistration').setCustomValidity(helper.isOldEnough(this.state.year) ? '' : 'You must be 5 years or older')
 
       usersService.create(this.state)
         .then(res => {
           alert(res.data)
-          document.querySelector('.form-register').reset()
+          document.querySelector('.form-registration').reset()
           document.querySelector('meter').value = 0
           this.setState(state)
         })
@@ -96,78 +96,78 @@ export default class Register extends Component {
   componentDidUpdate = () => window.onbeforeunload = () => this.state.first_name || this.state.last_name || this.state.email || this.state.password || this.state.day || this.state.month || this.state.year || this.state.sex ? true : undefined
 
   render = () => <section className="section-floating-center">
-    <form className="form-register" onSubmit={this.onSubmit}>
+    <form className="form-registration" onSubmit={this.onSubmit}>
       <button className="close" type="reset" onClick={this.props.close}>
         <i className="material-icons">close</i>
       </button>
-      <h1 className="h1-register">Sign Up</h1>
+      <h1 className="h1-registration">Sign Up</h1>
       <div className="form-row">
         <div className={`form-floating col-md-6 ${this.state.first_name && 'float'}`}>
-          <input className={`form-control ${this.state.first_name && (helper.isFirstName(this.state.first_name) ? 'is-valid' : 'is-invalid')}`} id="firstNameRegister" name="first_name" type="text" pattern={helper.firstNamePattern} onInput={this.enterFirstName} onInvalid={this.enterFirstName} onChange={this.setValue} required />
-          <label htmlFor="firstNameRegister">First name</label>
+          <input className={`form-control ${this.state.first_name && (helper.isFirstName(this.state.first_name) ? 'is-valid' : 'is-invalid')}`} id="firstNameRegistration" name="first_name" type="text" pattern={helper.firstNamePattern} onInput={this.enterFirstName} onInvalid={this.enterFirstName} onChange={this.setValue} required />
+          <label htmlFor="firstNameRegistration">First name</label>
         </div>
         <div className={`form-floating col-md-6 ${this.state.last_name && 'float'}`}>
-          <input className={`form-control ${this.state.last_name && (helper.isLastName(this.state.last_name) ? 'is-valid' : 'is-invalid')}`} id="lastNameRegister" name="last_name" type="text" pattern={helper.lastNamePattern} onInput={this.enterLastName} onInvalid={this.enterLastName} onChange={this.setValue} required />
-          <label htmlFor="lastNameRegister">Last name</label>
+          <input className={`form-control ${this.state.last_name && (helper.isLastName(this.state.last_name) ? 'is-valid' : 'is-invalid')}`} id="lastNameRegistration" name="last_name" type="text" pattern={helper.lastNamePattern} onInput={this.enterLastName} onInvalid={this.enterLastName} onChange={this.setValue} required />
+          <label htmlFor="lastNameRegistration">Last name</label>
         </div>
       </div>
       <div className={`form-floating ${this.state.email && 'float'}`}>
-        <input className={`form-control ${this.state.email && (helper.isEmail(this.state.email) && this.state.available ? 'is-valid' : 'is-invalid')}`} id="addressRegister" name="email" type="email" pattern={helper.emailPattern} onInput={this.enterEmail} onInvalid={this.enterEmail} onChange={this.setValue} required />
-        <label htmlFor="addressRegister">Email</label>
+        <input className={`form-control ${this.state.email && (helper.isEmail(this.state.email) && this.state.available ? 'is-valid' : 'is-invalid')}`} id="addressRegistration" name="email" type="email" pattern={helper.emailPattern} onInput={this.enterEmail} onInvalid={this.enterEmail} onChange={this.setValue} required />
+        <label htmlFor="addressRegistration">Email</label>
       </div>
       <div className="form-row">
         <div className={`form-floating col-md-6 ${this.state.password && 'float'} form-floating-password`}>
-          <input className={`form-control ${this.state.password && (helper.checkPassword(this.state.password).isStrong ? 'is-valid' : 'is-invalid')}`} id="passwordRegister" name="password" type="password" minLength="8" onInput={this.enterPassword} onChange={this.setValue} required />
-          <label htmlFor="passwordRegister">Password</label>
+          <input className={`form-control ${this.state.password && (helper.checkPassword(this.state.password).isStrong ? 'is-valid' : 'is-invalid')}`} id="passwordRegistration" name="password" type="password" minLength="8" onInput={this.enterPassword} onChange={this.setValue} required />
+          <label htmlFor="passwordRegistration">Password</label>
         </div>
         <div className={`form-floating col-md-6 ${this.state.confirm && 'float'} form-floating-confirm`}>
-          <input className={`form-control ${this.state.confirm && (this.state.confirm === this.state.password ? 'is-valid' : 'is-invalid')}`} id="confirmRegister" name="confirm" type="password" onInput={this.enterConfirm} onInvalid={this.enterConfirm} onChange={this.setValue} required />
-          <label htmlFor="confirmRegister">Confirm</label>
+          <input className={`form-control ${this.state.confirm && (this.state.confirm === this.state.password ? 'is-valid' : 'is-invalid')}`} id="confirmRegistration" name="confirm" type="password" onInput={this.enterConfirm} onInvalid={this.enterConfirm} onChange={this.setValue} required />
+          <label htmlFor="confirmRegistration">Confirm</label>
         </div>
       </div>
-      <meter id="passwordStrengthRegister" title="Use 8 or more characters with a mix of letters, numbers & symbols" max="4" value="0"></meter>
+      <meter id="passwordStrengthRegistration" title="Use 8 or more characters with a mix of letters, numbers & symbols" max="4" value="0"></meter>
       <div className="form-group-password-strength">
-        {this.state.strength && <label className="password-strength" htmlFor="passwordStrengthRegister">{helper.checkPassword(this.state.password).strength}</label>}
+        {this.state.strength && <label className="password-strength" htmlFor="passwordStrengthRegistration">{helper.checkPassword(this.state.password).strength}</label>}
       </div>
-      <label className={`label-group ${this.getIsValidDateOfBirth()}`} htmlFor="dateOfBirthRegister">Date of birth</label>
-      <div className="form-row" id="dateOfBirthRegister">
+      <label className={`label-group ${this.getIsValidDateOfBirth()}`} htmlFor="dateOfBirthRegistration">Date of birth</label>
+      <div className="form-row" id="dateOfBirthRegistration">
         <div className={`form-floating col-md-4 ${this.state.day && 'float'}`}>
-          <select className={`form-control-day ${this.getIsValidDateOfBirth()}`} id="dayRegister" name="day" value={this.state.day} onInput={this.chooseDateOfBirth} onChange={this.setValue} required>
+          <select className={`form-control-day ${this.getIsValidDateOfBirth()}`} id="dayRegistration" name="day" value={this.state.day} onInput={this.chooseDateOfBirth} onChange={this.setValue} required>
             {'0'.repeat(31).split('').map((v, i) => <option key={i} value={i + 1} >{i + 1}</option>)}
           </select>
-          <label htmlFor="dayRegister">Day</label>
+          <label htmlFor="dayRegistration">Day</label>
         </div>
         <div className={`form-floating col-md-4 ${this.state.month && 'float'}`}>
-          <select className={`form-control-month ${this.getIsValidDateOfBirth()}`} id="monthRegister" name="month" value={this.state.month} onInput={this.chooseDateOfBirth} onChange={this.setValue} required>
+          <select className={`form-control-month ${this.getIsValidDateOfBirth()}`} id="monthRegistration" name="month" value={this.state.month} onInput={this.chooseDateOfBirth} onChange={this.setValue} required>
             {["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map((v, i) => <option key={i} value={i} >{v}</option>)}
           </select>
-          <label htmlFor="monthRegister">Month</label>
+          <label htmlFor="monthRegistration">Month</label>
         </div>
         <div className={`form-floating col-md-4 ${this.state.year && 'float'}`}>
-          <select className={`form-control-year ${this.getIsValidDateOfBirth()}`} id="yearRegister" name="year" required aria-describedby="validationDateOfBirth" onInput={this.chooseDateOfBirth} onChange={this.setValue} >
+          <select className={`form-control-year ${this.getIsValidDateOfBirth()}`} id="yearRegistration" name="year" required aria-describedby="validationDateOfBirth" onInput={this.chooseDateOfBirth} onChange={this.setValue} >
             {'0'.repeat(200).split('').map((v, i) => <option key={i} value={(new Date()).getFullYear() - i} >{(new Date()).getFullYear() - i}</option>)}
           </select>
-          <label htmlFor="yearRegister">Year</label>
+          <label htmlFor="yearRegistration">Year</label>
         </div>
       </div>
-      <label className={`label-group ${this.state.sex ? 'is-valid' : this.state.submitted && !this.state.sex && 'is-invalid'}`} htmlFor="genderRegister">Gender</label>
-      <div className="form-row" id="genderRegister">
+      <label className={`label-group ${this.state.sex ? 'is-valid' : this.state.submitted && !this.state.sex && 'is-invalid'}`} htmlFor="genderRegistration">Gender</label>
+      <div className="form-row" id="genderRegistration">
         <div className="form-group col-md-4">
           <div className={`form-check-female ${this.state.sex ? 'is-valid' : this.state.submitted && !this.state.sex && 'is-invalid'}`} onClick={this.checkSex}>
-            <label className="form-check-label flex-fill" htmlFor="female-register">Female</label>
-            <input className="form-check-input is-valid" id="female-register" type="radio" name="sex" value={sex.FEMALE} checked={this.state.sex === sex.FEMALE} onInput={this.chooseSex} onChange={this.setValue} />
+            <label className="form-check-label flex-fill" htmlFor="female-registration">Female</label>
+            <input className="form-check-input is-valid" id="female-registration" type="radio" name="sex" value={sex.FEMALE} checked={this.state.sex === sex.FEMALE} onInput={this.chooseSex} onChange={this.setValue} />
           </div>
         </div>
         <div className="form-group col-md-4">
           <div className={`form-check-male ${this.state.sex ? 'is-valid' : this.state.submitted && !this.state.sex && 'is-invalid'}`} onClick={this.checkSex}>
-            <label className="form-check-label flex-fill" htmlFor="male-register">Male</label>
-            <input className="form-check-input" id="male-register" type="radio" name="sex" value={sex.MALE} checked={this.state.sex === sex.MALE} onInput={this.chooseSex} onChange={this.setValue} />
+            <label className="form-check-label flex-fill" htmlFor="male-registration">Male</label>
+            <input className="form-check-input" id="male-registration" type="radio" name="sex" value={sex.MALE} checked={this.state.sex === sex.MALE} onInput={this.chooseSex} onChange={this.setValue} />
           </div>
         </div>
         <div className="form-group col-md-4">
           <div className={`form-check-other ${this.state.sex ? 'is-valid' : this.state.submitted && !this.state.sex && 'is-invalid'}`} onClick={this.checkSex}>
-            <label className="form-check-label flex-fill" htmlFor="other-register">Other</label>
-            <input className="form-check-input" id="other-register" type="radio" name="sex" value={sex.OTHER} checked={this.state.sex === sex.OTHER} onInput={this.chooseSex} onChange={this.setValue} />
+            <label className="form-check-label flex-fill" htmlFor="other-registration">Other</label>
+            <input className="form-check-input" id="other-registration" type="radio" name="sex" value={sex.OTHER} checked={this.state.sex === sex.OTHER} onInput={this.chooseSex} onChange={this.setValue} />
           </div>
         </div>
       </div>

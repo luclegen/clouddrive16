@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import helper from '../../services/helper'
-import Register from '../user/Register'
+import Registration from '../user/Registration'
 import authService from '../../services/auth'
 
 const state = {
@@ -28,7 +28,7 @@ export default class Login extends Component {
       const available = (await authService.available(e.target.value)).status === 200
       e.target.setCustomValidity(helper.isEmail(e.target.value)
         ? available
-          ? 'Email not registered'
+          ? 'Email not registrationed'
           : ''
         : 'Invalid email!')
       this.setState({ available: available, visible: false, password: '' })
@@ -94,6 +94,6 @@ export default class Login extends Component {
       <a className="link-find-account" href="/find-account" target="_blank" rel="noopener noreferrer">Forgotten password? <i className="material-icons">open_in_new</i></a>
       <button className="btn-create-account" type="button" onClick={this.open}>Create New Account</button>
     </form>
-    {this.state.isOpen && <Register close={this.close}></Register>}
+    {this.state.isOpen && <Registration close={this.close}></Registration>}
   </section>
 }

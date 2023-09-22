@@ -7,7 +7,7 @@ import {
   setRemember,
   selectRemember,
 } from '../../pages/Home/slice'
-import Register from '../Register'
+import Registration from '../Registration'
 import helper from '../../services/helper'
 
 export default function Login() {
@@ -80,6 +80,6 @@ export default function Login() {
       <a className="link-find-account" href="/find-account" target="_blank" rel="noopener noreferrer">Forgotten password? <i className="material-icons">open_in_new</i></a>
       <button className="btn-create-account" type="button" onClick={() => dispatch(open())}>Create New Account</button>
     </form>
-    {opened && <Register />}
+    {opened && <Registration />}
   </section>
 }

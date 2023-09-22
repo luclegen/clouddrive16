@@ -6,7 +6,7 @@ import { close } from '../Login/slice'
 import { check, selectAvailable } from '../../pages/Home/slice'
 import { create } from './slice'
 
-export default function Register() {
+export default function Registration() {
   const dispatch = useDispatch()
 
   const available = useSelector(selectAvailable)
@@ -64,22 +64,22 @@ export default function Register() {
 
   const chooseDob = e =>
     document
-      .querySelector('#dayRegister')
+      .querySelector('#dayRegistration')
       .setCustomValidity(helper.isDate(
-        e.target.id === 'yearRegister'
+        e.target.id === 'yearRegistration'
           ? e.target.value
           : year,
-        e.target.id === 'monthRegister'
+        e.target.id === 'monthRegistration'
           ? e.target.value
           : month,
-        e.target.id === 'dayRegister'
+        e.target.id === 'dayRegistration'
           ? e.target.value
           : day)
         ? '' : 'Invalid date of birth.')
     || document
-      .querySelector('#yearRegister')
+      .querySelector('#yearRegistration')
       .setCustomValidity(
-        (new Date()).getFullYear() - parseInt(e.target.id === 'yearRegister'
+        (new Date()).getFullYear() - parseInt(e.target.id === 'yearRegistration'
           ? e.target.value
           : year) >= 5
           ? ''
@@ -93,7 +93,7 @@ export default function Register() {
 
   const chooseSex = () =>
     document
-      .querySelector('#femaleRegister')
+      .querySelector('#femaleRegistration')
       .setCustomValidity(sex
         ? ''
         : 'Please select one of these options')
@@ -111,7 +111,7 @@ export default function Register() {
       sex,
     }))
       .then(action =>
-        action.type === 'register/create/fulfilled'
+        action.type === 'registration/create/fulfilled'
         && (setFirstName('')
           || setLastName('')
           || setEmail('')
@@ -127,94 +127,94 @@ export default function Register() {
       );
 
   return <section className="section-floating-center">
-    <form className="form-register" onSubmit={submit}>
+    <form className="form-registration" onSubmit={submit}>
       <div className="row">
         <div className="col-md-close">
           <button className="btn-close" type="reset" onClick={() => dispatch(close())}></button>
         </div>
       </div>
-      <h1 className="h1-register">Sign Up</h1>
+      <h1 className="h1-registration">Sign Up</h1>
       <div className="row-name">
         <div className="col-md">
           <div className="form-floating">
-            <input className={`form-control ${first_name && (helper.isFirstName(first_name) ? 'is-valid' : 'is-invalid')}`} id="firstNameRegister" name="first_name" type="text" placeholder="First name" pattern={helper.firstNamePattern} onInput={enterFirstName} onInvalid={enterFirstName} onChange={e => setFirstName(e.target.value)} required />
-            <label htmlFor="firstNameRegister">First name</label>
+            <input className={`form-control ${first_name && (helper.isFirstName(first_name) ? 'is-valid' : 'is-invalid')}`} id="firstNameRegistration" name="first_name" type="text" placeholder="First name" pattern={helper.firstNamePattern} onInput={enterFirstName} onInvalid={enterFirstName} onChange={e => setFirstName(e.target.value)} required />
+            <label htmlFor="firstNameRegistration">First name</label>
           </div>
         </div>
         <div className="col-md">
           <div className="form-floating">
-            <input className={`form-control ${last_name && (helper.isLastName(last_name) ? 'is-valid' : 'is-invalid')}`} id="lastNameRegister" name="last_name" type="text" placeholder="Last name" pattern={helper.lastNamePattern} onInput={enterLastName} onInvalid={enterLastName} onChange={e => setLastName(e.target.value)} required />
-            <label htmlFor="lastNameRegister">Last name</label>
+            <input className={`form-control ${last_name && (helper.isLastName(last_name) ? 'is-valid' : 'is-invalid')}`} id="lastNameRegistration" name="last_name" type="text" placeholder="Last name" pattern={helper.lastNamePattern} onInput={enterLastName} onInvalid={enterLastName} onChange={e => setLastName(e.target.value)} required />
+            <label htmlFor="lastNameRegistration">Last name</label>
           </div>
         </div>
       </div>
       <div className="form-floating-email">
-        <input className={`form-control ${email && (helper.isEmail(email) && available ? 'is-valid' : 'is-invalid')}`} id="addressRegister" name="email" type="email" placeholder="Email" pattern={helper.emailPattern} onInput={enterEmail} onInvalid={enterEmail} onChange={e => setEmail(e.target.value)} required />
-        <label htmlFor="addressRegister">Email</label>
+        <input className={`form-control ${email && (helper.isEmail(email) && available ? 'is-valid' : 'is-invalid')}`} id="addressRegistration" name="email" type="email" placeholder="Email" pattern={helper.emailPattern} onInput={enterEmail} onInvalid={enterEmail} onChange={e => setEmail(e.target.value)} required />
+        <label htmlFor="addressRegistration">Email</label>
       </div>
       <div className="row-password">
         <div className="col-md">
           <div className="form-floating form-floating-password">
-            <input className={`form-control ${password && (helper.checkPassword(password).isStrong ? 'is-valid' : 'is-invalid')}`} id="passwordRegister" name="password" type="password" placeholder="Password" minLength="8" onInput={enterPassword} onChange={e => setPassword(e.target.value)} required />
-            <label htmlFor="passwordRegister">Password</label>
+            <input className={`form-control ${password && (helper.checkPassword(password).isStrong ? 'is-valid' : 'is-invalid')}`} id="passwordRegistration" name="password" type="password" placeholder="Password" minLength="8" onInput={enterPassword} onChange={e => setPassword(e.target.value)} required />
+            <label htmlFor="passwordRegistration">Password</label>
           </div>
         </div>
         <div className="col-md">
           <div className="form-floating form-floating-confirm">
-            <input className={`form-control ${confirm && (confirm === password ? 'is-valid' : 'is-invalid')}`} id="confirmRegister" name="confirm" type="password" placeholder="Confirm" onInput={enterConfirm} onInvalid={enterConfirm} onChange={e => setConfirm(e.target.value)} required />
-            <label htmlFor="confirmRegister">Confirm</label>
+            <input className={`form-control ${confirm && (confirm === password ? 'is-valid' : 'is-invalid')}`} id="confirmRegistration" name="confirm" type="password" placeholder="Confirm" onInput={enterConfirm} onInvalid={enterConfirm} onChange={e => setConfirm(e.target.value)} required />
+            <label htmlFor="confirmRegistration">Confirm</label>
           </div>
         </div>
       </div>
-      <meter id="passwordStrengthRegister" title="Use 8 or more characters with a mix of letters, numbers & symbols" max="4" value="0"></meter>
+      <meter id="passwordStrengthRegistration" title="Use 8 or more characters with a mix of letters, numbers & symbols" max="4" value="0"></meter>
       <div className="input-group-password-strength">
-        {strength && <label className="password-strength" htmlFor="passwordStrengthRegister">{helper.checkPassword(password).strength}</label>}
+        {strength && <label className="password-strength" htmlFor="passwordStrengthRegistration">{helper.checkPassword(password).strength}</label>}
       </div>
-      <label className={`label-group ${isValidDob()}`} htmlFor="dobRegister">Date of birth</label>
-      <div className="row-dob" id="dobRegister">
+      <label className={`label-group ${isValidDob()}`} htmlFor="dobRegistration">Date of birth</label>
+      <div className="row-dob" id="dobRegistration">
         <div className="col-md">
           <div className="form-floating">
-            <select className={`form-control-day ${isValidDob()}`} id="dayRegister" name="day" value={day} placeholder="Day" onInput={chooseDob} onChange={e => setDay(e.target.value)} required>
+            <select className={`form-control-day ${isValidDob()}`} id="dayRegistration" name="day" value={day} placeholder="Day" onInput={chooseDob} onChange={e => setDay(e.target.value)} required>
               {'0'.repeat(31).split('').map((v, i) => <option key={i} value={i + 1} >{i + 1}</option>)}
             </select>
-            <label htmlFor="dayRegister">Day</label>
+            <label htmlFor="dayRegistration">Day</label>
           </div>
         </div>
         <div className="col-md">
           <div className="form-floating">
-            <select className={`form-control-month ${isValidDob()}`} id="monthRegister" name="month" value={month} placeholder="Month" onInput={chooseDob} onChange={e => setMonth(e.target.value)} required>
+            <select className={`form-control-month ${isValidDob()}`} id="monthRegistration" name="month" value={month} placeholder="Month" onInput={chooseDob} onChange={e => setMonth(e.target.value)} required>
               {["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"].map((v, i) => <option key={i} value={i} >{v}</option>)}
             </select>
-            <label htmlFor="monthRegister">Month</label>
+            <label htmlFor="monthRegistration">Month</label>
           </div>
         </div>
         <div className="col-md">
           <div className="form-floating">
-            <select className={`form-control-year ${isValidDob()}`} id="yearRegister" name="year" placeholder="Year" aria-describedby="validationDateOfBirth" onInput={chooseDob} onChange={e => setYear(e.target.value)} required>
+            <select className={`form-control-year ${isValidDob()}`} id="yearRegistration" name="year" placeholder="Year" aria-describedby="validationDateOfBirth" onInput={chooseDob} onChange={e => setYear(e.target.value)} required>
               {'0'.repeat(200).split('').map((v, i) => <option key={i} value={(new Date()).getFullYear() - i} >{(new Date()).getFullYear() - i}</option>)}
             </select>
-            <label htmlFor="yearRegister">Year</label>
+            <label htmlFor="yearRegistration">Year</label>
           </div>
         </div>
       </div>
-      <label className={`label-group ${sex ? 'is-valid' : submitted && !sex && 'is-invalid'}`} htmlFor="genderRegister">Gender</label>
-      <div className="row-gender" id="genderRegister">
+      <label className={`label-group ${sex ? 'is-valid' : submitted && !sex && 'is-invalid'}`} htmlFor="genderRegistration">Gender</label>
+      <div className="row-gender" id="genderRegistration">
         <div className="col-md">
           <div className={`form-check-female ${sex ? 'is-valid' : submitted && !sex && 'is-invalid'}`} onClick={checkSex}>
-            <label className="label-female" htmlFor="femaleRegister">Female</label>
-            <input className="input-female" id="femaleRegister" type="radio" name="sex" value={Sex.FEMALE} checked={sex === Sex.FEMALE} onInput={chooseSex} onChange={e => setSex(e.target.value)} required />
+            <label className="label-female" htmlFor="femaleRegistration">Female</label>
+            <input className="input-female" id="femaleRegistration" type="radio" name="sex" value={Sex.FEMALE} checked={sex === Sex.FEMALE} onInput={chooseSex} onChange={e => setSex(e.target.value)} required />
           </div>
         </div>
         <div className="col-md">
           <div className={`form-check-male ${sex ? 'is-valid' : submitted && !sex && 'is-invalid'}`} onClick={checkSex}>
-            <label className="label-male" htmlFor="maleRegister">Male</label>
-            <input className="input-male" id="maleRegister" type="radio" name="sex" value={Sex.MALE} checked={sex === Sex.MALE} onInput={chooseSex} onChange={e => setSex(e.target.value)} required />
+            <label className="label-male" htmlFor="maleRegistration">Male</label>
+            <input className="input-male" id="maleRegistration" type="radio" name="sex" value={Sex.MALE} checked={sex === Sex.MALE} onInput={chooseSex} onChange={e => setSex(e.target.value)} required />
           </div>
         </div>
         <div className="col-md">
           <div className={`form-check-other ${sex ? 'is-valid' : submitted && !sex && 'is-invalid'}`} onClick={checkSex}>
-            <label className="label-other" htmlFor="otherRegister">Other</label>
-            <input className="input-other" id="otherRegister" type="radio" name="sex" value={Sex.OTHER} checked={sex === Sex.OTHER} onInput={chooseSex} onChange={e => setSex(e.target.value)} required />
+            <label className="label-other" htmlFor="otherRegistration">Other</label>
+            <input className="input-other" id="otherRegistration" type="radio" name="sex" value={Sex.OTHER} checked={sex === Sex.OTHER} onInput={chooseSex} onChange={e => setSex(e.target.value)} required />
           </div>
         </div>
       </div>

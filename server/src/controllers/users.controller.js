@@ -22,7 +22,7 @@ module.exports.create = (req, res, next) => {
     .then(user => user
       ? new Promise(() => profile._uid = user) && profile.save()
         .then(profile => profile
-          ? res.status(201).send('Registered successfully.')
+          ? res.status(201).send('Registrationed successfully.')
           : res.status(404).send('Profile not found.'))
         .catch(err => user.remove() && next(err))
       : res.status(404).send('User not found.'))

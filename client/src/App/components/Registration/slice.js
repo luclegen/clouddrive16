@@ -4,10 +4,10 @@ import usersService from '../../services/users'
 const initialState = {
 }
 
-export const create = createAsyncThunk('register/create', async user => (await usersService.create(user)).data)
+export const create = createAsyncThunk('registration/create', async user => (await usersService.create(user)).data)
 
-export const registerSlice = createSlice({
-  name: 'register',
+export const registrationSlice = createSlice({
+  name: 'registration',
   initialState,
   reducers: {
   },
@@ -15,4 +15,4 @@ export const registerSlice = createSlice({
     .addCase(create.fulfilled, (state, action) => { alert(action.payload) })
 })
 
-export default registerSlice.reducer
+export default registrationSlice.reducer
