@@ -1,7 +1,10 @@
 const path = require('path')
+const fs = require('fs')
 const { info } = require('console')
 const express = require('express')
+const YAML = require("yaml")
 const bodyParser = require("body-parser")
+const swaggerUi = require("swagger-ui-express")
 
 // Environment Variables
 !process.env.NODE_ENV && require('dotenv').config()
@@ -44,8 +47,14 @@ web.use('/api', api)
 api.get('env') === 'production'
   ? web.get('*', (req, res) => 
     res.sendFile(path.join(__dirname, '../public', "index.html")))
-  : api.get('/', (req, res) =>
-    res.send(`Started ${process.env.NAME} server is successfully!`))
+  : web.use(
+    swaggerUi.serve,
+    swaggerUi.setup(YAML.parse(fs.readFileSync(path.resolve(__dirname, '../configs/openapi.yaml'), 'utf8')), {
+      explorer: true,
+      customCssUrl:
+        "https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-newspaper.css",
+    })
+  )
 
 // Error handle
 api.use(require('./middlewares/handler'))
