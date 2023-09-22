@@ -49,10 +49,13 @@ api.get('env') === 'production'
     res.sendFile(path.join(__dirname, '../public', "index.html")))
   : web.use(
     swaggerUi.serve,
-    swaggerUi.setup(YAML.parse(fs.readFileSync(path.resolve(__dirname, '../configs/openapi.yaml'), 'utf8')), {
+    swaggerUi.setup(
+      YAML.parse(fs.readFileSync(path.resolve(__dirname, '../configs/openapi.yaml'), 'utf8')),
+    {
       explorer: true,
-      customCssUrl:
-        "https://cdn.jsdelivr.net/npm/swagger-ui-themes@3.0.0/themes/3.x/theme-newspaper.css",
+      customSiteTitle: 'CloudDrive16 API',
+      customfavIcon: `${process.env.WEB1}/favicon.ico`,
+      customCss: fs.readFileSync(path.resolve(__dirname, '../styles', 'openapi.css')).toString(),
     })
   )
 
