@@ -6,7 +6,7 @@ import {
   login,
   setRemember,
   selectRemember,
-} from '../Home/slice'
+} from '../../pages/Home/slice'
 import Register from '../Register'
 import helper from '../../services/helper'
 

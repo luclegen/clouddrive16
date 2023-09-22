@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Sex from '../../models/Sex'
 import helper from '../../services/helper'
 import { close } from '../Login/slice'
-import { check, selectAvailable } from '../Home/slice'
+import { check, selectAvailable } from '../../pages/Home/slice'
 import { create } from './slice'
 
 export default function Register() {

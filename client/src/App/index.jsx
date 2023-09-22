@@ -6,7 +6,7 @@ import Header from './components/Header'
 import Loader from './components/Loader'
 import NotFound from './pages/NotFound'
 
-const Home = lazy(() => import('./components/Home'))
+const Home = lazy(() => import('./pages/Home'))
 
 export default function App() {
   return <BrowserRouter>

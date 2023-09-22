@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import headerReducer from './components/Header/slice'
-import homeReducer from './components/Home/slice'
+import homeReducer from './pages/Home/slice'
 import loginReducer from './components/Login/slice'
 import registerReducer from './components/Register/slice'
 import activateReducer from './components/Activate/slice'

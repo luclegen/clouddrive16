@@ -1,9 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { selectLoggedIn, selectIsActivate } from './slice'
-import Login from '../Login'
-import Files from '../Files'
-import Activate from '../Activate'
+import Login from '../../components/Login'
+import Files from '../../components/Files'
+import Activate from '../../components/Activate'
 
 export default function Home() {
   const loggedIn = useSelector(selectLoggedIn)
