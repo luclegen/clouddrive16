@@ -39,6 +39,7 @@ api
   .use(require('express-session')(session))
   .use(require('cors')({ origin: [process.env.WEB1, process.env.WEB2], credentials: true }))
   .use(require('cookie-parser')(process.env.SECRET))
+  .use(require('./middlewares/authentication.middleware'))
 
 // Add routes
 api.use(require('./routes'))
