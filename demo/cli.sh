@@ -22,7 +22,8 @@ git push heroku main
 # II. EXPRESS.JS SERVER
 cd /workspace/cloud-drive-16/server; clear; npm start
 mkdir server; cd server; mkdir src; touch src/index.js; npm init -y
-cd server; npm i -s dotenv mongoose express bcryptjs cors body-parser jsonwebtoken passport passport-local lodash swagger-ui-express swagger-jsdoc nodemailer rimraf
+cd server; npm i -s dotenv mongoose express bcryptjs cors body-parser cookie-parser jsonwebtoken passport passport-local lodash swagger-ui-express swagger-jsdoc nodemailer rimraf i18next i18next-http-middleware i18next-fs-backend eslint prettier eslint-config-prettier prettier-eslint eslint-plugin-prettier
+npm init @eslint/config
 heroku login
 heroku create clouddrive16-server
 xdg-open https://dashboard.heroku.com/apps/clouddrive16-server/settings
