@@ -63,4 +63,4 @@ api.get('env') === 'production'
 api.use(require('./middlewares/handler'))
 
 // Start server
-web.listen(PORT, () => info(`Server started at http://localhost:${PORT}`))
+web.listen(PORT, () => info(`Server started${api.get('env') === 'production' ? '' : ` at http://localhost:${PORT}`}.`))
