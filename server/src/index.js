@@ -4,6 +4,7 @@ const { info } = require('console')
 const express = require('express')
 const YAML = require("yaml")
 const bodyParser = require("body-parser")
+const cookieParser = require('cookie-parser');
 const swaggerUi = require("swagger-ui-express")
 
 // Environment Variables
@@ -29,12 +30,15 @@ api.get('env') === 'production' && api.set('trust proxy', 1)
 
 // Middlewares
 api.get('env') === 'production' && web.use(express.static(path.resolve(__dirname, '../public')))
-api.use(bodyParser.urlencoded({ extended: false }))
-api.use(bodyParser.json())
-api.use(require('passport').initialize())
-api.use(require('express-session')(session))
-api.use(require('cors')({ origin: [process.env.WEB1, process.env.WEB2], credentials: true }))
-api.use(require('cookie-parser')(process.env.SECRET))
+api
+  .use(cookieParser())
+  .use(bodyParser.text())
+  .use(bodyParser.urlencoded({ extended: false }))
+  .use(bodyParser.json())
+  .use(require('passport').initialize())
+  .use(require('express-session')(session))
+  .use(require('cors')({ origin: [process.env.WEB1, process.env.WEB2], credentials: true }))
+  .use(require('cookie-parser')(process.env.SECRET))
 require('./middlewares/passport')
 
 // Add routes
