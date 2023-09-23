@@ -2,10 +2,10 @@ const path = require('path')
 const fs = require('fs')
 const { info } = require('console')
 const express = require('express')
-const YAML = require("yaml")
-const bodyParser = require("body-parser")
-const cookieParser = require('cookie-parser');
-const swaggerUi = require("swagger-ui-express")
+const YAML = require('yaml')
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const swaggerUi = require('swagger-ui-express')
 
 // Environment Variables
 !process.env.NODE_ENV && require('dotenv').config()
@@ -39,7 +39,6 @@ api
   .use(require('express-session')(session))
   .use(require('cors')({ origin: [process.env.WEB1, process.env.WEB2], credentials: true }))
   .use(require('cookie-parser')(process.env.SECRET))
-require('./middlewares/passport')
 
 // Add routes
 api.use(require('./routes'))
@@ -49,18 +48,18 @@ web.use('/api', api)
 
 // Client
 api.get('env') === 'production'
-  ? web.get('*', (req, res) => 
-    res.sendFile(path.join(__dirname, '../public', "index.html")))
+  ? web.get('*', (req, res) =>
+    res.jsonFile(path.join(__dirname, '../public', 'index.html')))
   : web.use(
     swaggerUi.serve,
     swaggerUi.setup(
       YAML.parse(fs.readFileSync(path.resolve(__dirname, '../configs/openapi.yaml'), 'utf8')),
-    {
-      explorer: true,
-      customSiteTitle: 'CloudDrive16 API',
-      customfavIcon: `${process.env.WEB1}/favicon.ico`,
-      customCss: fs.readFileSync(path.resolve(__dirname, '../styles', 'openapi.css')).toString(),
-    })
+      {
+        explorer: true,
+        customSiteTitle: 'CloudDrive16 API',
+        customfavIcon: `${process.env.WEB1}/favicon.ico`,
+        customCss: fs.readFileSync(path.resolve(__dirname, './styles', 'openapi.css')).toString()
+      })
   )
 
 // Error handle
