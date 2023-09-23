@@ -10,7 +10,7 @@ module.exports.create = (req, res, next) =>
   JSON.parse(req.body.names).forEach(name =>
     File.find({ _uid: req.payload, name: name, path: req.body.path })
       .then(files => {
-        if (files.length) res.status(422).send('File is duplicate. Please choose another file.')
+        if (files.length) res.status(422).json('File is duplicate. Please choose another file.')
         else {
           const file = new File()
 
@@ -19,7 +19,7 @@ module.exports.create = (req, res, next) =>
           file.name = name
 
           file.save()
-            .then(() => res.status(201).send())
+            .then(() => res.status(201).json())
             .catch(err => next(err))
         }
       })
@@ -30,7 +30,7 @@ module.exports.createPlaintext = (req, res, next) =>
     ? checker.isPlaintext(req.body.name)
       ? File.find({ _uid: req.payload, name: req.body.name, path: req.body.path })
         .then(files => {
-          if (files.length) res.status(422).send('File is duplicate. Please choose another file.')
+          if (files.length) res.status(422).json('File is duplicate. Please choose another file.')
           else {
             const file = new File()
 
@@ -40,13 +40,13 @@ module.exports.createPlaintext = (req, res, next) =>
 
             file.save()
               .then(() => fs.open(`${converter.toUploadFilePath(req.payload._id, { path: req.body.path, name: req.body.name })}`, 'w', err =>
-                err ? next(err) : res.status(201).send()))
+                err ? next(err) : res.status(201).json()))
               .catch(err => next(err))
           }
         })
         .catch(err => next(err))
-      : res.status(403).send('Invalid plain text document file!')
-    : res.status(403).send('Name is required.')
+      : res.status(403).json('Invalid plain text document file!')
+    : res.status(403).json('Name is required.')
 
 module.exports.download = (req, res, next) =>
   File.findById(req.params.id)
@@ -55,7 +55,7 @@ module.exports.download = (req, res, next) =>
 
 module.exports.read = (req, res, next) =>
   File.findById(req.params.id)
-    .then(file => res.send(_.pick(file, ['path', 'name', 'is_trash'])))
+    .then(file => res.json(_.pick(file, ['path', 'name', 'is_trash'])))
     .catch(err => next(err))
 
 module.exports.update = (req, res, next) => req.body.name
@@ -64,7 +64,7 @@ module.exports.update = (req, res, next) => req.body.name
       File.find({ _uid: req.payload, name: req.body.name, path: file.path })
         .then(files =>
           files.length
-            ? res.status(422).send('You already have a file in the current path. Please a different name.')
+            ? res.status(422).json('You already have a file in the current path. Please a different name.')
             : File.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
               .then(fileEdited =>
                 fileEdited
@@ -73,21 +73,21 @@ module.exports.update = (req, res, next) => req.body.name
                     converter.toUploadFilePath(req.payload._id, fileEdited),
                     err => err
                       ? next(err)
-                      : res.send())
-                  : res.status(404).send('File not found.'))
+                      : res.json())
+                  : res.status(404).json('File not found.'))
               .catch(err => next(err)))
         .catch(err => next(err)))
     .catch(err => next(err))
-  : res.status(403).send('Name is required.')
+  : res.status(403).json('Name is required.')
 
 module.exports.delete = (req, res, next) =>
   File.findByIdAndUpdate(req.params.id, { $set: { is_trash: true } }, { new: true })
-    .then(file => file ? res.send() : res.status(404).send('File not found.'))
+    .then(file => file ? res.json() : res.status(404).json('File not found.'))
     .catch(err => next(err))
 
 module.exports.restore = (req, res, next) =>
   File.findByIdAndUpdate(req.params.id, { $set: { is_trash: false } }, { new: true })
-    .then(file => file ? res.send() : res.status(404).send('File not found.'))
+    .then(file => file ? res.json() : res.status(404).json('File not found.'))
     .catch(err => next(err))
 
 module.exports.move = (req, res, next) => File.findById(req.params.id)
@@ -96,7 +96,7 @@ module.exports.move = (req, res, next) => File.findById(req.params.id)
       + file
       ? File.find({ _uid: req.payload, name: file.name, path: destFolder ? converter.toPath(destFolder) : '/' })
         .then(files => files.length
-          ? res.status(422).send('You already have a file in the current path! Please choose another file.')
+          ? res.status(422).json('You already have a file in the current path! Please choose another file.')
           : File.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true })
             .then(movedFile => movedFile
               ? fs.rename(
@@ -104,11 +104,11 @@ module.exports.move = (req, res, next) => File.findById(req.params.id)
                 (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + file.name,
                 err => err
                   ? next(err)
-                  : res.send('Done.'))
-              : res.status(404).send('Moved folder not found!'))
+                  : res.json('Done.'))
+              : res.status(404).json('Moved folder not found!'))
             .catch(err => next(err)))
         .catch(err => next(err))
-      : res.status(404).send('Folder not found!'))
+      : res.status(404).json('Folder not found!'))
   .catch(err => next(err))
 
 module.exports.copy = (req, res, next) => File.findById(req.params.id)
@@ -130,11 +130,11 @@ module.exports.copy = (req, res, next) => File.findById(req.params.id)
                 (destFolder ? converter.toUploadPath(req.payload._id, destFolder, files.map(v => v.name)) : process.env.UPLOADS + req.payload._id + '/files') + '/' + duplicator.copyFileInFolder(file.name, files.map(v => v.name)),
                 err => err
                   ? next(err)
-                  : res.send('Done.'))
-              : res.status(404).send('File isn\'t copied!'))
+                  : res.json('Done.'))
+              : res.status(404).json('File isn\'t copied!'))
         })
         .catch(err => next(err))
-      : res.status(404).send('Folder not found!'))
+      : res.status(404).json('Folder not found!'))
   .catch(err => next(err))
 
 module.exports.deleteForever = (req, res, next) =>
@@ -149,14 +149,14 @@ module.exports.deleteForever = (req, res, next) =>
                   { recursive: true },
                   err => err
                     ? next(err)
-                    : res.send())
-                : res.status(404).send('File not found.'))
+                    : res.json())
+                : res.status(404).json('File not found.'))
             .catch(err => next(err))
-          : res.status(403).send('File not in trash.')
-        : res.status(404).send('File not found.'))
+          : res.status(403).json('File not in trash.')
+        : res.status(404).json('File not found.'))
     .catch(err => next(err))
 
 module.exports.list = (req, res, next) =>
   File.find({ _uid: req.payload, name: new RegExp(req.query.name, 'ig') })
-    .then(files => res.status(201).send(files))
+    .then(files => res.status(201).json(files))
     .catch(err => next(err))

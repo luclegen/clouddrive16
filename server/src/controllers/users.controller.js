@@ -5,7 +5,7 @@ const checker = require('../helpers/checker')
 
 module.exports.create = (req, res, next) => {
   if (!checker.isDate(req.body.year, req.body.month, req.body.day))
-    return res.status(403).send('Invalid date of birth.')
+    return res.status(403).json('Invalid date of birth.')
 
   const user = new User()
   const profile = new Profile()
@@ -22,10 +22,10 @@ module.exports.create = (req, res, next) => {
     .then(user => user
       ? new Promise(() => profile._uid = user) && profile.save()
         .then(profile => profile
-          ? res.status(201).send('Registrationed successfully.')
-          : res.status(404).send('Profile not found.'))
+          ? res.status(201).json('Registered successfully.')
+          : res.status(404).json('Profile not found.'))
         .catch(err => user.remove() && next(err))
-      : res.status(404).send('User not found.'))
+      : res.status(404).json('User not found.'))
     .catch(err => next(err))
 }
 
@@ -34,6 +34,6 @@ module.exports.read = (req, res, next) =>
     .then(user =>
       Profile.findOne({ _uid: req.payload })
         .then(profile => user
-          ? res.send({ ..._.pick(user, ['avatar', 'email', 'is_activate']), ..._.pick(profile, ['name', 'dob', 'sex']) })
-          : res.status(404).send('User not found.')))
+          ? res.json({ ..._.pick(user, ['avatar', 'email', 'is_activate']), ..._.pick(profile, ['name', 'dob', 'sex']) })
+          : res.status(404).json('User not found.')))
     .catch(err => next(err))

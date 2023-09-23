@@ -10,7 +10,7 @@ const duplicator = require('../helpers/duplicator')
 module.exports.create = (req, res, next) =>
   Folder.find({ _uid: req.payload, name: req.body.name, path: req.body.path })
     .then(folders => {
-      if (folders.length) res.status(422).send('You already have a folder in the current path. Please a different name.')
+      if (folders.length) res.status(422).json('You already have a folder in the current path. Please a different name.')
       else {
         const folder = new Folder()
 
@@ -29,7 +29,7 @@ module.exports.create = (req, res, next) =>
 
             path.forEach(p => !fs.existsSync(p) && fs.mkdirSync(p))
 
-            res.status(201).send()
+            res.status(201).json()
           })
           .catch(err => next(err))
       }
@@ -38,7 +38,7 @@ module.exports.create = (req, res, next) =>
 
 module.exports.read = (req, res, next) =>
   Folder.findById(req.params.id)
-    .then(folder => res.send(_.pick(folder, ['path', 'name', 'is_trash'])))
+    .then(folder => res.json(_.pick(folder, ['path', 'name', 'is_trash'])))
     .catch(err => next(err))
 
 module.exports.update = (req, res, next) => req.body.name
@@ -48,7 +48,7 @@ module.exports.update = (req, res, next) => req.body.name
         Folder.find({ _uid: req.payload, name: req.body.name, path: folder.path })
           .then(folders =>
             folders.length
-              ? res.status(422).send('You already have a folder in the current path. Please a different name.')
+              ? res.status(422).json('You already have a folder in the current path. Please a different name.')
               : Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
                 .then(editedFolder => editedFolder
                   ? fs.rename(
@@ -62,32 +62,32 @@ module.exports.update = (req, res, next) => req.body.name
                             (f.path = f.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
                             && f
                               .save()
-                              .then(savedFolder => !savedFolder && res.status(404).send('Folder not found.'))
+                              .then(savedFolder => !savedFolder && res.status(404).json('Folder not found.'))
                               .catch(err => next(err)))
                           || File.find({ _uid: req.payload, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') })
                             .then(files => files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                               .forEach(file => (file.path = file.path?.replace(converter.toPath(folder), converter.toPath(editedFolder)))
                                 && file.save()
-                                  .then(editedFile => !editedFile && res.status(404).send('File not found.'))
+                                  .then(editedFile => !editedFile && res.status(404).json('File not found.'))
                                   .catch(err => next(err)))
-                              || res.send())
+                              || res.json())
                             .catch(err => next(err)))
                         .catch(err => next(err)))
-                  : res.status(404).send('Folder not found.'))
+                  : res.status(404).json('Folder not found.'))
                 .catch(err => next(err)))
           .catch(err => next(err)))
       .catch(err => next(err))
-    : res.status(400).send('Invalid folder name!')
-  : res.status(403).send('Name is required.')
+    : res.status(400).json('Invalid folder name!')
+  : res.status(403).json('Name is required.')
 
 module.exports.delete = (req, res, next) =>
   Folder.findByIdAndUpdate(req.params.id, { $set: { is_trash: true } }, { new: true })
-    .then(folder => folder ? res.status(200).send() : res.status(404).send('Folder not found.'))
+    .then(folder => folder ? res.status(200).json() : res.status(404).json('Folder not found.'))
     .catch(err => next(err))
 
 module.exports.restore = (req, res, next) =>
   Folder.findByIdAndUpdate(req.params.id, { $set: { is_trash: false } }, { new: true })
-    .then(folder => folder ? res.send() : res.status(404).send('Folder not found.'))
+    .then(folder => folder ? res.json() : res.status(404).json('Folder not found.'))
     .catch(err => next(err))
 
 module.exports.move = (req, res, next) => Folder.findById(req.params.id)
@@ -97,10 +97,10 @@ module.exports.move = (req, res, next) => Folder.findById(req.params.id)
       ? (destFolder
         ? converter.toPath(folder) === converter.toPath(destFolder)
         : converter.toPath(folder) === '/')
-        ? res.status(422).send('You already have a folder in the current path! Please choose another folder.')
+        ? res.status(422).json('You already have a folder in the current path! Please choose another folder.')
         : Folder.find({ _uid: req.payload, name: folder.name, path: destFolder ? converter.toPath(destFolder) : '/' })
           .then(folders => folders.length
-            ? res.status(422).send('You already have a folder in the current path! Please choose another folder.')
+            ? res.status(422).json('You already have a folder in the current path! Please choose another folder.')
             : Folder.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true })
               .then(movedFolder => movedFolder
                 ? Folder.find({ _uid: req.payload, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') })
@@ -108,27 +108,27 @@ module.exports.move = (req, res, next) => Folder.findById(req.params.id)
                     .forEach(oldFolder =>
                       (oldFolder.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
                       && oldFolder.save()
-                        .then(movedFolder1 => !movedFolder1 && res.status(404).send('Moved folder not found!'))
+                        .then(movedFolder1 => !movedFolder1 && res.status(404).json('Moved folder not found!'))
                         .catch(err => next(err)))
                     || File.find({ _uid: req.payload, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') })
                       .then(oldFiles => oldFiles.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                         .forEach(oldFile =>
                           (oldFile.path = oldFile.path.replace(converter.toPath(folder), converter.toPath(movedFolder)))
                           && oldFile.save()
-                            .then(movedFile => !movedFile && res.status(404).send('Moved file not found!'))
+                            .then(movedFile => !movedFile && res.status(404).json('Moved file not found!'))
                             .catch(err => next(err)))
                         || fs.rename(
                           converter.toUploadPath(req.payload._id, folder),
                           (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + folder.name,
                           err => err
                             ? next(err)
-                            : res.send('Done.')))
+                            : res.json('Done.')))
                       .catch(err => next(err)))
                   .catch(err => next(err))
-                : res.status(404).send('Moved folder not found!'))
+                : res.status(404).json('Moved folder not found!'))
               .catch(err => next(err)))
           .catch(err => next(err))
-      : res.status(404).send('Folder not found!')))
+      : res.status(404).json('Folder not found!')))
   .catch(err => next(err))
 
 module.exports.copy = (req, res, next) => Folder.findById(req.params.id)
@@ -155,7 +155,7 @@ module.exports.copy = (req, res, next) => Folder.findById(req.params.id)
                     newFolder1.name = oldFolder.name
 
                     newFolder1.save()
-                      .then(copiedFolder1 => !copiedFolder1 && res.status(404).send('Copied folder not found!'))
+                      .then(copiedFolder1 => !copiedFolder1 && res.status(404).json('Copied folder not found!'))
                       .catch(err => next(err))
                   })
                   || File.find({ _uid: req.payload, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') })
@@ -168,7 +168,7 @@ module.exports.copy = (req, res, next) => Folder.findById(req.params.id)
                         newFile.name = copiedFile.name
 
                         newFile.save()
-                          .then(copiedFile => !copiedFile && res.status(404).send('Copied file not found!'))
+                          .then(copiedFile => !copiedFile && res.status(404).json('Copied file not found!'))
                           .catch(err => next(err))
                       })
                       || fse.copy(
@@ -176,14 +176,14 @@ module.exports.copy = (req, res, next) => Folder.findById(req.params.id)
                         (destFolder ? converter.toUploadPath(req.payload._id, destFolder, folders.map(v => v.name)) : process.env.UPLOADS + req.payload._id + '/files') + '/' + duplicator.copyFolderInFolder(folder.name, folders.map(v => v.name)),
                         err => err
                           ? next(err)
-                          : res.send('Done.')))
+                          : res.json('Done.')))
                     .catch(err => next(err)))
                 .catch(err => next(err))
-              : res.status(404).send('Copied folder not found!'))
+              : res.status(404).json('Copied folder not found!'))
             .catch(err => next(err))
         })
         .catch(err => next(err))
-      : res.status(404).send('Folder not found!')))
+      : res.status(404).json('Folder not found!')))
   .catch(err => next(err))
 
 module.exports.deleteForever = (req, res, next) =>
@@ -196,29 +196,29 @@ module.exports.deleteForever = (req, res, next) =>
               ? Folder.find({ _uid: req.payload, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') })
                 .then(folders => folders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                   .forEach(readyFolder => readyFolder.remove()
-                    .then(deletedFolder => !deletedFolder && res.status(404).send('Folder isn\'t deleted.'))
+                    .then(deletedFolder => !deletedFolder && res.status(404).json('Folder isn\'t deleted.'))
                     .catch(err => next(err)))
                   || File.find({ _uid: req.payload, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') })
                     .then(files => files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
                       .forEach(readyFile => readyFile.remove()
-                        .then(deletedFile => !deletedFile && res.status(404).send.send('File isn\'t deleted.'))
+                        .then(deletedFile => !deletedFile && res.status(404).json.json('File isn\'t deleted.'))
                         .catch(err => next(err)))
                       || fs.rm(
                         converter.toUploadPath(req.payload._id, folder),
                         { recursive: true },
                         err => err
                           ? next(err)
-                          : res.send()))
+                          : res.json()))
                     .catch(err => next(err)))
                 .catch(err => next(err))
-              : res.status(404).send('Folder not found.'))
+              : res.status(404).json('Folder not found.'))
             .catch(err => next(err))
-          : res.status(403).send('Folder isn\'t trash.')
-        : res.status(404).send('Folder not found.')
+          : res.status(403).json('Folder isn\'t trash.')
+        : res.status(404).json('Folder not found.')
     )
     .catch(err => next(err))
 
 module.exports.list = (req, res, next) =>
   Folder.find({ _uid: req.payload, name: new RegExp(req.query.name, 'ig') })
-    .then(folders => res.send(folders))
+    .then(folders => res.json(folders))
     .catch(err => next(err))
