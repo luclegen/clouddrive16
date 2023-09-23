@@ -4,8 +4,8 @@
   "description": "CloudDrive16 server",
   "main": "src",
   "scripts": {
-    "start": "node .",
-    "test": "nodemon"
+    "start": "clear; node .",
+    "test": "clear; nodemon"
   },
   "repository": {
     "type": "git",
