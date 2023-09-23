@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const profileSchema = new mongoose.Schema({
   name: String,
-  dob: {
+  birthday: {
     type: Date,
     required: 'Date of birth is required'
   },
@@ -22,7 +22,7 @@ const profileSchema = new mongoose.Schema({
 
 //#region Validation
 
-profileSchema.path('dob').validate(v => (new Date()).getFullYear() - (new Date(v)).getFullYear() >= 5, 'You must be 5 years or older')
+profileSchema.path('birthday').validate(v => (new Date()).getFullYear() - (new Date(v)).getFullYear() >= 5, 'You must be 5 years or older')
 
 //#endregion Validation
 

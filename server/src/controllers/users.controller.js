@@ -15,7 +15,7 @@ module.exports.create = (req, res, next) => {
   user.email = req.body.email
   user.password = req.body.password
   profile.name = req.body.first_name + ' ' + req.body.last_name
-  profile.dob = new Date(req.body.year, req.body.month, req.body.day)
+  profile.birthday = new Date(req.body.year, req.body.month, req.body.day)
   profile.sex = req.body.sex
 
   user.save()
@@ -34,6 +34,6 @@ module.exports.read = (req, res, next) =>
     .then(user =>
       Profile.findOne({ _uid: req.payload })
         .then(profile => user
-          ? res.json({ ..._.pick(user, ['avatar', 'email', 'is_activate']), ..._.pick(profile, ['name', 'dob', 'sex']) })
+          ? res.json({ ..._.pick(user, ['avatar', 'email', 'is_activate']), ..._.pick(profile, ['name', 'birthday', 'sex']) })
           : res.status(404).json('User not found.')))
     .catch(err => next(err))
