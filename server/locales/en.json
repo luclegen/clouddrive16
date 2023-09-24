@@ -1,3 +1,4 @@
 {
-  "Response timeout": "Server not responding!"
+  "Response timeout": "Server not responding.",
+  "Missing credentials": "Missing credentials."
 }
