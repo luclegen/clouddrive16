@@ -5,7 +5,12 @@
   "main": "src",
   "scripts": {
     "start": "clear; node .",
-    "test": "clear; nodemon"
+    "test": "clear; nodemon",
+    "lint": "npx eslint src test",
+    "lint:fix": "npm run lint -- --fix",
+    "prettier": "npx prettier src test --check",
+    "prettier:fix": "npm run prettier -- --write",
+    "format": "npm run prettier:fix && npm run lint:fix"
   },
   "repository": {
     "type": "git",
@@ -19,7 +24,7 @@
     "node",
     "cloud"
   ],
-  "author": "CloudTeam16",
+  "author": "Luc Tan Huynh",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/luclegen/cloud-drive-16/issues"
@@ -33,6 +38,8 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^8.6.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.3",
     "fs-extra": "^10.1.0",
@@ -48,6 +55,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "prettier": "^3.0.3",
+    "prettier-eslint": "^15.0.1",
     "rimraf": "^3.0.2",
     "swagger-ui-express": "^5.0.0",
     "yaml": "^2.3.2"
