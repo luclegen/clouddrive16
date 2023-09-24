@@ -87,6 +87,5 @@ module.exports.logout = (req, res) =>
     .clearCookie('lang')
     .clearCookie('last_name')
     .clearCookie('middle_name')
-    .clearCookie('session')
     .clearCookie('username')
     .json()
