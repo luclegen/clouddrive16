@@ -7,16 +7,6 @@ const catchAsync = require('../middlewares/catcher.middleware')
 const createError = require('http-errors')
 const maxAge = 30 * 24 * 60 * 60 * 1000
 
-module.exports.available = catchAsync(async (req, res, next) => {
-  const user = await User.findOne({ email: req.params.email })
-
-  if (!checker.isEmail()) {
-    return next(createError(400, 'Invalid email.'))
-  }
-
-  res.status(user ? 203 : 200).json(!user)
-})
-
 module.exports.login = catchAsync(async (req, res, next) => {
   req.i18n.changeLanguage(req.body.language)
 
@@ -53,6 +43,16 @@ module.exports.login = catchAsync(async (req, res, next) => {
   })(req, res)
 })
 
+module.exports.available = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ email: req.params.email })
+
+  if (!checker.isEmail()) {
+    return next(createError(400, 'Invalid email.'))
+  }
+
+  res.status(user ? 203 : 200).json(!user)
+})
+
 module.exports.verify = (req, res, next) => User.findById(req.payload)
   .then(user => user
     ? user.is_activate
@@ -81,10 +81,12 @@ module.exports.verify = (req, res, next) => User.findById(req.payload)
 
 module.exports.logout = (req, res) =>
   res
-    .clearCookie('connect.sid')
-    .clearCookie('id')
     .clearCookie('avatar')
     .clearCookie('first_name')
+    .clearCookie('id')
+    .clearCookie('lang')
     .clearCookie('last_name')
-    .clearCookie('is_activate')
+    .clearCookie('middle_name')
+    .clearCookie('session')
+    .clearCookie('username')
     .json()
