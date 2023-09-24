@@ -56,7 +56,7 @@ api.get('env') === 'production'
   : web.use(
     swaggerUi.serve,
     swaggerUi.setup(
-      YAML.parse(fs.readFileSync(path.resolve(__dirname, '../configs/openapi.yaml'), 'utf8')),
+      YAML.parse(fs.readFileSync(path.resolve(__dirname, '../configs', 'openapi.yaml'), 'utf8')),
       {
         explorer: true,
         customSiteTitle: 'CloudDrive16 API',
