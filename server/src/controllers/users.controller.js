@@ -1,14 +1,19 @@
 const User = require('../models/user.model')
 const Profile = require('../models/profile.model')
 const _ = require('lodash')
+const catchAsync = require('../middlewares/catcher.middleware')
 const checker = require('../helpers/checker')
+const createError = require('http-errors')
 
-module.exports.create = (req, res, next) => {
-  if (!checker.isDate(req.body.year, req.body.month, req.body.day))
+module.exports.create = catchAsync(async (req, res, next) => {
+  req.i18n.changeLanguage(req.body.lang)
+
+  if (!checker.isDate(req.body.year, req.body.month, req.body.day)) {
     return res.status(403).json('Invalid date of birth.')
+  }
 
-  const user = new User()
-  const profile = new Profile()
+  let user = new User()
+  let profile = new Profile()
 
   user.name.first = req.body.first_name
   user.name.last = req.body.last_name
@@ -18,16 +23,20 @@ module.exports.create = (req, res, next) => {
   profile.birthday = new Date(req.body.year, req.body.month, req.body.day)
   profile.sex = req.body.sex
 
-  user.save()
-    .then(user => user
-      ? new Promise(() => profile._uid = user) && profile.save()
-        .then(profile => profile
-          ? res.status(201).json('Registered successfully.')
-          : res.status(404).json('Profile not found.'))
-        .catch(err => user.remove() && next(err))
-      : res.status(404).json('User not found.'))
-    .catch(err => next(err))
-}
+  user = await user.save()
+  if (user) {
+    profile._uid = user
+    profile = await profile.save()
+
+    if (profile) {
+      res.status(201).json(req.t('Registered successfully.'))
+    } else {
+      next(createError(404, 'Profile not found.'))
+    }
+  } else {
+    next(createError(404, 'User not found.'))
+  }
+})
 
 module.exports.read = (req, res, next) =>
   User.findById(req.payload)
