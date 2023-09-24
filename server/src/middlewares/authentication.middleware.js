@@ -6,7 +6,7 @@ passport.use(new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
   passReqToCallback: false
-}, (email, password, done) => User.findOne({ email: email })
+}, (email, password, done) => User.findOne({ email })
   .then(async user => user
     ? await user.authenticate(password)
       ? done(null, user)
