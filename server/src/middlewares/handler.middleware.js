@@ -44,9 +44,9 @@ module.exports = (err, req, res, next) => {
       break
 
     default:
-      return res.status(status).json(Object.entries(err).length ? err : converter.capitalize(msg))
+      return res.status(status).json(req.t(converter.capitalize(msg)))
     }
   }
 
-  return res.status(status).json(converter.capitalize(msg))
+  return res.status(status).json(req.t(converter.capitalize(msg)))
 }
