@@ -25,7 +25,7 @@ module.exports = (err, req, res, next) => {
     break
 
   default:
-    switch (err.status) {
+    switch (err.code) {
     case 11000:
       status = 422
       msg = converter.capitalize(Object.keys(err.keyValue)[0] + ' is taken!')
