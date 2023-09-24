@@ -43,6 +43,7 @@
     "express": "^4.17.1",
     "express-session": "^1.17.3",
     "fs-extra": "^10.1.0",
+    "http-errors": "^2.0.0",
     "i18next": "^23.5.1",
     "i18next-fs-backend": "^2.2.0",
     "i18next-http-middleware": "^3.3.2",
