@@ -12,7 +12,7 @@ passport.use(new LocalStrategy({
     ? await user.authenticate(password)
       ? done(null, user)
       : done(null, false, createError(401, 'Wrong password.'))
-    : done(null, false, createError(404, 'Username not registered.')))
+    : done(null, false, createError(404, 'Email not registered.')))
   .catch(err => done(err, false))
 ))
 
