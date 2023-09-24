@@ -1,6 +1,7 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const User = require('../models/user.model')
+const createError = require('http-errors')
 
 passport.use(new LocalStrategy({
   usernameField: 'email',
@@ -10,9 +11,9 @@ passport.use(new LocalStrategy({
   .then(async user => user
     ? await user.authenticate(password)
       ? done(null, user)
-      : done(null, false, 'Wrong password.')
-    : done(null, false, 'Username not registered.'))
-  .catch(err => done(err, false, 'Error'))
+      : done(null, false, createError(401, 'Wrong password.'))
+    : done(null, false, createError(404, 'Username not registered.')))
+  .catch(err => done(err, false))
 ))
 
 passport.serializeUser((user, done) =>
