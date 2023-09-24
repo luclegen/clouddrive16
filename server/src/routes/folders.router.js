@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const authorize = require('../middlewares/authorize');
+const authorize = require('../middlewares/authorization.middleware');
 const foldersController = require('../controllers/folders.controller')
 
 router.post('/', authorize, foldersController.create)
