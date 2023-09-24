@@ -1,9 +1,11 @@
 const passport = require('passport')
 const User = require('../models/user.model')
+const Session = require('../models/session.model')
 const Code = require('../models/code.model')
 const checker = require('../helpers/checker')
 const catchAsync = require('../middlewares/catcher.middleware')
 const createError = require('http-errors')
+const maxAge = 30 * 24 * 60 * 60 * 1000
 
 module.exports.available = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: req.params.email })
@@ -15,21 +17,41 @@ module.exports.available = catchAsync(async (req, res, next) => {
   res.status(user ? 203 : 200).json(!user)
 })
 
-module.exports.login = (req, res, next) =>
-  passport.authenticate('local', (err, user, info) => err
-    ? next(err)
-    : user
-      ? (req.session.cookie.expires = req.body.remember ? 365 * 24 * 60 * 60 * 1000 : false) +
-      (req.session.token = user.sign()) &&
-      res.json({
-        id: user._id,
-        avatar: user.avatar,
-        first_name: user.name.first,
-        last_name: user.name.last,
-        is_activate: user.is_activate
+module.exports.login = catchAsync(async (req, res, next) => {
+  req.i18n.changeLanguage(req.body.language)
+
+  if (!checker.isEmail(req.body.email)) return next(createError(400, 'Invalid email.'))
+
+  passport.authenticate('local', (err, user, info) => {
+    if (err) next(err)
+
+    if (user) {
+      req.login(user, err => {
+        if (err) next(err)
+
+        req.session.cookie.expires = req.body.remember ? maxAge : false
+
+        req.session.save(async err => {
+          if (err) next(err)
+
+          const session = await Session.findByIdAndUpdate(req.session.id, { _uid: user }, { new: true })
+
+          if (session) {
+            res
+              .cookie('lang', user.lang, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+              .cookie('id', user._id.toString(), { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+              .cookie('avatar', user.avatar || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+              .cookie('username', user.username || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+              .cookie('first_name', user.name.first, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+              .cookie('middle_name', user.name.middle || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+              .cookie('last_name', user.name.last, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+              .json()
+          }
+        })
       })
-      : res.status(401).json(info)
-  )(req, res)
+    } else next(info)
+  })(req, res)
+})
 
 module.exports.verify = (req, res, next) => User.findById(req.payload)
   .then(user => user
