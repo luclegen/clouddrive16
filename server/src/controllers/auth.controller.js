@@ -1,24 +1,32 @@
 const passport = require('passport')
 const User = require('../models/user.model')
 const Code = require('../models/code.model')
+const checker = require('../helpers/checker')
+const catchAsync = require('../middlewares/catcher.middleware')
+const createError = require('http-errors')
 
-module.exports.available = (req, res, next) =>
-  User.findOne({ email: req.params.email })
-    .then(user => res.status(user ? 203 : 200).json(!user))
-    .catch(err => next(err))
+module.exports.available = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ email: req.params.email })
+
+  if (!checker.isEmail()) {
+    return next(createError(400, 'Invalid email.'))
+  }
+
+  res.status(user ? 203 : 200).json(!user)
+})
 
 module.exports.login = (req, res, next) =>
   passport.authenticate('local', (err, user, info) => err
     ? next(err)
     : user
-      ? (req.session.cookie.expires = req.body.remember ? 365 * 24 * 60 * 60 * 1000 : false)
-      + (req.session.token = user.sign())
-      && res.json({
+      ? (req.session.cookie.expires = req.body.remember ? 365 * 24 * 60 * 60 * 1000 : false) +
+      (req.session.token = user.sign()) &&
+      res.json({
         id: user._id,
         avatar: user.avatar,
         first_name: user.name.first,
         last_name: user.name.last,
-        is_activate: user.is_activate,
+        is_activate: user.is_activate
       })
       : res.status(401).json(info)
   )(req, res)
@@ -34,8 +42,8 @@ module.exports.verify = (req, res, next) => User.findById(req.payload)
               ? User.findByIdAndUpdate(req.payload, { $set: { is_activate: true } }, { new: true })
                 .then(user => user
                   ? code.remove()
-                    .then(() => (req.session.token = user.sign())
-                      && res.cookie('is_activate', true, { expires: req.session?.cookie?.expires }).json())
+                    .then(() => (req.session.token = user.sign()) &&
+                      res.cookie('is_activate', true, { expires: req.session?.cookie?.expires }).json())
                     .catch(err => next(err))
                   : res.status(404).json('User not found.'))
                 .catch(err => next(err))
