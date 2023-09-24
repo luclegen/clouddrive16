@@ -99,6 +99,19 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+    delete:
+      tags:
+        - auth
+      summary: Logout
+      description: Logout
+      operationId: logout
+      responses:
+        '401':
+          description: "Unauthorized"
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /auth/{email}:
     get:
       tags:
@@ -157,7 +170,7 @@ paths:
         '201':
           description: "Registered successfully."
         '400':
-          description: "1. Invalid email;\n2. Password must be at least 8 characters long.|Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters)."
+          description: "1. Invalid email;\n2. Password must be at least 8 characters long|Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters);\n3. Invalid language."
         '403':
           description: "Invalid date of birth."
         '404':
