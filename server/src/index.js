@@ -18,6 +18,7 @@ const api = express()
 const web = express()
 const PORT = process.env.PORT || 5000
 const session = {
+  name: 'session',
   secret: process.env.SECRET,
   resave: true,
   saveUninitialized: true,
@@ -65,7 +66,7 @@ api.get('env') === 'production'
   )
 
 // Error handle
-api.use(require('./middlewares/handler'))
+api.use(require('./middlewares/handler.middleware'))
 
 // Start server
 web.listen(PORT, () => info(`Server started${api.get('env') === 'production' ? '' : ` at http://localhost:${PORT}`}.`))
