@@ -16,10 +16,10 @@ externalDocs:
 servers:
   - url: http://localhost:5000/api
 tags:
-  - name: auth
-    description: Authentication
   - name: users
     description: Users
+  - name: auth
+    description: Authentication
   - name: pet
     description: Everything about your Pets
     externalDocs:
@@ -33,6 +33,38 @@ tags:
   - name: user
     description: Operations about user
 paths:
+  /users:
+    post:
+      tags:
+        - users
+      summary: Create user
+      description: Create a new user
+      operationId: createUser
+      requestBody:
+        description: Create a new user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        '201':
+          description: "Registered successfully."
+        '400':
+          description: "1. Invalid email;\n2. Password must be at least 8 characters long|Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters);\n3. Invalid language;\n4. Invalid role."
+        '403':
+          description: "Invalid birthday."
+        '404':
+          description: "User not found.|Profile not found."
+        '422':
+          description: "Email is taken!"
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /auth:
     put:
       tags:
@@ -145,38 +177,6 @@ paths:
                 default: false
         '400':
           description: "Invalid email."
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /users:
-    post:
-      tags:
-        - users
-      summary: Create user
-      description: Create a new user
-      operationId: createUser
-      requestBody:
-        description: Create a new user
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
-      responses:
-        '201':
-          description: "Registered successfully."
-        '400':
-          description: "1. Invalid email;\n2. Password must be at least 8 characters long|Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters);\n3. Invalid language."
-        '403':
-          description: "Invalid date of birth."
-        '404':
-          description: "User not found.|Profile not found."
-        '422':
-          description: "Email is taken!"
       security:
         - petstore_auth:
             - write:pets
@@ -776,6 +776,10 @@ components:
         password:
           type: string
           example: Luc123!@#
+        roles:
+          type: array
+          items: string
+          example: ['User']
         day:
           type: integer
           example: 29
