@@ -79,13 +79,21 @@ module.exports.verify = (req, res, next) => User.findById(req.payload)
   )
   .catch(err => next(err))
 
-module.exports.logout = (req, res) =>
-  res
-    .clearCookie('avatar')
-    .clearCookie('first_name')
-    .clearCookie('id')
-    .clearCookie('lang')
-    .clearCookie('last_name')
-    .clearCookie('middle_name')
-    .clearCookie('username')
-    .json()
+module.exports.logout = (req, res, next) => {
+  req.logout(err => {
+    if (err) return next(err)
+    req.session.destroy(err => {
+      if (err) return next(err)
+      res
+        .clearCookie('session')
+        .clearCookie('lang')
+        .clearCookie('id')
+        .clearCookie('avatar')
+        .clearCookie('username')
+        .clearCookie('first_name')
+        .clearCookie('middle_name')
+        .clearCookie('last_name')
+        .json()
+    })
+  })
+}
