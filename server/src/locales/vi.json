@@ -1,4 +1,9 @@
 {
+  "Invalid email": "Email không hợp lệ",
+  "Password must be at least 8 characters long": "Mật khẩu phải dài ít nhất 8 ký tự",
+  "Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters)": "Vui lòng chọn một mật khẩu mạnh hơn. Hãy thử kết hợp các chữ cái, số và ký hiệu (sử dụng 8 ký tự trở lên)",
+  "Invalid role": "Vai trò không hợp lệ",
+  "Invalid birthday.": "Ngày sinh không hợp lệ.",
   "Registered successfully.": "Đăng ký thành công.",
   "User not found.": "Không tìm thấy người dùng.",
   "Profile not found.": "Không tìm thấy hồ sơ.",
