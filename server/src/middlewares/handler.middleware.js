@@ -3,10 +3,12 @@ const converter = require('../helpers/converter')
 module.exports = (err, req, res, next) => {
   let status = err.status || 500; let msg = err.message || 'Server error!'
 
+  if (req.app.get('env') === 'development') console.error(err)
+
   switch (err.name) {
   case 'ValidationError':
     status = 400
-    msg = Object.values(err.errors).map((e, i) => (i + 1) + '. ' + e).join(';\n') + '.'
+    msg = Object.values(err.errors).map((e, i) => (i + 1) + '. ' + req.t(e)).join(';\n') + '.'
     break
 
   case 'JsonWebTokenError':
