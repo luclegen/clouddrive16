@@ -1,0 +1,20 @@
+{
+  "User": [
+    {
+      "id": "readUser",
+      "can": true,
+      "action": "read",
+      "subject": "User",
+      "fields": []
+    }
+  ],
+  "VIP": [
+    {
+      "id": "login",
+      "can": true,
+      "action": "login",
+      "subject": "User",
+      "fields": []
+    }
+  ]
+}
