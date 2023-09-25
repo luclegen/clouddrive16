@@ -65,6 +65,19 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+    patch:
+      tags:
+        - users
+      summary: Change langugae
+      description: Change langugae of user
+      operationId: changeLang
+      requestBody:
+        description: Change lang
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: en|vi
   /auth:
     put:
       tags:
@@ -138,6 +151,8 @@ paths:
       description: Logout
       operationId: logout
       responses:
+        '200':
+          description: Logout successfully.
         '401':
           description: "Unauthorized."
       security:
@@ -804,6 +819,12 @@ components:
           example: en|vi
       xml:
         name: user
+    Lang:
+      type: string
+      enum:
+        - en
+        - vi
+      example: en|vi
     Tag:
       type: object
       properties:
