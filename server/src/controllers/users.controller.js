@@ -9,7 +9,7 @@ module.exports.create = catchAsync(async (req, res, next) => {
   req.i18n.changeLanguage(req.body.lang)
 
   if (!checker.isDate(req.body.year, req.body.month, req.body.day)) {
-    return res.status(403).json('Invalid date of birth.')
+    return next(createError(403, 'Invalid birthday.'))
   }
 
   let user = new User()
