@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const checker = require('../helpers/checker')
 const Lang = require('./lang.enum')
+const roles = require('./roles.json')
 
 const userSchema = new mongoose.Schema({
   avatar: String,
@@ -28,6 +29,14 @@ const userSchema = new mongoose.Schema({
     required: 'Password is required',
     minlength: [8, 'Password must be at least 8 characters long']
   },
+  roles: [{
+    type: String,
+    enum: {
+      values: Object.keys(roles),
+      message: 'Invalid role'
+    },
+    default: Object.keys(roles)[0]
+  }],
   lang: {
     type: String,
     enum: {

@@ -19,6 +19,7 @@ module.exports.create = catchAsync(async (req, res, next) => {
   user.name.last = req.body.last_name
   user.email = req.body.email
   user.password = req.body.password
+  user.roles = req.body.roles
   user.lang = req.body.lang
   profile.name = req.body.first_name + ' ' + req.body.last_name
   profile.birthday = new Date(req.body.year, req.body.month, req.body.day)
