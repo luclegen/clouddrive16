@@ -777,6 +777,9 @@ components:
         password:
           type: string
           example: Luc123!@#
+        remember:
+          type: boolean
+          example: false
         language:
           type: string
           enum:
