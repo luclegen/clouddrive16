@@ -1,6 +1,7 @@
+const bcrypt = require('bcryptjs')
+const _ = require('lodash')
 const User = require('../models/user.model')
 const Profile = require('../models/profile.model')
-const _ = require('lodash')
 const catchAsync = require('../middlewares/catcher.middleware')
 const checker = require('../helpers/checker')
 const createError = require('http-errors')
@@ -18,7 +19,7 @@ module.exports.create = catchAsync(async (req, res, next) => {
   user.name.first = req.body.first_name
   user.name.last = req.body.last_name
   user.email = req.body.email
-  user.password = req.body.password
+  user.password = await bcrypt.hash(req.body.password, await bcrypt.genSalt(10))
   user.roles = req.body.roles
   user.lang = req.body.lang
   profile.name = req.body.first_name + ' ' + req.body.last_name
