@@ -68,8 +68,8 @@ paths:
     patch:
       tags:
         - users
-      summary: Change langugae
-      description: Change langugae of user
+      summary: Change language
+      description: Change language of user
       operationId: changeLang
       requestBody:
         description: Change lang
@@ -78,6 +78,13 @@ paths:
             schema:
               type: string
               example: en|vi
+      responses:
+        '200':
+          description: "Change language successfully."
+        '400':
+          description: "1. Invalid language."
+        '404':
+          description: "User not found."
   /auth:
     put:
       tags:
