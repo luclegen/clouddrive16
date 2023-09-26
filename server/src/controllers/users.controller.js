@@ -57,6 +57,9 @@ module.exports.changeLang = catchAsync(async (req, res, next) => {
 
   user = await user.save()
 
-  if (user) res.json('Change language successfully.')
-  else next(createError(404, 'User not found.'))
+  if (user) {
+    res
+      .cookie('lang', user.lang, { expires: req.session.cookie.expires })
+      .json(req.t('Change language successfully.'))
+  } else next(createError(404, 'User not found.'))
 })
