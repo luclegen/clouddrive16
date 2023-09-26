@@ -83,6 +83,8 @@ paths:
           description: "Change language successfully."
         '400':
           description: "1. Invalid language."
+        '403':
+          description: "Cannot execute \"changeLang\" on \"User\"."
         '404':
           description: "User not found."
   /auth:
