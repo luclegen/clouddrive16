@@ -4,7 +4,7 @@ const profileSchema = new mongoose.Schema({
   name: String,
   birthday: {
     type: Date,
-    required: 'Date of birth is required'
+    required: 'Birthday is required'
   },
   sex: {
     type: String,
@@ -20,10 +20,10 @@ const profileSchema = new mongoose.Schema({
   timestamps: true
 })
 
-//#region Validation
+// #region Validation
 
 profileSchema.path('birthday').validate(v => (new Date()).getFullYear() - (new Date(v)).getFullYear() >= 5, 'You must be 5 years or older')
 
-//#endregion Validation
+// #endregion Validation
 
 module.exports = mongoose.model('Profile', profileSchema)
