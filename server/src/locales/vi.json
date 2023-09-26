@@ -11,5 +11,6 @@
   "Email not registered.": "Email chưa được đăng ký.",
   "Wrong password.": "Sai mật khẩu.",
   "Missing credentials": "Thiếu thông tin xác thực.",
-  "Unauthorized.": "Không được ủy quyền."
+  "Unauthorized.": "Không được ủy quyền.",
+  "Change language successfully.": "Thay đổi ngôn ngữ thành công."
 }
