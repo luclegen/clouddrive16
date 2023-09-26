@@ -13,12 +13,14 @@ module.exports = (err, req, res, next) => {
 
   case 'JsonWebTokenError':
     status = 400
-    msg = err.message
     break
 
   case 'TokenExpiredError':
     status = 401
-    msg = err.message
+    break
+
+  case 'ForbiddenError':
+    status = 403
     break
 
   case 'AxiosError':
