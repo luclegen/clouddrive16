@@ -48,3 +48,14 @@ module.exports.read = (req, res, next) =>
           ? res.json({ ..._.pick(user, ['avatar', 'email', 'is_activate']), ..._.pick(profile, ['name', 'birthday', 'sex']) })
           : res.status(404).json('User not found.')))
     .catch(err => next(err))
+
+module.exports.changeLang = catchAsync(async (req, res, next) => {
+  let user = await User.findById(req.user)
+
+  user.lang = req.body
+
+  user = await user.save()
+
+  if (user) res.json('Change language successfully.')
+  else next(createError(404, 'User not found.'))
+})
