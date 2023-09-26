@@ -1,11 +1,16 @@
 {
   "User": [
     {
+      "id": "changeLang",
+      "can": true,
+      "action": "changeLang",
+      "subject": "User"
+    },
+    {
       "id": "readUser",
       "can": true,
       "action": "read",
-      "subject": "User",
-      "fields": []
+      "subject": "User"
     }
   ],
   "VIP": [
