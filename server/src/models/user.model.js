@@ -62,15 +62,6 @@ userSchema.path('password').validate(v => checker.isStrongPassword(v), 'Please c
 
 // #endregion Validation
 
-// #region Events
-
-userSchema.pre('save', async function (next) {
-  this.password && (this.password = await bcrypt.hash(this.password, await bcrypt.genSalt(10)))
-  next()
-})
-
-// #endregion Events
-
 // #region Methods
 
 userSchema.methods.authenticate = async function (password) {
@@ -78,7 +69,7 @@ userSchema.methods.authenticate = async function (password) {
 }
 
 userSchema.methods.sign = function () {
-  return jwt.sign({ _id: this._id, username: this.username, is_activate: this.is_activate }, process.env.SECRET, this.is_activate ? {} : { expiresIn: process.env.EXP })
+  return jwt.sign({ _id: this._id, roles: this.roles, username: this.username, is_activate: this.is_activate }, process.env.SECRET, this.is_activate ? {} : { expiresIn: process.env.EXP })
 }
 
 // #endregion Methods
