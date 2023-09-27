@@ -1,10 +1,11 @@
+const { ForbiddenError } = require('@casl/ability')
 const bcrypt = require('bcryptjs')
 const _ = require('lodash')
+const createError = require('http-errors')
 const User = require('../models/user.model')
 const Profile = require('../models/profile.model')
 const catchAsync = require('../middlewares/catcher.middleware')
 const checker = require('../helpers/checker')
-const createError = require('http-errors')
 
 module.exports.create = catchAsync(async (req, res, next) => {
   req.i18n.changeLanguage(req.body.lang)
@@ -51,11 +52,13 @@ module.exports.read = (req, res, next) =>
     .catch(err => next(err))
 
 module.exports.changeLang = catchAsync(async (req, res, next) => {
-  let user = await User.findById(req.user)
+  let user = await User.findById(req.user).accessibleBy(req.ability)
 
   user.lang = req.body
 
   user = await user.save()
+
+  ForbiddenError.from(req.ability).throwUnlessCan('changeLang', user)
 
   if (user) {
     res
