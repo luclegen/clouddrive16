@@ -6,7 +6,7 @@ const User = require('../models/user.model')
 const roles = require('../models/roles.json')
 
 const defineAbilitiesFor = user => {
-  const { can, cannot, rules } = new AbilityBuilder(createMongoAbility)
+  const { can, cannot, build } = new AbilityBuilder(createMongoAbility)
 
   for (const role of user.roles) {
     const permissions = roles[role]
@@ -17,7 +17,7 @@ const defineAbilitiesFor = user => {
     }
   }
 
-  return new createMongoAbility(rules)
+  return build()
 }
 
 module.exports = catchAsync(async (req, res, next) => {
