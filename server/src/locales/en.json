@@ -1,4 +1,6 @@
 {
   "Response timeout": "Server not responding.",
   "Missing credentials": "Missing credentials.",
+  "Cannot execute \"changeLang\" on \"User\"": "Cannot execute \"changeLang\" on \"User\".",
+  "Cannot execute \"read\" on \"User\"": "Cannot execute \"read\" on \"User\"."
 }

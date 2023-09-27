@@ -12,5 +12,7 @@
   "Wrong password.": "Sai mật khẩu.",
   "Missing credentials": "Thiếu thông tin xác thực.",
   "Unauthorized.": "Không được ủy quyền.",
-  "Change language successfully.": "Thay đổi ngôn ngữ thành công."
+  "Change language successfully.": "Thay đổi ngôn ngữ thành công.",
+  "Cannot execute \"changeLang\" on \"User\"": "Không thể thực thi \"thay đổi ngôn ngữ\" trên \"Người dùng\".",
+  "Cannot execute \"read\" on \"User\"": "Không thể thực thi \"đọc\" trên \"Người dùng\"."
 }
