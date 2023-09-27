@@ -1,16 +1,17 @@
 {
   "User": [
     {
-      "id": "changeLang",
+      "id": "manageUser",
       "can": true,
-      "action": "changeLang",
+      "action": "manage",
       "subject": "User"
     },
     {
-      "id": "readUser",
+      "id": "changeLang",
       "can": true,
-      "action": "read",
-      "subject": "User"
+      "action": "changeLang",
+      "subject": "User",
+      "fields": { "_id": "mine" }
     }
   ],
   "VIP": [
@@ -18,8 +19,7 @@
       "id": "login",
       "can": true,
       "action": "login",
-      "subject": "User",
-      "fields": []
+      "subject": "User"
     }
   ]
 }
