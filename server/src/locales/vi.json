@@ -14,5 +14,6 @@
   "Unauthorized.": "Không được ủy quyền.",
   "Change language successfully.": "Thay đổi ngôn ngữ thành công.",
   "Cannot execute \"changeLang\" on \"User\"": "Không thể thực thi \"thay đổi ngôn ngữ\" trên \"Người dùng\".",
-  "Cannot execute \"read\" on \"User\"": "Không thể thực thi \"đọc\" trên \"Người dùng\"."
+  "Cannot execute \"read\" on \"User\"": "Không thể thực thi \"đọc\" trên \"Người dùng\".",
+  "Cannot execute \"create\" on \"Code\"": "Không thể thực thi \"tạo\" trên \"Mã\"."
 }
