@@ -7,6 +7,12 @@
       "subject": "User"
     },
     {
+      "id": "createCode",
+      "can": true,
+      "action": "create",
+      "subject": "Code"
+    },
+    {
       "id": "changeLang",
       "can": true,
       "action": "changeLang",
