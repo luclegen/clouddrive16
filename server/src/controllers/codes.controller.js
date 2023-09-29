@@ -1,43 +1,31 @@
+const { ForbiddenError } = require('@casl/ability')
+const nodemailer = require('nodemailer')
+const createError = require('http-errors')
 const User = require('../models/user.model')
 const Code = require('../models/code.model')
-const _ = require('lodash')
-const axios = require('axios')
 const generator = require('../helpers/generator')
+const mailer = require('../helpers/mailer')
+const catchAsync = require('../middlewares/catcher.middleware')
 
-module.exports.create = (req, res, next) => User.findById(req.payload)
-  .then(user => user
-    ? Code.findOne({ _uid: req.payload })
-      .then(code => {
-        const body = generator.genCode(6)
+module.exports.create = catchAsync(async (req, res, next) => {
+  const user = await User.findById(req.user).accessibleBy(req.ability)
 
-        if (!code) {
-          code = new Code()
-          code._uid = user
-        }
+  if (user) {
+    let code = await Code.findOne({ _uid: user })
+    const body = generator.genCode(6)
 
-        code.body = body
-        code.attempts = 3
+    if (!code) {
+      code = new Code()
+      code._uid = user
+    }
 
-        code.save()
-          .then(code => code
-            ? axios
-              .post(process.env.MAILER, {
-                email: user.email,
-                title: 'Verify email',
-                code: body
-              }, {
-                headers: {
-                  "Content-Type": "application/json",
-                  "Authorization": `Bearer ${process.env.TOKEN}`
-                }
-              })
-              .then(response => response.status === 201
-                ? res.status(201).json(response.data)
-                : res.status(503).json('Mailer server not started or crashed!'))
-              .catch(err => next(err))
-            : res.status(404).json('Code not found.'))
-          .catch(err => next(err))
-      })
-      .catch(err => next(err))
-    : res.status(404).json('User not found.'))
-  .catch(err => next(err))
+    code.body = body
+    code.attempts = 3
+
+    code = await code.save()
+
+    ForbiddenError.from(req.ability).throwUnlessCan('create', code)
+
+    res.status(201).send(req.app.get('env') === 'production' ? nodemailer.getTestMessageUrl(await mailer.sendCode(req.user.email, 'Verify Code', body)) : body)
+  } else next(createError(404, 'User not found.'))
+})
