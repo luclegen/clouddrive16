@@ -18,6 +18,8 @@ servers:
 tags:
   - name: users
     description: Users
+  - name: codes
+    description: Codes
   - name: auth
     description: Authentication
   - name: pet
@@ -205,7 +207,22 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
-
+  /codes:
+    post:
+      tags:
+        - codes
+      summary: Create code
+      description: Create and send code
+      operationId: createCode
+      responses:
+        '201':
+          description: "136088|https://ethereal.email/message/ZRYnusTEJuGid-icZRYrbBRbZP9GSW-EAAAAB-45rzobJegWdBLDhEZaaAc"
+        '404':
+          description: "User not found."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /pet/findByStatus:
     get:
       tags:
