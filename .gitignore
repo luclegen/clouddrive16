@@ -111,3 +111,6 @@ uploads/
 
 # Data of mongo
 data/
+
+# Package lock
+package-lock.json
