@@ -13,8 +13,9 @@ const codeSchema = new mongoose.Schema({
     default: 3,
     max: 3,
     min: 0,
-    required: 'Attempts is required',
-  }, _uid: {
+    required: 'Attempts is required'
+  },
+  _uid: {
     required: 'User id is required',
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
@@ -23,27 +24,27 @@ const codeSchema = new mongoose.Schema({
   timestamps: true
 })
 
-//#region Validation
+// #region Validation
 
 codeSchema.path('body').validate(v => checker.isCode(v), 'Invalid body')
 
-//#endregion Validation
+// #endregion Validation
 
-//#region Events
+// #region Events
 
 codeSchema.pre('save', async function (next) {
   this.body = await bcrypt.hash(this.body, await bcrypt.genSalt(10))
   next()
 })
 
-//#endregion Events
+// #endregion Events
 
-//#region Methods
+// #region Methods
 
 codeSchema.methods.verify = async function (body) {
   return await bcrypt.compare(body, this.body)
 }
 
-//#endregion Methods
+// #endregion Methods
 
 module.exports = mongoose.model('Code', codeSchema)
