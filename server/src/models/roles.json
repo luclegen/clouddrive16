@@ -13,6 +13,19 @@
       "subject": "Code"
     },
     {
+      "id": "readCode",
+      "can": true,
+      "action": "read",
+      "subject": "Code"
+    },
+    {
+      "id": "verifyCode",
+      "can": true,
+      "action": "verify",
+      "subject": "Code",
+      "fields": { "_uid": "mine" }
+    },
+    {
       "id": "changeLang",
       "can": true,
       "action": "changeLang",
