@@ -29,7 +29,11 @@ module.exports = catchAsync(async (req, res, next) => {
     req.user = await User.findById(req.payload)
     if (req.user) {
       req.ability = defineAbilitiesFor(req.user)
-      next()
+      if (req.user.is_activate) next()
+      else {
+        if (req.baseUrl === '/api/auth') next()
+        else next(createError(401), 'Unauthorized.')
+      }
     } else next(createError(404, 'User not found.'))
   } else {
     res
