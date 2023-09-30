@@ -90,45 +90,6 @@ paths:
         '404':
           description: "User not found."
   /auth:
-    put:
-      tags:
-        - pet
-      summary: Update an existing pet
-      description: Update an existing pet by Id
-      operationId: updatePet
-      requestBody:
-        description: Update an existent pet in the store
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Pet'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Pet'
-        required: true
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Pet'          
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Pet'
-        '400':
-          description: Invalid ID supplied
-        '404':
-          description: Pet not found
-        '405':
-          description: Validation exception
-      security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
     post:
       tags:
         - auth
@@ -151,6 +112,33 @@ paths:
           description: "Wrong password."
         '404':
           description: "Username not registered."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+    put:
+      tags:
+        - auth
+      summary: Verify email
+      description: Verify email
+      operationId: verify
+      requestBody:
+        description: Verify email in CloudDrive16
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 123456
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '403':
+          description: "User verified.|Cannot execute \"read\" on \"User\".|Cannot execute \"read\" on \"Code\".|Cannot execute \"verify\" on \"Code\".|Wrong code. You have 2 attempts left.|Wrong code. You have 1 attempts left.|You tried too many. Please try again with a different verification code or change your email again."
+        '404':
+          description: "User not found.|Code not found. Please click to \"Send Code\".|Code not found."
+        '429':
+          description: "You tried too many. Please try again with a different verification code or change your email again."
       security:
         - petstore_auth:
             - write:pets
@@ -848,6 +836,8 @@ components:
           example: en|vi
       xml:
         name: user
+    Code:
+      type:
     Lang:
       type: string
       enum:
