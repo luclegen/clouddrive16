@@ -12,6 +12,9 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: 'First name is required'
     },
+    middle: {
+      type: String
+    },
     last: {
       type: String,
       required: 'Last name is required'
