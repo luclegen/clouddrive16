@@ -29,6 +29,7 @@ module.exports.login = catchAsync(async (req, res, next) => {
 
           if (session) {
             res
+              .cookie('is_activate', user.is_activate.toString() || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
               .cookie('lang', user.lang, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
               .cookie('id', user._id.toString(), { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
               .cookie('avatar', user.avatar || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
@@ -89,6 +90,7 @@ module.exports.logout = (req, res, next) => {
       if (err) return next(err)
       res
         .clearCookie('session')
+        .clearCookie('is_activate')
         .clearCookie('lang')
         .clearCookie('id')
         .clearCookie('avatar')
