@@ -3,5 +3,6 @@
   "Missing credentials": "Missing credentials.",
   "Cannot execute \"changeLang\" on \"User\"": "Cannot execute \"changeLang\" on \"User\".",
   "Cannot execute \"read\" on \"User\"": "Cannot execute \"read\" on \"User\".",
-  "Cannot execute \"create\" on \"Code\"": "Cannot execute \"createCode\" on \"Code\"."
+  "Cannot execute \"create\" on \"Code\"": "Cannot execute \"createCode\" on \"Code\".",
+  "Cannot execute \"verify\" on \"Code\"": "Cannot execute \"verify\" on \"Code\"."
 }

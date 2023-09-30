@@ -15,5 +15,12 @@
   "Change language successfully.": "Thay đổi ngôn ngữ thành công.",
   "Cannot execute \"changeLang\" on \"User\"": "Không thể thực thi \"thay đổi ngôn ngữ\" trên \"Người dùng\".",
   "Cannot execute \"read\" on \"User\"": "Không thể thực thi \"đọc\" trên \"Người dùng\".",
-  "Cannot execute \"create\" on \"Code\"": "Không thể thực thi \"tạo\" trên \"Mã\"."
+  "Cannot execute \"create\" on \"Code\"": "Không thể thực thi \"tạo\" trên \"Mã\".",
+  "Cannot execute \"verify\" on \"Code\"": "Không thể thực thi \"xác minh\" trên \"Mã\".",
+  "User verified.": "Người dùng đã được xác minh.",
+  "Code not found. Please click to \"Send Code\".": "Không tìm thấy mã. Vui lòng nhấn vào \"Gửi mã\"",
+  "Code not found.": "Không tìm thấy mã.",
+  "Wrong code. You have 2 attempts left.": "Sai mã. Bạn còn 2 lần thử",
+  "Wrong code. You have 1 attempts left.": "Sai mã. Bạn còn 1 lần thử",
+  "You tried too many. Please try again with a different verification code or change your email again.": "Bạn đã thử quá nhiều lần. Vui lòng thử lại bằng mã xác minh khác hoặc thay đổi lại email của bạn."
 }
