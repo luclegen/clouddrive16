@@ -28,7 +28,7 @@ module.exports = catchAsync(async (req, res, next) => {
     req.payload = await util.promisify(jwt.verify)(req.session?.passport?.user, process.env.SECRET)
     req.user = await User.findById(req.payload)
     if (req.user) {
-      req.ability = defineAbilitiesFor(req.user || null)
+      req.ability = defineAbilitiesFor(req.user)
       next()
     } else next(createError(404, 'User not found.'))
   } else {
