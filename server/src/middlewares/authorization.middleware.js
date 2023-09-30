@@ -1,6 +1,7 @@
 const { AbilityBuilder, createMongoAbility } = require('@casl/ability')
 const jwt = require('jsonwebtoken')
 const util = require('util')
+const createError = require('http-errors')
 const catchAsync = require('../middlewares/catcher.middleware')
 const User = require('../models/user.model')
 const roles = require('../models/roles.json')
@@ -26,8 +27,10 @@ module.exports = catchAsync(async (req, res, next) => {
   if (req.session?.passport?.user) {
     req.payload = await util.promisify(jwt.verify)(req.session?.passport?.user, process.env.SECRET)
     req.user = await User.findById(req.payload)
-    req.ability = defineAbilitiesFor(req.user || null)
-    next()
+    if (req.user) {
+      req.ability = defineAbilitiesFor(req.user || null)
+      next()
+    } else next(createError(404, 'User not found.'))
   } else {
     res
       .clearCookie('lang')
