@@ -10,8 +10,8 @@ const swaggerUi = require('swagger-ui-express')
 // Environment Variables
 !process.env.NODE_ENV && require('dotenv').config()
 
-// Database
-require('./db/mongodb')
+// Databases
+require('./databases/mongodb')
 
 // Initialization
 const api = express()
