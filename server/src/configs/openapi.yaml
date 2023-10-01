@@ -67,6 +67,35 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+    get:
+      tags:
+        - users
+      summary: Read user
+      description: Read an user 
+      operationId: available
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: boolean
+                default: true
+        '203':
+          description: failure operation
+          content:
+            application/json:
+              schema:
+                type: boolean
+                default: false
+        '400':
+          description: "Invalid email."
+        '401':
+          description: "Unauthorized."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
     patch:
       tags:
         - users
