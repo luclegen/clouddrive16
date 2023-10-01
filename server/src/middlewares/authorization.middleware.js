@@ -32,7 +32,7 @@ module.exports = catchAsync(async (req, res, next) => {
       if (req.user.is_activate) next()
       else {
         if (req.baseUrl === '/api/auth') next()
-        else next(createError(401), 'Unauthorized.')
+        else next(createError(401))
       }
     } else next(createError(404, 'User not found.'))
   } else {
