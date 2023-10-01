@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const profileSchema = new mongoose.Schema({
-  name: String,
+  full_name: String,
   birthday: {
     type: Date,
     required: 'Birthday is required'
