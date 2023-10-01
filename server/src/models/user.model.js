@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: 'Password is required',
-    minlength: [8, 'Password must be at least 8 characters long']
+    minlength: [8, 'Password must be at least 8 characters long.']
   },
   roles: [{
     type: String,
@@ -61,7 +61,7 @@ const userSchema = new mongoose.Schema({
 userSchema.path('name.first').validate(v => checker.isFirstName(v), 'Invalid first name')
 userSchema.path('name.last').validate(v => checker.isLastName(v), 'Invalid last name')
 userSchema.path('email').validate(v => checker.isEmail(v), 'Invalid email')
-userSchema.path('password').validate(v => checker.isStrongPassword(v), 'Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters)')
+userSchema.path('password').validate(v => checker.isStrongPassword(v), 'Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters).')
 
 // #endregion Validation
 
