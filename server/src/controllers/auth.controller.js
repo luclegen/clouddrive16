@@ -1,5 +1,6 @@
 const { ForbiddenError } = require('@casl/ability')
 const passport = require('passport')
+const bcrypt = require('bcryptjs')
 const User = require('../models/user.model')
 const Session = require('../models/session.model')
 const Code = require('../models/code.model')
@@ -81,6 +82,20 @@ module.exports.verify = catchAsync(async (req, res, next) => {
       } else next(createError(429, 'You tried too many. Please try again with a different verification code or change your email again.'))
     } else next(createError(404, 'Code not found. Please click to "Send Code".'))
   }
+})
+
+module.exports.changePassword = catchAsync(async (req, res, next) => {
+  if (!checker.isStrongPassword(req.body.new_password)) return next(createError(400, 'Please choose a new stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters).'))
+
+  if (await req.user?.authenticate(req.body.password)) {
+    ForbiddenError.from(req.ability).throwUnlessCan('changePassword', req.user)
+
+    req.user.password = await bcrypt.hash(req.body.new_password, await bcrypt.genSalt(10))
+    req.user = await req.user.save()
+
+    if (req.user) res.json(req.t('Change password successfully.'))
+    else next(createError(404, 'User not found.'))
+  } else next(createError(401, 'Wrong password.'))
 })
 
 module.exports.logout = (req, res, next) => {
