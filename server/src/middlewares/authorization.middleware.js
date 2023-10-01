@@ -31,8 +31,14 @@ module.exports = catchAsync(async (req, res, next) => {
       req.ability = defineAbilitiesFor(req.user)
       if (req.user.is_activate) next()
       else {
-        if (req.baseUrl === '/api/auth') next()
-        else next(createError(401))
+        switch (req.baseUrl) {
+        case '/api/auth':
+        case '/api/codes':
+          next()
+          break
+        default:
+          next(createError(401))
+        }
       }
     } else next(createError(404, 'User not found.'))
   } else {
