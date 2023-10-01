@@ -13,6 +13,7 @@ module.exports.create = catchAsync(async (req, res, next) => {
   if (!checker.isDate(req.body.year, req.body.month, req.body.day)) {
     return next(createError(403, 'Invalid birthday.'))
   }
+  if (!checker.isStrongPassword(req.body.password)) return next(createError(400, 'Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters).'))
 
   let user = new User()
   let profile = new Profile()
