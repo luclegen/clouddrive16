@@ -12,6 +12,7 @@
   "Wrong password.": "Sai mật khẩu.",
   "Missing credentials": "Thiếu thông tin xác thực.",
   "Unauthorized.": "Không được ủy quyền.",
+  "Unauthorized": "Không được ủy quyền.",
   "Change language successfully.": "Thay đổi ngôn ngữ thành công.",
   "Cannot execute \"changeLang\" on \"User\"": "Không thể thực thi \"thay đổi ngôn ngữ\" trên \"Người dùng\".",
   "Cannot execute \"read\" on \"User\"": "Không thể thực thi \"đọc\" trên \"Người dùng\".",
@@ -22,5 +23,6 @@
   "Code not found.": "Không tìm thấy mã.",
   "Wrong code. You have 2 attempts left.": "Sai mã. Bạn còn 2 lần thử",
   "Wrong code. You have 1 attempts left.": "Sai mã. Bạn còn 1 lần thử",
-  "You tried too many. Please try again with a different verification code or change your email again.": "Bạn đã thử quá nhiều lần. Vui lòng thử lại bằng mã xác minh khác hoặc thay đổi lại email của bạn."
+  "You tried too many. Please try again with a different verification code or change your email again.": "Bạn đã thử quá nhiều lần. Vui lòng thử lại bằng mã xác minh khác hoặc thay đổi lại email của bạn.",
+  "Cannot execute \"read\" on \"Profile\"": "Không thể thực thi \"đọc\" trên \"Hồ sơ\"."
 }

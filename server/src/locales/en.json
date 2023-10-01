@@ -1,8 +1,10 @@
 {
   "Response timeout": "Server not responding.",
   "Missing credentials": "Missing credentials.",
+  "Unauthorized": "Unauthorized.",
   "Cannot execute \"changeLang\" on \"User\"": "Cannot execute \"changeLang\" on \"User\".",
   "Cannot execute \"read\" on \"User\"": "Cannot execute \"read\" on \"User\".",
   "Cannot execute \"create\" on \"Code\"": "Cannot execute \"createCode\" on \"Code\".",
-  "Cannot execute \"verify\" on \"Code\"": "Cannot execute \"verify\" on \"Code\"."
+  "Cannot execute \"verify\" on \"Code\"": "Cannot execute \"verify\" on \"Code\".",
+  "Cannot execute \"read\" on \"Profile\"": "Cannot execute \"read\" on \"Profile\"."
 }
