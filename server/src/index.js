@@ -37,6 +37,7 @@ api
   .use(bodyParser.text())
   .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
+  .use(require('compression')())
   .use(require('passport').initialize())
   .use(require('express-session')(session))
   .use(require('cors')({ origin: [process.env.WEB1, process.env.WEB2], credentials: true }))
