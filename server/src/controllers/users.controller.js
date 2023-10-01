@@ -23,7 +23,7 @@ module.exports.create = catchAsync(async (req, res, next) => {
   user.password = await bcrypt.hash(req.body.password, await bcrypt.genSalt(10))
   user.roles = req.body.roles
   user.lang = req.body.lang
-  profile.name = req.body.first_name + ' ' + req.body.last_name
+  profile.full_name = req.body.first_name + ' ' + req.body.last_name
   profile.birthday = new Date(req.body.year, req.body.month, req.body.day)
   profile.sex = req.body.sex
 
@@ -42,14 +42,12 @@ module.exports.create = catchAsync(async (req, res, next) => {
   }
 })
 
-module.exports.read = (req, res, next) =>
-  User.findById(req.payload)
-    .then(user =>
-      Profile.findOne({ _uid: req.payload })
-        .then(profile => user
-          ? res.json({ ..._.pick(user, ['avatar', 'email', 'is_activate']), ..._.pick(profile, ['name', 'birthday', 'sex']) })
-          : res.status(404).json('User not found.')))
-    .catch(err => next(err))
+module.exports.read = catchAsync(async (req, res, next) => {
+  const profile = await Profile.findOne({ _uid: req.user }).accessibleBy(req.ability)
+
+  if (profile) res.json({ ..._.pick(req.user, ['avatar', 'name.first', 'name.middle', 'name.last', 'lang', 'email']), ..._.pick(profile, ['full_name', 'birthday', 'sex']) })
+  else next(createError(404, 'Profile not found.'))
+})
 
 module.exports.changeLang = catchAsync(async (req, res, next) => {
   let user = await User.findById(req.user).accessibleBy(req.ability)
