@@ -42,6 +42,7 @@ api
   .use(require('cookie-parser')(process.env.SECRET))
   .use(require('./middlewares/authentication.middleware'))
   .use(require('./middlewares/translator.middleware'))
+  .use(require('./middlewares/logger.middleware'))
 
 // Add routes
 api.use(require('./routes'))
