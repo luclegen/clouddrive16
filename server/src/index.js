@@ -4,6 +4,7 @@ const { info } = require('console')
 const express = require('express')
 const YAML = require('yaml')
 const bodyParser = require('body-parser')
+const serveStatic = require('serve-static')
 const cookieParser = require('cookie-parser')
 const swaggerUi = require('swagger-ui-express')
 
@@ -30,7 +31,7 @@ const session = {
 api.get('env') === 'production' && api.set('trust proxy', 1)
 
 // Middlewares
-api.get('env') === 'production' && web.use(express.static(path.resolve(__dirname, '../public')))
+api.get('env') === 'production' && web.use(serveStatic(path.resolve(__dirname, '../public')))
 api
   .use(cookieParser())
   .use(bodyParser.text())
