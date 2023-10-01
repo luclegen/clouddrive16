@@ -26,6 +26,12 @@
       "fields": { "_uid": "mine" }
     },
     {
+      "id": "readProfile",
+      "can": true,
+      "action": "read",
+      "subject": "Profile"
+    },
+    {
       "id": "changeLang",
       "can": true,
       "action": "changeLang",
