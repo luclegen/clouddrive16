@@ -56,7 +56,7 @@ paths:
         '201':
           description: "Registered successfully."
         '400':
-          description: "1. Invalid email;\n2. Password must be at least 8 characters long|Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters);\n3. Invalid language;\n4. Invalid role."
+          description: "1. Invalid email;\n2. Invalid language;\n3. Invalid role.|\nPlease choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters)."
         '403':
           description: "Invalid birthday."
         '404':
@@ -172,6 +172,36 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+    patch:
+      tags:
+        - auth
+      summary: Change password
+      description: Change password of user.
+      operationId: changePassword
+      requestBody:
+        description: Change password.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  example: Luc123!@#
+                new_password:
+                  type: string
+                  example: Legen321#@!
+      responses:
+        '200':
+          description: "Change password successfully."
+        '400':
+          description: "Please choose a new stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters)."
+        '401':
+          description: "Wrong password."
+        '403':
+          description: "Cannot execute \"changePassword\" on \"User\"."
+        '404':
+          description: "User not found."
     delete:
       tags:
         - auth
@@ -821,7 +851,7 @@ components:
           enum:
             - en
             - vi
-          default: en|vi
+          example: en|vi
     User:
       type: object
       properties:
@@ -865,8 +895,6 @@ components:
           example: en|vi
       xml:
         name: user
-    Code:
-      type:
     Lang:
       type: string
       enum:
