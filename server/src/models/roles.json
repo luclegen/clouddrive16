@@ -32,6 +32,12 @@
       "subject": "Profile"
     },
     {
+      "id": "updateProfile",
+      "can": true,
+      "action": "update",
+      "subject": "Profile"
+    },
+    {
       "id": "changeLang",
       "can": true,
       "action": "changeLang",
