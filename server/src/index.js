@@ -39,7 +39,7 @@ api
   .use(bodyParser.json())
   .use(require('compression')())
   .use(require('connect-timeout')('10s'))
-  .use(require('response-time')((req, res, time) => info(req.method, req.baseUrl, `${time}ms`)))
+  .use(require('response-time')((req, res, time) => req.app.get('env') === 'development' && info(req.method, req.baseUrl, `${time}ms`)))
   .use(require('passport').initialize())
   .use(require('express-session')(session))
   .use(require('cors')({ origin: [process.env.WEB1, process.env.WEB2], credentials: true }))
