@@ -76,11 +76,11 @@ module.exports.update = catchAsync(async (req, res, next) => {
   if (req.user) {
     profile._uid = req.user
 
-    if (profile) ForbiddenError.from(req.ability).throwUnlessCan('update', profile)
-
     profile = await profile.save()
 
     if (profile) {
+      ForbiddenError.from(req.ability).throwUnlessCan('update', profile)
+
       res
         .cookie('lang', req.user.lang, { expires: req.session.cookie.expires })
         .json(req.t('Updated successfully.'))
