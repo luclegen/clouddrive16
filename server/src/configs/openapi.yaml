@@ -56,7 +56,7 @@ paths:
         '201':
           description: "Registered successfully."
         '400':
-          description: "1. Invalid email;\n2. Invalid language;\n3. Invalid role.|\nPlease choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters)."
+          description: "1. Invalid email;\n2. Invalid language.|\nPlease choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters)."
         '403':
           description: "Invalid birthday."
         '404':
