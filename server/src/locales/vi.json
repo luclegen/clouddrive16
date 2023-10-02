@@ -28,5 +28,7 @@
   "Cannot execute \"changePassword\" on \"User\"": "Không thể thực thi \"thay đổi mật khẩu\" trên \"Người dùng\".",
   "New password must be at least 8 characters long.": "Mật khẩu mới phải dài ít nhất 8 ký tự.",
   "Please choose a new stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters).": "Vui lòng chọn một mật khẩu mới mạnh hơn. Hãy thử kết hợp các chữ cái, số và ký hiệu (sử dụng 8 ký tự trở lên).",
-  "Change password successfully.": "Thay đổi mật khẩu thành công."
+  "Change password successfully.": "Thay đổi mật khẩu thành công.",
+  "Cannot execute \"update\" on \"Profile\"": "Không thể thực thi \"cập nhật\" trên \"Hồ sơ\".",
+  "Updated successfully.": "Cập nhật thành công."
 }

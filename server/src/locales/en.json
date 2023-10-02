@@ -7,5 +7,6 @@
   "Cannot execute \"create\" on \"Code\"": "Cannot execute \"createCode\" on \"Code\".",
   "Cannot execute \"verify\" on \"Code\"": "Cannot execute \"verify\" on \"Code\".",
   "Cannot execute \"read\" on \"Profile\"": "Cannot execute \"read\" on \"Profile\".",
-  "Cannot execute \"changePassword\" on \"User\"": "Cannot execute \"changePassword\" on \"User\"."
+  "Cannot execute \"changePassword\" on \"User\"": "Cannot execute \"changePassword\" on \"User\".",
+  "Cannot execute \"update\" on \"Profile\"": "Cannot execute \"update\" on \"Profile\"."
 }
