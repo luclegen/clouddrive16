@@ -38,6 +38,7 @@ api
   .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
   .use(require('compression')())
+  .use(require('connect-timeout')('10s'))
   .use(require('response-time')((req, res, time) => info(req.method, req.baseUrl, `${time}ms`)))
   .use(require('passport').initialize())
   .use(require('express-session')(session))
