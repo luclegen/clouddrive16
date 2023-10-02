@@ -891,10 +891,6 @@ components:
         password:
           type: string
           example: Luc123!@#
-        roles:
-          type: array
-          items: string
-          example: ['User']
         day:
           type: integer
           example: 29
