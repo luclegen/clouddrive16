@@ -1,4 +1,6 @@
 const { ForbiddenError } = require('@casl/ability')
+const fs = require('fs')
+const util = require('util')
 const bcrypt = require('bcryptjs')
 const _ = require('lodash')
 const createError = require('http-errors')
@@ -48,6 +50,46 @@ module.exports.read = catchAsync(async (req, res, next) => {
 
   if (profile) res.json({ ..._.pick(req.user, ['avatar', 'name.first', 'name.middle', 'name.last', 'lang', 'email']), ..._.pick(profile, ['full_name', 'birthday', 'sex']) })
   else next(createError(404, 'Profile not found.'))
+})
+
+module.exports.update = catchAsync(async (req, res, next) => {
+  req.i18n.changeLanguage(req.body.lang)
+
+  if (!checker.isDate(req.body.year, req.body.month, req.body.day)) {
+    return next(createError(403, 'Invalid birthday.'))
+  }
+
+  if (req.file && req.user.avatar) await util.promisify(fs.rm)(`${process.env.UPLOADS}public${req.user.avatar}`)
+
+  let profile = await Profile.findOne({ _uid: req.user }).accessibleBy(req.ability)
+
+  if (req.file) req.user.avatar = `/${req.payload._id}/${req.file.filename}`
+  req.user.name.first = req.body.first_name
+  req.user.name.middle = req.body.middle_name
+  req.user.name.last = req.body.last_name
+  req.user.lang = req.body.lang
+  profile.full_name = req.body.full_name
+  profile.birthday = new Date(req.body.year, req.body.month, req.body.day)
+  profile.sex = req.body.sex
+
+  req.user = await req.user.save()
+  if (req.user) {
+    profile._uid = req.user
+
+    if (profile) ForbiddenError.from(req.ability).throwUnlessCan('update', profile)
+
+    profile = await profile.save()
+
+    if (profile) {
+      res
+        .cookie('lang', req.user.lang, { expires: req.session.cookie.expires })
+        .json(req.t('Updated successfully.'))
+    } else {
+      next(createError(404, 'Profile not found.'))
+    }
+  } else {
+    next(createError(404, 'User not found.'))
+  }
 })
 
 module.exports.changeLang = catchAsync(async (req, res, next) => {
