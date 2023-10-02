@@ -1,9 +1,13 @@
+const util = require('util')
+const fs = require('fs')
 const converter = require('../helpers/converter')
 
-module.exports = (err, req, res, next) => {
+module.exports = async (err, req, res, next) => {
   let status = err.status || err.statusCode || 500; let msg = err.message || 'Server error!'
 
   if (req.app.get('env') === 'development') console.error(JSON.stringify(err))
+
+  if (req.file) await util.promisify(fs.rm)(req.file.path)
 
   switch (err.name) {
   case 'ValidationError':
