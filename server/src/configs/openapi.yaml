@@ -96,6 +96,30 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+    put:
+      tags:
+        - users
+      summary: Update user
+      description: Update user
+      operationId: updateUser
+      requestBody:
+        description: Update user in CloudDrive16
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpdatedUser'
+        required: true
+      responses:
+        '200':
+          description: "Updated successfully."
+        '403':
+          description: "Cannot execute \"update\" on \"Profile\"."
+        '404':
+          description: "User not found.|Profile not found."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
     patch:
       tags:
         - users
@@ -893,6 +917,48 @@ components:
             - en
             - vi
           example: en|vi
+      xml:
+        name: user
+    UpdatedUser:
+      type: object
+      properties:
+        avatar:
+          type: string
+          format: binary
+        first_name:
+          type: string
+          example: Liên
+        middle_name:
+          type: string
+          example: Thị Cẩm
+        last_name:
+          type: string
+          example: Huỳnh
+        lang:
+          type: string
+          enum:
+            - en
+            - vi
+          default: en
+        full_name:
+          type: string
+          example: Huỳnh Thị Cẩm Liên
+        day:
+          type: integer
+          example: 16
+        month:
+          type: integer
+          example: 2
+        year:
+          type: integer
+          example: 1990
+        sex:
+          type: string
+          enum:
+            - Male
+            - Female
+            - Other
+          default: Female
       xml:
         name: user
     Lang:
