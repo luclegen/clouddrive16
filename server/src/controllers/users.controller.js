@@ -4,7 +4,6 @@ const util = require('util')
 const bcrypt = require('bcryptjs')
 const _ = require('lodash')
 const createError = require('http-errors')
-const roles = require('../models/roles.json')
 const User = require('../models/user.model')
 const Profile = require('../models/profile.model')
 const catchAsync = require('../middlewares/catcher.middleware')
@@ -25,7 +24,7 @@ module.exports.create = catchAsync(async (req, res, next) => {
   user.name.last = req.body.last_name
   user.email = req.body.email
   user.password = await bcrypt.hash(req.body.password, await bcrypt.genSalt(10))
-  user.roles = [Object.keys(roles)[0]]
+  user.roles = ['User']
   user.lang = req.body.lang
   profile.full_name = req.body.first_name + ' ' + req.body.last_name
   profile.birthday = new Date(req.body.year, req.body.month, req.body.day)
