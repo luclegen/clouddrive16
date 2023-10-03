@@ -40,10 +40,12 @@ module.exports.create = catchAsync(async (req, res, next) => {
   }
 })
 
-module.exports.read = (req, res, next) =>
-  Folder.findById(req.params.id)
-    .then(folder => res.json(_.pick(folder, ['path', 'name', 'is_trash'])))
-    .catch(err => next(err))
+module.exports.read = catchAsync(async (req, res, next) => {
+  const folder = await Folder.findById(req.params.id).accessibleBy(req.ability)
+
+  if (folder) res.json(_.pick(folder, ['path', 'name', 'is_trash']))
+  else next(createError(404, 'Folder not found.'))
+})
 
 module.exports.update = (req, res, next) => req.body.name
   ? checker.isFolder(req.body.name)
