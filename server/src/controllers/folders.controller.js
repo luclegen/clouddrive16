@@ -36,36 +36,8 @@ module.exports.create = catchAsync(async (req, res, next) => {
       fs.mkdir(path[path.length - 1], { recursive: true }, err => err
         ? next(err)
         : res.status(201).json(req.t('Done')))
-    }
+    } else next(createError(404, 'Folder not found.'))
   }
-
-  // Folder.find({ _uid: req.payload, name: req.body.name, path: req.body.path })
-  //   .then(folders => {
-  //     if (folders.length) res.status(422).json('You already have a folder in the current path. Please a different name.')
-  //     else {
-  //       const folder = new Folder()
-
-  //       folder._uid = req.payload
-  //       folder.path = req.body.path
-  //       folder.name = req.body.name
-
-  //       folder.save()
-  //         .then(folder => {
-  //           const path = [process.env.UPLOADS]
-
-  //           path[1] = path[0] + req.payload._id
-  //           path[2] = path[1] + '/files'
-  //           path[3] = path[2] + `${folder.path === '/' ? '' : folder.path}`
-  //           path[4] = path[3] + `/${folder.name}`
-
-  //           path.forEach(p => !fs.existsSync(p) && fs.mkdirSync(p))
-
-  //           res.status(201).json()
-  //         })
-  //         .catch(err => next(err))
-  //     }
-  //   })
-  //   .catch(err => next(err))
 })
 
 module.exports.read = (req, res, next) =>
