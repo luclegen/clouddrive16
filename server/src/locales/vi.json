@@ -1,4 +1,5 @@
 {
+  "Response timeout": "Máy chủ không phản hồi.",
   "Invalid email": "Email không hợp lệ",
   "Password must be at least 8 characters long.": "Mật khẩu phải dài ít nhất 8 ký tự.",
   "Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters).": "Vui lòng chọn một mật khẩu mạnh hơn. Hãy thử kết hợp các chữ cái, số và ký hiệu (sử dụng 8 ký tự trở lên).",
@@ -34,5 +35,6 @@
   "Done": "Xong",
   "You already have a directory in the current path.\nPlease change to another name.": "Bạn đã có một thư mục trong đường dẫn hiện tại.\nHãy đổi sang tên khác.",
   "Cannot execute \"read\" on \"Folder\"": "Không thể thực thi \"đọc\" trên \"Thư mục\".",
-  "Cannot execute \"create\" on \"Folder\"": "Không thể thực thi \"tạo\" trên \"Thư mục\"."
+  "Cannot execute \"create\" on \"Folder\"": "Không thể thực thi \"tạo\" trên \"Thư mục\".",
+  "Folder not found.": "Không tìm thấy thư mục."
 }
