@@ -18,10 +18,12 @@ servers:
 tags:
   - name: users
     description: Users
-  - name: codes
-    description: Codes
   - name: auth
     description: Authentication
+  - name: codes
+    description: Codes
+  - name: folders
+    description: Folders
   - name: pet
     description: Everything about your Pets
     externalDocs:
@@ -290,6 +292,31 @@ paths:
           description: "136088|https://ethereal.email/message/ZRYnusTEJuGid-icZRYrbBRbZP9GSW-EAAAAB-45rzobJegWdBLDhEZaaAc"
         '404':
           description: "User not found."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /folders:
+    post:
+      tags:
+        - folders
+      summary: Create folder
+      description: Create a new folder
+      operationId: createFolder
+      requestBody:
+        description: Create a new folder
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Folder'
+        required: true
+      responses:
+        '201':
+          description: "Done"
+        '403':
+          description: "Cannot execute \"read\" on \"Folder\".|Cannot execute \"create\" on \"Folder\"."
+        '422':
+          description: "You already have a directory in the current path.\nPlease change to another name."
       security:
         - petstore_auth:
             - write:pets
@@ -963,6 +990,15 @@ components:
         - en
         - vi
       example: en|vi
+    Folder:
+      type: object
+      properties:
+        path:
+          type: string
+          example: /home
+        name:
+          type: string
+          example: test
     Tag:
       type: object
       properties:
