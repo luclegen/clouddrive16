@@ -45,5 +45,10 @@
   "Deleted successfully.": "Đã xóa thành công.",
   "Cannot execute \"delete\" on \"Folder\"": "Không thể thực thi \"xóa\" trên \"Thư mục\".",
   "Cannot execute \"restore\" on \"Folder\"": "Không thể thực thi \"khôi phục\" trên \"Thư mục\".",
-  "Restored successfully.": "Đã khôi phục thành công."
+  "Restored successfully.": "Đã khôi phục thành công.",
+  "Cannot execute \"move\" on \"Folder\"": "Không thể thực thi \"di chuyển\" trên \"Thư mục\".",
+  "You already have a folder in the current path!\nPlease choose another folder.": "Bạn đã có một thư mục trong đường dẫn hiện tại!\nVui lòng chọn một thư mục khác.",
+  "Moved folder not found.": "Không tìm thấy Thư mục được di chuyển.",
+  "Moved next folder not found.": "Không tìm thấy thư mục được di chuyển kế tiếp",
+  "Moved successfully.": "Đã di chuyển thành công."
 }
