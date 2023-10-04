@@ -13,5 +13,6 @@
   "Cannot execute \"create\" on \"Folder\"": "Cannot execute \"create\" on \"Folder\".",
   "Cannot execute \"update\" on \"Folder\"": "Cannot execute \"update\" on \"Folder\".",
   "Cannot execute \"read\" on \"File\"": "Cannot execute \"read\" on \"File\".",
-  "Cannot execute \"delete\" on \"Folder\"": "Cannot execute \"delete\" on \"Folder\"."
+  "Cannot execute \"delete\" on \"Folder\"": "Cannot execute \"delete\" on \"Folder\".",
+  "Cannot execute \"restore\" on \"Folder\"": "Cannot execute \"restore\" on \"Folder\"."
 }
