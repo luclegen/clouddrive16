@@ -370,7 +370,7 @@ paths:
             type: string
             example: 651b973cea5953f626f65dd5
       requestBody:
-        description: Update user in CloudDrive16
+        description: Folder
         content:
           text/plain:
             schema:
@@ -391,6 +391,28 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+    patch:
+      tags:
+        - folders
+      summary: Delete folder
+      description: Delete a folder
+      operationId: deleteFolder
+      parameters:
+        - name: id
+          in: path
+          description: Identity
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: 651b973cea5953f626f65dd5
+      responses:
+        '200':
+          description: "Deleted successfully."
+        '403':
+          description: "Cannot execute \"read\" on \"Folder\".|Cannot execute \"delete\" on \"Folder\"."
+        '404':
+          description: "Folder not found."
   /pet/findByStatus:
     get:
       tags:
