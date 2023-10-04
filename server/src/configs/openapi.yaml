@@ -338,7 +338,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 651b75108f3921e55a3c3e57
+            example: 651b973cea5953f626f65dd5
       responses:
         '200':
           description: successful operation
@@ -350,6 +350,43 @@ paths:
           description: "Cannot execute \"read\" on \"Folder\"."
         '404':
           description: "Folder not found."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+    put:
+      tags:
+        - folders
+      summary: Update folder
+      description: Update folder
+      operationId: updateFolder
+      parameters:
+        - name: id
+          in: path
+          description: Identity
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: 651b973cea5953f626f65dd5
+      requestBody:
+        description: Update user in CloudDrive16
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: Test
+      responses:
+        '200':
+          description: "Updated successfully."
+        '400':
+          description: "Invalid folder name."
+        '403':
+          description: "Name is required.|Cannot execute \"read\" on \"Folder\".|Cannot execute \"update\" on \"Folder\"."
+        '404':
+          description: "Folder not found.|Edited Folder not found."
+        '422':
+          description: "You already have a folder in the current path.\nPlease a different name."
       security:
         - petstore_auth:
             - write:pets
@@ -1028,10 +1065,10 @@ components:
       properties:
         path:
           type: string
-          example: /home
+          example: /home/
         name:
           type: string
-          example: test
+          example: New folder
     CreatedFolder:
       type: object
       properties:
