@@ -42,4 +42,6 @@
   "Cannot execute \"update\" on \"Folder\"": "Không thể thực thi \"cập nhật\" trên \"Thư mục\".",
   "Edited Folder not found.": "Không tìm thấy thư mục đã chỉnh sửa.",
   "Cannot execute \"read\" on \"File\"": "Không thể thực thi \"đọc\" trên \"Tập tin\".",
+  "Deleted successfully.": "Đã xóa thành công.",
+  "Cannot execute \"delete\" on \"Folder\"": "Không thể thực thi \"xóa\" trên \"Tập tin\"."
 }
