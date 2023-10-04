@@ -36,5 +36,10 @@
   "You already have a directory in the current path.\nPlease change to another name.": "Bạn đã có một thư mục trong đường dẫn hiện tại.\nHãy đổi sang tên khác.",
   "Cannot execute \"read\" on \"Folder\"": "Không thể thực thi \"đọc\" trên \"Thư mục\".",
   "Cannot execute \"create\" on \"Folder\"": "Không thể thực thi \"tạo\" trên \"Thư mục\".",
-  "Folder not found.": "Không tìm thấy thư mục."
+  "Folder not found.": "Không tìm thấy thư mục.",
+  "Name is required.": "Tên là bắt buộc.",
+  "Invalid folder name.": "Tên thư mục không hợp lệ.",
+  "Cannot execute \"update\" on \"Folder\"": "Không thể thực thi \"cập nhật\" trên \"Thư mục\".",
+  "Edited Folder not found.": "Không tìm thấy thư mục đã chỉnh sửa.",
+  "Cannot execute \"read\" on \"File\"": "Không thể thực thi \"đọc\" trên \"Tập tin\".",
 }
