@@ -113,10 +113,15 @@ module.exports.delete = catchAsync(async (req, res, next) => {
   } else next(createError(404, 'Folder not found.'))
 })
 
-module.exports.restore = (req, res, next) =>
-  Folder.findByIdAndUpdate(req.params.id, { $set: { is_trash: false } }, { new: true })
-    .then(folder => folder ? res.json() : res.status(404).json('Folder not found.'))
-    .catch(err => next(err))
+module.exports.restore = catchAsync(async (req, res, next) => {
+  const folder = await Folder.findByIdAndUpdate(req.params.id, { $set: { is_trash: false } }, { new: true }).accessibleBy(req.ability)
+
+  if (folder) {
+    ForbiddenError.from(req.ability).throwUnlessCan('restore', folder)
+
+    res.status(200).json(req.t('Restored successfully.'))
+  } else next(createError(404, 'Folder not found.'))
+})
 
 module.exports.move = (req, res, next) => Folder.findById(req.params.id)
   .then(async (folder, destFolder = undefined) =>
