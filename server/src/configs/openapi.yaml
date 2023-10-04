@@ -413,6 +413,29 @@ paths:
           description: "Cannot execute \"read\" on \"Folder\".|Cannot execute \"delete\" on \"Folder\"."
         '404':
           description: "Folder not found."
+  /folders/r/{id}:
+    patch:
+      tags:
+        - folders
+      summary: Restore folder
+      description: Restore a folder
+      operationId: restoreFolder
+      parameters:
+        - name: id
+          in: path
+          description: Identity
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: 651b973cea5953f626f65dd5
+      responses:
+        '200':
+          description: "Restored successfully."
+        '403':
+          description: "Cannot execute \"read\" on \"Folder\".|Cannot execute \"restore\" on \"Folder\"."
+        '404':
+          description: "Folder not found."
   /pet/findByStatus:
     get:
       tags:
