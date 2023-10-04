@@ -338,7 +338,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 651b973cea5953f626f65dd5
+            example: 651d242c5dbc26bc34119357
       responses:
         '200':
           description: successful operation
@@ -368,7 +368,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 651b973cea5953f626f65dd5
+            example: 651d242c5dbc26bc34119357
       requestBody:
         description: Folder
         content:
@@ -405,7 +405,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 651b973cea5953f626f65dd5
+            example: 651d242c5dbc26bc34119357
       responses:
         '200':
           description: "Deleted successfully."
@@ -428,7 +428,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 651b973cea5953f626f65dd5
+            example: 651d242c5dbc26bc34119357
       responses:
         '200':
           description: "Restored successfully."
@@ -436,6 +436,38 @@ paths:
           description: "Cannot execute \"read\" on \"Folder\".|Cannot execute \"restore\" on \"Folder\"."
         '404':
           description: "Folder not found."
+  /folders/m/{id}:
+    patch:
+      tags:
+        - folders
+      summary: Move folder
+      description: Move a folder
+      operationId: moveFolder
+      parameters:
+        - name: id
+          in: path
+          description: Identity
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: 651d242c5dbc26bc34119357
+      requestBody:
+        description: Folder
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 651d240c5dbc26bc3411934b
+      responses:
+        '200':
+          description: "Moved successfully."
+        '403':
+          description: "Cannot execute \"read\" on \"Folder\".|Cannot execute \"move\" on \"Folder\"."
+        '404':
+          description: "Folder not found.|Moved folder not found."
+        '422':
+          description: "You already have a folder in the current path!\nPlease choose another folder."
   /pet/findByStatus:
     get:
       tags:
