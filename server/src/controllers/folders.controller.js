@@ -63,7 +63,7 @@ module.exports.update = catchAsync(async (req, res, next) => {
           const editedFolder = await Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body } }, { new: true }).accessibleBy(req.ability)
 
           if (editedFolder) {
-            await util.promisify(fs.rename)(
+            fs.renameSync(
               converter.toUploadPath(req.user._id, folder),
               converter.toUploadPath(req.user._id, editedFolder))
 
@@ -156,7 +156,7 @@ module.exports.move = catchAsync(async (req, res, next) => {
             if (!movedFile) return next(createError(404, 'Moved file not found.'))
           })
 
-        await util.promisify(fs.rename)(
+        fs.renameSync(
           converter.toUploadPath(req.user._id, folder),
           `${(destFolder ? converter.toUploadPath(req.user._id, destFolder) : `${process.env.UPLOADS}private/${req.user._id}/files`)}/${folder.name}`)
 
