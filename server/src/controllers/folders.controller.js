@@ -156,12 +156,11 @@ module.exports.move = catchAsync(async (req, res, next) => {
             if (!movedFile) return next(createError(404, 'Moved file not found.'))
           })
 
-        fs.rename(
+        await util.promisify(fs.rename)(
           converter.toUploadPath(req.user._id, folder),
-          `${(destFolder ? converter.toUploadPath(req.user._id, destFolder) : `${process.env.UPLOADS}private/${req.user._id}/files`)}/${folder.name}`,
-          err => err
-            ? next(err)
-            : res.json(req.t('Moved successfully.')))
+          `${(destFolder ? converter.toUploadPath(req.user._id, destFolder) : `${process.env.UPLOADS}private/${req.user._id}/files`)}/${folder.name}`)
+
+        res.json(req.t('Moved successfully.'))
       } else next(createError(404, 'Moved folder not found.'))
     }
   } else next(createError(404, 'Folder not found.'))
