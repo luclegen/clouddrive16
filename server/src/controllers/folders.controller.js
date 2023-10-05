@@ -222,37 +222,43 @@ module.exports.copy = catchAsync(async (req, res, next) => {
   } else next(createError(404, 'Folder not found.'))
 })
 
-module.exports.deleteForever = (req, res, next) =>
-  Folder.findById(req.params.id)
-    .then(folder =>
-      folder
-        ? folder.is_trash
-          ? Folder.findByIdAndDelete(req.params.id)
-            .then(folder => folder
-              ? Folder.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') })
-                .then(folders => folders.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-                  .forEach(readyFolder => readyFolder.remove()
-                    .then(deletedFolder => !deletedFolder && res.status(404).json('Folder isn\'t deleted.'))
-                    .catch(err => next(err))) ||
-                  File.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') })
-                    .then(files => files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-                      .forEach(readyFile => readyFile.remove()
-                        .then(deletedFile => !deletedFile && res.status(404).json.json('File isn\'t deleted.'))
-                        .catch(err => next(err))) ||
-                      fs.rm(
-                        converter.toUploadPath(req.user._id, folder),
-                        { recursive: true },
-                        err => err
-                          ? next(err)
-                          : res.json()))
-                    .catch(err => next(err)))
-                .catch(err => next(err))
-              : res.status(404).json('Folder not found.'))
-            .catch(err => next(err))
-          : res.status(403).json('Folder isn\'t trash.')
-        : res.status(404).json('Folder not found.')
-    )
-    .catch(err => next(err))
+module.exports.deleteForever = catchAsync(async (req, res, next) => {
+  let folder = await Folder.findById(req.params.id).accessibleBy(req.ability)
+
+  if (!folder) return next(createError(404, 'Folder not found.'))
+  if (!folder.is_trash) return next(createError(403, 'Folder is not trash.'))
+
+  ForbiddenError.from(req.ability).throwUnlessCan('deleteForever', folder)
+
+  folder = await Folder.findByIdAndDelete(req.params.id).accessibleBy(req.ability)
+
+  if (!folder) return next(createError(404, 'Folder not found.'))
+
+  const folders = await Folder.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
+
+  folders
+    .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+    .forEach(async readyFolder => {
+      const deletedFolder = await readyFolder.remove()
+
+      if (!deletedFolder) return next(createError(404, 'Folder is not deleted.'))
+    })
+
+  const files = await File.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
+
+  files.filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+    .forEach(async readyFile => {
+      const deletedFile = await readyFile.remove()
+
+      if (!deletedFile) return next(createError(404, 'Folder is not deleted.'))
+    })
+
+  fs.rmSync(
+    converter.toUploadPath(req.user._id, folder),
+    { recursive: true })
+
+  res.json(req.t('Deleted forever successfully.'))
+})
 
 module.exports.list = (req, res, next) =>
   Folder.find({ _uid: req.user, name: new RegExp(req.query.name, 'ig') })
