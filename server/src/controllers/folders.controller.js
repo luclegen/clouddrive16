@@ -20,11 +20,11 @@ module.exports.create = catchAsync(async (req, res, next) => {
     folder.path = req.body.path
     folder.name = req.body.name
 
+    if (folder) ForbiddenError.from(req.ability).throwUnlessCan('create', folder)
+
     folder = await folder.save()
 
     if (folder) {
-      ForbiddenError.from(req.ability).throwUnlessCan('create', folder)
-
       const path = [process.env.UPLOADS]
 
       path[1] = path[0] + 'private'
