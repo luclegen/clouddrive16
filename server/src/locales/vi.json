@@ -50,5 +50,8 @@
   "You already have a folder in the current path!\nPlease choose another folder.": "Bạn đã có một thư mục trong đường dẫn hiện tại!\nVui lòng chọn một thư mục khác.",
   "Moved folder not found.": "Không tìm thấy Thư mục được di chuyển.",
   "Moved next folder not found.": "Không tìm thấy thư mục được di chuyển kế tiếp",
-  "Moved successfully.": "Đã di chuyển thành công."
+  "Moved successfully.": "Đã di chuyển thành công.",
+  "Copied folder not found.": "Không tìm thấy thư mục đã sao chép.",
+  "Cannot execute \"copy\" on \"Folder\"": "Không thể thực thi \"sao chép\" trên \"Thư mục\".",
+  "Copied successfully.": "Đã sao chép thành công."
 }
