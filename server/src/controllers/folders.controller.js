@@ -1,7 +1,5 @@
 const { ForbiddenError } = require('@casl/ability')
 const fs = require('fs')
-const util = require('util')
-const fse = require('fs-extra')
 const _ = require('lodash')
 const createError = require('http-errors')
 const Folder = require('../models/folder.model')
@@ -220,7 +218,7 @@ module.exports.copy = catchAsync(async (req, res, next) => {
       (destFolder ? converter.toUploadPath(req.user._id, destFolder, folders.map(v => v.name)) : `${process.env.UPLOADS}private/${req.user._id}/files`) + `/${duplicator.copyFolderInFolder(folder.name, folders.map(v => v.name))}`,
       { recursive: true })
 
-    res.json('Done')
+    res.json(req.t('Copied successfully.'))
   } else next(createError(404, 'Folder not found.'))
 })
 
