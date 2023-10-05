@@ -53,5 +53,7 @@
   "Moved successfully.": "Đã di chuyển thành công.",
   "Copied folder not found.": "Không tìm thấy thư mục đã sao chép.",
   "Cannot execute \"copy\" on \"Folder\"": "Không thể thực thi \"sao chép\" trên \"Thư mục\".",
-  "Copied successfully.": "Đã sao chép thành công."
+  "Copied successfully.": "Đã sao chép thành công.",
+  "Cannot execute \"deleteForever\" on \"Folder\"": "Không thể thực thi \"xóa vĩnh viễn\" trên \"Thư mục\".",
+  "Deleted forever successfully.": "Đã xóa vĩnh viễn thành công."
 }

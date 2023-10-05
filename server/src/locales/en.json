@@ -16,5 +16,6 @@
   "Cannot execute \"delete\" on \"Folder\"": "Cannot execute \"delete\" on \"Folder\".",
   "Cannot execute \"restore\" on \"Folder\"": "Cannot execute \"restore\" on \"Folder\".",
   "Cannot execute \"move\" on \"Folder\"": "Cannot execute \"move\" on \"Folder\".",
-  "Cannot execute \"copy\" on \"Folder\"": "Cannot execute \"copy\" on \"Folder\"."
+  "Cannot execute \"copy\" on \"Folder\"": "Cannot execute \"copy\" on \"Folder\".",
+  "Cannot execute \"deleteForever\" on \"Folder\"": "Cannot execute \"deleteForever\" on \"Folder\"."
 }
