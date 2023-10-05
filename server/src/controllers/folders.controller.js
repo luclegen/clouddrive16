@@ -34,7 +34,7 @@ module.exports.create = catchAsync(async (req, res, next) => {
       path[4] = path[3] + `${folder.path === '/' ? '' : folder.path}`
       path[5] = path[4] + `/${folder.name}`
 
-      await util.promisify(fs.mkdir)(path[path.length - 1], { recursive: true })
+      fs.mkdirSync(path[path.length - 1], { recursive: true })
 
       res.status(201).json(req.t('Done'))
     } else next(createError(404, 'Folder not found.'))
