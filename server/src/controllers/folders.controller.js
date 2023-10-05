@@ -1,5 +1,6 @@
 const { ForbiddenError } = require('@casl/ability')
 const fs = require('fs')
+const util = require('util')
 const fse = require('fs-extra')
 const _ = require('lodash')
 const createError = require('http-errors')
@@ -33,9 +34,9 @@ module.exports.create = catchAsync(async (req, res, next) => {
       path[4] = path[3] + `${folder.path === '/' ? '' : folder.path}`
       path[5] = path[4] + `/${folder.name}`
 
-      fs.mkdir(path[path.length - 1], { recursive: true }, err => err
-        ? next(err)
-        : res.status(201).json(req.t('Done')))
+      await util.promisify(fs.mkdir)(path[path.length - 1], { recursive: true })
+
+      res.status(201).json(req.t('Done'))
     } else next(createError(404, 'Folder not found.'))
   }
 })
