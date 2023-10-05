@@ -21,7 +21,7 @@ module.exports.create = catchAsync(async (req, res, next) => {
     folder.path = req.body.path
     folder.name = req.body.name
 
-    if (folder) ForbiddenError.from(req.ability).throwUnlessCan('create', folder)
+    ForbiddenError.from(req.ability).throwUnlessCan('create', folder)
 
     folder = await folder.save()
 
