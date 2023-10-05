@@ -333,7 +333,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Identity
+          description: Folder id
           required: true
           explode: true
           schema:
@@ -363,7 +363,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Identity
+          description: Folder id
           required: true
           explode: true
           schema:
@@ -400,7 +400,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Identity
+          description: Folder id
           required: true
           explode: true
           schema:
@@ -413,6 +413,32 @@ paths:
           description: "Cannot execute \"read\" on \"Folder\".|Cannot execute \"delete\" on \"Folder\"."
         '404':
           description: "Folder not found."
+    delete:
+      tags:
+        - folders
+      summary: Delete forever folder
+      description: Delete forever a folder
+      operationId: deleteForeverFolder
+      parameters:
+        - name: id
+          in: path
+          description: Folder id
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: 651e37274379c0535573af61
+      responses:
+        '200':
+          description: "Deleted forever successfully."
+        '403':
+          description: "Folder is not trash.|Cannot execute \"deleteForever\" on \"Folder\"."
+        '404':
+          description: "Folder not found."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /folders/r/{id}:
     patch:
       tags:
@@ -423,7 +449,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Identity
+          description: Folder id
           required: true
           explode: true
           schema:
@@ -446,7 +472,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Identity
+          description: Folder id
           required: true
           explode: true
           schema:
@@ -478,7 +504,7 @@ paths:
       parameters:
         - name: id
           in: path
-          description: Identity
+          description: Folder id
           required: true
           explode: true
           schema:
