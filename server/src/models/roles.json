@@ -43,6 +43,12 @@
       "action": "changeLang",
       "subject": "User",
       "fields": { "_id": "mine" }
+    },
+    {
+      "id": "manageFolder",
+      "can": true,
+      "action": "manage",
+      "subject": "Folder"
     }
   ],
   "VIP": [
