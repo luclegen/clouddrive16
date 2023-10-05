@@ -63,40 +63,33 @@ module.exports.update = catchAsync(async (req, res, next) => {
           const editedFolder = await Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body } }, { new: true }).accessibleBy(req.ability)
 
           if (editedFolder) {
-            fs.rename(
+            await util.promisify(fs.rename)(
               converter.toUploadPath(req.user._id, folder),
-              converter.toUploadPath(req.user._id, editedFolder),
-              async err => {
-                if (err) return next(err)
+              converter.toUploadPath(req.user._id, editedFolder))
 
-                const editedFolders = await Folder.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
+            const editedFolders = await Folder.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
 
-                editedFolders
-                  .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-                  .forEach(async f => {
-                    f.path = f.path?.replace(converter.toPath(folder), converter.toPath(editedFolder))
-                    const savedFolder = await f.save()
+            editedFolders
+              .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+              .forEach(async f => {
+                f.path = f.path?.replace(converter.toPath(folder), converter.toPath(editedFolder))
+                const savedFolder = await f.save()
 
-                    if (!savedFolder) return next(createError(404, 'Saved Folder not found.'))
-                  })
-
-                try {
-                  const files = await File.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
-
-                  files
-                    .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-                    .forEach(async file => {
-                      file.path = file.path?.replace(converter.toPath(folder), converter.toPath(editedFolder))
-                      const editedFile = await file.save()
-
-                      if (!editedFile) return next(createError(404, 'File not found.'))
-                    })
-                } catch (err) {
-                  return next(err)
-                }
-
-                res.json('Updated successfully.')
+                if (!savedFolder) return next(createError(404, 'Saved Folder not found.'))
               })
+
+            const files = await File.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
+
+            files
+              .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+              .forEach(async file => {
+                file.path = file.path?.replace(converter.toPath(folder), converter.toPath(editedFolder))
+                const editedFile = await file.save()
+
+                if (!editedFile) return next(createError(404, 'File not found.'))
+              })
+
+            res.json('Updated successfully.')
           } else next(createError(404, 'Edited Folder not found.'))
         }
       } else next(createError(404, 'Folder not found.'))
