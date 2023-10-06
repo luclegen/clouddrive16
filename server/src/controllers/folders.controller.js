@@ -165,59 +165,59 @@ module.exports.move = catchAsync(async (req, res, next) => {
 module.exports.copy = catchAsync(async (req, res, next) => {
   const folder = await Folder.findById(req.params.id).accessibleBy(req.ability)
 
-  if (folder) {
-    ForbiddenError.from(req.ability).throwUnlessCan('copy', folder)
+  if (!folder) return next(createError(404, 'Folder not found.'))
 
-    const destFolder = req.body === 'Root' ? undefined : await Folder.findById(req.body)
-    const folders = await Folder.find({ _uid: req.user, path: destFolder ? converter.toPath(destFolder) : '/' }).accessibleBy(req.ability)
+  ForbiddenError.from(req.ability).throwUnlessCan('copy', folder)
 
-    const newFolder = new Folder()
+  const destFolder = req.body === 'Root' ? undefined : await Folder.findById(req.body)
+  const folders = await Folder.find({ _uid: req.user, path: destFolder ? converter.toPath(destFolder) : '/' }).accessibleBy(req.ability)
 
-    newFolder._uid = req.user
-    newFolder.path = destFolder ? converter.toPath(destFolder) : '/'
-    newFolder.name = duplicator.copyFolderInFolder(folder.name, folders.map(v => v.name))
+  const newFolder = new Folder()
 
-    const copiedFolder = await newFolder.save()
+  newFolder._uid = req.user
+  newFolder.path = destFolder ? converter.toPath(destFolder) : '/'
+  newFolder.name = duplicator.copyFolderInFolder(folder.name, folders.map(v => v.name))
 
-    const oldFolders = await Folder.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
+  const copiedFolder = await newFolder.save()
 
-    oldFolders
-      .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-      .forEach(async oldFolder => {
-        const newFolder1 = new Folder()
+  const oldFolders = await Folder.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
 
-        newFolder1._uid = req.user
-        newFolder1.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(copiedFolder))
-        newFolder1.name = oldFolder.name
+  oldFolders
+    .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+    .forEach(async oldFolder => {
+      const newFolder1 = new Folder()
 
-        const copiedFolder1 = await newFolder1.save()
+      newFolder1._uid = req.user
+      newFolder1.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(copiedFolder))
+      newFolder1.name = oldFolder.name
 
-        if (!copiedFolder1) return next(createError(404, 'Copied folder not found.'))
-      })
+      const copiedFolder1 = await newFolder1.save()
 
-    const copiedFiles = await File.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
+      if (!copiedFolder1) return next(createError(404, 'Copied folder not found.'))
+    })
 
-    copiedFiles
-      .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-      .forEach(async copiedFile => {
-        const newFile = new File()
+  const copiedFiles = await File.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
 
-        newFile._uid = req.user
-        newFile.path = copiedFile.path.replace(converter.toPath(folder), converter.toPath(copiedFolder))
-        newFile.name = copiedFile.name
+  copiedFiles
+    .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+    .forEach(async copiedFile => {
+      const newFile = new File()
 
-        copiedFile = await newFile.save()
+      newFile._uid = req.user
+      newFile.path = copiedFile.path.replace(converter.toPath(folder), converter.toPath(copiedFolder))
+      newFile.name = copiedFile.name
 
-        if (!copiedFile) return next(createError(404, 'Copied file not found.'))
-      })
+      copiedFile = await newFile.save()
 
-    fs.cpSync(
-      converter.toUploadPath(req.user._id, folder),
-      (destFolder ? converter.toUploadPath(req.user._id, destFolder, folders.map(v => v.name)) : `${process.env.UPLOADS}private/${req.user._id}/files`) + `/${duplicator.copyFolderInFolder(folder.name, folders.map(v => v.name))}`,
-      { recursive: true })
+      if (!copiedFile) return next(createError(404, 'Copied file not found.'))
+    })
 
-    res.json(req.t('Copied successfully.'))
-  } else next(createError(404, 'Folder not found.'))
+  fs.cpSync(
+    converter.toUploadPath(req.user._id, folder),
+    (destFolder ? converter.toUploadPath(req.user._id, destFolder, folders.map(v => v.name)) : `${process.env.UPLOADS}private/${req.user._id}/files`) + `/${duplicator.copyFolderInFolder(folder.name, folders.map(v => v.name))}`,
+    { recursive: true })
+
+  res.json(req.t('Copied successfully.'))
 })
 
 module.exports.deleteForever = catchAsync(async (req, res, next) => {
