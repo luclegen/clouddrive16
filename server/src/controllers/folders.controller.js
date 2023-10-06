@@ -48,52 +48,50 @@ module.exports.read = catchAsync(async (req, res, next) => {
 })
 
 module.exports.update = catchAsync(async (req, res, next) => {
-  if (req.body) {
-    if (checker.isFolder(req.body)) {
-      const folder = await Folder.findById(req.params.id).accessibleBy(req.ability)
+  if (!req.body) return next(createError(403, 'Name is required.'))
+  if (!checker.isFolder(req.body)) return next(createError(400, 'Invalid folder name.'))
 
-      if (folder) {
-        ForbiddenError.from(req.ability).throwUnlessCan('update', folder)
+  const folder = await Folder.findById(req.params.id).accessibleBy(req.ability)
 
-        const folders = await Folder.find({ _uid: req.user, name: req.body, path: folder.path }).accessibleBy(req.ability)
+  if (!folder) return next(createError(404, 'Folder not found.'))
 
-        if (folders.length) return next(createError(422, 'You already have a folder in the current path.\nPlease a different name.'))
-        else {
-          const editedFolder = await Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body } }, { new: true }).accessibleBy(req.ability)
+  ForbiddenError.from(req.ability).throwUnlessCan('update', folder)
 
-          if (editedFolder) {
-            fs.renameSync(
-              converter.toUploadPath(req.user._id, folder),
-              converter.toUploadPath(req.user._id, editedFolder))
+  const folders = await Folder.find({ _uid: req.user, name: req.body, path: folder.path }).accessibleBy(req.ability)
 
-            const editedFolders = await Folder.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
+  if (folders.length) return next(createError(422, 'You already have a folder in the current path.\nPlease a different name.'))
 
-            editedFolders
-              .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-              .forEach(async f => {
-                f.path = f.path?.replace(converter.toPath(folder), converter.toPath(editedFolder))
-                const savedFolder = await f.save()
+  const editedFolder = await Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body } }, { new: true }).accessibleBy(req.ability)
 
-                if (!savedFolder) return next(createError(404, 'Saved Folder not found.'))
-              })
+  if (!editedFolder) return next(createError(404, 'Edited Folder not found.'))
 
-            const files = await File.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
+  fs.renameSync(
+    converter.toUploadPath(req.user._id, folder),
+    converter.toUploadPath(req.user._id, editedFolder))
 
-            files
-              .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-              .forEach(async file => {
-                file.path = file.path?.replace(converter.toPath(folder), converter.toPath(editedFolder))
-                const editedFile = await file.save()
+  const editedFolders = await Folder.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
 
-                if (!editedFile) return next(createError(404, 'File not found.'))
-              })
+  editedFolders
+    .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+    .forEach(async f => {
+      f.path = f.path?.replace(converter.toPath(folder), converter.toPath(editedFolder))
+      const savedFolder = await f.save()
 
-            res.json('Updated successfully.')
-          } else next(createError(404, 'Edited Folder not found.'))
-        }
-      } else next(createError(404, 'Folder not found.'))
-    } else next(createError(400, 'Invalid folder name.'))
-  } else next(createError(403, 'Name is required.'))
+      if (!savedFolder) return next(createError(404, 'Saved Folder not found.'))
+    })
+
+  const files = await File.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
+
+  files
+    .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+    .forEach(async file => {
+      file.path = file.path?.replace(converter.toPath(folder), converter.toPath(editedFolder))
+      const editedFile = await file.save()
+
+      if (!editedFile) return next(createError(404, 'File not found.'))
+    })
+
+  res.json('Updated successfully.')
 })
 
 module.exports.delete = catchAsync(async (req, res, next) => {
