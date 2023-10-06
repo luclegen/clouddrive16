@@ -56,5 +56,6 @@
   "Copied successfully.": "Đã sao chép thành công.",
   "Cannot execute \"deleteForever\" on \"Folder\"": "Không thể thực thi \"xóa vĩnh viễn\" trên \"Thư mục\".",
   "Deleted forever successfully.": "Đã xóa vĩnh viễn thành công.",
-  "Cannot execute \"list\" on \"Array\"": "Không thể thực thi \"liệt kê\" trên \"Mảng\"."
+  "Cannot execute \"list\" on \"Array\"": "Không thể thực thi \"liệt kê\" trên \"Mảng\".",
+  "You already have a folder in the current path.\nPlease a different name.": "Bạn đã có một thư mục trong đường dẫn hiện tại.\nXin vui lòng đặt một tên khác."
 }
