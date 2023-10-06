@@ -18,5 +18,6 @@
   "Cannot execute \"move\" on \"Folder\"": "Cannot execute \"move\" on \"Folder\".",
   "Cannot execute \"copy\" on \"Folder\"": "Cannot execute \"copy\" on \"Folder\".",
   "Cannot execute \"deleteForever\" on \"Folder\"": "Cannot execute \"deleteForever\" on \"Folder\".",
-  "Cannot execute \"list\" on \"Array\"": "Cannot execute \"list\" on \"Array\"."
+  "Cannot execute \"list\" on \"Array\"": "Cannot execute \"list\" on \"Array\".",
+  "Cannot execute \"update\" on \"User\"": "Cannot execute \"update\" on \"User\"."
 }
