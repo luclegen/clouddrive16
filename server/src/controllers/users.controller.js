@@ -1,6 +1,5 @@
 const { ForbiddenError } = require('@casl/ability')
 const fs = require('fs')
-const util = require('util')
 const bcrypt = require('bcryptjs')
 const _ = require('lodash')
 const createError = require('http-errors')
@@ -93,13 +92,13 @@ module.exports.changeLang = catchAsync(async (req, res, next) => {
 
   user.lang = req.body
 
-  user = await user.save()
-
   ForbiddenError.from(req.ability).throwUnlessCan('changeLang', user)
 
-  if (user) {
-    res
-      .cookie('lang', user.lang, { expires: req.session.cookie.expires })
-      .json(req.t('Change language successfully.'))
-  } else next(createError(404, 'User not found.'))
+  user = await user.save()
+
+  if (!user) return next(createError(404, 'User not found.'))
+
+  res
+    .cookie('lang', user.lang, { expires: req.session.cookie.expires })
+    .json(req.t('Change language successfully.'))
 })
