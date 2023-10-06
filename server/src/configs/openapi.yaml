@@ -144,7 +144,7 @@ paths:
         '200':
           description: "Updated successfully."
         '403':
-          description: "Cannot execute \"update\" on \"Profile\"."
+          description: "Cannot execute \"update\" on \"User\".|Cannot execute \"read\" on \"Profile\".|Cannot execute \"update\" on \"Profile\"."
         '404':
           description: "User not found.|Profile not found."
       security:
@@ -1243,6 +1243,7 @@ components:
             - en
             - vi
           default: en
+          example: en
         full_name:
           type: string
           example: Huỳnh Thị Cẩm Liên
