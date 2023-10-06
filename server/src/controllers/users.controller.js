@@ -12,9 +12,7 @@ const checker = require('../helpers/checker')
 module.exports.create = catchAsync(async (req, res, next) => {
   req.i18n.changeLanguage(req.body.lang)
 
-  if (!checker.isDate(req.body.year, req.body.month, req.body.day)) {
-    return next(createError(403, 'Invalid birthday.'))
-  }
+  if (!checker.isDate(req.body.year, req.body.month, req.body.day)) return next(createError(403, 'Invalid birthday.'))
   if (!checker.isStrongPassword(req.body.password)) return next(createError(400, 'Please choose a stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters).'))
 
   let user = new User()
@@ -31,18 +29,19 @@ module.exports.create = catchAsync(async (req, res, next) => {
   profile.sex = req.body.sex
 
   user = await user.save()
-  if (user) {
-    profile._uid = user
-    profile = await profile.save()
 
-    if (profile) {
-      res.status(201).json(req.t('Registered successfully.'))
-    } else {
-      next(createError(404, 'Profile not found.'))
-    }
-  } else {
-    next(createError(404, 'User not found.'))
+  if (!user) return next(createError(404, 'User not found.'))
+
+  profile._uid = user
+  profile = await profile.save()
+
+  if (!profile) {
+    user.remove()
+
+    return next(createError(404, 'Profile not found.'))
   }
+
+  res.status(201).json(req.t('Registered successfully.'))
 })
 
 module.exports.read = catchAsync(async (req, res, next) => {
