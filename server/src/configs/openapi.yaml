@@ -74,26 +74,55 @@ paths:
         - users
       summary: Read user
       description: Read an user 
-      operationId: available
+      operationId: readUser
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                type: boolean
-                default: true
-        '203':
-          description: failure operation
-          content:
-            application/json:
-              schema:
-                type: boolean
-                default: false
-        '400':
-          description: "Invalid email."
-        '401':
-          description: "Unauthorized."
+                type: object
+                properties:
+                  avatar:
+                    type: string
+                    example: "/651a460623dbbafbf21fdb71/1696237372253.jpg"
+                  name:
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                        example: "Lực"
+                      middle:
+                        type: string
+                        example: "Tấn"
+                      last:
+                        type: string
+                        example: "Huỳnh"
+                  lang: 
+                    type: string
+                    default: en
+                    enum:
+                      - en
+                      - vi
+                    example: vi
+                  email:
+                    type: string
+                    example: "luclegen.dev@gmail.com"
+                  full_name:
+                    type: string
+                    example: "Huỳnh Tấn Lực"
+                  birthday:
+                    type: string
+                    example: "1997-10-28T17:00:00.000Z"
+                  sex:
+                    type: string
+                    default: Male
+                    enum:
+                      - Male
+                      - Female
+                      - Other
+        '404':
+          description: "Profile not found."
       security:
         - petstore_auth:
             - write:pets
