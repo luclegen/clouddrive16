@@ -55,11 +55,9 @@ module.exports.read = catchAsync(async (req, res, next) => {
 module.exports.update = catchAsync(async (req, res, next) => {
   req.i18n.changeLanguage(req.body.lang)
 
-  if (!checker.isDate(req.body.year, req.body.month, req.body.day)) {
-    return next(createError(403, 'Invalid birthday.'))
-  }
+  if (!checker.isDate(req.body.year, req.body.month, req.body.day)) return next(createError(403, 'Invalid birthday.'))
 
-  if (req.file && req.user.avatar) await util.promisify(fs.rm)(`${process.env.UPLOADS}public${req.user.avatar}`)
+  if (req.file && req.user.avatar) fs.rmSync(`${process.env.UPLOADS}public${req.user.avatar}`)
 
   let profile = await Profile.findOne({ _uid: req.user }).accessibleBy(req.ability)
 
@@ -72,24 +70,22 @@ module.exports.update = catchAsync(async (req, res, next) => {
   profile.birthday = new Date(req.body.year, req.body.month, req.body.day)
   profile.sex = req.body.sex
 
+  ForbiddenError.from(req.ability).throwUnlessCan('update', req.user)
+
   req.user = await req.user.save()
-  if (req.user) {
-    profile._uid = req.user
+  if (!req.user) return next(createError(404, 'User not found.'))
 
-    profile = await profile.save()
+  profile._uid = req.user
 
-    if (profile) {
-      ForbiddenError.from(req.ability).throwUnlessCan('update', profile)
+  ForbiddenError.from(req.ability).throwUnlessCan('update', profile)
 
-      res
-        .cookie('lang', req.user.lang, { expires: req.session.cookie.expires })
-        .json(req.t('Updated successfully.'))
-    } else {
-      next(createError(404, 'Profile not found.'))
-    }
-  } else {
-    next(createError(404, 'User not found.'))
-  }
+  profile = await profile.save()
+
+  if (!profile) return next(createError(404, 'Profile not found.'))
+
+  res
+    .cookie('lang', req.user.lang, { expires: req.session.cookie.expires })
+    .json(req.t('Updated successfully.'))
 })
 
 module.exports.changeLang = catchAsync(async (req, res, next) => {
