@@ -326,20 +326,45 @@ paths:
     get:
       tags:
         - folders
-      summary: Read folder
-      description: Read a folder
-      operationId: readFolder
+      summary: List folder
+      description: List a folder
+      operationId: listFolder
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreatedFolder"
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: "651e37274379c0535573af61"
+                    path:
+                      type: string
+                      example: "/"
+                    name:
+                      type: string
+                      example: "New folder"
+                    is_trash:
+                      type: boolean
+                      example: false
+                    _uid:
+                      type: string
+                      example: "651a460623dbbafbf21fdb71"
+                    createdAt:
+                      type: string
+                      example: "2023-10-04T08:36:52.960Z"
+                    updatedAt:
+                      type: string
+                      example: "2023-10-04T09:10:54.326Z"
+                    __v:
+                      type: number
+                      example: 0
         '403':
-          description: "Cannot execute \"read\" on \"Folder\".|Cannot execute \"list\" on \"Array\"."
-        '404':
-          description: "Folder not found."
+          description: "Cannot execute \"read\" on \"Folder\"."
       security:
         - petstore_auth:
             - write:pets
