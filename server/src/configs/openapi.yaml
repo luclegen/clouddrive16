@@ -341,7 +341,7 @@ paths:
                   properties:
                     _id:
                       type: string
-                      example: "651e37274379c0535573af61"
+                      example: "651f651c93bce2491f2d997f"
                     path:
                       type: string
                       example: "/"
@@ -384,7 +384,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 651e37274379c0535573af61
+            example: 651f651c93bce2491f2d997f
       responses:
         '200':
           description: successful operation
@@ -414,7 +414,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 651e37274379c0535573af61
+            example: 651f651c93bce2491f2d997f
       requestBody:
         description: Folder
         content:
@@ -451,7 +451,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 651e37274379c0535573af61
+            example: 651f651c93bce2491f2d997f
       responses:
         '200':
           description: "Deleted successfully."
@@ -473,7 +473,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 651e37274379c0535573af61
+            example: 651f651c93bce2491f2d997f
       responses:
         '200':
           description: "Deleted forever successfully."
@@ -500,7 +500,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 651e37274379c0535573af61
+            example: 651f651c93bce2491f2d997f
       responses:
         '200':
           description: "Restored successfully."
@@ -523,14 +523,14 @@ paths:
           explode: true
           schema:
             type: string
-            example: 651e37274379c0535573af61
+            example: 651f651c93bce2491f2d997f
       requestBody:
         description: Folder
         content:
           text/plain:
             schema:
               type: string
-              example: 651d240c5dbc26bc3411934b
+              example: 651f69f96081681ad25f851f
       responses:
         '200':
           description: "Moved successfully."
@@ -555,14 +555,14 @@ paths:
           explode: true
           schema:
             type: string
-            example: 651e37274379c0535573af61
+            example: 651f651c93bce2491f2d997f
       requestBody:
         description: Folder
         content:
           text/plain:
             schema:
               type: string
-              example: 651d240c5dbc26bc3411934b
+              example: 651f69f96081681ad25f851f
       responses:
         '200':
           description: "Copied successfully."
@@ -1246,22 +1246,37 @@ components:
       properties:
         path:
           type: string
-          example: /home/
+          example: /
         name:
           type: string
           example: New folder
     CreatedFolder:
       type: object
       properties:
+        _id: 
+          type: string
+          example: "651f651c93bce2491f2d997f"
         path:
           type: string
-          example: /home
+          example: "/"
         name:
           type: string
-          example: test
+          example: "Test"
         is_trash:
           type: boolean
-          example: false|true
+          example: false
+        _uid:
+          type: string
+          example: "651a460623dbbafbf21fdb71"
+        createdAt:
+          type: string
+          example: "2023-10-06T01:38:36.551Z"
+        updatedAt:
+          type: string
+          example: "2023-10-06T01:38:36.551Z"
+        __v:
+          type: number
+          example: 0
     Tag:
       type: object
       properties:
