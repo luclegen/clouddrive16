@@ -11,32 +11,32 @@ const duplicator = require('../helpers/duplicator')
 
 module.exports.create = catchAsync(async (req, res, next) => {
   const folders = await Folder.find({ _uid: req.user, name: req.body.name, path: req.body.path }).accessibleBy(req.ability)
-  if (folders.length) next(createError(422, 'You already have a directory in the current path.\nPlease change to another name.'))
-  else {
-    let folder = new Folder()
 
-    folder._uid = req.user
-    folder.path = req.body.path
-    folder.name = req.body.name
+  if (folders.length) return next(createError(422, 'You already have a directory in the current path.\nPlease change to another name.'))
 
-    ForbiddenError.from(req.ability).throwUnlessCan('create', folder)
+  let folder = new Folder()
 
-    folder = await folder.save()
+  folder._uid = req.user
+  folder.path = req.body.path
+  folder.name = req.body.name
 
-    if (folder) {
-      const path = [process.env.UPLOADS]
+  ForbiddenError.from(req.ability).throwUnlessCan('create', folder)
 
-      path[1] = path[0] + 'private'
-      path[2] = path[1] + `/${req.user._id}`
-      path[3] = path[2] + '/files'
-      path[4] = path[3] + `${folder.path === '/' ? '' : folder.path}`
-      path[5] = path[4] + `/${folder.name}`
+  folder = await folder.save()
 
-      fs.mkdirSync(path[path.length - 1], { recursive: true })
+  if (!folder) return next(createError(404, 'Folder not found.'))
 
-      res.status(201).json(req.t('Done'))
-    } else next(createError(404, 'Folder not found.'))
-  }
+  const path = [process.env.UPLOADS]
+
+  path[1] = path[0] + 'private'
+  path[2] = path[1] + `/${req.user._id}`
+  path[3] = path[2] + '/files'
+  path[4] = path[3] + `${folder.path === '/' ? '' : folder.path}`
+  path[5] = path[4] + `/${folder.name}`
+
+  fs.mkdirSync(path[path.length - 1], { recursive: true })
+
+  res.status(201).json(req.t('Done'))
 })
 
 module.exports.read = catchAsync(async (req, res, next) => {
