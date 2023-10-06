@@ -1,6 +1,5 @@
 const { ForbiddenError } = require('@casl/ability')
 const fs = require('fs')
-const _ = require('lodash')
 const createError = require('http-errors')
 const Folder = require('../models/folder.model')
 const catchAsync = require('../middlewares/catcher.middleware')
@@ -107,60 +106,60 @@ module.exports.delete = catchAsync(async (req, res, next) => {
 module.exports.restore = catchAsync(async (req, res, next) => {
   const folder = await Folder.findByIdAndUpdate(req.params.id, { $set: { is_trash: false } }, { new: true }).accessibleBy(req.ability)
 
-  if (folder) {
-    ForbiddenError.from(req.ability).throwUnlessCan('restore', folder)
+  if (!folder) return next(createError(404, 'Folder not found.'))
 
-    res.status(200).json(req.t('Restored successfully.'))
-  } else next(createError(404, 'Folder not found.'))
+  ForbiddenError.from(req.ability).throwUnlessCan('restore', folder)
+
+  res.status(200).json(req.t('Restored successfully.'))
 })
 
 module.exports.move = catchAsync(async (req, res, next) => {
   const folder = await Folder.findById(req.params.id).accessibleBy(req.ability)
   const destFolder = req.body === 'Root' ? undefined : await Folder.findById(req.body).accessibleBy(req.ability)
 
-  if (folder) {
-    ForbiddenError.from(req.ability).throwUnlessCan('move', folder)
+  if (!folder) return next(createError(404, 'Folder not found.'))
 
-    if (destFolder
-      ? converter.toPath(folder) === converter.toPath(destFolder)
-      : converter.toPath(folder) === '/') next(createError(422, 'You already have a folder in the current path!\nPlease choose another folder.'))
-    else {
-      const folders = await Folder.find({ _uid: req.user, name: folder.name, path: destFolder ? converter.toPath(destFolder) : '/' }).accessibleBy(req.ability)
+  ForbiddenError.from(req.ability).throwUnlessCan('move', folder)
 
-      if (folders.length) return next(createError(422, 'You already have a folder in the current path!\nPlease choose another folder.'))
+  if (destFolder
+    ? converter.toPath(folder) === converter.toPath(destFolder)
+    : converter.toPath(folder) === '/') return next(createError(422, 'You already have a folder in the current path!\nPlease choose another folder.'))
 
-      const movedFolder = await Folder.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true }).accessibleBy(req.ability)
+  const folders = await Folder.find({ _uid: req.user, name: folder.name, path: destFolder ? converter.toPath(destFolder) : '/' }).accessibleBy(req.ability)
 
-      if (movedFolder) {
-        const oldFolders = await Folder.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
+  if (folders.length) return next(createError(422, 'You already have a folder in the current path!\nPlease choose another folder.'))
 
-        oldFolders
-          .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-          .forEach(async oldFolder => {
-            oldFolder.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(movedFolder))
-            const movedFolder1 = await oldFolder.save()
+  const movedFolder = await Folder.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true }).accessibleBy(req.ability)
 
-            if (!movedFolder1) return next(createError(404, 'Moved next folder not found.'))
-          })
+  if (!movedFolder) return next(createError(404, 'Moved folder not found.'))
 
-        const oldFiles = await File.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
+  const oldFolders = await Folder.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
 
-        oldFiles
-          .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
-          .forEach(async oldFile => {
-            oldFile.path = oldFile.path.replace(converter.toPath(folder), converter.toPath(movedFolder))
-            const movedFile = await oldFile.save()
-            if (!movedFile) return next(createError(404, 'Moved file not found.'))
-          })
+  oldFolders
+    .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+    .forEach(async oldFolder => {
+      oldFolder.path = oldFolder.path.replace(converter.toPath(folder), converter.toPath(movedFolder))
+      const movedFolder1 = await oldFolder.save()
 
-        fs.renameSync(
-          converter.toUploadPath(req.user._id, folder),
-          `${(destFolder ? converter.toUploadPath(req.user._id, destFolder) : `${process.env.UPLOADS}private/${req.user._id}/files`)}/${folder.name}`)
+      if (!movedFolder1) return next(createError(404, 'Moved next folder not found.'))
+    })
 
-        res.json(req.t('Moved successfully.'))
-      } else next(createError(404, 'Moved folder not found.'))
-    }
-  } else next(createError(404, 'Folder not found.'))
+  const oldFiles = await File.find({ _uid: req.user, path: new RegExp(`^${converter.toRegex(converter.toPath(folder))}`, 'g') }).accessibleBy(req.ability)
+
+  oldFiles
+    .filter(v => converter.toPath(v).slice(0, converter.toPath(folder).length) === converter.toPath(folder))
+    .forEach(async oldFile => {
+      oldFile.path = oldFile.path.replace(converter.toPath(folder), converter.toPath(movedFolder))
+      const movedFile = await oldFile.save()
+
+      if (!movedFile) return next(createError(404, 'Moved file not found.'))
+    })
+
+  fs.renameSync(
+    converter.toUploadPath(req.user._id, folder),
+    `${(destFolder ? converter.toUploadPath(req.user._id, destFolder) : `${process.env.UPLOADS}private/${req.user._id}/files`)}/${folder.name}`)
+
+  res.json(req.t('Moved successfully.'))
 })
 
 module.exports.copy = catchAsync(async (req, res, next) => {
