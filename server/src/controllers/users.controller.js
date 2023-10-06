@@ -47,8 +47,9 @@ module.exports.create = catchAsync(async (req, res, next) => {
 module.exports.read = catchAsync(async (req, res, next) => {
   const profile = await Profile.findOne({ _uid: req.user }).accessibleBy(req.ability)
 
-  if (profile) res.json({ ..._.pick(req.user, ['avatar', 'name.first', 'name.middle', 'name.last', 'lang', 'email']), ..._.pick(profile, ['full_name', 'birthday', 'sex']) })
-  else next(createError(404, 'Profile not found.'))
+  if (!profile) return next(createError(404, 'Profile not found.'))
+
+  res.json({ ..._.pick(req.user, ['avatar', 'name.first', 'name.middle', 'name.last', 'lang', 'email']), ..._.pick(profile, ['full_name', 'birthday', 'sex']) })
 })
 
 module.exports.update = catchAsync(async (req, res, next) => {
