@@ -323,6 +323,27 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+    get:
+      tags:
+        - folders
+      summary: Read folder
+      description: Read a folder
+      operationId: readFolder
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatedFolder"
+        '403':
+          description: "Cannot execute \"read\" on \"Folder\".|Cannot execute \"list\" on \"Array\"."
+        '404':
+          description: "Folder not found."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /folders/{id}:
     get:
       tags:
