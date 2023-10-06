@@ -55,5 +55,6 @@
   "Cannot execute \"copy\" on \"Folder\"": "Không thể thực thi \"sao chép\" trên \"Thư mục\".",
   "Copied successfully.": "Đã sao chép thành công.",
   "Cannot execute \"deleteForever\" on \"Folder\"": "Không thể thực thi \"xóa vĩnh viễn\" trên \"Thư mục\".",
-  "Deleted forever successfully.": "Đã xóa vĩnh viễn thành công."
+  "Deleted forever successfully.": "Đã xóa vĩnh viễn thành công.",
+  "Cannot execute \"list\" on \"Array\"": "Không thể thực thi \"liệt kê\" trên \"Mảng\"."
 }
