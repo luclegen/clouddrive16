@@ -1,18 +1,18 @@
 const router = require('express').Router()
-const authorize = require('../middlewares/authorization.middleware');
 const transfer = require('../helpers/transfer')
 const filesController = require('../controllers/files.controller')
 
-router.post('/', authorize, transfer.upload('files').array('files'), filesController.create)
-router.post('/p', authorize, filesController.createPlaintext)
-router.get('/d/:id', authorize, filesController.download)
-router.get('/:id', authorize, filesController.read)
-router.put('/:id', authorize, filesController.update)
-router.patch('/:id', authorize, filesController.delete)
-router.patch('/r/:id', authorize, filesController.restore)
-router.patch('/m/:id', authorize, filesController.move)
-router.patch('/c/:id', authorize, filesController.copy)
-router.delete('/:id', authorize, filesController.deleteForever)
-router.get('/', authorize, filesController.list)
+router
+  .post('/', transfer.upload('files').array('files'), filesController.create)
+  .post('/p', filesController.createPlaintext)
+  .get('/d/:id', filesController.download)
+  .get('/:id', filesController.read)
+  .put('/:id', filesController.update)
+  .patch('/:id', filesController.delete)
+  .patch('/r/:id', filesController.restore)
+  .patch('/m/:id', filesController.move)
+  .patch('/c/:id', filesController.copy)
+  .delete('/:id', filesController.deleteForever)
+  .get('/', filesController.list)
 
 module.exports = router
