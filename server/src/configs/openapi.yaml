@@ -24,6 +24,8 @@ tags:
     description: Codes
   - name: folders
     description: Folders
+  - name: files
+    description: Files
   - name: pet
     description: Everything about your Pets
     externalDocs:
@@ -601,6 +603,35 @@ paths:
           description: "Folder not found.|Copied folder not found."
         '422':
           description: "You already have a folder in the current path!\nPlease choose another folder."
+  /files:
+    post:
+      tags:
+        - files
+      summary: Create file
+      description: Create a new file
+      operationId: createFile
+      requestBody:
+        description: Create a new file
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/File'
+        required: true
+      responses:
+        '201':
+          description: "Uploaded successfully."
+        '400':
+          description: "Names is required."
+        '403':
+          description: "Cannot execute \"read\" on \"File\".|Cannot execute \"create\" on \"File\"."
+        '404':
+          description: "File not found."
+        '422':
+          description: "File is duplicate.\nPlease choose another file."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /pet/findByStatus:
     get:
       tags:
@@ -1280,6 +1311,22 @@ components:
         name:
           type: string
           example: New folder
+    File:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: string
+            format: binary
+        names:
+          type: array
+          items:
+            type: string
+            example: Test
+        path:
+          type: string
+          example: "/"
     CreatedFolder:
       type: object
       properties:
