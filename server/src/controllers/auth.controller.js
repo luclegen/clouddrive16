@@ -17,32 +17,32 @@ module.exports.login = catchAsync(async (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) next(err)
 
-    if (user) {
-      req.login(user, err => {
+    if (!user) return next(info)
+
+    req.login(user, err => {
+      if (err) return next(err)
+
+      req.session.cookie.expires = req.body.remember ? maxAge : false
+
+      req.session.save(async err => {
         if (err) next(err)
 
-        req.session.cookie.expires = req.body.remember ? maxAge : false
+        const session = await Session.findByIdAndUpdate(req.session.id, { _uid: user }, { new: true })
 
-        req.session.save(async err => {
-          if (err) next(err)
-
-          const session = await Session.findByIdAndUpdate(req.session.id, { _uid: user }, { new: true })
-
-          if (session) {
-            res
-              .cookie('is_activate', user.is_activate.toString() || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
-              .cookie('lang', user.lang, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
-              .cookie('id', user._id.toString(), { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
-              .cookie('avatar', user.avatar || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
-              .cookie('username', user.username || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
-              .cookie('first_name', user.name.first, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
-              .cookie('middle_name', user.name.middle || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
-              .cookie('last_name', user.name.last, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
-              .json()
-          }
-        })
+        if (session) {
+          res
+            .cookie('is_activate', user.is_activate.toString() || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+            .cookie('lang', user.lang, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+            .cookie('id', user._id.toString(), { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+            .cookie('avatar', user.avatar || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+            .cookie('username', user.username || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+            .cookie('first_name', user.name.first, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+            .cookie('middle_name', user.name.middle || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+            .cookie('last_name', user.name.last, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+            .json()
+        }
       })
-    } else next(info)
+    })
   })(req, res)
 })
 
