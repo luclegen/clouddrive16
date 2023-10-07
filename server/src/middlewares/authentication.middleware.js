@@ -8,8 +8,8 @@ passport.use(new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: false
 }, (email, password, done) => User.findOne({ email })
-  .then(async user => user
-    ? await user.authenticate(password)
+  .then(user => user
+    ? user.authenticate(password)
       ? done(null, user)
       : done(null, false, createError(401, 'Wrong password.'))
     : done(null, false, createError(404, 'Email not registered.')))

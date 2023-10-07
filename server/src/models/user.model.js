@@ -65,8 +65,8 @@ userSchema.path('password').validate(v => checker.isStrongPassword(v), 'Please c
 
 // #region Methods
 
-userSchema.methods.authenticate = async function (password) {
-  return await bcrypt.compare(password, this.password)
+userSchema.methods.authenticate = function (password) {
+  return bcrypt.compareSync(password, this.password)
 }
 
 userSchema.methods.sign = function () {
