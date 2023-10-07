@@ -12,7 +12,7 @@ const defineAbilitiesFor = user => {
   for (const role of user.roles) {
     const permissions = roles[role]
     for (const p of permissions) {
-      if (p?.fields) { p.fields = Object.fromEntries(Object.entries(p?.fields).map((v, i) => [v[0], v[1] === 'mine' ? user._id : v[1]])) }
+      if (p?.fields) p.fields = Object.fromEntries(Object.entries(p?.fields).map((v, i) => [v[0], v[1] === 'mine' ? user._id : v[1]]))
       if (p.can) can(p.action, p.subject, p.fields)
       else cannot(p.action, p.subject, p.fields)
     }
@@ -24,25 +24,8 @@ const defineAbilitiesFor = user => {
 module.exports = catchAsync(async (req, res, next) => {
   req.i18n.changeLanguage(req.cookies?.lang)
 
-  if (req.session?.passport?.user) {
-    req.payload = await util.promisify(jwt.verify)(req.session?.passport?.user, process.env.SECRET)
-    req.user = await User.findById(req.payload)
-    if (req.user) {
-      req.ability = defineAbilitiesFor(req.user)
-      if (req.user.is_activate) next()
-      else {
-        switch (req.baseUrl) {
-        case '/api/auth':
-        case '/api/codes':
-          next()
-          break
-        default:
-          next(createError(401))
-        }
-      }
-    } else next(createError(404, 'User not found.'))
-  } else {
-    res
+  if (!req.session?.passport?.user) {
+    return res
       .clearCookie('lang')
       .clearCookie('id')
       .clearCookie('avatar')
@@ -52,5 +35,23 @@ module.exports = catchAsync(async (req, res, next) => {
       .clearCookie('last_name')
       .status(401)
       .json(req.t('Unauthorized.'))
+  }
+
+  req.payload = await util.promisify(jwt.verify)(req.session?.passport?.user, process.env.SECRET)
+  req.user = await User.findById(req.payload)
+
+  if (!req.user) return next(createError(404, 'User not found.'))
+
+  req.ability = defineAbilitiesFor(req.user)
+
+  if (req.user.is_activate) return next()
+
+  switch (req.baseUrl) {
+  case '/api/auth':
+  case '/api/codes':
+    next()
+    break
+  default:
+    next(createError(401))
   }
 })
