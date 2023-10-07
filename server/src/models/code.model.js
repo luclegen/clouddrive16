@@ -41,8 +41,8 @@ codeSchema.pre('save', async function (next) {
 
 // #region Methods
 
-codeSchema.methods.verify = async function (body) {
-  return await bcrypt.compare(body, this.body)
+codeSchema.methods.verify = function (body) {
+  return bcrypt.compareSync(body, this.body)
 }
 
 // #endregion Methods
