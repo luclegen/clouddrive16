@@ -218,9 +218,9 @@ paths:
         '200':
           description: Successful operation
         '403':
-          description: "User verified.|Cannot execute \"read\" on \"User\".|Cannot execute \"read\" on \"Code\".|Cannot execute \"verify\" on \"Code\".|Wrong code. You have 2 attempts left.|Wrong code. You have 1 attempts left.|You tried too many. Please try again with a different verification code or change your email again."
+          description: "User verified.|Cannot execute \"read\" on \"User\".|Cannot execute \"read\" on \"Code\".|Cannot execute \"verify\" on \"Code\".|Wrong code.\nYou have 2 attempts left.|Wrong code.\nYou have 1 attempts left.|You tried too many. Please try again with a different verification code or change your email again."
         '404':
-          description: "User not found.|Code not found. Please click to \"Send Code\".|Code not found."
+          description: "User not found.|Code not found.\nPlease click to \"Send Code\".|Code not found."
         '429':
           description: "You tried too many. Please try again with a different verification code or change your email again."
       security:
