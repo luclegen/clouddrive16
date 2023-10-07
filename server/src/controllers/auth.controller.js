@@ -87,15 +87,16 @@ module.exports.verify = catchAsync(async (req, res, next) => {
 module.exports.changePassword = catchAsync(async (req, res, next) => {
   if (!checker.isStrongPassword(req.body.new_password)) return next(createError(400, 'Please choose a new stronger password. Try a mix of letters, numbers, and symbols (use 8 or more characters).'))
 
-  if (await req.user?.authenticate(req.body.password)) {
-    ForbiddenError.from(req.ability).throwUnlessCan('changePassword', req.user)
+  if (!req.user?.authenticate(req.body.password)) return next(createError(401, 'Wrong password.'))
 
-    req.user.password = await bcrypt.hash(req.body.new_password, await bcrypt.genSalt(10))
-    req.user = await req.user.save()
+  ForbiddenError.from(req.ability).throwUnlessCan('changePassword', req.user)
 
-    if (req.user) res.json(req.t('Change password successfully.'))
-    else next(createError(404, 'User not found.'))
-  } else next(createError(401, 'Wrong password.'))
+  req.user.password = bcrypt.hashSync(req.body.new_password, bcrypt.genSaltSync(10))
+  req.user = await req.user.save()
+
+  if (!req.user) return next(createError(404, 'User not found.'))
+
+  res.json(req.t('Change password successfully.'))
 })
 
 module.exports.logout = (req, res, next) => {
