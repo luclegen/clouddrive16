@@ -55,31 +55,30 @@ module.exports.available = catchAsync(async (req, res, next) => {
 })
 
 module.exports.verify = catchAsync(async (req, res, next) => {
-  if (req.user?.is_activate) next(createError(403, 'User verified.'))
-  else {
-    let code = await Code.findOne({ _uid: req.user }).accessibleBy(req.ability)
+  if (req.user?.is_activate) return next(createError(403, 'User verified.'))
 
-    if (code) {
-      ForbiddenError.from(req.ability).throwUnlessCan('verify', code)
+  let code = await Code.findOne({ _uid: req.user }).accessibleBy(req.ability)
 
-      if (code.attempts) {
-        if (await code.verify(req.body)) {
-          const user = await User.findByIdAndUpdate(req.user, { $set: { is_activate: true } }, { new: true }).accessibleBy(req.ability)
+  if (!code) return next(createError(404, 'Code not found.\nPlease click to "Send Code".'))
 
-          if (user) {
-            code.remove()
-            req.session.token = user.sign()
-            res.cookie('is_activate', user.is_activate.toString(), { expires: req.session?.cookie?.expires }).json()
-          }
-        } else {
-          code = await Code.findByIdAndUpdate(code, { $set: { attempts: --code.attempts } }, { new: true }).accessibleBy(req.ability)
+  ForbiddenError.from(req.ability).throwUnlessCan('verify', code)
 
-          if (code) next(createError(code?.attempts ? 403 : 429, code.attempts ? `Wrong code. You have ${code.attempts} attempts left.` : 'You tried too many. Please try again with a different verification code or change your email again.'))
-          else next(createError(404, 'Code not found.'))
-        }
-      } else next(createError(429, 'You tried too many. Please try again with a different verification code or change your email again.'))
-    } else next(createError(404, 'Code not found. Please click to "Send Code".'))
+  if (!code.attempts) return next(createError(429, 'You tried too many.\nPlease try again with a different verification code or change your email again.'))
+  if (!code.verify(req.body)) {
+    code = await Code.findByIdAndUpdate(code, { $set: { attempts: --code.attempts } }, { new: true }).accessibleBy(req.ability)
+
+    if (!code) return next(createError(404, 'Code not found.'))
+
+    return next(createError(code?.attempts ? 403 : 429, code.attempts ? `Wrong code.\nYou have ${code.attempts} attempts left.` : 'You tried too many.\nPlease try again with a different verification code or change your email again.'))
   }
+
+  const user = await User.findByIdAndUpdate(req.user, { $set: { is_activate: true } }, { new: true }).accessibleBy(req.ability)
+
+  if (!user) return next(createError(404, 'User not found.'))
+
+  code.remove()
+  req.session.token = user.sign()
+  res.cookie('is_activate', user.is_activate.toString(), { expires: req.session?.cookie?.expires }).json()
 })
 
 module.exports.changePassword = catchAsync(async (req, res, next) => {
