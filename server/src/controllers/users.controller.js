@@ -3,10 +3,12 @@ const fs = require('fs')
 const bcrypt = require('bcryptjs')
 const _ = require('lodash')
 const createError = require('http-errors')
+const Session = require('../models/session.model')
 const User = require('../models/user.model')
 const Profile = require('../models/profile.model')
 const catchAsync = require('../middlewares/catcher.middleware')
 const checker = require('../helpers/checker')
+const maxAge = 30 * 24 * 60 * 60 * 1000
 
 module.exports.create = catchAsync(async (req, res, next) => {
   req.i18n.changeLanguage(req.body.lang)
@@ -40,7 +42,31 @@ module.exports.create = catchAsync(async (req, res, next) => {
     return next(createError(404, 'Profile not found.'))
   }
 
-  res.status(201).json(req.t('Registered successfully.'))
+  req.login(user, err => {
+    if (err) return next(err)
+
+    req.session.cookie.expires = req.body.remember ? maxAge : false
+
+    req.session.save(async err => {
+      if (err) next(err)
+
+      const session = await Session.findByIdAndUpdate(req.session.id, { _uid: user }, { new: true })
+
+      if (session) {
+        res
+          .cookie('is_activate', user.is_activate.toString() || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+          .cookie('lang', user.lang, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+          .cookie('id', user._id.toString(), { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+          .cookie('avatar', user.avatar || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+          .cookie('username', user.username || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+          .cookie('first_name', user.name.first, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+          .cookie('middle_name', user.name.middle || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+          .cookie('last_name', user.name.last, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+          .status(201)
+          .json(req.t('Registered successfully.'))
+      }
+    })
+  })
 })
 
 module.exports.read = catchAsync(async (req, res, next) => {
