@@ -1,9 +1,9 @@
 const router = require('express').Router()
-const transfer = require('../helpers/transfer')
+const transfer = require('../middlewares/transfer.middleware.js')
 const filesController = require('../controllers/files.controller')
 
 router
-  .post('/', transfer.upload('files').array('files'), filesController.create)
+  .post('/', transfer.upload('files').single('file'), filesController.create)
   .post('/p', filesController.createPlaintext)
   .get('/d/:id', filesController.download)
   .get('/:id', filesController.read)
