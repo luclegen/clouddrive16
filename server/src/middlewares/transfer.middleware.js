@@ -42,6 +42,7 @@ module.exports.upload = (dir = '', type = 'private') => multer({
       path[1] = path[0] + `${type}`
       path[2] = path[1] + `/${req.user._id}`
       dir && (path[3] = `${path[2]}/${dir}`)
+      !!['files'].includes(dir) && (path[4] = `${path[3]}${req.body.path}`)
       !!['resumes'].includes(dir) && (path[4] = `${path[3]}/id`)
 
       fs.mkdir(path[path.length - 1], { recursive: true }, err => err
