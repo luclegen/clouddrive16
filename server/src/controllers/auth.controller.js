@@ -49,8 +49,6 @@ module.exports.login = catchAsync(async (req, res, next) => {
 module.exports.available = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: req.params.email })
 
-  if (!checker.isEmail()) return next(createError(400, 'Invalid email.'))
-
   res.status(user ? 203 : 200).json(!user)
 })
 
