@@ -611,7 +611,7 @@ paths:
       description: Create a new file
       operationId: createFile
       requestBody:
-        description: Create a new file
+        description: A new file
         content:
           multipart/form-data:
             schema:
