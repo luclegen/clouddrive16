@@ -661,6 +661,29 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+  /files/d/{id}:
+    get:
+      tags:
+        - files
+      summary: Download file
+      description: Download a file
+      operationId: downloadFile
+      parameters:
+        - name: id
+          in: path
+          description: File id
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: 65226525005555df72bcc23e
+      responses:
+        '200':
+          description: "Downloaded successfully."
+        '403':
+          description: "Cannot execute \"read\" on \"File\".|Cannot execute \"download\" on \"File\"."
+        '404':
+          description: "File not found."
   /pet/findByStatus:
     get:
       tags:
