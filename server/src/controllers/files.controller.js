@@ -1,29 +1,35 @@
+const { ForbiddenError } = require('@casl/ability')
 const _ = require('lodash')
-const fs = require("fs")
+const fs = require('fs')
+const createError = require('http-errors')
 const File = require('../models/file.model')
 const Folder = require('../models/folder.model')
+const catchAsync = require('../middlewares/catcher.middleware')
 const checker = require('../helpers/checker')
 const converter = require('../helpers/converter')
 const duplicator = require('../helpers/duplicator')
 
-module.exports.create = (req, res, next) =>
-  JSON.parse(req.body.names).forEach(name =>
-    File.find({ _uid: req.payload, name: name, path: req.body.path })
-      .then(files => {
-        if (files.length) res.status(422).json('File is duplicate. Please choose another file.')
-        else {
-          const file = new File()
+module.exports.create = catchAsync(async (req, res, next) => {
+  if (!req.body.name) return next(createError(400, 'Name is required.'))
 
-          file._uid = req.payload
-          file.path = req.body.path
-          file.name = name
+  const files = await File.find({ _uid: req.payload, name: req.body.name, path: req.body.path }).accessibleBy(req.ability)
 
-          file.save()
-            .then(() => res.status(201).json())
-            .catch(err => next(err))
-        }
-      })
-      .catch(err => next(err)))
+  if (files.length) return next(createError(422, 'File is duplicate.\nPlease choose another file.'))
+
+  let file = new File()
+
+  file._uid = req.user
+  file.path = req.body.path
+  file.name = req.body.name
+
+  ForbiddenError.from(req.ability).throwUnlessCan('create', file)
+
+  file = await file.save()
+
+  if (!file) return next(createError(404, 'File not found.'))
+
+  res.status(201).json(req.t('Uploaded successfully.'))
+})
 
 module.exports.createPlaintext = (req, res, next) =>
   req.body.name
@@ -92,8 +98,8 @@ module.exports.restore = (req, res, next) =>
 
 module.exports.move = (req, res, next) => File.findById(req.params.id)
   .then(async (file, destFolder = undefined) =>
-    (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did))
-      + file
+    (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did)) +
+      file
       ? File.find({ _uid: req.payload, name: file.name, path: destFolder ? converter.toPath(destFolder) : '/' })
         .then(files => files.length
           ? res.status(422).json('You already have a file in the current path! Please choose another file.')
@@ -113,8 +119,8 @@ module.exports.move = (req, res, next) => File.findById(req.params.id)
 
 module.exports.copy = (req, res, next) => File.findById(req.params.id)
   .then(async (file, destFolder = undefined) =>
-    (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did))
-      + file
+    (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did)) +
+      file
       ? File.find({ _uid: req.payload, path: destFolder ? converter.toPath(destFolder) : '/' })
         .then(files => {
           const newFile = File()
