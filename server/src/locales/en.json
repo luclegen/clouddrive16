@@ -19,5 +19,7 @@
   "Cannot execute \"copy\" on \"Folder\"": "Cannot execute \"copy\" on \"Folder\".",
   "Cannot execute \"deleteForever\" on \"Folder\"": "Cannot execute \"deleteForever\" on \"Folder\".",
   "Cannot execute \"list\" on \"Array\"": "Cannot execute \"list\" on \"Array\".",
-  "Cannot execute \"update\" on \"User\"": "Cannot execute \"update\" on \"User\"."
+  "Cannot execute \"update\" on \"User\"": "Cannot execute \"update\" on \"User\".",
+  "Unexpected field": "Unexpected field.",
+  "Cannot execute \"create\" on \"File\"": "Cannot execute \"create\" on \"File\"."
 }

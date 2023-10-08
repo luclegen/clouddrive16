@@ -57,5 +57,10 @@
   "Cannot execute \"deleteForever\" on \"Folder\"": "Không thể thực thi \"xóa vĩnh viễn\" trên \"Thư mục\".",
   "Deleted forever successfully.": "Đã xóa vĩnh viễn thành công.",
   "You already have a folder in the current path.\nPlease a different name.": "Bạn đã có một thư mục trong đường dẫn hiện tại.\nXin vui lòng đặt một tên khác.",
-  "Cannot execute \"update\" on \"User\"": "Không thể thực thi \"cập nhật\" trên \"Người dùng\"."
+  "Cannot execute \"update\" on \"User\"": "Không thể thực thi \"cập nhật\" trên \"Người dùng\".",
+  "Unexpected field": "Thuộc tính không mong đợi.",
+  "Names is required.": "Các tên là bắt buộc.",
+  "Uploaded successfully.": "Tải lên thành công.",
+  "File is duplicate.\nPlease choose another file.": "Tập tin bị trùng.\nVui lòng chọn tập tin khác.",
+  "Cannot execute \"create\" on \"File\"": "Không thể thực thi \"tạo\" trên \"Tập tin\"."
 }
