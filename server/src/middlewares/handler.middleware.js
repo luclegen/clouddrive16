@@ -6,7 +6,7 @@ module.exports = async (err, req, res, next) => {
 
   if (req.app.get('env') === 'development') console.error(JSON.stringify(err))
 
-  if (req.file) fs.rmSync(req.file.path)
+  if (req.file && status !== 422) fs.rmSync(req.file.path)
 
   switch (err.name) {
   case 'ValidationError':
