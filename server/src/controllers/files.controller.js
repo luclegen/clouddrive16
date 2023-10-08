@@ -31,28 +31,30 @@ module.exports.create = catchAsync(async (req, res, next) => {
   res.status(201).json(req.t('Uploaded successfully.'))
 })
 
-module.exports.createPlaintext = (req, res, next) =>
-  req.body.name
-    ? checker.isPlaintext(req.body.name)
-      ? File.find({ _uid: req.payload, name: req.body.name, path: req.body.path })
-        .then(files => {
-          if (files.length) res.status(422).json('File is duplicate. Please choose another file.')
-          else {
-            const file = new File()
+module.exports.createPlaintext = catchAsync(async (req, res, next) => {
+  if (!req.body.name) return next(createError(400, 'Name is required.'))
+  if (!checker.isPlaintext(req.body.name)) return next(createError(400, 'Invalid plain text document file name.'))
 
-            file._uid = req.payload
-            file.path = req.body.path
-            file.name = req.body.name
+  const files = await File.find({ _uid: req.payload, name: req.body.name, path: req.body.path }).accessibleBy(req.ability)
 
-            file.save()
-              .then(() => fs.open(`${converter.toUploadFilePath(req.payload._id, { path: req.body.path, name: req.body.name })}`, 'w', err =>
-                err ? next(err) : res.status(201).json()))
-              .catch(err => next(err))
-          }
-        })
-        .catch(err => next(err))
-      : res.status(403).json('Invalid plain text document file!')
-    : res.status(403).json('Name is required.')
+  if (files.length) return next(createError(422, 'File is duplicate.\nPlease choose another file.'))
+
+  let file = new File()
+
+  file._uid = req.payload
+  file.path = req.body.path
+  file.name = req.body.name
+
+  ForbiddenError.from(req.ability).throwUnlessCan('create', file)
+
+  file = await file.save()
+
+  if (!file) return next(createError(404, 'File not found.'))
+
+  fs.openSync(`${converter.toUploadFilePath(req.payload._id, { path: req.body.path, name: req.body.name })}`, 'w')
+
+  res.status(201).json(req.t('Created successfully.'))
+})
 
 module.exports.download = (req, res, next) =>
   File.findById(req.params.id)
