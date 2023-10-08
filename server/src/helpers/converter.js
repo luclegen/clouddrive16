@@ -8,7 +8,7 @@ module.exports.toUploadPath = (id, value, array, type = 'private') => `${process
 
 module.exports.toFilePath = (value, array) => value.path + (array?.length ? duplicator.copyFolderInFolder(value.name, array) : value.name)
 
-module.exports.toUploadFilePath = (id, value, array) => process.env.UPLOADS + id + '/files' + (array?.length ? this.toFilePath(value, array) : this.toFilePath(value))
+module.exports.toUploadFilePath = (id, value, array, type = 'private') => `${process.env.UPLOADS}${type}/${id}/files${array?.length ? this.toFilePath(value, array) : this.toFilePath(value)}`
 
 module.exports.toFile = (filename, elements = filename.split(/\./)) => ({ name: filename.slice(0, filename.length - elements[elements.length - 1].length - 1), extension: filename.slice(filename.length - elements[elements.length - 1].length - 1) })
 
