@@ -62,5 +62,8 @@
   "Names is required.": "Các tên là bắt buộc.",
   "Uploaded successfully.": "Tải lên thành công.",
   "File is duplicate.\nPlease choose another file.": "Tập tin bị trùng.\nVui lòng chọn tập tin khác.",
-  "Cannot execute \"create\" on \"File\"": "Không thể thực thi \"tạo\" trên \"Tập tin\"."
+  "Cannot execute \"create\" on \"File\"": "Không thể thực thi \"tạo\" trên \"Tập tin\".",
+  "Invalid plain text document file name.": "Tên tệp tài liệu văn bản thuần túy không hợp lệ.",
+  "File not found.": "Không tìm thấy tập tin.",
+  "Created successfully.": "Đã tạo thành công."
 }
