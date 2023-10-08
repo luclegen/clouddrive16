@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const checker = require('../helpers/checker')
 
 const fileSchema = new mongoose.Schema({
   _uid: {
@@ -21,7 +20,7 @@ const fileSchema = new mongoose.Schema({
   },
   is_trash: {
     type: Boolean,
-    default: false,
+    default: false
   }
 }, {
   timestamps: true
