@@ -632,6 +632,35 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+  /files/p:
+    post:
+      tags:
+        - files
+      summary: Create plaintext
+      description: Create a new plaintext file
+      operationId: createPlaintext
+      requestBody:
+        description: A new plaintext file
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlaintextFile'
+        required: true
+      responses:
+        '201':
+          description: "Created successfully."
+        '400':
+          description: "Name is required.|Invalid plain text document file name."
+        '403':
+          description: "Cannot execute \"read\" on \"File\".|Cannot execute \"create\" on \"File\"."
+        '404':
+          description: "File not found."
+        '422':
+          description: "File is duplicate.\nPlease choose another file."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /pet/findByStatus:
     get:
       tags:
@@ -1320,6 +1349,15 @@ components:
         name:
           type: string
           example: Test
+        path:
+          type: string
+          example: "/"
+    PlaintextFile:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Test.txt
         path:
           type: string
           example: "/"
