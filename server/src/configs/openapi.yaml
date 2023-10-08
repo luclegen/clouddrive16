@@ -621,7 +621,7 @@ paths:
         '201':
           description: "Uploaded successfully."
         '400':
-          description: "Names is required."
+          description: "Name is required."
         '403':
           description: "Cannot execute \"read\" on \"File\".|Cannot execute \"create\" on \"File\"."
         '404':
@@ -1314,16 +1314,12 @@ components:
     File:
       type: object
       properties:
-        files:
-          type: array
-          items:
-            type: string
-            format: binary
-        names:
-          type: array
-          items:
-            type: string
-            example: Test
+        file:
+          type: string
+          format: binary
+        name:
+          type: string
+          example: Test
         path:
           type: string
           example: "/"
