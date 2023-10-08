@@ -5,7 +5,6 @@ const express = require('express')
 const YAML = require('yaml')
 const bodyParser = require('body-parser')
 const serveStatic = require('serve-static')
-const cookieParser = require('cookie-parser')
 const swaggerUi = require('swagger-ui-express')
 
 // Environment Variables
@@ -33,10 +32,10 @@ api.get('env') === 'production' && api.set('trust proxy', 1)
 // Middlewares
 api.get('env') === 'production' && web.use(serveStatic(path.resolve(__dirname, '../public')))
 api
-  .use(cookieParser())
   .use(bodyParser.text())
-  .use(bodyParser.urlencoded({ extended: false }))
   .use(bodyParser.json())
+  .use(bodyParser.urlencoded({ extended: true }))
+  .use(require('cookie-parser')())
   .use(require('compression')())
   .use(require('connect-timeout')('10s'))
   .use(require('response-time')((req, res, time) => req.app.get('env') === 'development' && info(req.method, req.baseUrl, `${time}ms`)))
