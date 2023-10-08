@@ -24,6 +24,10 @@
     "node",
     "cloud"
   ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">= 8.0.0"
+  },
   "author": "Luc Tan Huynh",
   "license": "ISC",
   "bugs": {
