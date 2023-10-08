@@ -67,6 +67,10 @@ module.exports.upload = (dir = '', type = 'private') => multer({
         next(null, `${Date.now()}.${file.fieldname}${converter.toFile(file.originalname).extension}`)
         break
 
+      case 'files':
+        next(null, req.body.name || file.originalname)
+        break
+
       default:
         next(null, file.originalname)
         break
