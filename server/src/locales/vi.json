@@ -76,5 +76,8 @@
   "Moved file not found.": "Không tìm thấy tập tin đã di chuyển.",
   "Cannot execute \"move\" on \"File\"": "Không thể thực thi \"di chuyển\" trên \"Tập tin\".",
   "Copied file not found.": "Không tìm thấy tập tin đã sao chép.",
-  "Cannot execute \"copy\" on \"File\"": "Không thể thực thi \"sao chép\" trên \"Tập tin\"."
+  "Cannot execute \"copy\" on \"File\"": "Không thể thực thi \"sao chép\" trên \"Tập tin\".",
+  "File not in trash.": "Tập tin không có trong thùng rác.",
+  "Deleted file not found.": "Không tìm thấy tập tin đã xóa.",
+  "Cannot execute \"deleteForever\" on \"File\"": "Không thể thực thi \"xóa vĩnh viễn\" trên \"Tập tin\"."
 }
