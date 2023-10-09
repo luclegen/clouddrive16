@@ -632,6 +632,37 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+  /files/{id}:
+    get:
+      tags:
+        - files
+      summary: Read file
+      description: Read a file
+      operationId: readFile
+      parameters:
+        - name: id
+          in: path
+          description: File id
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: 65226525005555df72bcc23e
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatedFile"
+        '403':
+          description: "Cannot execute \"read\" on \"File\"."
+        '404':
+          description: "File not found."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /files/p:
     post:
       tags:
@@ -1410,6 +1441,33 @@ components:
           example: "2023-10-06T01:38:36.551Z"
         __v:
           type: number
+          example: 0
+    CreatedFile:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: "65226525005555df72bcc23e"
+        path:
+          type: string
+          example: "/"
+        name:
+          type: string
+          example: "Test.ico"
+        is_trash:
+          type: boolean
+          example: false
+        _uid:
+          type: string
+          example: "651a460623dbbafbf21fdb71"
+        createdAt:
+          type: string
+          example: "2023-10-08T08:15:33.282Z"
+        updatedAt:
+          type: string
+          example: "2023-10-08T08:15:33.282Z"
+        __v:
+          type: integer
           example: 0
     Tag:
       type: object
