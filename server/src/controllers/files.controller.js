@@ -113,26 +113,27 @@ module.exports.restore = catchAsync(async (req, res, next) => {
   res.json(req.t('restored successfully.'))
 })
 
-module.exports.move = (req, res, next) => File.findById(req.params.id)
-  .then(async (file, destFolder = undefined) =>
-    (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did)) +
-      file
-      ? File.find({ _uid: req.payload, name: file.name, path: destFolder ? converter.toPath(destFolder) : '/' })
-        .then(files => files.length
-          ? res.status(422).json('You already have a file in the current path! Please choose another file.')
-          : File.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true })
-            .then(movedFile => movedFile
-              ? fs.rename(
-                converter.toUploadFilePath(req.payload._id, file),
-                (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : process.env.UPLOADS + req.payload._id + '/files') + '/' + file.name,
-                err => err
-                  ? next(err)
-                  : res.json('Done.'))
-              : res.status(404).json('Moved folder not found!'))
-            .catch(err => next(err)))
-        .catch(err => next(err))
-      : res.status(404).json('Folder not found!'))
-  .catch(err => next(err))
+module.exports.move = catchAsync(async (req, res, next) => {
+  const file = await File.findById(req.params.id).accessibleBy(req.ability)
+
+  if (!file) return next(createError(404, 'Folder not found.'))
+
+  const destFolder = req.body === 'Root' ? undefined : await Folder.findById(req.body).accessibleBy(req.ability)
+
+  const files = await File.find({ _uid: req.payload, name: file.name, path: destFolder ? converter.toPath(destFolder) : '/' }).accessibleBy(req.ability)
+
+  if (files.length) return next(createError(422, 'You already have a file in the current path.\nPlease choose another file.'))
+
+  const movedFile = await File.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true }).accessibleBy(req.ability, 'move')
+
+  if (!movedFile) return next(createError(404, 'Moved file not found.'))
+
+  fs.renameSync(
+    converter.toUploadFilePath(req.payload._id, file),
+    (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : `${process.env.UPLOADS}private/${req.payload._id}/files`) + `/${file.name}`)
+
+  res.json(req.t('Moved successfully.'))
+})
 
 module.exports.copy = (req, res, next) => File.findById(req.params.id)
   .then(async (file, destFolder = undefined) =>
