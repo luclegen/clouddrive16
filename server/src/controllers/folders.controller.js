@@ -159,8 +159,6 @@ module.exports.copy = catchAsync(async (req, res, next) => {
 
   if (!folder) return next(createError(404, 'Folder not found.'))
 
-  ForbiddenError.from(req.ability).throwUnlessCan('copy', folder)
-
   const destFolder = req.body === 'Root' ? undefined : await Folder.findById(req.body)
   const folders = await Folder.find({ _uid: req.user, path: destFolder ? converter.toPath(destFolder) : '/' }).accessibleBy(req.ability)
 
@@ -169,6 +167,8 @@ module.exports.copy = catchAsync(async (req, res, next) => {
   newFolder._uid = req.user
   newFolder.path = destFolder ? converter.toPath(destFolder) : '/'
   newFolder.name = duplicator.copyFolderInFolder(folder.name, folders.map(v => v.name))
+
+  ForbiddenError.from(req.ability).throwUnlessCan('copy', newFolder)
 
   const copiedFolder = await newFolder.save()
 
