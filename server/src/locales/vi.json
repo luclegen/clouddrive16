@@ -74,5 +74,7 @@
   "Cannot execute \"restore\" on \"File\"": "Không thể thực thi \"khôi phục\" trên \"Tập tin\".",
   "restored successfully.": "Đã khôi phục thành công.",
   "Moved file not found.": "Không tìm thấy tập tin đã di chuyển.",
-  "Cannot execute \"move\" on \"File\"": "Không thể thực thi \"di chuyển\" trên \"Tập tin\"."
+  "Cannot execute \"move\" on \"File\"": "Không thể thực thi \"di chuyển\" trên \"Tập tin\".",
+  "Copied file not found.": "Không tìm thấy tập tin đã sao chép.",
+  "Cannot execute \"copy\" on \"File\"": "Không thể thực thi \"sao chép\" trên \"Tập tin\"."
 }

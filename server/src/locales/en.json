@@ -26,5 +26,6 @@
   "Cannot execute \"update\" on \"File\"": "Cannot execute \"update\" on \"File\".",
   "Cannot execute \"delete\" on \"File\"": "Cannot execute \"delete\" on \"File\".",
   "Cannot execute \"restore\" on \"File\"": "Cannot execute \"restore\" on \"File\".",
-  "Cannot execute \"move\" on \"File\"": "Cannot execute \"move\" on \"File\"."
+  "Cannot execute \"move\" on \"File\"": "Cannot execute \"move\" on \"File\".",
+  "Cannot execute \"copy\" on \"File\"": "Cannot execute \"copy\" on \"File\"."
 }
