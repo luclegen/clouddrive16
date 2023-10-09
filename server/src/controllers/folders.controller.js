@@ -54,13 +54,11 @@ module.exports.update = catchAsync(async (req, res, next) => {
 
   if (!folder) return next(createError(404, 'Folder not found.'))
 
-  ForbiddenError.from(req.ability).throwUnlessCan('update', folder)
-
   const folders = await Folder.find({ _uid: req.user, name: req.body, path: folder.path }).accessibleBy(req.ability)
 
   if (folders.length) return next(createError(422, 'You already have a folder in the current path.\nPlease a different name.'))
 
-  const editedFolder = await Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body } }, { new: true }).accessibleBy(req.ability)
+  const editedFolder = await Folder.findByIdAndUpdate(req.params.id, { $set: { name: req.body } }, { new: true }).accessibleBy(req.ability, 'update')
 
   if (!editedFolder) return next(createError(404, 'Edited Folder not found.'))
 
