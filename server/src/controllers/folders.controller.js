@@ -218,9 +218,7 @@ module.exports.deleteForever = catchAsync(async (req, res, next) => {
   if (!folder) return next(createError(404, 'Folder not found.'))
   if (!folder.is_trash) return next(createError(403, 'Folder is not trash.'))
 
-  ForbiddenError.from(req.ability).throwUnlessCan('deleteForever', folder)
-
-  folder = await Folder.findByIdAndDelete(req.params.id).accessibleBy(req.ability)
+  folder = await Folder.findByIdAndDelete(req.params.id).accessibleBy(req.ability, 'deleteForever')
 
   if (!folder) return next(createError(404, 'Folder not found.'))
 
