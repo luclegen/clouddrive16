@@ -73,27 +73,29 @@ module.exports.read = catchAsync(async (req, res, next) => {
   res.json(file)
 })
 
-module.exports.update = (req, res, next) => req.body.name
-  ? File.findById(req.params.id)
-    .then(file =>
-      File.find({ _uid: req.payload, name: req.body.name, path: file.path })
-        .then(files =>
-          files.length
-            ? res.status(422).json('You already have a file in the current path. Please a different name.')
-            : File.findByIdAndUpdate(req.params.id, { $set: { name: req.body.name } }, { new: true })
-              .then(fileEdited =>
-                fileEdited
-                  ? fs.rename(
-                    converter.toUploadFilePath(req.payload._id, file),
-                    converter.toUploadFilePath(req.payload._id, fileEdited),
-                    err => err
-                      ? next(err)
-                      : res.json())
-                  : res.status(404).json('File not found.'))
-              .catch(err => next(err)))
-        .catch(err => next(err)))
-    .catch(err => next(err))
-  : res.status(403).json('Name is required.')
+module.exports.update = catchAsync(async (req, res, next) => {
+  if (!req.body) return next(createError(400, 'Name is required.'))
+
+  const file = await File.findById(req.params.id).accessibleBy(req.ability)
+
+  ForbiddenError.from(req.ability).throwUnlessCan('update', file)
+
+  if (!file) return next(createError(404, 'File not found.'))
+
+  const files = await File.find({ _uid: req.payload, name: req.body, path: file.path }).accessibleBy(req.ability)
+
+  if (files.length) return next(createError(422, 'You already have a file in the current path.\nPlease a different name.'))
+
+  const fileEdited = await File.findByIdAndUpdate(req.params.id, { $set: { name: req.body } }, { new: true }).accessibleBy(req.ability)
+
+  if (!fileEdited) return next(createError(404, 'Edited file not found.'))
+
+  fs.renameSync(
+    converter.toUploadFilePath(req.payload._id, file),
+    converter.toUploadFilePath(req.payload._id, fileEdited))
+
+  res.json(req.t('Updated successfully.'))
+})
 
 module.exports.delete = (req, res, next) =>
   File.findByIdAndUpdate(req.params.id, { $set: { is_trash: true } }, { new: true })
