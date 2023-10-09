@@ -163,24 +163,20 @@ module.exports.copy = catchAsync(async (req, res, next) => {
   res.json(req.t('Copied successfully.'))
 })
 
-module.exports.deleteForever = (req, res, next) =>
-  File.findById(req.params.id)
-    .then(file =>
-      file
-        ? file.is_trash
-          ? File.findByIdAndDelete(req.params.id)
-            .then(file =>
-              file
-                ? fs.rm(converter.toUploadFilePath(req.user._id, file),
-                  { recursive: true },
-                  err => err
-                    ? next(err)
-                    : res.json())
-                : res.status(404).json('File not found.'))
-            .catch(err => next(err))
-          : res.status(403).json('File not in trash.')
-        : res.status(404).json('File not found.'))
-    .catch(err => next(err))
+module.exports.deleteForever = catchAsync(async (req, res, next) => {
+  const file = await File.findById(req.params.id).accessibleBy(req.ability)
+
+  if (!file) return next(createError(404, 'File not found.'))
+  if (!file.is_trash) return next(createError(403, 'File not in trash.'))
+
+  const fileDeleted = await File.findByIdAndDelete(req.params.id).accessibleBy(req.ability, 'deleteForever')
+
+  if (!fileDeleted) return next(createError(404, 'Deleted file not found.'))
+
+  fs.rmSync(converter.toUploadFilePath(req.user._id, file), { recursive: true })
+
+  res.json(req.t('Deleted forever successfully.'))
+})
 
 module.exports.list = (req, res, next) =>
   File.find({ _uid: req.user, name: new RegExp(req.query.name, 'ig') })
