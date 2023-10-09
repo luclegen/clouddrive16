@@ -829,6 +829,38 @@ paths:
           description: "File not found.|Moved file not found."
         '422':
           description: "You already have a file in the current path!\nPlease choose another file."
+  /files/c/{id}:
+    patch:
+      tags:
+        - files
+      summary: Copy file
+      description: Copy a file
+      operationId: copyFile
+      parameters:
+        - name: id
+          in: path
+          description: File id
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: 652354ecf9f2baedf9b6a98d
+      requestBody:
+        description: File
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 651f69f96081681ad25f851f
+      responses:
+        '200':
+          description: "Copied successfully."
+        '403':
+          description: "Cannot execute \"read\" on \"File\".|Cannot execute \"copy\" on \"File\"."
+        '404':
+          description: "File not found.|Copied file not found."
+        '422':
+          description: "You already have a file in the current path!\nPlease choose another file."
   /pet/findByStatus:
     get:
       tags:
