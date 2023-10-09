@@ -66,5 +66,9 @@
   "Invalid plain text document file name.": "Tên tệp tài liệu văn bản thuần túy không hợp lệ.",
   "File not found.": "Không tìm thấy tập tin.",
   "Created successfully.": "Đã tạo thành công.",
-  "Cannot execute \"download\" on \"File\"": "Không thể thực thi \"tải xuống\" trên \"Tập tin\"."
+  "Cannot execute \"download\" on \"File\"": "Không thể thực thi \"tải xuống\" trên \"Tập tin\".",
+  "Edited file not found.": "Không tìm thấy tập tin được chỉnh sửa.",
+  "You already have a file in the current path.\nPlease a different name.": "Bạn đã có một tệp trong đường dẫn hiện tại.\nVui lòng đặt một tên khác.",
+  "Cannot execute \"update\" on \"File\"": "Không thể thực thi \"cập nhật\" trên \"Tập tin\".",
+  "Cannot execute \"delete\" on \"File\"": "Không thể thực thi \"xóa\" trên \"Tập tin\"."
 }

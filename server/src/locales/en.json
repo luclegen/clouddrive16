@@ -22,5 +22,7 @@
   "Cannot execute \"update\" on \"User\"": "Cannot execute \"update\" on \"User\".",
   "Unexpected field": "Unexpected field.",
   "Cannot execute \"create\" on \"File\"": "Cannot execute \"create\" on \"File\".",
-  "Cannot execute \"download\" on \"File\"": "Cannot execute \"download\" on \"File\"."
+  "Cannot execute \"download\" on \"File\"": "Cannot execute \"download\" on \"File\".",
+  "Cannot execute \"update\" on \"File\"": "Cannot execute \"update\" on \"File\".",
+  "Cannot execute \"delete\" on \"File\"": "Cannot execute \"delete\" on \"File\"."
 }
