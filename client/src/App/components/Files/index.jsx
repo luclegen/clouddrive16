@@ -140,8 +140,8 @@ export default function Files() {
         const formData = new FormData();
 
         formData.append("path", path);
-        formData.append("file", v, v.name);
         formData.append("name", v.name);
+        formData.append("file", v, v.name);
 
         formDataAPI
           .post(
