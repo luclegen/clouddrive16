@@ -24,5 +24,6 @@
   "Cannot execute \"create\" on \"File\"": "Cannot execute \"create\" on \"File\".",
   "Cannot execute \"download\" on \"File\"": "Cannot execute \"download\" on \"File\".",
   "Cannot execute \"update\" on \"File\"": "Cannot execute \"update\" on \"File\".",
-  "Cannot execute \"delete\" on \"File\"": "Cannot execute \"delete\" on \"File\"."
+  "Cannot execute \"delete\" on \"File\"": "Cannot execute \"delete\" on \"File\".",
+  "Cannot execute \"restore\" on \"File\"": "Cannot execute \"restore\" on \"File\"."
 }
