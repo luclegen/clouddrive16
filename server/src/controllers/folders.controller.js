@@ -113,8 +113,6 @@ module.exports.move = catchAsync(async (req, res, next) => {
 
   if (!folder) return next(createError(404, 'Folder not found.'))
 
-  ForbiddenError.from(req.ability).throwUnlessCan('move', folder)
-
   if (destFolder
     ? converter.toPath(folder) === converter.toPath(destFolder)
     : converter.toPath(folder) === '/') return next(createError(422, 'You already have a folder in the current path!\nPlease choose another folder.'))
@@ -123,7 +121,7 @@ module.exports.move = catchAsync(async (req, res, next) => {
 
   if (folders.length) return next(createError(422, 'You already have a folder in the current path!\nPlease choose another folder.'))
 
-  const movedFolder = await Folder.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true }).accessibleBy(req.ability)
+  const movedFolder = await Folder.findByIdAndUpdate(req.params.id, { $set: { path: destFolder ? converter.toPath(destFolder) : '/' } }, { new: true }).accessibleBy(req.ability, 'move')
 
   if (!movedFolder) return next(createError(404, 'Moved folder not found.'))
 
