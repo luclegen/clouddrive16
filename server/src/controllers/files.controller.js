@@ -66,10 +66,13 @@ module.exports.download = catchAsync(async (req, res, next) => {
   res.download(converter.toUploadFilePath(file._uid, file))
 })
 
-module.exports.read = (req, res, next) =>
-  File.findById(req.params.id)
-    .then(file => res.json(_.pick(file, ['path', 'name', 'is_trash'])))
-    .catch(err => next(err))
+module.exports.read = catchAsync(async (req, res, next) => {
+  const file = await File.findById(req.params.id).accessibleBy(req.ability)
+
+  if (!file) return next(createError(404, 'File not found.'))
+
+  res.json(file)
+})
 
 module.exports.update = (req, res, next) => req.body.name
   ? File.findById(req.params.id)
