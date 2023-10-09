@@ -632,6 +632,52 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+    get:
+      tags:
+        - files
+      summary: List file
+      description: List a file
+      operationId: listFile
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: "65237301a85163d860c9ce4d"
+                    path:
+                      type: string
+                      example:  "/A/B/"
+                    name:
+                      type: string
+                      example: "Test.ico"
+                    is_trash:
+                      type: boolean
+                      example: false
+                    _uid:
+                      type: string
+                      example: "651a460623dbbafbf21fdb71"
+                    createdAt:
+                      type: string
+                      example: "2023-10-09T03:26:57.971Z"
+                    updatedAt:
+                      type: string
+                      example: "2023-10-09T03:26:57.971Z"
+                    __v:
+                      type: number
+                      example: 0
+        '403':
+          description: "Cannot execute \"list\" on \"File\"."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /files/{id}:
     get:
       tags:
