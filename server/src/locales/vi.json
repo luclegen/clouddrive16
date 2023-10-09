@@ -65,5 +65,6 @@
   "Cannot execute \"create\" on \"File\"": "Không thể thực thi \"tạo\" trên \"Tập tin\".",
   "Invalid plain text document file name.": "Tên tệp tài liệu văn bản thuần túy không hợp lệ.",
   "File not found.": "Không tìm thấy tập tin.",
-  "Created successfully.": "Đã tạo thành công."
+  "Created successfully.": "Đã tạo thành công.",
+  "Cannot execute \"download\" on \"File\"": "Không thể thực thi \"tải xuống\" trên \"Tập tin\"."
 }
