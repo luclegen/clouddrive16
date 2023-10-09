@@ -797,6 +797,38 @@ paths:
           description: "Cannot execute \"read\" on \"File\".|Cannot execute \"restore\" on \"File\"."
         '404':
           description: "File not found."
+  /files/m/{id}:
+    patch:
+      tags:
+        - files
+      summary: Move file
+      description: Move a file
+      operationId: moveFile
+      parameters:
+        - name: id
+          in: path
+          description: File id
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: 652354ecf9f2baedf9b6a98d
+      requestBody:
+        description: Folder
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: 651f69f96081681ad25f851f
+      responses:
+        '200':
+          description: "Moved successfully."
+        '403':
+          description: "Cannot execute \"read\" on \"File\".|Cannot execute \"move\" on \"File\"."
+        '404':
+          description: "File not found.|Moved file not found."
+        '422':
+          description: "You already have a file in the current path!\nPlease choose another file."
   /pet/findByStatus:
     get:
       tags:
