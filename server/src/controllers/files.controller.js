@@ -178,7 +178,8 @@ module.exports.deleteForever = catchAsync(async (req, res, next) => {
   res.json(req.t('Deleted forever successfully.'))
 })
 
-module.exports.list = (req, res, next) =>
-  File.find({ _uid: req.user, name: new RegExp(req.query.name, 'ig') })
-    .then(files => res.status(201).json(files))
-    .catch(err => next(err))
+module.exports.list = catchAsync(async (req, res, next) => {
+  const files = await File.find({ _uid: req.user, name: new RegExp(req.query.name, 'ig') }).accessibleBy(req.ability, 'list')
+
+  res.json(files)
+})
