@@ -1,5 +1,4 @@
 const { ForbiddenError } = require('@casl/ability')
-const _ = require('lodash')
 const fs = require('fs')
 const createError = require('http-errors')
 const File = require('../models/file.model')
