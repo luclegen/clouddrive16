@@ -49,6 +49,12 @@
       "can": true,
       "action": "manage",
       "subject": "Folder"
+    },
+    {
+      "id": "manageFile",
+      "can": true,
+      "action": "manage",
+      "subject": "File"
     }
   ],
   "VIP": [
