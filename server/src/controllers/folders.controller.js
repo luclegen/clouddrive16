@@ -98,7 +98,7 @@ module.exports.delete = catchAsync(async (req, res, next) => {
 
   if (!folder) return next(createError(404, 'Folder not found.'))
 
-  res.status(200).json(req.t('Deleted successfully.'))
+  res.json(req.t('Deleted successfully.'))
 })
 
 module.exports.restore = catchAsync(async (req, res, next) => {
@@ -106,7 +106,7 @@ module.exports.restore = catchAsync(async (req, res, next) => {
 
   if (!folder) return next(createError(404, 'Folder not found.'))
 
-  res.status(200).json(req.t('Restored successfully.'))
+  res.json(req.t('Restored successfully.'))
 })
 
 module.exports.move = catchAsync(async (req, res, next) => {
