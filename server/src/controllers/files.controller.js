@@ -78,15 +78,13 @@ module.exports.update = catchAsync(async (req, res, next) => {
 
   const file = await File.findById(req.params.id).accessibleBy(req.ability)
 
-  ForbiddenError.from(req.ability).throwUnlessCan('update', file)
-
   if (!file) return next(createError(404, 'File not found.'))
 
   const files = await File.find({ _uid: req.user, name: req.body, path: file.path }).accessibleBy(req.ability)
 
   if (files.length) return next(createError(422, 'You already have a file in the current path.\nPlease a different name.'))
 
-  const fileEdited = await File.findByIdAndUpdate(req.params.id, { $set: { name: req.body } }, { new: true }).accessibleBy(req.ability)
+  const fileEdited = await File.findByIdAndUpdate(req.params.id, { $set: { name: req.body } }, { new: true }).accessibleBy(req.ability, 'update')
 
   if (!fileEdited) return next(createError(404, 'Edited file not found.'))
 
