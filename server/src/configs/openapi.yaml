@@ -677,7 +677,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 652354ecf9f2baedf9b6a98d
+            example: 652379a7905beb1c06f831e6
       requestBody:
         description: File
         content:
@@ -714,7 +714,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 652354ecf9f2baedf9b6a98d
+            example: 652379a7905beb1c06f831e6
       responses:
         '200':
           description: "Deleted successfully."
@@ -722,6 +722,32 @@ paths:
           description: "Cannot execute \"read\" on \"File\".|Cannot execute \"delete\" on \"File\"."
         '404':
           description: "File not found."
+    delete:
+      tags:
+        - files
+      summary: Delete forever file
+      description: Delete forever a file
+      operationId: deleteForeverFile
+      parameters:
+        - name: id
+          in: path
+          description: File id
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: 652379a7905beb1c06f831e6
+      responses:
+        '200':
+          description: "Deleted forever successfully."
+        '403':
+          description: "File not in trash.|Cannot execute \"read\" on \"File\".|Cannot execute \"deleteForever\" on \"File\"."
+        '404':
+          description: "File not found.|Deleted file not found."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /files/p:
     post:
       tags:
@@ -789,7 +815,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 652354ecf9f2baedf9b6a98d
+            example: 652379a7905beb1c06f831e6
       responses:
         '200':
           description: "Restored successfully."
@@ -812,7 +838,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 652354ecf9f2baedf9b6a98d
+            example: 652379a7905beb1c06f831e6
       requestBody:
         description: Folder
         content:
@@ -844,7 +870,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 652354ecf9f2baedf9b6a98d
+            example: 652379a7905beb1c06f831e6
       requestBody:
         description: File
         content:
