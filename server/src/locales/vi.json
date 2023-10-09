@@ -79,5 +79,6 @@
   "Cannot execute \"copy\" on \"File\"": "Không thể thực thi \"sao chép\" trên \"Tập tin\".",
   "File not in trash.": "Tập tin không có trong thùng rác.",
   "Deleted file not found.": "Không tìm thấy tập tin đã xóa.",
-  "Cannot execute \"deleteForever\" on \"File\"": "Không thể thực thi \"xóa vĩnh viễn\" trên \"Tập tin\"."
+  "Cannot execute \"deleteForever\" on \"File\"": "Không thể thực thi \"xóa vĩnh viễn\" trên \"Tập tin\".",
+  "Cannot execute \"list\" on \"File\"": "Không thể thực thi \"liệt kê\" trên \"Tập tin\"."
 }
