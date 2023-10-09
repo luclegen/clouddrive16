@@ -97,10 +97,13 @@ module.exports.update = catchAsync(async (req, res, next) => {
   res.json(req.t('Updated successfully.'))
 })
 
-module.exports.delete = (req, res, next) =>
-  File.findByIdAndUpdate(req.params.id, { $set: { is_trash: true } }, { new: true })
-    .then(file => file ? res.json() : res.status(404).json('File not found.'))
-    .catch(err => next(err))
+module.exports.delete = catchAsync(async (req, res, next) => {
+  const file = await File.findByIdAndUpdate(req.params.id, { $set: { is_trash: true } }, { new: true }).accessibleBy(req.ability)
+
+  if (!file) return next(createError(404, 'File not found.'))
+
+  res.json(req.t('Deleted successfully.'))
+})
 
 module.exports.restore = (req, res, next) =>
   File.findByIdAndUpdate(req.params.id, { $set: { is_trash: false } }, { new: true })
