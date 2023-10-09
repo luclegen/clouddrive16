@@ -693,7 +693,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 65226525005555df72bcc23e
+            example: 65237301a85163d860c9ce4d
       responses:
         '200':
           description: successful operation
@@ -723,7 +723,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 652379a7905beb1c06f831e6
+            example: 65237301a85163d860c9ce4d
       requestBody:
         description: File
         content:
@@ -760,7 +760,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 652379a7905beb1c06f831e6
+            example: 65237301a85163d860c9ce4d
       responses:
         '200':
           description: "Deleted successfully."
@@ -782,7 +782,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 652379a7905beb1c06f831e6
+            example: 65237301a85163d860c9ce4d
       responses:
         '200':
           description: "Deleted forever successfully."
@@ -838,7 +838,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 65226525005555df72bcc23e
+            example: 65237301a85163d860c9ce4d
       responses:
         '200':
           description: "Downloaded successfully."
@@ -861,7 +861,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 652379a7905beb1c06f831e6
+            example: 65237301a85163d860c9ce4d
       responses:
         '200':
           description: "Restored successfully."
@@ -884,7 +884,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 652379a7905beb1c06f831e6
+            example: 65237301a85163d860c9ce4d
       requestBody:
         description: Folder
         content:
@@ -916,7 +916,7 @@ paths:
           explode: true
           schema:
             type: string
-            example: 652379a7905beb1c06f831e6
+            example: 65237301a85163d860c9ce4d
       requestBody:
         description: File
         content:
@@ -1665,7 +1665,7 @@ components:
       properties:
         _id:
           type: string
-          example: "65226525005555df72bcc23e"
+          example: "65237301a85163d860c9ce4d"
         path:
           type: string
           example: "/"
