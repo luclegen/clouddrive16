@@ -98,7 +98,7 @@ module.exports.update = catchAsync(async (req, res, next) => {
 })
 
 module.exports.delete = catchAsync(async (req, res, next) => {
-  const file = await File.findByIdAndUpdate(req.params.id, { $set: { is_trash: true } }, { new: true }).accessibleBy(req.ability)
+  const file = await File.findByIdAndUpdate(req.params.id, { $set: { is_trash: true } }, { new: true }).accessibleBy(req.ability, 'delete')
 
   if (!file) return next(createError(404, 'File not found.'))
 
