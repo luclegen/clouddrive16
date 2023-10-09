@@ -11,7 +11,7 @@ const duplicator = require('../helpers/duplicator')
 module.exports.create = catchAsync(async (req, res, next) => {
   if (!req.body.name) return next(createError(400, 'Name is required.'))
 
-  const files = await File.find({ _uid: req.payload, name: req.body.name, path: req.body.path }).accessibleBy(req.ability)
+  const files = await File.find({ _uid: req.user, name: req.body.name, path: req.body.path }).accessibleBy(req.ability)
 
   if (files.length) return next(createError(422, 'File is duplicate.\nPlease choose another file.'))
 
@@ -34,13 +34,13 @@ module.exports.createPlaintext = catchAsync(async (req, res, next) => {
   if (!req.body.name) return next(createError(400, 'Name is required.'))
   if (!checker.isPlaintext(req.body.name)) return next(createError(400, 'Invalid plain text document file name.'))
 
-  const files = await File.find({ _uid: req.payload, name: req.body.name, path: req.body.path }).accessibleBy(req.ability)
+  const files = await File.find({ _uid: req.user, name: req.body.name, path: req.body.path }).accessibleBy(req.ability)
 
   if (files.length) return next(createError(422, 'File is duplicate.\nPlease choose another file.'))
 
   let file = new File()
 
-  file._uid = req.payload
+  file._uid = req.user
   file.path = req.body.path
   file.name = req.body.name
 
@@ -50,7 +50,7 @@ module.exports.createPlaintext = catchAsync(async (req, res, next) => {
 
   if (!file) return next(createError(404, 'File not found.'))
 
-  fs.openSync(`${converter.toUploadFilePath(req.payload._id, { path: req.body.path, name: req.body.name })}`, 'w')
+  fs.openSync(`${converter.toUploadFilePath(req.user._id, { path: req.body.path, name: req.body.name })}`, 'w')
 
   res.status(201).json(req.t('Created successfully.'))
 })
@@ -82,7 +82,7 @@ module.exports.update = catchAsync(async (req, res, next) => {
 
   if (!file) return next(createError(404, 'File not found.'))
 
-  const files = await File.find({ _uid: req.payload, name: req.body, path: file.path }).accessibleBy(req.ability)
+  const files = await File.find({ _uid: req.user, name: req.body, path: file.path }).accessibleBy(req.ability)
 
   if (files.length) return next(createError(422, 'You already have a file in the current path.\nPlease a different name.'))
 
@@ -91,8 +91,8 @@ module.exports.update = catchAsync(async (req, res, next) => {
   if (!fileEdited) return next(createError(404, 'Edited file not found.'))
 
   fs.renameSync(
-    converter.toUploadFilePath(req.payload._id, file),
-    converter.toUploadFilePath(req.payload._id, fileEdited))
+    converter.toUploadFilePath(req.user._id, file),
+    converter.toUploadFilePath(req.user._id, fileEdited))
 
   res.json(req.t('Updated successfully.'))
 })
@@ -120,7 +120,7 @@ module.exports.move = catchAsync(async (req, res, next) => {
 
   const destFolder = req.body === 'Root' ? undefined : await Folder.findById(req.body).accessibleBy(req.ability)
 
-  const files = await File.find({ _uid: req.payload, name: file.name, path: destFolder ? converter.toPath(destFolder) : '/' }).accessibleBy(req.ability)
+  const files = await File.find({ _uid: req.user, name: file.name, path: destFolder ? converter.toPath(destFolder) : '/' }).accessibleBy(req.ability)
 
   if (files.length) return next(createError(422, 'You already have a file in the current path.\nPlease choose another file.'))
 
@@ -129,37 +129,39 @@ module.exports.move = catchAsync(async (req, res, next) => {
   if (!movedFile) return next(createError(404, 'Moved file not found.'))
 
   fs.renameSync(
-    converter.toUploadFilePath(req.payload._id, file),
-    (destFolder ? converter.toUploadPath(req.payload._id, destFolder) : `${process.env.UPLOADS}private/${req.payload._id}/files`) + `/${file.name}`)
+    converter.toUploadFilePath(req.user._id, file),
+    (destFolder ? converter.toUploadPath(req.user._id, destFolder) : `${process.env.UPLOADS}private/${req.user._id}/files`) + `/${file.name}`)
 
   res.json(req.t('Moved successfully.'))
 })
 
-module.exports.copy = (req, res, next) => File.findById(req.params.id)
-  .then(async (file, destFolder = undefined) =>
-    (destFolder = req.body.did === 'Root' ? undefined : await Folder.findById(req.body.did)) +
-      file
-      ? File.find({ _uid: req.payload, path: destFolder ? converter.toPath(destFolder) : '/' })
-        .then(files => {
-          const newFile = File()
+module.exports.copy = catchAsync(async (req, res, next) => {
+  const file = await File.findById(req.params.id).accessibleBy(req.ability)
 
-          newFile._uid = req.payload
-          newFile.name = duplicator.copyFileInFolder(file.name, files.map(v => v.name))
-          newFile.path = destFolder ? converter.toPath(destFolder) : '/'
+  if (!file) return next(createError(404, 'File not found.'))
 
-          newFile.save()
-            .then(copiedFile => copiedFile
-              ? fs.cp(
-                converter.toUploadFilePath(req.payload._id, file),
-                (destFolder ? converter.toUploadPath(req.payload._id, destFolder, files.map(v => v.name)) : process.env.UPLOADS + req.payload._id + '/files') + '/' + duplicator.copyFileInFolder(file.name, files.map(v => v.name)),
-                err => err
-                  ? next(err)
-                  : res.json('Done.'))
-              : res.status(404).json('File isn\'t copied!'))
-        })
-        .catch(err => next(err))
-      : res.status(404).json('Folder not found!'))
-  .catch(err => next(err))
+  const destFolder = req.body === 'Root' ? undefined : await Folder.findById(req.body).accessibleBy(req.ability)
+
+  const files = await File.find({ _uid: req.user, path: destFolder ? converter.toPath(destFolder) : '/' }).accessibleBy(req.ability)
+
+  const newFile = File()
+
+  newFile._uid = req.user
+  newFile.name = duplicator.copyFileInFolder(file.name, files.map(v => v.name))
+  newFile.path = destFolder ? converter.toPath(destFolder) : '/'
+
+  ForbiddenError.from(req.ability).throwUnlessCan('copy', newFile)
+
+  const copiedFile = await newFile.save()
+
+  if (!copiedFile) return next(createError(404, 'Copied file not found.'))
+
+  fs.cpSync(
+    converter.toUploadFilePath(req.user._id, file),
+    (destFolder ? converter.toUploadPath(req.user._id, destFolder, files.map(v => v.name)) : `${process.env.UPLOADS}private${req.user._id}/files`) + `/${duplicator.copyFileInFolder(file.name, files.map(v => v.name))}`)
+
+  res.json(req.t('Copied successfully.'))
+})
 
 module.exports.deleteForever = (req, res, next) =>
   File.findById(req.params.id)
@@ -169,7 +171,7 @@ module.exports.deleteForever = (req, res, next) =>
           ? File.findByIdAndDelete(req.params.id)
             .then(file =>
               file
-                ? fs.rm(converter.toUploadFilePath(req.payload._id, file),
+                ? fs.rm(converter.toUploadFilePath(req.user._id, file),
                   { recursive: true },
                   err => err
                     ? next(err)
@@ -181,6 +183,6 @@ module.exports.deleteForever = (req, res, next) =>
     .catch(err => next(err))
 
 module.exports.list = (req, res, next) =>
-  File.find({ _uid: req.payload, name: new RegExp(req.query.name, 'ig') })
+  File.find({ _uid: req.user, name: new RegExp(req.query.name, 'ig') })
     .then(files => res.status(201).json(files))
     .catch(err => next(err))
