@@ -94,11 +94,9 @@ module.exports.update = catchAsync(async (req, res, next) => {
 })
 
 module.exports.delete = catchAsync(async (req, res, next) => {
-  const folder = await Folder.findByIdAndUpdate(req.params.id, { $set: { is_trash: true } }, { new: true }).accessibleBy(req.ability)
+  const folder = await Folder.findByIdAndUpdate(req.params.id, { $set: { is_trash: true } }, { new: true }).accessibleBy(req.ability, 'delete')
 
   if (!folder) return next(createError(404, 'Folder not found.'))
-
-  ForbiddenError.from(req.ability).throwUnlessCan('delete', folder)
 
   res.status(200).json(req.t('Deleted successfully.'))
 })
