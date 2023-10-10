@@ -26,6 +26,8 @@ tags:
     description: Folders
   - name: files
     description: Files
+  - name: public
+    description: Public files
   - name: pet
     description: Everything about your Pets
     externalDocs:
@@ -933,6 +935,35 @@ paths:
           description: "File not found.|Copied file not found."
         '422':
           description: "You already have a file in the current path!\nPlease choose another file."
+  /public:
+    get:
+      tags:
+        - public
+      summary: List public files
+      description: List public files
+      operationId: listPublic
+      parameters:
+        - name: path
+          in: query
+          description: File id
+          explode: true
+          schema:
+            type: string
+            example: 651a460623dbbafbf21fdb71/1696582404909.jpg
+      responses:
+        '200':
+          description: successful operation
+          content:
+            image/jpg:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: "No such file."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /pet/findByStatus:
     get:
       tags:
@@ -1106,7 +1137,6 @@ paths:
     post:
       tags:
         - pet
-      summary: uploads an image
       description: ''
       operationId: uploadFile
       parameters:
