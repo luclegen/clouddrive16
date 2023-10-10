@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectOpened, open } from "./slice";
-import {
-  check,
-  login,
-  setRemember,
-  selectRemember,
-} from "../../pages/Home/slice";
+import { check, login, setRemember, selectRemember } from "../../slice";
 import Registration from "../Registration";
 import helper from "../../services/helper";
 
@@ -28,7 +23,7 @@ export default function Login() {
 
   const enterEmail = (e) =>
     e.target.value &&
-    new Promise(async (resolve) => {
+    new Promise((resolve) => {
       dispatch(check(e.target.value)).then((action) =>
         e.target.setCustomValidity(
           helper.isEmail(e.target.value)
