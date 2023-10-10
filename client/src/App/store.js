@@ -1,14 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit'
-import headerReducer from './components/Header/slice'
-import homeReducer from './pages/Home/slice'
-import loginReducer from './components/Login/slice'
-import registrationReducer from './components/Registration/slice'
-import activateReducer from './components/Activate/slice'
-import filesReducer from './components/Files/slice'
-import progressReducer from './components/Progress/slice'
+import { configureStore } from "@reduxjs/toolkit";
+import appReducer from "./slice";
+import headerReducer from "./components/Header/slice";
+import homeReducer from "./pages/Home/slice";
+import loginReducer from "./components/Login/slice";
+import registrationReducer from "./components/Registration/slice";
+import activateReducer from "./components/Activate/slice";
+import filesReducer from "./components/Files/slice";
+import progressReducer from "./components/Progress/slice";
 
 export const store = configureStore({
   reducer: {
+    app: appReducer,
     header: headerReducer,
     home: homeReducer,
     login: loginReducer,
@@ -17,4 +19,4 @@ export const store = configureStore({
     files: filesReducer,
     progress: progressReducer,
   },
-})
+});
