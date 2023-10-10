@@ -958,8 +958,18 @@ paths:
               schema:
                 type: string
                 format: binary
-        '400':
-          description: "No such file."
+        '204':
+          description: List directory
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example:
+                    "651a460623dbbafbf21fdb71"
+        '501':
+          description: "ENOENT: no such file or directory, open 'uploads/public/751a460623dbbafbf21fdb71/1696582404909.jpg'"
       security:
         - petstore_auth:
             - write:pets
