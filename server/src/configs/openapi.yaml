@@ -28,6 +28,8 @@ tags:
     description: Files
   - name: public
     description: Public files
+  - name: private
+    description: Private files
   - name: pet
     description: Everything about your Pets
     externalDocs:
@@ -970,6 +972,45 @@ paths:
                     "651a460623dbbafbf21fdb71"
         '501':
           description: "ENOENT: no such file or directory, open 'uploads/public/751a460623dbbafbf21fdb71/1696582404909.jpg'"
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  /private:
+    get:
+      tags:
+        - private
+      summary: List private files
+      description: List private files
+      operationId: listPrivate
+      parameters:
+        - name: path
+          in: query
+          description: File id
+          explode: true
+          schema:
+            type: string
+            example: 651a460623dbbafbf21fdb71/files/A/B/Test.ico
+      responses:
+        '200':
+          description: successful operation
+          content:
+            image/jpg:
+              schema:
+                type: string
+                format: binary
+        '204':
+          description: List directory
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example:
+                    "651a460623dbbafbf21fdb71"
+        '501':
+          description: "ENOENT: no such file or directory, open 'uploads/private/751a460623dbbafbf21fdb71/files/A/B/Test.ico'"
       security:
         - petstore_auth:
             - write:pets
