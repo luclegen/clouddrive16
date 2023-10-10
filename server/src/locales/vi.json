@@ -81,5 +81,6 @@
   "Deleted file not found.": "Không tìm thấy tập tin đã xóa.",
   "Cannot execute \"deleteForever\" on \"File\"": "Không thể thực thi \"xóa vĩnh viễn\" trên \"Tập tin\".",
   "Cannot execute \"list\" on \"File\"": "Không thể thực thi \"liệt kê\" trên \"Tập tin\".",
-  "Cannot execute \"list\" on \"Folder\"": "Không thể thực thi \"liệt kê\" trên \"Thư mục\"."
+  "Cannot execute \"list\" on \"Folder\"": "Không thể thực thi \"liệt kê\" trên \"Thư mục\".",
+  "No such file.": "Không có tập tin nào như vậy."
 }
