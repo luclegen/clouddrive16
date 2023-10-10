@@ -3,11 +3,6 @@ const multer = require('multer')
 const converter = require('../helpers/converter')
 const maxSize = 2 * 1024 * 1024
 
-module.exports.getMediaDir = dir =>
-  new Promise((resolve, reject) =>
-    fs.readdir(dir, (err, files) =>
-      err ? reject(err) : resolve(files)))
-
 module.exports.upload = (dir = '', type = 'private') => multer({
   storage: multer.diskStorage({
     destination: (req, file, next) => {
