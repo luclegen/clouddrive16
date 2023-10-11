@@ -1,26 +1,11 @@
 {
-  "short_name": "CloudDrive16",
-  "name": "CloudDrive16",
+  "short_name": "React App",
+  "name": "Create React App Sample",
   "icons": [
     {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
-    },
-    {
-      "src": "logo.svg",
-      "type": "image/svg+xml",
-      "sizes": "any"
-    },
-    {
-      "src": "logo.hover.svg",
-      "type": "image/svg+xml",
-      "sizes": "any"
-    },
-    {
-      "src": "logo64.png",
-      "type": "image/png",
-      "sizes": "64x64"
     },
     {
       "src": "logo192.png",
@@ -31,16 +16,6 @@
       "src": "logo512.png",
       "type": "image/png",
       "sizes": "512x512"
-    },
-    {
-      "src": "logo1250.png",
-      "type": "image/png",
-      "sizes": "1250x1250"
-    },
-    {
-      "src": "logo1250.hover.png",
-      "type": "image/png",
-      "sizes": "1250x1250"
     }
   ],
   "start_url": ".",
