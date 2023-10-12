@@ -1,0 +1,240 @@
+.logo, .dropdown-toggle-avatar
+
+  img
+    height: 45px
+
+.logo
+  font-size: 30px
+
+.logo-img
+  height: 64px
+
+.dropdown-avatar
+  min-width: 45px
+  max-height: 45px
+
+.dropdown-toggle-avatar, .link-help
+  margin-left: 193px
+
+  i
+    font-size: 45px
+
+.search-bar
+  width: 500px
+
+.input-email, .input-password
+  width: 260px
+
+body
+  margin-top: 53px !important
+
+header
+  top: 0
+  left: 0
+  z-index: 4
+
+header
+  width: 100vw
+
+.main-command-bar
+  z-index: 2
+
+.main-command-bar, .left-nav, .section-floating-aside
+  top: 53px
+
+.left-nav, .section-floating-aside, .section-floating
+  left: 0
+
+.left-nav
+  height: 100vh
+
+.section-floating-aside
+  height: calc(100vh - 53px)
+  z-index: 3
+
+.main-command-bar
+  height: 53px
+
+.section-floating
+  top: 0
+
+.section-files
+  height: calc(100vh - 53px)
+
+.main-content
+  margin-top: 53px
+  width: 100%
+  min-height: calc(100vh - 106px)
+
+main
+  min-height: calc(100vh - 53px)
+
+  .section-only
+    height: calc(100vh - 106px)
+    margin-bottom: 53px
+
+.input-group-container
+  height: 40px
+
+.input-group-password
+  height: 0
+  overflow: hidden
+  transition: height 0.8s
+
+.section-floating, .section-floating-center
+  top: 0
+  width: 100vw
+  height: 100vh
+  z-index: 4
+
+  form
+    width: 500px
+    background: white
+
+.bg-media
+  height: calc(100vh - 53px)
+
+.main-aside
+  max-height: calc(100vh - 106px)
+  padding-bottom: 50px
+
+meter
+  width: 100%
+
+.label-female, .label-male, .label-other
+  padding-left: 12px !important
+
+.input-female, .input-male, .input-other
+  margin-right: 12px !important
+
+.label-group
+  width: 100%
+
+.form-control-digit
+  width: 50px
+  height: 50px
+  font-size: 30px
+
+.left-nav
+
+  .top-left-nav
+    height: 53px
+
+.list-group-search
+  width: 500px
+
+.list-group-item-files, .list-group-item-trash
+  display: flex !important
+  align-items: flex-end !important
+  cursor: pointer
+
+  &.active
+    cursor: auto
+
+.command-bar
+  height: 53px
+  width: 100%
+
+.btn-new-folder, .btn-empty, .empty-trash, .btn-close-progress
+  height: 100% !important
+
+.btn-close-progress
+  width: 52px !important
+
+  & i
+    font-size: 50px !important
+
+.empty-trash
+  font-size: 25px
+
+  i
+    font-size: 200px
+
+.img, .video-preview
+  max-width: 100px
+  max-height: 55px
+  margin: 13px 0 0 10px
+
+.file
+  width: 100px
+  height: 60px
+  margin: 13px 0 0 10px
+
+.label-folder, .label-file
+  max-width: 150px
+  margin-top: 85px
+
+.li-folder
+  padding-left: 16px
+
+.li-file
+
+  .bg-file
+    padding-left: 20px
+
+  .bg-img, .bg-video
+    max-width: 142px
+    max-height: 85px
+
+  i
+    font-size: 90px
+
+.menu-folder
+  display: none
+  background: white
+  cursor: pointer
+  z-index: 1
+
+.space-bar
+  height: 30px
+
+.list-group-search
+  z-index: 1
+
+.folder
+  width: 30px
+
+.row-code
+  max-width: 348px
+
+.circular-progressbar
+  width: 25px !important
+
+  & .CircularProgressbar-text
+    font-size: 30px !important
+
+.btn-cancel-upload
+  width: 15px !important
+  height: 15px !important
+  border: 1px solid var(--bs-secondary) !important
+  border-radius: 50% !important
+
+.dropdown-item
+
+  img
+    width: 20px
+
+@media (max-width: 1024px)
+  .search-bar
+    width: 250px
+
+@media (max-width: 800px)
+  .search-bar
+    width: auto
+    background: blue
+    border: 1px solid blue !important
+
+    .btn-search
+      color: white
+      background: none
+
+      &:disabled
+        opacity: 1
+
+    .input-search
+      display: none
+
+@media (max-width: 560px)
+
+  .dropdown-toggle-avatar
+    margin-left: 8px
