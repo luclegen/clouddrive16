@@ -22,8 +22,7 @@
       "id": "verifyCode",
       "can": true,
       "action": "verify",
-      "subject": "Code",
-      "fields": { "_uid": "mine" }
+      "subject": "Code"
     },
     {
       "id": "readProfile",
