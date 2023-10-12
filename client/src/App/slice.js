@@ -43,10 +43,6 @@ export const appSlice = createSlice({
         state.remember = false;
       })
       .addCase(login.fulfilled, (state, action) => {
-        helper.setCookies(
-          action.payload,
-          state.remember ? 365 * 24 * 60 * 60 : 0
-        );
         !action.payload.is_activate &&
           alert('Your session exists for 5 minutes.');
         state.is_activate = action.payload.is_activate;
