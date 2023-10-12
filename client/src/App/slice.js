@@ -32,6 +32,9 @@ export const appSlice = createSlice({
   reducers: {
     setRemember: (state, action) => {
       state.remember = action.payload;
+    },
+    setLoggedIn: (state, action) => {
+      state.loggedIn = action.payload;
     }
   },
   extraReducers: (builder) =>
@@ -60,7 +63,7 @@ export const appSlice = createSlice({
       })
 });
 
-export const { setRemember } = appSlice.actions;
+export const { setRemember, setLoggedIn } = appSlice.actions;
 
 export const selectAvailable = (state) => state.app.available;
 export const selectRemember = (state) => state.app.remember;
