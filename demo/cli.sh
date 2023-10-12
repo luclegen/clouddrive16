@@ -7,9 +7,15 @@ npm i -s
 # I. REACT CLIENT
 cd /workspace/cloud-drive-16/client; clear; npm start
 npx create-react-app client --template redux
-cd client; npm i -s node-sass react-router-dom axios bootstrap@4 reactstrap@8 --legacy-peer-deps
-npm i -D eslint eslint-plugin-import eslint-plugin-jsx-a11y eslint-plugin-react
+cd client; npm i -s node-sass react-router-dom axios bootstrap reactstrap react-circular-progressbar
 
+# 1. ESLint: https://www.youtube.com/watch?v=fDrDtn7FgMw
+npx eslint --init
+npm init @eslint/config
+npm i -D eslint eslint-config-prettier
+npm i -D --save-exact prettier
+npx eslint --init
+npm i -D eslint-config-prettier
 heroku login
 heroku create clouddrive16
 xdg-open https://dashboard.heroku.com/apps/clouddrive16/settings
