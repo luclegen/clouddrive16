@@ -63,20 +63,22 @@ class Helper {
   checkPassword = value => {
     let count = 0
     const strength = Object.freeze({
-      0: 'Worst',
-      1: 'Bad',
-      2: 'Weak',
-      3: 'Good',
-      4: 'Strong'
+      0: '',
+      1: 'Worst',
+      2: 'Bad',
+      3: 'Weak',
+      4: 'Good',
+      5: 'Strong'
     })
 
     if (value.length >= 8) count++
-    if (/[a-z]/ig.test(value)) count++
+    if (/[A-Z]/g.test(value)) count++
+    if (/[a-z]/g.test(value)) count++
     if (/\d/g.test(value)) count++
     if (/[.@#$%^&*(),.?":{}|<>]/g.test(value)) count++
 
     return {
-      isStrong: count === 4,
+      isStrong: count === 5,
       level: count,
       strength: strength[count]
     }
