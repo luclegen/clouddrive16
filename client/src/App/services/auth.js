@@ -1,15 +1,16 @@
-import API from '../apis/json'
+import jsonAPI from '../apis/json'
+import plainAPI from '../apis/plain'
 
-const URL = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/auth/`
+const URL = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/jsonAPI' : process.env.REACT_APP_API}/auth/`
 
 class AuthService {
-  login = user => API.post(URL, user)
+  login = user => jsonAPI.post(URL, user)
 
-  available = email => API.get(`${URL}${email}`)
+  available = email => jsonAPI.get(`${URL}${email}`)
 
-  verify = code => API.put(URL, code)
+  verify = code => plainAPI.put(URL, code)
 
-  logout = () => API.delete(URL)
+  logout = () => jsonAPI.delete(URL)
 }
 
 export default new AuthService()
