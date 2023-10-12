@@ -81,7 +81,7 @@ export default function Activate() {
       )
       .filter((v) => helper.isDigit(v)).length === 6;
 
-  const submit = () => dispatch(verify({ code: getCode() }));
+  const submit = () => dispatch(verify(getCode()));
 
   return (
     <section className="section-only">
