@@ -536,12 +536,12 @@ export default function Files() {
                     className="dropdown-item-normal"
                     onClick={createNewFolder}
                   >
-                    <img src="/svg/folder.svg" alt="Folder" />
+                    <img src="/svgs/folder.svg" alt="Folder" />
                     Folder
                   </DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={createNewPlaintext}>
-                    <img src="/svg/txt.svg" alt="Plain text document" /> Plain
+                    <img src="/svgs/txt.svg" alt="Plain text document" /> Plain
                     text document
                   </DropdownItem>
                 </DropdownMenu>
