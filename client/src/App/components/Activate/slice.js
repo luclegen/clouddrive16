@@ -14,7 +14,8 @@ export const activateSlice = createSlice({
   extraReducers: builder => builder
     .addCase(create.fulfilled, (state, action) => {
       state.sent = true
-      window.open(action.payload)
+      if(process.env.NODE_ENV === 'production') window.open(action.payload)
+      else alert(action.payload)
     })
 })
 
