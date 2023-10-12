@@ -1,6 +1,7 @@
 const { ForbiddenError } = require('@casl/ability')
 const passport = require('passport')
 const bcrypt = require('bcryptjs')
+const _ = require('lodash')
 const User = require('../models/user.model')
 const Session = require('../models/session.model')
 const Code = require('../models/code.model')
@@ -39,7 +40,7 @@ module.exports.login = catchAsync(async (req, res, next) => {
             .cookie('first_name', user.name.first, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
             .cookie('middle_name', user.name.middle || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
             .cookie('last_name', user.name.last, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
-            .json()
+            .json(_.pick(user, ['is_activate']))
         }
       })
     })
