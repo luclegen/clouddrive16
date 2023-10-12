@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Sex from '../../models/Sex'
 import helper from '../../services/helper'
 import { close } from '../Login/slice'
-import { check, selectAvailable } from '../../pages/Home/slice'
+import { check, selectAvailable, setLoggedIn } from '../../slice'
 import { create } from './slice'
 
 export default function Registration() {
@@ -35,10 +35,6 @@ export default function Registration() {
       || sex
       ? true
       : undefined)
-
-  const enterFirstName = e => e.target.setCustomValidity(e.target.value ? helper.isFirstName(e.target.value) ? '' : 'Invalid first name.' : 'This field is required.')
-
-  const enterLastName = e => e.target.setCustomValidity(e.target.value ? helper.isLastName(e.target.value) ? '' : 'Invalid last name.' : 'This field is required.')
 
   const enterEmail = e => e.target.value
     && dispatch(check(e.target.value))
@@ -110,21 +106,26 @@ export default function Registration() {
       year,
       sex
     }))
-      .then(action =>
-        action.type === 'registration/create/fulfilled'
-        && (setFirstName('')
-          || setLastName('')
-          || setEmail('')
-          || setPassword('')
-          || setConfirm('')
-          || setDay((new Date()).getDate().toString())
-          || setMonth((new Date()).getMonth().toString())
-          || setYear((new Date()).getFullYear().toString())
-          || setSex('')
-          || setSubmitted(false)
-          || (document.querySelector('meter').value = 0)
-          || e.target.reset())
-      );
+      .then(action => {
+        if (action.type === 'registration/create/fulfilled') {
+          setFirstName('')
+          setLastName('')
+          setEmail('')
+          setPassword('')
+          setConfirm('')
+          setDay((new Date()).getDate().toString())
+          setMonth((new Date()).getMonth().toString())
+          setYear((new Date()).getFullYear().toString())
+          setSex('')
+          setSubmitted(false)
+          document.querySelector('meter').value = 0
+          e.target.reset()
+        }
+
+        dispatch(close())
+
+        dispatch(setLoggedIn(true))
+      });
 
   return <section className="section-floating-center">
     <form className="form-registration" onSubmit={submit}>
@@ -137,13 +138,13 @@ export default function Registration() {
       <div className="row-name">
         <div className="col-md">
           <div className="form-floating">
-            <input className={`form-control ${first_name && (helper.isFirstName(first_name) ? 'is-valid' : 'is-invalid')}`} id="firstNameRegistration" name="first_name" type="text" placeholder="First name" pattern={helper.firstNamePattern} onInput={enterFirstName} onInvalid={enterFirstName} onChange={e => setFirstName(e.target.value)} required />
+            <input className="form-control" id="firstNameRegistration" name="first_name" type="text" placeholder="First name" pattern={helper.firstNamePattern} onChange={e => setFirstName(e.target.value)} required />
             <label htmlFor="firstNameRegistration">First name</label>
           </div>
         </div>
         <div className="col-md">
           <div className="form-floating">
-            <input className={`form-control ${last_name && (helper.isLastName(last_name) ? 'is-valid' : 'is-invalid')}`} id="lastNameRegistration" name="last_name" type="text" placeholder="Last name" pattern={helper.lastNamePattern} onInput={enterLastName} onInvalid={enterLastName} onChange={e => setLastName(e.target.value)} required />
+            <input className="form-control" id="lastNameRegistration" name="last_name" type="text" placeholder="Last name" pattern={helper.lastNamePattern} onChange={e => setLastName(e.target.value)} required />
             <label htmlFor="lastNameRegistration">Last name</label>
           </div>
         </div>
