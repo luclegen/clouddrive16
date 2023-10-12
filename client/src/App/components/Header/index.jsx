@@ -38,6 +38,7 @@ export default function Header() {
   const activated = useSelector(selectIsActivate)
 
   const [keyword, setKeyword] = useState('')
+  const [selected, setSelected] = useState(false)
 
   useEffect(() => {
     window.onresize = () => dispatch(setWidth())
@@ -59,19 +60,19 @@ export default function Header() {
   }, [])
 
   const coloring = e => {
-    // if (e.type === 'select') setState({ selected: true })
-    // if (e.type === 'blur') setState({ selected: false })
+    if (e.type === 'select') setSelected(true)
+    if (e.type === 'blur') setSelected(false)
 
-    // if (width > 800) {
-    //   let color = keyword || selected || e.type === 'mouseenter' ? 'white' : '#e1dfdd'
+    if (width > 800) {
+      let color = keyword || selected || e.type === 'mouseenter' ? 'white' : '#e1dfdd'
 
-    //   if (e.type === 'select') color = 'white'
-    //   if (e.type === 'blur' && !keyword) color = '#e1dfdd'
-    //   document.querySelector('.search-bar').style.background = color
-    // } else if (e.type === 'mouseleave') {
-    //   reset()
-    //   setState({ opened: false })
-    // }
+      if (e.type === 'select') color = 'white'
+      if (e.type === 'blur' && !keyword) color = '#e1dfdd'
+      document.querySelector('.search-bar').style.background = color
+    } else if (e.type === 'mouseleave') {
+      reset()
+      dispatch(setOpened(false))
+    }
   }
 
   const getSearchBar = () => document.querySelector('.search-bar')
