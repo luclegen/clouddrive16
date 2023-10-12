@@ -23,7 +23,7 @@ import {
   selectLoggedIn,
   logout,
   selectIsActivate
-} from '../../pages/Home/slice'
+} from '../../slice'
 import helper from '../../services/helper'
 
 export default function Header() {
