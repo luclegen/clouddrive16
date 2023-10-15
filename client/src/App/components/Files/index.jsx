@@ -244,7 +244,9 @@ export default function Files() {
       () => (document.title = `Trash - ${process.env.REACT_APP_NAME}`)
     )
 
-  const isEmpty = () => false
+  const isEmpty = () =>
+    helper.getQuery('location') === 'trash'
+    && !folders.concat(files).some(f => f.is_trash)
 
   const restoreTrash = () => { }
 
