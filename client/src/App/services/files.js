@@ -1,29 +1,30 @@
-import API from '../apis/json'
+import jsonAPI from '../apis/json'
+import plainAPI from '../apis/plain'
 
 const URL = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/`
 
 class FilesService {
-  create = files => API.post(URL, files)
+  create = files => jsonAPI.post(URL, files)
 
-  createPlaintext = file => API.post(`${URL}p`, file)
+  createPlaintext = file => jsonAPI.post(`${URL}p`, file)
 
-  read = id => API.get(`${URL}${id}`)
+  read = id => jsonAPI.get(`${URL}${id}`)
 
-  open = media => API.get(media)
+  open = media => jsonAPI.get(media)
 
-  update = (id, file) => API.put(`${URL}${id}`, file)
+  update = (id, filename) => plainAPI.put(`${URL}${id}`, filename)
 
-  delete = id => API.patch(`${URL}${id}`)
+  delete = id => jsonAPI.patch(`${URL}${id}`)
 
-  restore = id => API.patch(`${URL}r/${id}`)
+  restore = id => jsonAPI.patch(`${URL}r/${id}`)
 
-  move = (id, did) => API.patch(`${URL}m/${id}`, did)
+  move = (id, did) => jsonAPI.patch(`${URL}m/${id}`, did)
 
-  copy = (id, did) => API.patch(`${URL}c/${id}`, did)
+  copy = (id, did) => jsonAPI.patch(`${URL}c/${id}`, did)
 
-  deleteForever = id => API.delete(`${URL}${id}`)
+  deleteForever = id => jsonAPI.delete(`${URL}${id}`)
 
-  list = name => API.get(name ? `${URL}?name=${name}` : URL)
+  list = name => jsonAPI.get(name ? `${URL}?name=${name}` : URL)
 }
 
 export default new FilesService()
