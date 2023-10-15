@@ -623,10 +623,7 @@ export default function Files() {
                       className="img"
                       src={`${process.env.NODE_ENV === 'production'
                         ? window.location.origin + '/api'
-                        : process.env.REACT_APP_API}
-                        /media/?path=${helper.getCookie('id')}
-                        /files${helper.getImage(files, v).path === '/' ? '/' : helper.getImage(files, v).path}
-                          ${helper.getImage(files, v).name}`}
+                        : process.env.REACT_APP_API}/private/?path=${helper.getCookie('id')}/files${helper.getImage(files, v).path === '/' ? '/' : helper.getImage(files, v).path}${helper.getImage(files, v).name}`}
                       alt="foreground folder"
                     />
                   ) : helper.isVideos(files, v) ? (
@@ -634,10 +631,7 @@ export default function Files() {
                       className="video-preview"
                       src={`${process.env.NODE_ENV === 'production'
                         ? window.location.origin + '/api'
-                        : process.env.REACT_APP_API}
-                        /media/?path=${helper.getCookie('id')}
-                        /files${helper.getVideo(files, v).path === '/' ? '/' : helper.getVideo(files, v).path}
-                          ${helper.getVideo(files, v).name}`}
+                        : process.env.REACT_APP_API}/private/?path=${helper.getCookie('id')}/files${helper.getVideo(files, v).path === '/' ? '/' : helper.getVideo(files, v).path}${helper.getVideo(files, v).name}`}
                     ></video>
                   ) : (
                     !helper.isEmpty(folders, files, v) && (
