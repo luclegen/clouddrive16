@@ -33,6 +33,7 @@ export const filesSlice = createSlice({
   initialState,
   reducers: {
     setPath: (state, action) => { state.path = action.payload },
+    setType: (state, action) => { state.type = action.payload },
     setItems: (state, action) => { state.items = action.payload },
     setItemPrev: (state, action) => { state.itemPrev = action.payload },
     clear: state => {
