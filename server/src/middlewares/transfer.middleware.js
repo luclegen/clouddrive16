@@ -1,37 +1,36 @@
 const fs = require('fs')
 const multer = require('multer')
 const converter = require('../helpers/converter')
-const maxSize = 2 * 1024 * 1024
 
-module.exports.upload = (dir = '', type = 'private') => multer({
+module.exports.upload = (dir = '', type = 'private', maxSize) => multer({
   storage: multer.diskStorage({
     destination: (req, file, next) => {
       const path = [process.env.UPLOADS]
 
       switch (dir) {
-      case 'companies':
-        switch (file.fieldname) {
-        case 'logo':
-          type = 'public'
+        case 'companies':
+          switch (file.fieldname) {
+            case 'logo':
+              type = 'public'
+              break
+
+            default:
+              type = 'private'
+              break
+          }
           break
 
         default:
-          type = 'private'
-          break
-        }
-        break
+          switch (file.fieldname) {
+            case 'avatar':
+              type = 'public'
+              break
 
-      default:
-        switch (file.fieldname) {
-        case 'avatar':
-          type = 'public'
+            default:
+              type = 'private'
+              break
+          }
           break
-
-        default:
-          type = 'private'
-          break
-        }
-        break
       }
 
       path[1] = path[0] + `${type}`
@@ -46,31 +45,31 @@ module.exports.upload = (dir = '', type = 'private') => multer({
     },
     filename: (req, file, next) => {
       switch (dir) {
-      case '':
-        next(null, `${Date.now()}${converter.toFile(file.originalname).extension}`)
-        break
+        case '':
+          next(null, `${Date.now()}${converter.toFile(file.originalname).extension}`)
+          break
 
-      case 'educations':
-      case 'achievements':
-      case 'experiences':
-      case 'certificates':
-      case 'companies':
-        next(null, `${Date.now()}.id${converter.toFile(file.originalname).extension}`)
-        break
+        case 'educations':
+        case 'achievements':
+        case 'experiences':
+        case 'certificates':
+        case 'companies':
+          next(null, `${Date.now()}.id${converter.toFile(file.originalname).extension}`)
+          break
 
-      case 'resumes':
-        next(null, `${Date.now()}.${file.fieldname}${converter.toFile(file.originalname).extension}`)
-        break
+        case 'resumes':
+          next(null, `${Date.now()}.${file.fieldname}${converter.toFile(file.originalname).extension}`)
+          break
 
-      case 'files':
-        next(null, req.body.name || file.originalname)
-        break
+        case 'files':
+          next(null, req.body.name || file.originalname)
+          break
 
-      default:
-        next(null, file.originalname)
-        break
+        default:
+          next(null, file.originalname)
+          break
       }
     }
   }),
-  limits: { fileSize: maxSize }
+  limits: maxSize ? { fileSize: maxSize } : {}
 })
