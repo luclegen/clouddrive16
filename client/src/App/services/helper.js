@@ -136,6 +136,8 @@ class Helper {
   loggedIn = () => !!this.getCookie('id')
 
   remembered = () => localStorage.getItem('remembered') === 'true' || sessionStorage.getItem('remembered') === 'true' ? true : localStorage.getItem('remembered') === 'false' || sessionStorage.getItem('remembered') === 'false' ? false : null
+
+  toFile = (filename, elements = filename.split(/\./)) => ({ name: filename.slice(0, filename.length - elements[elements.length - 1].length - 1), extension: filename.slice(filename.length - elements[elements.length - 1].length - 1) })
 }
 
 export default new Helper()
