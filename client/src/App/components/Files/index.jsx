@@ -89,14 +89,17 @@ export default function Files() {
   const getMenuFolder = () => document.querySelector('.dropdown-menu-folder');
 
   const setMainContent = () =>
-    (document.querySelector('.main-content').style.marginLeft =
-      document.querySelector('.left-nav').clientWidth + 'px');
+    document.querySelector('.main-content')
+      .style.marginLeft = `${document
+        .querySelector('.left-nav')
+        .clientWidth}px`
 
   const setMainCommandBar = () =>
-    (document.querySelector('.main-command-bar').style.width =
-      window.innerWidth -
-      document.querySelector('.left-nav').clientWidth +
-      'px');
+    document
+      .querySelector('.main-command-bar')
+      .style.width = `${window.innerWidth - document
+        .querySelector('.left-nav')
+        .clientWidth}px`
 
   const createNewFolder = () =>
     dispatch(
@@ -145,10 +148,9 @@ export default function Files() {
 
         formDataAPI
           .post(
-            `${
-              process.env.NODE_ENV === 'production'
-                ? window.location.origin + '/api'
-                : process.env.REACT_APP_API
+            `${process.env.NODE_ENV === 'production'
+              ? window.location.origin + '/api'
+              : process.env.REACT_APP_API
             }/files/`,
             formData,
             {
@@ -167,15 +169,15 @@ export default function Files() {
       });
   };
 
-  const move = () => {};
+  const move = () => { };
 
-  const copy = () => {};
+  const copy = () => { };
 
-  const download = () => {};
+  const download = () => { };
 
-  const rename = () => {};
+  const rename = () => { };
 
-  const restore = () => {};
+  const restore = () => { };
 
   const _delete = () =>
     Promise.all([
@@ -195,18 +197,17 @@ export default function Files() {
         )
     ]).then(() => refresh());
 
-  const openLocation = () => {};
+  const openLocation = () => { };
 
   const back = () =>
     helper.deleteQuery('location') ||
     refresh().then(
-      () =>
-        (document.title = `${
-          helper.getQuery('id') === 'root'
-            ? 'My files'
-            : folders.find((v) => v._id === helper.getQuery('id'))?.name
-        }
-      - ${process.env.REACT_APP_NAME} `)
+      () => {
+        document.title = `${helper.getQuery('id') === 'root'
+          ? 'My files'
+          : folders.find((v) => v._id === helper.getQuery('id'))?.name}
+      - ${process.env.REACT_APP_NAME}`
+      }
     );
 
   const setTrash = () =>
@@ -217,9 +218,9 @@ export default function Files() {
 
   const isEmpty = () => false;
 
-  const restoreTrash = () => {};
+  const restoreTrash = () => { };
 
-  const empty = () => {};
+  const empty = () => { };
 
   const open = (e) => {
     dispatch(clear());
@@ -248,10 +249,11 @@ export default function Files() {
       dispatch(readFile(e.target?.closest('.li-file').id)).then((action) =>
         dispatch(openFile(helper.getMedia(action.payload)))
       );
-    } else if (helper.isPDF(e.target?.closest('.li-file').getAttribute('name')))
-    {dispatch(readFile(e.target?.closest('.li-file').id)).then((action) =>
-      dispatch(openFile(helper.getMedia(action.payload)))
-    );}
+    } else if (helper.isPDF(e.target?.closest('.li-file').getAttribute('name'))) {
+      dispatch(readFile(e.target?.closest('.li-file').id)).then((action) =>
+        dispatch(openFile(helper.getMedia(action.payload)))
+      );
+    }
   };
 
   const access = (e) => {
@@ -266,9 +268,7 @@ export default function Files() {
         f.name === path.split('/')[index]
     );
 
-    document.title = `${index === 0 ? 'My files' : folder?.name} - ${
-      process.env.REACT_APP_NAME
-    }`;
+    document.title = `${index === 0 ? 'My files' : folder?.name} - ${process.env.REACT_APP_NAME}`;
     setPath(newpath ? newpath : '/');
     helper.setQuery('id', parseInt(e.target.id) === 0 ? 'root' : folder?._id);
     refresh();
@@ -294,13 +294,13 @@ export default function Files() {
 
       target.classList.contains('bg-info')
         ? target.classList.remove('bg-info') ||
-          (arr.splice(
-            arr.findIndex((v) => v.id === item.id && v.type === item.type),
-            1
-          ) &&
-            dispatch(setItemPrev(arr?.length ? arr[arr?.length - 1] : null)))
+        (arr.splice(
+          arr.findIndex((v) => v.id === item.id && v.type === item.type),
+          1
+        ) &&
+          dispatch(setItemPrev(arr?.length ? arr[arr?.length - 1] : null)))
         : target.classList.add('bg-info') ||
-          (arr.push(item) && dispatch(setItemPrev(item)));
+        (arr.push(item) && dispatch(setItemPrev(item)));
 
       dispatch(setItems(arr));
     } else if (e.shiftKey) {
@@ -315,18 +315,15 @@ export default function Files() {
             itemPrev.index < item.index ? i++ : i--
           ) {
             document
-              .querySelectorAll(`.li-${item.type}`)
-              [i].classList.add('bg-info');
+              .querySelectorAll(`.li-${item.type}`)[i].classList.add('bg-info');
             arr.push({
               index: i,
               id: document.querySelectorAll(`.li-${item.type}`)[i].id,
               type: item.type,
               name: document
-                .querySelectorAll(`.li-${item.type}`)
-                [i]?.getAttribute('name'),
+                .querySelectorAll(`.li-${item.type}`)[i]?.getAttribute('name'),
               parent: document
-                .querySelectorAll(`.li-${item.type}`)
-                [i]?.getAttribute('value')
+                .querySelectorAll(`.li-${item.type}`)[i]?.getAttribute('value')
             });
           }
 
@@ -347,11 +344,9 @@ export default function Files() {
               id: document.querySelectorAll('.li-folder')[i].id,
               type: ItemType.FOLDER,
               name: document
-                .querySelectorAll('.li-folder')
-                [i]?.getAttribute('name'),
+                .querySelectorAll('.li-folder')[i]?.getAttribute('name'),
               parent: document
-                .querySelectorAll('.li-folder')
-                [i]?.getAttribute('value')
+                .querySelectorAll('.li-folder')[i]?.getAttribute('value')
             });
           }
           for (
@@ -365,11 +360,9 @@ export default function Files() {
               id: document.querySelectorAll('.li-file')[i].id,
               type: ItemType.FILE,
               name: document
-                .querySelectorAll('.li-file')
-                [i]?.getAttribute('name'),
+                .querySelectorAll('.li-file')[i]?.getAttribute('name'),
               parent: document
-                .querySelectorAll('.li-file')
-                [i]?.getAttribute('value')
+                .querySelectorAll('.li-file')[i]?.getAttribute('value')
             });
           }
 
@@ -422,11 +415,11 @@ export default function Files() {
     }
   };
 
-  const next = () => {};
+  const next = () => { };
 
-  const prev = () => {};
+  const prev = () => { };
 
-  const close = () => {};
+  const close = () => { };
 
   // const closeFolderTree = () => {};
 
@@ -440,11 +433,10 @@ export default function Files() {
         )}
         {!helper.getQuery('location') && (
           <li className="dropdown-item-normal" onClick={copy}>
-            <i className="material-icons">{`${
-              items.every((v) => v.type === ItemType.FILE)
-                ? ItemType.FILE
-                : ItemType.FOLDER
-            }_copy`}</i>
+            <i className="material-icons">{`${items.every((v) => v.type === ItemType.FILE)
+              ? ItemType.FILE
+              : ItemType.FOLDER}_copy`}
+            </i>
             Copy to...
           </li>
         )}
@@ -495,17 +487,13 @@ export default function Files() {
         </div>
         <ul className="list-group">
           <li
-            className={`list-group-item-files ${
-              helper.getQuery('location') ? '' : 'active'
-            }`}
+            className={`list-group-item-files ${helper.getQuery('location') ? '' : 'active'}`}
             onClick={back}
           >
             <i className="material-icons">folder</i> My files
           </li>
           <li
-            className={`list-group-item-trash ${
-              helper.getQuery('location') === 'trash' ? 'active' : ''
-            }`}
+            className={`list-group-item-trash ${helper.getQuery('location') === 'trash' ? 'active' : ''}`}
             onClick={setTrash}
           >
             <i className="material-icons">delete</i> Trash
@@ -627,35 +615,29 @@ export default function Files() {
                   <img
                     className="bg-folder"
                     id={`folder${i}`}
-                    src="svg/lg-bg.svg"
+                    src="svgs/lg-bg.svg"
                     alt="background folder"
                   />
                   {helper.isImages(files, v) ? (
                     <img
                       className="img"
-                      src={`${
-                        process.env.NODE_ENV === 'production'
-                          ? window.location.origin + '/api'
-                          : process.env.REACT_APP_API
-                      }/media/?path=${helper.getCookie('id')}/files${
-                        helper.getImage(files, v).path === '/'
-                          ? '/'
-                          : helper.getImage(files, v).path
-                      }${helper.getImage(files, v).name}`}
+                      src={`${process.env.NODE_ENV === 'production'
+                        ? window.location.origin + '/api'
+                        : process.env.REACT_APP_API}
+                        /media/?path=${helper.getCookie('id')}
+                        /files${helper.getImage(files, v).path === '/' ? '/' : helper.getImage(files, v).path}
+                          ${helper.getImage(files, v).name}`}
                       alt="foreground folder"
                     />
                   ) : helper.isVideos(files, v) ? (
                     <video
                       className="video-preview"
-                      src={`${
-                        process.env.NODE_ENV === 'production'
-                          ? window.location.origin + '/api'
-                          : process.env.REACT_APP_API
-                      }/media/?path=${helper.getCookie('id')}/files${
-                        helper.getVideo(files, v).path === '/'
-                          ? '/'
-                          : helper.getVideo(files, v).path
-                      }${helper.getVideo(files, v).name}`}
+                      src={`${process.env.NODE_ENV === 'production'
+                        ? window.location.origin + '/api'
+                        : process.env.REACT_APP_API}
+                        /media/?path=${helper.getCookie('id')}
+                        /files${helper.getVideo(files, v).path === '/' ? '/' : helper.getVideo(files, v).path}
+                          ${helper.getVideo(files, v).name}`}
                     ></video>
                   ) : (
                     !helper.isEmpty(folders, files, v) && (
@@ -665,14 +647,14 @@ export default function Files() {
                   {helper.isImages(files, v) || helper.isVideos(files, v) ? (
                     <img
                       className="fg-folder"
-                      src="svg/lg-fg-media.svg"
+                      src="svgs/lg-fg-media.svg"
                       alt="foreground folder"
                       onContextMenu={choose(i)}
                     />
                   ) : (
                     <img
                       className="fg-folder"
-                      src="svg/lg-fg.svg"
+                      src="svgs/lg-fg.svg"
                       alt="foreground folder"
                     />
                   )}
