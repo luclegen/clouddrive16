@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
   UncontrolledDropdown
-} from 'reactstrap';
-import Progress from '../Progress';
+} from 'reactstrap'
+import Progress from '../Progress'
 import {
   clear,
   createFolder,
@@ -32,8 +32,8 @@ import {
   setItemPrev,
   setItems,
   setPath
-} from './slice';
-import { setWidth } from '../Header/slice';
+} from './slice'
+import { setWidth } from '../Header/slice'
 import {
   setValue,
   selectShowProgress,
@@ -43,52 +43,52 @@ import {
   finishUpload,
   selectUploading,
   setSuccess
-} from '../Progress/slice';
-import formDataAPI from '../../apis/form-data';
-import Media from '../Media';
-// import FolderTree from '../FolderTree';
-import helper from '../../services/helper';
-import foldersService from '../../services/folders';
-import filesService from '../../services/files';
-import ItemType from '../../models/ItemType';
+} from '../Progress/slice'
+import formDataAPI from '../../apis/form-data'
+import Media from '../Media'
+// import FolderTree from '../FolderTree'
+import helper from '../../services/helper'
+import foldersService from '../../services/folders'
+import filesService from '../../services/files'
+import ItemType from '../../models/ItemType'
 
 export default function Files() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const folders = useSelector(selectFolders);
-  const files = useSelector(selectFiles);
-  const items = useSelector(selectItems);
-  const itemFolders = useSelector(selectItemFolders);
-  const itemFiles = useSelector(selectItemFiles);
-  const itemPrev = useSelector(selectItemPrev);
-  const path = useSelector(selectPath);
-  // const mediaFiles = useSelector(selectMediaFiles);
-  const medias = useSelector(selectMedias);
-  const media = useSelector(selectMedia);
-  const index = useSelector(selectIndex);
-  const showProgress = useSelector(selectShowProgress);
-  const uploading = useSelector(selectUploading);
+  const folders = useSelector(selectFolders)
+  const files = useSelector(selectFiles)
+  const items = useSelector(selectItems)
+  const itemFolders = useSelector(selectItemFolders)
+  const itemFiles = useSelector(selectItemFiles)
+  const itemPrev = useSelector(selectItemPrev)
+  const path = useSelector(selectPath)
+  // const mediaFiles = useSelector(selectMediaFiles)
+  const medias = useSelector(selectMedias)
+  const media = useSelector(selectMedia)
+  const index = useSelector(selectIndex)
+  const showProgress = useSelector(selectShowProgress)
+  const uploading = useSelector(selectUploading)
 
-  const controllers = useRef(null);
+  const controllers = useRef(null)
 
-  // const [showFolderTree, setShowFolderTree] = useState(false);
-  // const [action, setAction] = useState('');
+  // const [showFolderTree, setShowFolderTree] = useState(false)
+  // const [action, setAction] = useState('')
 
   useEffect(() => {
     window.onresize = () => {
-      setMainContent();
-      setMainCommandBar();
-      dispatch(setWidth());
-    };
-    document.title = `My files - ${process.env.REACT_APP_NAME}`;
-    setMainContent();
-    setMainCommandBar();
-    refresh();
-  }, []);
+      setMainContent()
+      setMainCommandBar()
+      dispatch(setWidth())
+    }
+    document.title = `My files - ${process.env.REACT_APP_NAME}`
+    setMainContent()
+    setMainCommandBar()
+    refresh()
+  }, [])
 
-  const refresh = () => dispatch(list());
+  const refresh = () => dispatch(list())
 
-  const getMenuFolder = () => document.querySelector('.dropdown-menu-folder');
+  const getMenuFolder = () => document.querySelector('.dropdown-menu-folder')
 
   const setMainContent = () =>
     document.querySelector('.main-content')
@@ -108,7 +108,7 @@ export default function Files() {
       createFolder({ name: prompt('Create folder', 'New folder'), path: path })
     ).then(
       (action) => action.type === 'files/createFolder/fulfilled' && refresh()
-    );
+    )
 
   const createNewPlaintext = () =>
     dispatch(
@@ -117,12 +117,12 @@ export default function Files() {
         path: path
       })
     ).then(
-      (action) => action.type === 'files/createPlaintext/fulfilled' && refresh()
-    );
+      action => action.type === 'files/createPlaintext/fulfilled' && refresh()
+    )
 
-  const upload = () => document.getElementById('files').click();
+  const upload = () => document.getElementById('files').click()
 
-  const save = async (e) => {
+  const save = async e => {
     const files = Array.from(e.target.files).map((v) => ({
       name: v.name,
       value: 0,
@@ -130,23 +130,23 @@ export default function Files() {
       cancel: false,
       success: false,
       done: false
-    }));
+    }))
     controllers.current = '0'
       .repeat(files.length)
       .split('')
-      .map(() => new AbortController());
+      .map(() => new AbortController())
 
-    await dispatch(setUploadFiles(files));
-    await dispatch(showProgressComponent());
+    await dispatch(setUploadFiles(files))
+    await dispatch(showProgressComponent())
 
     controllers.current.length &&
       dispatch(startUpload()) &&
       Array.from(e.target.files).forEach((v, i, a) => {
-        const formData = new FormData();
+        const formData = new FormData()
 
-        formData.append('path', path);
-        formData.append('name', v.name);
-        formData.append('file', v, v.name);
+        formData.append('path', path)
+        formData.append('name', v.name)
+        formData.append('file', v, v.name)
 
         formDataAPI
           .post(
@@ -157,7 +157,7 @@ export default function Files() {
             formData,
             {
               signal: controllers.current[i].signal,
-              onUploadProgress: (data) =>
+              onUploadProgress: data =>
                 dispatch(
                   setValue({
                     index: i,
@@ -167,15 +167,15 @@ export default function Files() {
             }
           )
           .then(() => dispatch(setSuccess(i)))
-          .finally(async () => (await dispatch(finishUpload(i))) && refresh());
-      });
-  };
+          .finally(async () => (await dispatch(finishUpload(i))) && refresh())
+      })
+  }
 
-  const move = () => { };
+  const move = () => { }
 
-  const copy = () => { };
+  const copy = () => { }
 
-  const download = () => { };
+  const download = () => items.map(v => window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + v.id))
 
   const rename = () => {
     if (items.length === 1) {
@@ -199,7 +199,7 @@ export default function Files() {
     }
   }
 
-  const restore = () => { };
+  const restore = () => { }
 
   const _delete = () =>
     Promise.all([
@@ -217,9 +217,9 @@ export default function Files() {
             ? dispatch(deleteForeverFile(v.id))
             : dispatch(deleteFile(v.id))
         )
-    ]).then(() => refresh());
+    ]).then(() => refresh())
 
-  const openLocation = () => { };
+  const openLocation = () => { }
 
   const back = () =>
     helper.deleteQuery('location') ||
@@ -230,75 +230,75 @@ export default function Files() {
           : folders.find((v) => v._id === helper.getQuery('id'))?.name}
       - ${process.env.REACT_APP_NAME}`
       }
-    );
+    )
 
   const setTrash = () =>
     helper.setQuery('location', 'trash') ||
     refresh().then(
       () => (document.title = `Trash - ${process.env.REACT_APP_NAME}`)
-    );
+    )
 
-  const isEmpty = () => false;
+  const isEmpty = () => false
 
-  const restoreTrash = () => { };
+  const restoreTrash = () => { }
 
-  const empty = () => { };
+  const empty = () => { }
 
-  const open = (e) => {
-    dispatch(clear());
+  const open = e => {
+    dispatch(clear())
 
     if (/folder/g.test(e.target.className) || e.target.closest('.li-folder')) {
       const folder = folders.find(
         (f) => f._id === e.target.closest('.li-folder').id
-      );
+      )
 
-      helper.deleteQuery('keyword');
+      helper.deleteQuery('keyword')
       if (helper.getQuery('location') !== 'trash') {
-        helper.setQuery('id', folder?._id);
-        document.title = `${folder?.name} - ${process.env.REACT_APP_NAME}`;
-        setPath(path + folder?.name);
-        refresh();
+        helper.setQuery('id', folder?._id)
+        document.title = `${folder?.name} - ${process.env.REACT_APP_NAME}`
+        setPath(path + folder?.name)
+        refresh()
       }
     } else if (
       helper.isMedia(e.target?.closest('.li-file').getAttribute('name'))
     ) {
-      helper.setQuery('fid', e.target?.closest('.li-file').id);
-      dispatch(readFile(e.target?.closest('.li-file').id));
+      helper.setQuery('fid', e.target?.closest('.li-file').id)
+      dispatch(readFile(e.target?.closest('.li-file').id))
     } else if (
       helper.isPlaintext(e.target?.closest('.li-file').getAttribute('name'))
     ) {
-      helper.setQuery('fid', e.target?.closest('.li-file').id);
+      helper.setQuery('fid', e.target?.closest('.li-file').id)
       dispatch(readFile(e.target?.closest('.li-file').id)).then((action) =>
         dispatch(openFile(helper.getMedia(action.payload)))
-      );
+      )
     } else if (helper.isPDF(e.target?.closest('.li-file').getAttribute('name'))) {
       dispatch(readFile(e.target?.closest('.li-file').id)).then((action) =>
         dispatch(openFile(helper.getMedia(action.payload)))
-      );
+      )
     }
-  };
+  }
 
-  const access = (e) => {
-    const index = parseInt(e.target.id);
+  const access = e => {
+    const index = parseInt(e.target.id)
     const newpath =
       index === 1
         ? '/'
-        : path.replace(/\/$/, '').split('/').slice(0, index).join('/');
+        : path.replace(/\/$/, '').split('/').slice(0, index).join('/')
     const folder = folders.find(
       (f) =>
         f.path.replace(/\/$/, '') === newpath.replace(/\/$/, '') &&
         f.name === path.split('/')[index]
-    );
+    )
 
-    document.title = `${index === 0 ? 'My files' : folder?.name} - ${process.env.REACT_APP_NAME}`;
-    setPath(newpath ? newpath : '/');
-    helper.setQuery('id', parseInt(e.target.id) === 0 ? 'root' : folder?._id);
-    refresh();
-  };
+    document.title = `${index === 0 ? 'My files' : folder?.name} - ${process.env.REACT_APP_NAME}`
+    setPath(newpath || '/')
+    helper.setQuery('id', parseInt(e.target.id) === 0 ? 'root' : folder?._id)
+    refresh()
+  }
 
-  const select = (index) => (e) => {
+  const select = index => e => {
     const target =
-      e.target.closest('.li-folder') || e.target.closest('.li-file');
+      e.target.closest('.li-folder') || e.target.closest('.li-file')
     const item = {
       index,
       id: target.id,
@@ -309,10 +309,10 @@ export default function Files() {
           : null,
       name: target?.getAttribute('name'),
       parent: target?.getAttribute('value')
-    };
+    }
 
     if (e.ctrlKey) {
-      const arr = [...items];
+      const arr = [...items]
 
       target.classList.contains('bg-info')
         ? target.classList.remove('bg-info') ||
@@ -322,22 +322,22 @@ export default function Files() {
         ) &&
           dispatch(setItemPrev(arr?.length ? arr[arr?.length - 1] : null)))
         : target.classList.add('bg-info') ||
-        (arr.push(item) && dispatch(setItemPrev(item)));
+        (arr.push(item) && dispatch(setItemPrev(item)))
 
-      dispatch(setItems(arr));
+      dispatch(setItems(arr))
     } else if (e.shiftKey) {
       if (itemPrev) {
         if (itemPrev.type === item.type) {
-          const arr = [];
+          const arr = []
 
-          dispatch(clear());
+          dispatch(clear())
           for (
             let i = itemPrev.index;
             itemPrev.index < item.index ? i <= item.index : i >= item.index;
             itemPrev.index < item.index ? i++ : i--
           ) {
             document
-              .querySelectorAll(`.li-${item.type}`)[i].classList.add('bg-info');
+              .querySelectorAll(`.li-${item.type}`)[i].classList.add('bg-info')
             arr.push({
               index: i,
               id: document.querySelectorAll(`.li-${item.type}`)[i].id,
@@ -346,21 +346,21 @@ export default function Files() {
                 .querySelectorAll(`.li-${item.type}`)[i]?.getAttribute('name'),
               parent: document
                 .querySelectorAll(`.li-${item.type}`)[i]?.getAttribute('value')
-            });
+            })
           }
 
-          dispatch(setItems(arr));
-          dispatch(setItemPrev(item));
+          dispatch(setItems(arr))
+          dispatch(setItemPrev(item))
         } else {
-          const arr = [];
+          const arr = []
 
-          dispatch(clear());
+          dispatch(clear())
           for (
             let i = (itemPrev.type === ItemType.FOLDER ? itemPrev : item).index;
             i < document.querySelectorAll('.li-folder').length;
             i++
           ) {
-            document.querySelectorAll('.li-folder')[i].classList.add('bg-info');
+            document.querySelectorAll('.li-folder')[i].classList.add('bg-info')
             arr.push({
               index: i,
               id: document.querySelectorAll('.li-folder')[i].id,
@@ -369,14 +369,14 @@ export default function Files() {
                 .querySelectorAll('.li-folder')[i]?.getAttribute('name'),
               parent: document
                 .querySelectorAll('.li-folder')[i]?.getAttribute('value')
-            });
+            })
           }
           for (
             let i = 0;
             i <= (itemPrev.type === ItemType.FILE ? itemPrev : item).index;
             i++
           ) {
-            document.querySelectorAll('.li-file')[i].classList.add('bg-info');
+            document.querySelectorAll('.li-file')[i].classList.add('bg-info')
             arr.push({
               index: i,
               id: document.querySelectorAll('.li-file')[i].id,
@@ -385,30 +385,30 @@ export default function Files() {
                 .querySelectorAll('.li-file')[i]?.getAttribute('name'),
               parent: document
                 .querySelectorAll('.li-file')[i]?.getAttribute('value')
-            });
+            })
           }
 
-          dispatch(setItems(arr));
-          dispatch(setItemPrev(item));
+          dispatch(setItems(arr))
+          dispatch(setItemPrev(item))
         }
       } else {
-        target.classList.add('bg-info');
+        target.classList.add('bg-info')
 
-        dispatch(setItems([item]));
-        dispatch(setItemPrev(item));
+        dispatch(setItems([item]))
+        dispatch(setItemPrev(item))
       }
     } else {
-      dispatch(clear());
-      target.classList.add('bg-info');
+      dispatch(clear())
+      target.classList.add('bg-info')
 
-      dispatch(setItems([item]));
-      dispatch(setItemPrev(item));
+      dispatch(setItems([item]))
+      dispatch(setItemPrev(item))
     }
-  };
+  }
 
-  const choose = (index) => (e) => {
+  const choose = index => e => {
     const target =
-      e.target.closest('.li-folder') || e.target.closest('.li-file');
+      e.target.closest('.li-folder') || e.target.closest('.li-file')
     const item = {
       index,
       id: target.id,
@@ -419,31 +419,31 @@ export default function Files() {
           : null,
       name: target?.getAttribute('name'),
       parent: target?.getAttribute('value')
-    };
+    }
 
-    !e.ctrlKey && e.preventDefault();
+    !e.ctrlKey && e.preventDefault()
 
-    getMenuFolder().style.display = 'block';
-    getMenuFolder().style.top = `${e.clientY}px`;
-    getMenuFolder().style.left = `${e.clientX}px`;
+    getMenuFolder().style.display = 'block'
+    getMenuFolder().style.top = `${e.clientY}px`
+    getMenuFolder().style.left = `${e.clientX}px`
 
     if (!items.some((v) => v.type === item.type && v.id === item.id)) {
-      dispatch(clear());
+      dispatch(clear())
 
-      target.classList.add('bg-info');
+      target.classList.add('bg-info')
 
-      dispatch(setItems([item]));
-      dispatch(setItemPrev(item));
+      dispatch(setItems([item]))
+      dispatch(setItemPrev(item))
     }
-  };
+  }
 
-  const next = () => { };
+  const next = () => { }
 
-  const prev = () => { };
+  const prev = () => { }
 
-  const close = () => { };
+  const close = () => { }
 
-  // const closeFolderTree = () => {};
+  // const closeFolderTree = () => {}
 
   return (
     <section className="section-files">
@@ -759,5 +759,5 @@ export default function Files() {
       )} */}
       {showProgress && <Progress controllers={controllers} />}
     </section>
-  );
+  )
 }
