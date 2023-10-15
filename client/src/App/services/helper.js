@@ -37,7 +37,7 @@ class Helper {
 
   isMedia = value => this.isImage(value) || this.isVideo(value) || this.isAudio(value)
 
-  getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${this.getCookie('id')}/files${v?.path}${v?.name}`
+  getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/private/?path=${this.getCookie('id')}/files${v?.path}${v?.name}`
 
   isPlaintext = value => /\.(txt)$/i.test(value)
 
