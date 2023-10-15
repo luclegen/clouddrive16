@@ -199,7 +199,13 @@ export default function Files() {
     }
   }
 
-  const restore = () => { }
+  const restore = () => items.map(v => v.type === 'folder'
+    ? foldersService
+      .restore(v.id)
+      .then(() => refresh())
+    : filesService
+      .restore(v.id)
+      .then(() => refresh()))
 
   const _delete = () =>
     Promise.all([
