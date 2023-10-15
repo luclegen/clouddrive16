@@ -428,7 +428,7 @@ export default function Files() {
       <ul className="dropdown-menu-folder">
         {!helper.getQuery('location') && (
           <li className="dropdown-item-normal" onClick={move}>
-            <i className="material-icons">drive_file_move</i>Move to...
+            <i className="material-icons">drive_file_move</i>&nbsp;Move to...
           </li>
         )}
         {!helper.getQuery('location') && (
@@ -437,7 +437,7 @@ export default function Files() {
               ? ItemType.FILE
               : ItemType.FOLDER}_copy`}
             </i>
-            Copy to...
+            &nbsp;Copy to...
           </li>
         )}
         {!helper.getQuery('location') && (
@@ -446,14 +446,14 @@ export default function Files() {
           </li>
         )}
         <li className="dropdown-item-normal" onClick={download}>
-          <i className="material-icons">file_download</i>Download
+          <i className="material-icons">file_download</i>&nbsp;Download
         </li>
         <li className="dropdown-item-normal" onClick={rename}>
-          <i className="material-icons">drive_file_rename_outline</i>Rename
+          <i className="material-icons">drive_file_rename_outline</i>&nbsp;Rename
         </li>
         {helper.getQuery('location') === 'trash' && (
           <li className="dropdown-item-normal" onClick={restore}>
-            <i className="material-icons">restore</i>Restore
+            <i className="material-icons">restore</i>&nbsp;Restore
           </li>
         )}
         <li className="dropdown-item-danger" onClick={_delete}>
@@ -462,7 +462,7 @@ export default function Files() {
               ? 'delete_forever'
               : 'delete'}
           </i>
-          Delete {helper.getQuery('location') === 'trash' && 'forever'}
+          &nbsp;Delete {helper.getQuery('location') === 'trash' && 'forever'}
         </li>
         {helper.getQuery('keyword') && (
           <li>
