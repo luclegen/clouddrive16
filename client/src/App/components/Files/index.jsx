@@ -48,6 +48,8 @@ import formDataAPI from '../../apis/form-data';
 import Media from '../Media';
 // import FolderTree from '../FolderTree';
 import helper from '../../services/helper';
+import foldersService from '../../services/folders';
+import filesService from '../../services/files';
 import ItemType from '../../models/ItemType';
 
 export default function Files() {
@@ -175,7 +177,27 @@ export default function Files() {
 
   const download = () => { };
 
-  const rename = () => { };
+  const rename = () => {
+    if (items.length === 1) {
+      items[0].type === 'folder'
+        ? foldersService
+          .update(items[0].id, prompt('Rename folder', items[0].name))
+          .then(() => refresh())
+        : filesService
+          .update(items[0].id, prompt('Rename file', items[0].name))
+          .then(() => refresh())
+    } else {
+      const name = prompt('Rename', helper.toFile(items[0].name).name)
+
+      items.map((v, i) => v.type === 'folder'
+        ? foldersService
+          .update(v.id, `${name}${i === 0 ? '' : i}`)
+          .then(() => refresh())
+        : filesService
+          .update(v.id, `${name}${i === 0 ? '' : i}${helper.toFile(v.name).extension}`)
+          .then(() => refresh()))
+    }
+  }
 
   const restore = () => { };
 
