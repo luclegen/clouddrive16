@@ -1,11 +1,12 @@
 import jsonAPI from '../apis/json'
+import plainAPI from '../apis/plain'
 
 const URL = `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/folders/`
 
 class FoldersService {
   create = folder => jsonAPI.post(URL, folder)
 
-  update = (id, folder) => jsonAPI.put(`${URL}${id}`, folder)
+  update = (id, foldername) => plainAPI.put(`${URL}${id}`, foldername)
 
   delete = id => jsonAPI.patch(`${URL}${id}`)
 
