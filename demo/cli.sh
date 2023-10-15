@@ -9,7 +9,7 @@ cd /workspace/cloud-drive-16/client; clear; npm start
 npx create-react-app client --template redux
 cd client; npm i -s node-sass react-router-dom axios bootstrap reactstrap react-circular-progressbar
 
-# 1. ESLint: https://www.youtube.com/watch?v=fDrDtn7FgMw
+# 1. ESLint: https://youtu.be/BVnwGwq9Ca4?si=34Wvhsf8PHAsiODD
 npx eslint --init
 npm init @eslint/config
 npm i -D eslint eslint-config-prettier
