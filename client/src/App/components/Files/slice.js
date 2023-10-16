@@ -62,7 +62,6 @@ export const filesSlice = createSlice({
       helper.deleteQuery('fid')
         || (state.media = '')
     }
-
   },
   extraReducers: builder => builder
     .addCase(list.fulfilled, (state, action) => {
