@@ -261,7 +261,18 @@ export default function Files() {
     }
   }
 
-  const empty = () => { }
+  const empty = () => {
+    if (window.confirm('Empty all?\nAre you sure you want to permanently delete all of these items?')) {
+      folders?.filter(f => f.is_trash)
+        .map(f => foldersService
+          .deleteForever(f._id)
+          .then(() => refresh()))
+      files?.filter(f => f.is_trash)
+        .map(f => filesService
+          .deleteForever(f._id)
+          .then(() => refresh()))
+    }
+  }
 
   const open = e => {
     dispatch(clear())
