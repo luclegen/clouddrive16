@@ -248,7 +248,18 @@ export default function Files() {
     helper.getQuery('location') === 'trash'
     && !folders.concat(files).some(f => f.is_trash)
 
-  const restoreTrash = () => { }
+  const restoreTrash = () => {
+    if (window.confirm('Restore all?\nAre you sure you want to restore all the items?')) {
+      folders?.filter(f => f.is_trash)
+        .map(f => foldersService
+          .restore(f._id)
+          .then(() => refresh()))
+      files?.filter(f => f.is_trash)
+        .map(f => filesService
+          .restore(f._id)
+          .then(() => refresh()))
+    }
+  }
 
   const empty = () => { }
 
