@@ -18,6 +18,7 @@ import {
   list,
   openFile,
   readFile,
+  // selectAction,
   selectFiles,
   selectFolders,
   selectIndex,
@@ -29,6 +30,7 @@ import {
   // selectMediaFiles,
   selectMedias,
   selectPath,
+  setAction,
   setItemPrev,
   setItems,
   setPath
@@ -51,6 +53,8 @@ import helper from '../../services/helper'
 import foldersService from '../../services/folders'
 import filesService from '../../services/files'
 import ItemType from '../../models/ItemType'
+import FolderTree from '../FolderTree'
+import { selectShow, open as openFolderTree } from '../FolderTree/slice'
 
 export default function Files() {
   const dispatch = useDispatch()
@@ -68,11 +72,12 @@ export default function Files() {
   const index = useSelector(selectIndex)
   const showProgress = useSelector(selectShowProgress)
   const uploading = useSelector(selectUploading)
+  const show = useSelector(selectShow)
+  // const action = useSelector(selectAction)
 
   const controllers = useRef(null)
 
   // const [showFolderTree, setShowFolderTree] = useState(false)
-  // const [action, setAction] = useState('')
 
   useEffect(() => {
     window.onresize = () => {
@@ -173,7 +178,11 @@ export default function Files() {
 
   const move = () => { }
 
-  const copy = () => { }
+  const copy = () => {
+    document.body.style.overflow = 'hidden'
+    dispatch(openFolderTree())
+    dispatch(setAction('copy'))
+  }
 
   const download = () => items.map(v => window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + v.id))
 
@@ -472,8 +481,6 @@ export default function Files() {
   const prev = () => { }
 
   const close = () => { }
-
-  // const closeFolderTree = () => {}
 
   return (
     <section className="section-files">
@@ -778,15 +785,11 @@ export default function Files() {
           close={close}
         />
       )}
-      {/* {showFolderTree && (
+      {show && (
         <FolderTree
-          item={items?.[0]}
-          action={action}
           refresh={refresh}
-          folders={folders}
-          close={closeFolderTree}
         />
-      )} */}
+      )}
       {showProgress && <Progress controllers={controllers} />}
     </section>
   )
