@@ -43,11 +43,14 @@ export default function FolderTree(props) {
       .then(() => dispatch(setShowedFolders(folders.filter(v => v.path === '/'))))
   }, [])
 
-  const create = () => new Promise(resolve => {
-    dispatch(setNew(true))
-    resolve()
-  })
-    .then(() => document.querySelector('#newFolder').focus())
+  const create = async () => {
+    await new Promise(resolve => {
+      dispatch(setNew(true))
+      resolve()
+    })
+
+    document.querySelector('#newFolder').focus()
+  }
 
   const select = e => {
     document.querySelectorAll('.list-group-item')
