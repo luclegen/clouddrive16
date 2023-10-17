@@ -15,7 +15,8 @@ const initialState = {
   media: '',
   body: '',
   type: 'none',
-  factor: 0
+  factor: 0,
+  action: 'none'
 }
 
 export const list = createAsyncThunk('files/list', async () => ({ folders: (await foldersService.list()).data, files: (await filesService.list()).data }))
@@ -36,6 +37,7 @@ export const filesSlice = createSlice({
     setType: (state, action) => { state.type = action.payload },
     setItems: (state, action) => { state.items = action.payload },
     setItemPrev: (state, action) => { state.itemPrev = action.payload },
+    setAction: (state, action) => { state.action = action.payload },
     clear: state => {
       document.querySelectorAll('.li-folder')
         .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
@@ -126,7 +128,7 @@ export const filesSlice = createSlice({
     })
 })
 
-export const { setPath, setItems, setItemPrev, clear, reset, close } = filesSlice.actions
+export const { setPath, setItems, setItemPrev, setAction, clear, reset, close } = filesSlice.actions
 
 export const selectFolders = state => state.files.folders
 export const selectFiles = state => state.files.files
@@ -141,5 +143,6 @@ export const selectMediaFiles = state => state.files.files.filter(v => v.path ==
 export const selectMedias = state => state.files.files.filter(v => v.path === state.files.path && helper.isMedia(v.name)).map(v => helper.getMedia(v))
 export const selectIndex = state => state.files.index
 export const selectFactor = state => state.files.factor
+export const selectAction = state => state.files.action
 
 export default filesSlice.reducer
