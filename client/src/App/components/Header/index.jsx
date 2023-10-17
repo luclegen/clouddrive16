@@ -15,9 +15,9 @@ import {
   hideDropdown
 } from './slice'
 import {
-  clear,
   list,
-  reset
+  reset,
+  selectAll
 } from '../Files/slice'
 import {
   selectLoggedIn,
@@ -42,6 +42,9 @@ export default function Header() {
 
   useEffect(() => {
     window.onresize = () => dispatch(setWidth())
+    window.onkeydown = e => {
+      if (e.ctrlKey && (e.key === 'a' || e.key === 'A')) dispatch(selectAll())
+    }
     window.onclick = e => {
       !e.target.closest('.dropdown-toggle-avatar')
         && !e.target.closest('.dropdown-menu-avatar')
@@ -53,9 +56,6 @@ export default function Header() {
         && (document.querySelector('.dropdown-menu-folder').style.display = 'none')
         : document.querySelector('.dropdown-menu-folder')
         && (document.querySelector('.dropdown-menu-folder').style.display = 'none')
-
-      !e.target.closest('.li-folder') && !e.target.closest('.li-file')
-        && dispatch(clear())
     }
   }, [])
 
