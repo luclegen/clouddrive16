@@ -8,10 +8,8 @@ import {
   setName,
   setNew,
   setShowedFolders,
-  // setOldFolders,
   setFolders,
   selectName,
-  // selectOldFolders,
   setId
 } from './slice'
 import foldersService from '../../services/folders'
@@ -26,7 +24,6 @@ export default function FolderTree(props) {
   const action = useSelector(selectAction)
   const _new = useSelector(selectNew)
   const showedFolders = useSelector(selectShowedFolders)
-  // const oldFolders = useSelector(selectOldFolders)
   const id = useSelector(selectId)
   const folders = useSelector(selectFolders)
   const items = useSelector(selectItems)
@@ -45,9 +42,6 @@ export default function FolderTree(props) {
     refresh()
       .then(() => dispatch(setShowedFolders(folders.filter(v => v.path === '/'))))
   }, [])
-
-  // console.log(folders);
-  // console.log(showedFolders);
 
   const create = () => new Promise(resolve => dispatch(setNew(true)) || resolve())
     .then(() => document.querySelector('#newFolder').focus())
@@ -121,15 +115,14 @@ export default function FolderTree(props) {
 
   const toggle = () => { }
 
-  const move = () => { }
+  const move = () => items.map(v => v.type === 'folder'
+    ? foldersService.move(v.id, id.slice(1))
+      .then(res => refresh()
+        .then(() => dispatch(closeFolderTree()) || alert(res.data)))
+    : filesService.move(v.id, id.slice(1))
+      .then(res => refresh()
+        .then(() => dispatch(closeFolderTree()) || alert(res.data))))
 
-  // const copy = () => props.type === 'folder'
-  //   ? foldersService.copy(props.id, { did: id.slice(1) })
-  //     .then(res => refresh()
-  //       .then(() => props.close() || alert(res.data)))
-  //   : filesService.copy(props.id, { did: id.slice(1) })
-  //     .then(res => refresh()
-  //       .then(() => props.close() || alert(res.data)))
   const copy = () => items.map(v => v.type === 'folder'
     ? foldersService.copy(v.id, id.slice(1))
       .then(res => refresh()
@@ -152,19 +145,6 @@ export default function FolderTree(props) {
       .concat(newFolders
         .filter(v => oldFolders
           .every(o => o._id !== v._id)))))
-    // foldersService.create({ name, path: target ? helper.toPath(target) : '/' })
-    //   .then(() => {
-    //     const oldFolders = folders
-
-    //     refresh()
-    //       .then(folders => {
-    //         dispatch(setNew(false))
-    //         dispatch(setShowedFolders(showedFolders
-    //           .concat(folders
-    //             .filter(v => oldFolders
-    //               .every(o => o._id !== v._id)))))
-    //       })
-    //   })
   }
 
   return <section className="section-floating-aside">
@@ -193,7 +173,6 @@ export default function FolderTree(props) {
               <form className="form-horizontal" onSubmit={submit}>
                 <img className="folder" src="/svgs/folder.svg" alt="" />
                 &nbsp;&nbsp;
-                {/* <input type="text" name="name" id="newFolder" placeholder="Enter your folder name" onChange={e => setState({ name: e.target.value })} /> */}
                 <input type="text" name="name" id="newFolder" placeholder="Enter your folder name" onChange={e => dispatch(setName(e.target.value))} />
                 &nbsp;&nbsp;
                 <input className="submit-create" type="submit" value="Create" />
@@ -213,7 +192,6 @@ export default function FolderTree(props) {
                 <form className="form-horizontal" onSubmit={submit}>
                   <img className="folder" src="/svgs/folder.svg" alt="" />
                   &nbsp;&nbsp;
-                  {/* <input type="text" name="name" id="newFolder" placeholder="Enter your folder name" onChange={e => setState({ name: e.target.value })} /> */}
                   <input type="text" name="name" id="newFolder" placeholder="Enter your folder name" onChange={e => dispatch(setName(e.target.value))} />
                   &nbsp;&nbsp;
                   <input className="submit-create" type="submit" value="Create" />
