@@ -18,9 +18,9 @@ class FilesService {
 
   restore = id => jsonAPI.patch(`${URL}r/${id}`)
 
-  move = (id, did) => jsonAPI.patch(`${URL}m/${id}`, did)
+  move = (id, did) => plainAPI.patch(`${URL}m/${id}`, did)
 
-  copy = (id, did) => jsonAPI.patch(`${URL}c/${id}`, did)
+  copy = (id, did) => plainAPI.patch(`${URL}c/${id}`, did)
 
   deleteForever = id => jsonAPI.delete(`${URL}${id}`)
 
