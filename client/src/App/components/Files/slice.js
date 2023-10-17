@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import helper from '../../services/helper'
 import foldersService from '../../services/folders'
 import filesService from '../../services/files'
+import ItemType from '../../models/ItemType'
 
 const initialState = {
   folders: [],
@@ -63,6 +64,34 @@ export const filesSlice = createSlice({
       document.querySelector('body').style.overflow = 'visible'
       helper.deleteQuery('fid')
         || (state.media = '')
+    },
+    selectAll: state => {
+      const arr = [...state.folders.filter(v => v.path === state.path), ...state.files.filter(v => v.path === state.path)]
+
+      Array.from(
+        document.querySelectorAll('.li-folder')
+      ).concat(Array.from(
+        document.querySelectorAll('.li-file'))
+      ).map((v, index) => {
+        const target = document.getElementById(v.id)
+
+        const item = {
+          index,
+          id: target.id,
+          type: /li-folder/.test(target.className)
+            ? ItemType.FOLDER
+            : /li-file/.test(target.className)
+              ? ItemType.FILE
+              : null,
+          name: target?.getAttribute('name'),
+          parent: target?.getAttribute('value')
+        }
+
+        arr[index] = item
+        v.classList.add('bg-info')
+      })
+
+      state.items = arr
     }
   },
   extraReducers: builder => builder
@@ -128,7 +157,7 @@ export const filesSlice = createSlice({
     })
 })
 
-export const { setPath, setItems, setItemPrev, setAction, clear, reset, close } = filesSlice.actions
+export const { setPath, setItems, setItemPrev, setAction, selectAll, clear, reset, close } = filesSlice.actions
 
 export const selectFolders = state => state.files.folders
 export const selectFiles = state => state.files.files
