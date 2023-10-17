@@ -43,7 +43,10 @@ export default function FolderTree(props) {
       .then(() => dispatch(setShowedFolders(folders.filter(v => v.path === '/'))))
   }, [])
 
-  const create = () => new Promise(resolve => dispatch(setNew(true)) || resolve())
+  const create = () => new Promise(resolve => {
+    dispatch(setNew(true))
+    resolve()
+  })
     .then(() => document.querySelector('#newFolder').focus())
 
   const select = e => {
