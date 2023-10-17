@@ -176,7 +176,11 @@ export default function Files() {
       })
   }
 
-  const move = () => { }
+  const move = () => {
+    document.body.style.overflow = 'hidden'
+    dispatch(openFolderTree())
+    dispatch(setAction('move'))
+  }
 
   const copy = () => {
     document.body.style.overflow = 'hidden'
