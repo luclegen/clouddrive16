@@ -10,12 +10,13 @@ npx create-react-app client --template redux
 cd client; npm i -s node-sass react-router-dom axios bootstrap reactstrap react-circular-progressbar
 
 # 1. ESLint: https://youtu.be/BVnwGwq9Ca4?si=34Wvhsf8PHAsiODD
-npx eslint --init
-npm init @eslint/config
 npm i -D eslint eslint-config-prettier
 npm i -D --save-exact prettier
+npm init @eslint/config
 npx eslint --init
-npm i -D eslint-config-prettier
+
+# 2. Material UI
+npm i -s  @mui/icons-material @mui/material @emotion/styled @emotion/react
 heroku login
 heroku create clouddrive16
 xdg-open https://dashboard.heroku.com/apps/clouddrive16/settings
