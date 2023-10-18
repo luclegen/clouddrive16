@@ -7,6 +7,8 @@ import {
   UncontrolledDropdown
 } from 'reactstrap'
 import Progress from '../Progress'
+import Media from '../Media'
+import FolderTree from '../FolderTree'
 import {
   clear,
   createFolder,
@@ -18,7 +20,6 @@ import {
   list,
   openFile,
   readFile,
-  // selectAction,
   selectFiles,
   selectFolders,
   selectIndex,
@@ -27,12 +28,13 @@ import {
   selectItemPrev,
   selectItems,
   selectMedia,
-  // selectMediaFiles,
   selectMedias,
   selectPath,
   setAction,
+  setIndex,
   setItemPrev,
   setItems,
+  setMedia,
   setPath
 } from './slice'
 import { setWidth } from '../Header/slice'
@@ -46,15 +48,12 @@ import {
   selectUploading,
   setSuccess
 } from '../Progress/slice'
+import { selectShow, open as openFolderTree } from '../FolderTree/slice'
 import formDataAPI from '../../apis/form-data'
-import Media from '../Media'
-// import FolderTree from '../FolderTree'
 import helper from '../../services/helper'
 import foldersService from '../../services/folders'
 import filesService from '../../services/files'
 import ItemType from '../../models/ItemType'
-import FolderTree from '../FolderTree'
-import { selectShow, open as openFolderTree } from '../FolderTree/slice'
 
 export default function Files() {
   const dispatch = useDispatch()
@@ -66,18 +65,14 @@ export default function Files() {
   const itemFiles = useSelector(selectItemFiles)
   const itemPrev = useSelector(selectItemPrev)
   const path = useSelector(selectPath)
-  // const mediaFiles = useSelector(selectMediaFiles)
   const medias = useSelector(selectMedias)
   const media = useSelector(selectMedia)
   const index = useSelector(selectIndex)
   const showProgress = useSelector(selectShowProgress)
   const uploading = useSelector(selectUploading)
   const show = useSelector(selectShow)
-  // const action = useSelector(selectAction)
 
   const controllers = useRef(null)
-
-  // const [showFolderTree, setShowFolderTree] = useState(false)
 
   useEffect(() => {
     window.onresize = () => {
@@ -480,11 +475,36 @@ export default function Files() {
     }
   }
 
-  const next = () => { }
+  const getMediaFiles = () => files.filter(v => v.path === path && helper.isMedia(v.name))
 
-  const prev = () => { }
+  const getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/private/?path=${helper.getCookie('id')}/files${v.path}${v.name}`
 
-  const close = () => { }
+  const getMedias = () => getMediaFiles().map(v => getMedia(v))
+
+  const prev = () => {
+    const medias = getMedias()
+    const files = getMediaFiles()
+
+    if (medias.findIndex(v => v === media) > 0) {
+      helper.setQuery('fid', files[index - 2]._id)
+      dispatch(setIndex(index - 1))
+      dispatch(setMedia(medias[medias.findIndex(v => v === media) - 1]))
+    }
+  }
+
+  const next = () => {
+    const medias = getMedias()
+    const files = getMediaFiles()
+
+    if (medias.findIndex(v => v === media) < medias.length - 1) {
+      helper.setQuery('fid', files[index]._id)
+      dispatch(setIndex(index + 1))
+      dispatch(setMedia(medias[medias.findIndex(v => v === media) + 1]))
+    }
+  }
+
+  const close = () => (document.querySelector('body').style.overflow = 'visible')
+    && (helper.deleteQuery('fid') || dispatch(setMedia('')))
 
   return (
     <section className="section-files">
@@ -781,7 +801,6 @@ export default function Files() {
                   ? 'audio'
                   : 'none'
           }
-          download={download}
           next={next}
           prev={prev}
           index={index}
