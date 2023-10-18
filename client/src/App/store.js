@@ -8,6 +8,7 @@ import activateReducer from './components/Activate/slice'
 import filesReducer from './components/Files/slice'
 import progressReducer from './components/Progress/slice'
 import folderTreeReducer from './components/FolderTree/slice'
+import mediaReducer from './components/Media/slice'
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     activate: activateReducer,
     files: filesReducer,
     progress: progressReducer,
-    folderTree: folderTreeReducer
+    folderTree: folderTreeReducer,
+    media: mediaReducer
   }
 });
