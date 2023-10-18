@@ -39,6 +39,8 @@ export const filesSlice = createSlice({
     setItems: (state, action) => { state.items = action.payload },
     setItemPrev: (state, action) => { state.itemPrev = action.payload },
     setAction: (state, action) => { state.action = action.payload },
+    setIndex: (state, action) => { state.index = action.payload },
+    setMedia: (state, action) => { state.media = action.payload },
     clear: state => {
       document.querySelectorAll('.li-folder')
         .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
@@ -157,7 +159,18 @@ export const filesSlice = createSlice({
     })
 })
 
-export const { setPath, setItems, setItemPrev, setAction, selectAll, clear, reset, close } = filesSlice.actions
+export const {
+  setPath,
+  setItems,
+  setItemPrev,
+  setAction,
+  setIndex,
+  setMedia,
+  selectAll,
+  clear,
+  reset,
+  close
+} = filesSlice.actions
 
 export const selectFolders = state => state.files.folders
 export const selectFiles = state => state.files.files
