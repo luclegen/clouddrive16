@@ -35,7 +35,7 @@ module.exports = {
     curly: 'error',
     quotes: ['error', 'single'],
     'comma-dangle': ['error', 'never'],
-    indent: ['error', 2],
+    indent: ['error', 2, { 'SwitchCase': 1 }],
     'no-multiple-empty-lines': 'error',
     'semi-style': ['error', 'last'],
     'space-before-blocks': ['error', 'always'],
