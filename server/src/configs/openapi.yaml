@@ -788,6 +788,33 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+  /files/rp/{id}:
+    get:
+      tags:
+        - files
+      summary: Read plaintext file
+      description: Read a plaintext file
+      operationId: readPlaintext
+      parameters:
+        - name: id
+          in: path
+          description: File id
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: 6530e85cea064e54c13aa852
+      responses:
+        '200':
+          description: "One Two Three;\nFour Five Six Seven;\nEight Nine Ten Eleven.\n"
+        '403':
+          description: "Cannot execute \"read\" on \"File\"."
+        '404':
+          description: "File not found.|Data not found."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /files/p:
     post:
       tags:
