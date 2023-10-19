@@ -83,6 +83,7 @@
   "Cannot execute \"list\" on \"File\"": "Không thể thực thi \"liệt kê\" trên \"Tập tin\".",
   "Cannot execute \"list\" on \"Folder\"": "Không thể thực thi \"liệt kê\" trên \"Thư mục\".",
   "No such file.": "Không có tập tin nào như vậy.",
-  "Saved successfully.": "Lưu thành công.",
-  "Cannot execute \"save\" on \"File\"": "Không thể thực thi \"lưa\" trên \"Tập tin\"."
+  "Saved successfully.": "Đã lưu thành công.",
+  "Cannot execute \"save\" on \"File\"": "Không thể thực thi \"lưa\" trên \"Tập tin\".",
+  "Data not found.": "Không tìm thấy dữ liệu."
 }
