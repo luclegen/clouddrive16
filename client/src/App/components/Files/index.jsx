@@ -477,7 +477,7 @@ export default function Files() {
 
   const getMediaFiles = () => files.filter(v => v.path === path && helper.isMedia(v.name))
 
-  const getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/private/?path=${helper.getCookie('id')}/files${v.path}${v.name}`
+  const getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${v.path}${v.name}`
 
   const getMedias = () => getMediaFiles().map(v => getMedia(v))
 
