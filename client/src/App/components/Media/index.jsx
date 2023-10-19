@@ -8,6 +8,7 @@ import {
   selectFactor,
   setFactor
 } from './slice';
+import FileType from '../../models/FileType';
 import helper from '../../services/helper';
 
 export default function Media(props) {
@@ -19,11 +20,11 @@ export default function Media(props) {
     window.onkeyup = e => {
       switch (e.keyCode) {
         case 32:
-          props.type === 'video'
+          props.type === FileType.VIDEO
             && (document.querySelector('.video').paused
               ? document.querySelector('.video').play()
               : document.querySelector('.video').pause())
-          props.type === 'audio'
+          props.type === FileType.AUDIO
             && (document.querySelector('.audio').paused
               ? document.querySelector('.audio').play()
               : document.querySelector('.audio').pause())
@@ -42,7 +43,7 @@ export default function Media(props) {
       }
     }
 
-    if (props.type === 'image' || props.type === 'video') {
+    if (props.type === FileType.IMAGE || props.type === FileType.VIDEO) {
       const image = document.querySelector(`.${props.type}`)
       const bgMedia = document.querySelector('.bg-media')
 
@@ -57,7 +58,7 @@ export default function Media(props) {
   const download = () => window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + helper.getQuery('fid'))
 
   const refresh = () => {
-    if (props.type === 'image') {
+    if (props.type === FileType.IMAGE) {
       const image = document.querySelector('.image')
       const bgMedia = document.querySelector('.bg-media')
 
@@ -107,16 +108,16 @@ export default function Media(props) {
     <span className="command-bar">
       <span className="primary-command">
         <button className="btn-download" type="button" onClick={download}><i className="material-icons">download</i>Download</button>
-        {props.type === 'image' && <button className="btn-rotate-left" type="button" onClick={rotateLeft}><i className="material-icons">rotate_90_degrees_ccw</i>Rotate left 90°</button>}
-        {props.type === 'image' && <button className="btn-rotate-right" type="button" onClick={rotateRight}><i className="material-icons">rotate_90_degrees_cw</i>Rotate right 90°</button>}
-        {props.type !== 'image' && <span className="left-space" style={{ width: '56px' }}></span>}
+        {props.type === FileType.IMAGE && <button className="btn-rotate-left" type="button" onClick={rotateLeft}><i className="material-icons">rotate_90_degrees_ccw</i>Rotate left 90°</button>}
+        {props.type === FileType.IMAGE && <button className="btn-rotate-right" type="button" onClick={rotateRight}><i className="material-icons">rotate_90_degrees_cw</i>Rotate right 90°</button>}
+        {props.type !== FileType.IMAGE && <span className="left-space" style={{ width: '56px' }}></span>}
       </span>
       <span className="middle-command">
-        <i className="material-icons">{props.type === 'image' ? 'image' : props.type === 'video' ? 'video_file' : props.type === 'audio' ? 'audio_file' : 'none'}</i>
+        <i className="material-icons">{props.type === FileType.IMAGE ? FileType.IMAGE : props.type === FileType.VIDEO ? 'video_file' : props.type === FileType.AUDIO ? 'audio_file' : 'none'}</i>
         <strong>&nbsp;{props.src.split('/')[props.src.split('/').length - 1]}</strong>
       </span>
       <span className="secondary-command">
-        {props.type === 'image' && <span className="right-space" style={{ width: '270px' }}></span>}
+        {props.type === FileType.IMAGE && <span className="right-space" style={{ width: '270px' }}></span>}
         <button className="btn-prev" type="button" disabled={props.index === 1} onClick={prev}><i className="material-icons">skip_previous</i></button>
         <span className="span-index">&nbsp;&nbsp;{props.index + '/' + props.count}&nbsp;&nbsp;</span>
         <button className="btn-next" type="button" disabled={props.index === props.count} onClick={next}><i className="material-icons">skip_next</i></button>
@@ -125,11 +126,11 @@ export default function Media(props) {
     </span>
     {!!props.percent && <Progress value={props.percent} />}
     <span className="bg-media">
-      {props.type === 'image'
+      {props.type === FileType.IMAGE
         ? <img className="image" src={props.src} alt="Image0" />
-        : props.type === 'video'
+        : props.type === FileType.VIDEO
           ? < video className="video" src={props.src} autoPlay controls />
-          : props.type === 'audio'
+          : props.type === FileType.AUDIO
             ? <audio className="audio" src={props.src} autoPlay controls></audio>
             : <span></span>}
     </span>
