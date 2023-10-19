@@ -8,6 +8,7 @@ import {
 } from 'reactstrap'
 import Progress from '../Progress'
 import Media from '../Media'
+import FileType from '../../models/FileType';
 import FolderTree from '../FolderTree'
 import {
   clear,
@@ -20,6 +21,7 @@ import {
   list,
   openFile,
   readFile,
+  readPlaintext,
   selectFiles,
   selectFolders,
   selectIndex,
@@ -306,9 +308,10 @@ export default function Files() {
       helper.isPlaintext(e.target?.closest('.li-file').getAttribute('name'))
     ) {
       helper.setQuery('fid', e.target?.closest('.li-file').id)
-      dispatch(readFile(e.target?.closest('.li-file').id)).then((action) =>
+      dispatch(readFile(e.target?.closest('.li-file').id)).then((action) => {
+        dispatch(readPlaintext(e.target?.closest('.li-file').id))
         dispatch(openFile(helper.getMedia(action.payload)))
-      )
+      })
     } else if (helper.isPDF(e.target?.closest('.li-file').getAttribute('name'))) {
       dispatch(readFile(e.target?.closest('.li-file').id)).then((action) =>
         dispatch(openFile(helper.getMedia(action.payload)))
@@ -794,12 +797,14 @@ export default function Files() {
           src={media}
           type={
             helper.isImage(media)
-              ? 'image'
+              ? FileType.IMAGE
               : helper.isVideo(media)
-                ? 'video'
+                ? FileType.VIDEO
                 : helper.isAudio(media)
-                  ? 'audio'
-                  : 'none'
+                  ? FileType.AUDIO
+                  : helper.isPlaintext(media)
+                    ? FileType.TXT
+                    : FileType.NONE
           }
           next={next}
           prev={prev}
