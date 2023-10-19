@@ -55,6 +55,18 @@ module.exports.createPlaintext = catchAsync(async (req, res, next) => {
   res.status(201).json(req.t('Created successfully.'))
 })
 
+module.exports.savePlaintext = catchAsync(async (req, res, next) => {
+  const file = await File.findById(req.params.id).accessibleBy(req.ability)
+
+  if (!file) return next(createError(404, 'File not found.'))
+
+  ForbiddenError.from(req.ability).throwUnlessCan('save', file)
+
+  fs.writeFileSync(converter.toUploadFilePath(req.user._id, file), req.body)
+
+  res.json(req.t('Saved successfully.'))
+})
+
 module.exports.download = catchAsync(async (req, res, next) => {
   const file = await File.findById(req.params.id).accessibleBy(req.ability)
 
