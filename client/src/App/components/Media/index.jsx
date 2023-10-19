@@ -120,19 +120,19 @@ export default function Media(props) {
         <button className="btn-download" type="button" onClick={download}><i className="material-icons">download</i>Download</button>
         {props.type === FileType.IMAGE && <button className="btn-rotate-left" type="button" onClick={rotateLeft}><i className="material-icons">rotate_90_degrees_ccw</i>Rotate left 90°</button>}
         {props.type === FileType.IMAGE && <button className="btn-rotate-right" type="button" onClick={rotateRight}><i className="material-icons">rotate_90_degrees_cw</i>Rotate right 90°</button>}
-        {props.type !== FileType.IMAGE && <span className="left-space" style={{ width: '56px' }}></span>}
+        {props.type !== FileType.IMAGE && props.type !== FileType.TXT && <span className="left-space" style={{ width: '56px' }}></span>}
       </span>
       <span className="middle-command">
-        <i className="material-icons">{props.type === FileType.IMAGE ? FileType.IMAGE : props.type === FileType.VIDEO ? 'video_file' : props.type === FileType.AUDIO ? 'audio_file' : 'none'}</i>
+        <i className="material-icons">{props.type === FileType.IMAGE ? FileType.IMAGE : props.type === FileType.VIDEO ? 'video_file' : props.type === FileType.AUDIO ? 'audio_file' : props.type === FileType.NONE ? 'none' : ''}</i>
         <strong>&nbsp;{props.src.split('/')[props.src.split('/').length - 1]}</strong>
       </span>
       <span className="secondary-command">
         {props.type === FileType.TXT && <button className="btn-save" type="button" disabled={props.index === 1} onClick={save}><i className="material-icons">save</i>&nbsp;Save</button>}
         {props.type === FileType.IMAGE && <span className="right-space" style={{ width: '270px' }}></span>}
-        <button className="btn-prev" type="button" disabled={props.index === 1} onClick={prev}><i className="material-icons">skip_previous</i></button>
-        <span className="span-index">&nbsp;&nbsp;{props.index + '/' + props.count}&nbsp;&nbsp;</span>
-        <button className="btn-next" type="button" disabled={props.index === props.count} onClick={next}><i className="material-icons">skip_next</i></button>
-        <button className="btn-close" type="button" onClick={props.close}><i className="material-icons">close</i></button>
+        {props.type !== FileType.TXT && <button className="btn-prev" type="button" disabled={props.index === 1} onClick={prev}><i className="material-icons">skip_previous</i></button>}
+        {props.type !== FileType.TXT && <span className="span-index">&nbsp;&nbsp;{props.index + '/' + props.count}&nbsp;&nbsp;</span>}
+        {props.type !== FileType.TXT && <button className="btn-next" type="button" disabled={props.index === props.count} onClick={next}><i className="material-icons">skip_next</i></button>}
+        {props.type !== FileType.TXT && <button className="btn-close" type="button" onClick={props.close}><i className="material-icons">close</i></button>}
       </span>
     </span>
     {!!props.percent && <Progress value={props.percent} />}
