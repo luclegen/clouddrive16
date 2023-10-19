@@ -30,6 +30,8 @@ tags:
     description: Public files
   - name: private
     description: Private files
+  - name: media
+    description: Private files
 paths:
   /users:
     post:
@@ -1003,7 +1005,46 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
-components:
+  /media:
+    get:
+      tags:
+        - media
+      summary: Read media
+      description: Read a media
+      operationId: readMedia
+      parameters:
+        - name: path
+          in: query
+          description: File id
+          explode: true
+          schema:
+            type: string
+            example: 6527f0008854ae1db3f0078d/files/A/B/Video.mp4
+      responses:
+        '200':
+          description: successful operation
+          content:
+            image/jpg:
+              schema:
+                type: string
+                format: binary
+        '204':
+          description: Read directory
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  example:
+                    "651a460623dbbafbf21fdb71"
+        '501':
+          description: "ENOENT: no such file or directory, open 'uploads/private/751a460623dbbafbf21fdb71/files/A/B/Test.ico'"
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
+  components:
   schemas:
     Auth:
       type: object
