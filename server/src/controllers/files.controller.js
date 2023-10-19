@@ -85,6 +85,16 @@ module.exports.read = catchAsync(async (req, res, next) => {
   res.json(file)
 })
 
+module.exports.readPlaintext = catchAsync(async (req, res, next) => {
+  const file = await File.findById(req.params.id).accessibleBy(req.ability)
+
+  if (!file) return next(createError(404, 'File not found.'))
+
+  const data = fs.readFileSync(converter.toUploadFilePath(req.user._id, file)).toString()
+
+  res.json(data)
+})
+
 module.exports.update = catchAsync(async (req, res, next) => {
   if (!req.body) return next(createError(400, 'Name is required.'))
 
