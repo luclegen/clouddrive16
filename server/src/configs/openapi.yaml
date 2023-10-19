@@ -1044,7 +1044,7 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
-  components:
+components:
   schemas:
     Auth:
       type: object
