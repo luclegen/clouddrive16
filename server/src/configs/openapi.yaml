@@ -817,6 +817,41 @@ paths:
         - petstore_auth:
             - write:pets
             - read:pets
+  /files/s/{id}:
+    patch:
+      tags:
+        - files
+      summary: Save plaintext
+      description: Save a new plaintext file
+      operationId: savePlaintext
+      parameters:
+        - name: id
+          in: path
+          description: File id
+          required: true
+          explode: true
+          schema:
+            type: string
+            example: 6530e85cea064e54c13aa852
+      requestBody:
+        description: A new plaintext file
+        content:
+          text/plain:
+            schema:
+              type: string
+              example: "One Two Three;\nFour Five Six Seven;\nEight Nine Ten Eleven.\n"
+        required: true
+      responses:
+        '200':
+          description: "Saved successfully."
+        '403':
+          description: "Cannot execute \"read\" on \"File\".|Cannot execute \"save\" on \"File\"."
+        '404':
+          description: "File not found."
+      security:
+        - petstore_auth:
+            - write:pets
+            - read:pets
   /files/d/{id}:
     get:
       tags:
