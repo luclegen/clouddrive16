@@ -30,5 +30,6 @@
   "Cannot execute \"copy\" on \"File\"": "Cannot execute \"copy\" on \"File\".",
   "Cannot execute \"deleteForever\" on \"File\"": "Cannot execute \"deleteForever\" on \"File\".",
   "Cannot execute \"list\" on \"File\"": "Cannot execute \"list\" on \"File\".",
-  "Cannot execute \"list\" on \"Folder\"": "Cannot execute \"list\" on \"Folder\"."
+  "Cannot execute \"list\" on \"Folder\"": "Cannot execute \"list\" on \"Folder\".",
+  "Cannot execute \"save\" on \"File\"": "Cannot execute \"save\" on \"File\"."
 }
