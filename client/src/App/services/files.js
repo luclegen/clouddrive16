@@ -10,9 +10,13 @@ class FilesService {
 
   read = id => jsonAPI.get(`${URL}${id}`)
 
+  readPlaintext = id => jsonAPI.get(`${URL}rp/${id}`)
+
   open = media => jsonAPI.get(media)
 
   update = (id, filename) => plainAPI.put(`${URL}${id}`, filename)
+
+  savePlaintext = (id, data) => plainAPI.patch(`${URL}s/${id}`, data)
 
   delete = id => jsonAPI.patch(`${URL}${id}`)
 

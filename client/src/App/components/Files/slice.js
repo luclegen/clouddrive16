@@ -17,7 +17,8 @@ const initialState = {
   body: '',
   type: 'none',
   factor: 0,
-  action: 'none'
+  action: 'none',
+  data: ''
 }
 
 export const list = createAsyncThunk('files/list', async () => ({ folders: (await foldersService.list()).data, files: (await filesService.list()).data }))
@@ -26,7 +27,9 @@ export const deleteFolder = createAsyncThunk('files/deleteFolder', async id => (
 export const deleteForeverFolder = createAsyncThunk('files/deleteForeverFolder', async id => (await foldersService.deleteForever(id)).data)
 export const createPlaintext = createAsyncThunk('files/createPlaintext', async file => (await filesService.createPlaintext(file)).data)
 export const readFile = createAsyncThunk('files/readFile', async id => (await filesService.read(id)).data)
+export const readPlaintext = createAsyncThunk('files/readPlaintext', async id => (await filesService.readPlaintext(id)).data)
 export const openFile = createAsyncThunk('files/openFile', async media => (await filesService.open(media)).data)
+export const savePlaintext = createAsyncThunk('files/savePlaintext', async ({ id, data }) => (await filesService.savePlaintext(id, data)).data)
 export const deleteFile = createAsyncThunk('files/deleteFile', async id => (await filesService.delete(id)).data)
 export const deleteForeverFile = createAsyncThunk('files/deleteForeverFile', async id => (await filesService.deleteForever(id)).data)
 
@@ -41,6 +44,7 @@ export const filesSlice = createSlice({
     setAction: (state, action) => { state.action = action.payload },
     setIndex: (state, action) => { state.index = action.payload },
     setMedia: (state, action) => { state.media = action.payload },
+    setData: (state, action) => { state.data = action.payload },
     clear: state => {
       document.querySelectorAll('.li-folder')
         .forEach(v => v.classList.contains('bg-info') && v.classList.remove('bg-info'))
@@ -150,6 +154,9 @@ export const filesSlice = createSlice({
         .map(v => helper.getMedia(v))
         .findIndex(v => v === state.media) + 1
     })
+    .addCase(readPlaintext.fulfilled, (state, action) => {
+      state.data = action.payload
+    })
     .addCase(openFile.fulfilled, (state, action) => {
       helper.isPDF(state.media)
         && window.open(state.media)
@@ -166,6 +173,7 @@ export const {
   setAction,
   setIndex,
   setMedia,
+  setData,
   selectAll,
   clear,
   reset,
@@ -186,5 +194,6 @@ export const selectMedias = state => state.files.files.filter(v => v.path === st
 export const selectIndex = state => state.files.index
 export const selectFactor = state => state.files.factor
 export const selectAction = state => state.files.action
+export const selectData = state => state.files.data
 
 export default filesSlice.reducer
