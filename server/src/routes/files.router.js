@@ -8,6 +8,7 @@ router
   .get('/d/:id', filesController.download)
   .get('/:id', filesController.read)
   .put('/:id', filesController.update)
+  .patch('/s/:id', filesController.savePlaintext)
   .patch('/:id', filesController.delete)
   .patch('/r/:id', filesController.restore)
   .patch('/m/:id', filesController.move)
