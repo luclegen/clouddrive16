@@ -10,11 +10,13 @@ import {
 } from './slice';
 import FileType from '../../models/FileType';
 import helper from '../../services/helper';
+import { readPlaintext, savePlaintext, selectData, setData } from '../Files/slice';
 
 export default function Media(props) {
   const dispatch = useDispatch()
 
   const factor = useSelector(selectFactor)
+  const data = useSelector(selectData)
 
   useEffect(() => {
     window.onkeyup = e => {
@@ -38,6 +40,10 @@ export default function Media(props) {
           props.next()
           break;
 
+        case 83:
+          if (e.ctrlKey) save()
+          break;
+
         default:
           break;
       }
@@ -53,6 +59,8 @@ export default function Media(props) {
 
       document.querySelector('body').style.overflow = 'hidden'
     }
+
+    if (props.type === FileType.TXT) dispatch(readPlaintext(helper.getQuery('fid')))
   }, [props.type])
 
   const download = () => window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/files/d/` + helper.getQuery('fid'))
@@ -104,6 +112,8 @@ export default function Media(props) {
       refresh()
     })
 
+  const save = async () => alert((await dispatch(savePlaintext({ id: helper.getQuery('fid'), data }))).payload)
+
   return <section className="section-floating">
     <span className="command-bar">
       <span className="primary-command">
@@ -117,6 +127,7 @@ export default function Media(props) {
         <strong>&nbsp;{props.src.split('/')[props.src.split('/').length - 1]}</strong>
       </span>
       <span className="secondary-command">
+        {props.type === FileType.TXT && <button className="btn-save" type="button" disabled={props.index === 1} onClick={save}><i className="material-icons">save</i>&nbsp;Save</button>}
         {props.type === FileType.IMAGE && <span className="right-space" style={{ width: '270px' }}></span>}
         <button className="btn-prev" type="button" disabled={props.index === 1} onClick={prev}><i className="material-icons">skip_previous</i></button>
         <span className="span-index">&nbsp;&nbsp;{props.index + '/' + props.count}&nbsp;&nbsp;</span>
@@ -132,7 +143,10 @@ export default function Media(props) {
           ? < video className="video" src={props.src} autoPlay controls />
           : props.type === FileType.AUDIO
             ? <audio className="audio" src={props.src} autoPlay controls></audio>
-            : <span></span>}
+            : props.type === FileType.TXT
+              ? <textarea className="text-editor" name="text-editor" id="textEditor" value={data} onChange={e => dispatch(setData(e.target.value))}></textarea>
+              : <span></span>
+      }
     </span>
   </section>
 }
