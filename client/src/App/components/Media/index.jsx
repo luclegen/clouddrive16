@@ -42,11 +42,11 @@ export default function Media(props) {
           break;
 
         case 37:
-          props.prev()
+          if (props.type !== FileType.TXT) props.prev()
           break;
 
         case 39:
-          props.next()
+          if (props.type !== FileType.TXT) props.next()
           break;
 
         case 83:
@@ -121,7 +121,7 @@ export default function Media(props) {
       refresh()
     })
 
-  const save = async () => alert((await dispatch(savePlaintext({ id: helper.getQuery('fid'), data }))).payload)
+  const save = async () => (await dispatch(savePlaintext({ id: helper.getQuery('fid'), data }))).payload
 
   return <section className="section-floating">
     <span className="command-bar">
@@ -129,7 +129,7 @@ export default function Media(props) {
         <button className="btn-download" type="button" onClick={download}><i className="material-icons">download</i>Download</button>
         {props.type === FileType.IMAGE && <button className="btn-rotate-left" type="button" onClick={rotateLeft}><i className="material-icons">rotate_90_degrees_ccw</i>Rotate left 90°</button>}
         {props.type === FileType.IMAGE && <button className="btn-rotate-right" type="button" onClick={rotateRight}><i className="material-icons">rotate_90_degrees_cw</i>Rotate right 90°</button>}
-        {props.type !== FileType.IMAGE && <span className="left-space" style={{ width: `${props.type !== FileType.TXT ? 145 : 56}px` }}></span>}
+        {props.type !== FileType.IMAGE && <span className="left-space" style={{ width: `${props.type === FileType.TXT ? 155 : 56}px` }}></span>}
       </span>
       <span className="middle-command">
         <i className="material-icons">{props.type === FileType.IMAGE ? FileType.IMAGE : props.type === FileType.VIDEO ? 'video_file' : props.type === FileType.AUDIO ? 'audio_file' : props.type === FileType.NONE ? 'none' : ''}</i>
