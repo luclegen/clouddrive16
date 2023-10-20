@@ -18,7 +18,8 @@ const initialState = {
   type: 'none',
   factor: 0,
   action: 'none',
-  data: ''
+  data: '',
+  dataPrev: ''
 }
 
 export const list = createAsyncThunk('files/list', async () => ({ folders: (await foldersService.list()).data, files: (await filesService.list()).data }))
@@ -156,6 +157,7 @@ export const filesSlice = createSlice({
     })
     .addCase(readPlaintext.fulfilled, (state, action) => {
       state.data = action.payload
+      state.dataPrev = action.payload
     })
     .addCase(openFile.fulfilled, (state, action) => {
       helper.isPDF(state.media)
@@ -195,5 +197,6 @@ export const selectIndex = state => state.files.index
 export const selectFactor = state => state.files.factor
 export const selectAction = state => state.files.action
 export const selectData = state => state.files.data
+export const selectDataPrev = state => state.files.dataPrev
 
 export default filesSlice.reducer
