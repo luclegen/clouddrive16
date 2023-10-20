@@ -160,9 +160,8 @@ export const filesSlice = createSlice({
       state.dataPrev = action.payload
     })
     .addCase(savePlaintext.fulfilled, (state, action) => {
-      state.data = action.payload.data
-      state.dataPrev = action.payload.data
-      alert(action.payload.message)
+      state.data = action.payload
+      state.dataPrev = action.payload
     })
     .addCase(openFile.fulfilled, (state, action) => {
       helper.isPDF(state.media)
