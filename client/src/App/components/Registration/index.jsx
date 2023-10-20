@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import CloseIcon from '@mui/icons-material/Close'
 import Sex from '../../models/Sex'
 import helper from '../../services/helper'
 import { close } from '../Login/slice'
@@ -131,7 +132,7 @@ export default function Registration() {
     <form className="form-registration" onSubmit={submit}>
       <div className="row">
         <div className="col-md-close">
-          <button className="btn-close" type="reset" onClick={() => dispatch(close())}></button>
+          <button className="btn-close" type="reset" onClick={() => dispatch(close())}><CloseIcon /></button>
         </div>
       </div>
       <h1 className="h1-registration">Sign Up</h1>
