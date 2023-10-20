@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import SearchIcon from '@mui/icons-material/Search'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import InfoIcon from '@mui/icons-material/Info'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import LogoutIcon from '@mui/icons-material/Logout'
 import {
   selectHover,
   selectWidth,
@@ -111,7 +116,7 @@ export default function Header() {
     {loggedIn && <div className="search-bar" onMouseEnter={coloring} onMouseLeave={coloring} onInput={e => dispatch(search(e.target.value))}>
       <form className="form-search">
         <button className="btn-search" type={width > 800 ? 'submit' : opened && keyword ? 'submit' : 'button'} disabled={width > 800 && !keyword} onClick={open}>
-          <i className="material-icons">search</i>
+          <SearchIcon />
         </button>
         <input className="input-search" name="keyword" type="search" value={keyword} placeholder="Search for anything" onSelect={coloring} onBlur={coloring} onInput={e => setKeyword(e.target.value)} />
       </form>
@@ -129,17 +134,17 @@ export default function Header() {
         ? <button className="dropdown-toggle dropdown-toggle-avatar" title={helper.getCookie('first_name')} onClick={() => dispatch(toggleDropdown())}>
           {avatar
             ? <img className="avatar-img" src={avatar} alt={`${helper.getCookie('first_name')}'s avatar`} />
-            : <i className="material-icons">account_circle</i>}
+            : <AccountCircleIcon className="icon-header" />}
         </button>
         : <a className="link-help" href="/help" target="_blank">
-          <i className="material-icons">help_outline</i>
+          <HelpOutlineIcon className="icon-header" />
         </a>}
       {isOpen && <ul className="dropdown-menu dropdown-menu-avatar">
-        <Link className="dropdown-item-normal dropdown-item" to="/profile" onClick={() => dispatch(hideDropdown())}><p className="text-profile">My profile</p><i className="material-icons">info</i></Link>
+        <Link className="dropdown-item-normal dropdown-item" to="/profile" onClick={() => dispatch(hideDropdown())}><p className="text-profile">My profile</p><InfoIcon /></Link>
         <hr className="dropdown-divider" />
-        <Link className="dropdown-item-normal dropdown-item" to="/help" onClick={() => dispatch(hideDropdown())}><p className="text-help">Help</p><i className="material-icons">help_outline</i></Link>
+        <Link className="dropdown-item-normal dropdown-item" to="/help" onClick={() => dispatch(hideDropdown())}><p className="text-help">Help</p><HelpOutlineIcon /></Link>
         <hr className="dropdown-divider" />
-        <Link className="dropdown-item-danger dropdown-item" to="/" onClick={() => dispatch(reset()) && dispatch(logout()) && dispatch(hideDropdown())}><p className="text-logout">Sign out</p><i className="material-icons">logout</i></Link>
+        <Link className="dropdown-item-danger dropdown-item" to="/" onClick={() => dispatch(reset()) && dispatch(logout()) && dispatch(hideDropdown())}><p className="text-logout">Sign out</p><LogoutIcon /></Link>
       </ul>}
     </div>
   </header>
