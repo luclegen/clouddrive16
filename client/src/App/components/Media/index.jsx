@@ -138,9 +138,23 @@ export default function Media(props) {
       <span className="secondary-command">
         {props.type === FileType.TXT && <button className="btn-save" type="button" disabled={data === dataPrev} onClick={save}><i className="material-icons">save</i>&nbsp;Save</button>}
         {props.type === FileType.IMAGE && <span className="right-space" style={{ width: '270px' }}></span>}
-        <button className="btn-prev" type="button" disabled={props.index === 1} onClick={prev}><i className="material-icons">skip_previous</i></button>
+        <button className="btn-prev" type="button" disabled={props.index === 1} onClick={() => {
+          if (props.type === FileType.TXT) {
+            if (data === dataPrev) prev()
+            else {
+              if (confirm('Are you sure to previous?\nChanges you made may not be saved.')) prev()
+            }
+          } else prev()
+        }}><i className="material-icons">skip_previous</i></button>
         <span className="span-index">&nbsp;&nbsp;{props.index + '/' + props.count}&nbsp;&nbsp;</span>
-        <button className="btn-next" type="button" disabled={props.index === props.count} onClick={next}><i className="material-icons">skip_next</i></button>
+        <button className="btn-next" type="button" disabled={props.index === props.count} onClick={() => {
+          if (props.type === FileType.TXT) {
+            if (data === dataPrev) next()
+            else {
+              if (confirm('Are you sure to next?\nChanges you made may not be saved.')) next()
+            }
+          } else next()
+        }}><i className="material-icons">skip_next</i></button>
         <button className="btn-close" type="button" onClick={() => {
           if (props.type === FileType.TXT) {
             if (data === dataPrev) props.close()
