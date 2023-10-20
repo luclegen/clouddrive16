@@ -6,9 +6,26 @@ import {
   DropdownToggle,
   UncontrolledDropdown
 } from 'reactstrap'
+import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove'
+import FolderCopyIcon from '@mui/icons-material/FolderCopy'
+import FileCopyIcon from '@mui/icons-material/FileCopy'
+import FileDownloadIcon from '@mui/icons-material/FileDownload'
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline'
+import RestoreIcon from '@mui/icons-material/Restore'
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever'
+import DeleteIcon from '@mui/icons-material/Delete'
+import FolderIcon from '@mui/icons-material/Folder'
+import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash'
+import AddIcon from '@mui/icons-material/Add'
+import UploadIcon from '@mui/icons-material/Upload'
+import LocationOnIcon from '@mui/icons-material/LocationOn'
+import BackupIcon from '@mui/icons-material/Backup'
+import AudioFileIcon from '@mui/icons-material/AudioFile'
+import DescriptionIcon from '@mui/icons-material/Description'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import Progress from '../Progress'
 import Media from '../Media'
-import FileType from '../../models/FileType';
+import FileType from '../../models/FileType'
 import FolderTree from '../FolderTree'
 import {
   clear,
@@ -79,12 +96,12 @@ export default function Files() {
   useEffect(() => {
     window.onresize = () => {
       setMainContent()
-      setMainCommandBar()
+      if (!isEmpty()) setMainCommandBar()
       dispatch(setWidth())
     }
     document.title = `My files - ${process.env.REACT_APP_NAME}`
     setMainContent()
-    setMainCommandBar()
+    if (!isEmpty()) setMainCommandBar()
     refresh()
   }, [])
 
@@ -514,15 +531,14 @@ export default function Files() {
       <ul className="dropdown-menu-folder">
         {!helper.getQuery('location') && (
           <li className="dropdown-item-normal" onClick={move}>
-            <i className="material-icons">drive_file_move</i>&nbsp;Move to...
+            <DriveFileMoveIcon />&nbsp;Move to...
           </li>
         )}
         {!helper.getQuery('location') && (
           <li className="dropdown-item-normal" onClick={copy}>
-            <i className="material-icons">{`${items.every((v) => v.type === ItemType.FILE)
-              ? ItemType.FILE
-              : ItemType.FOLDER}_copy`}
-            </i>
+            {items.every((v) => v.type === ItemType.FILE)
+              ? <FileCopyIcon />
+              : <FolderCopyIcon />}
             &nbsp;Copy to...
           </li>
         )}
@@ -532,22 +548,20 @@ export default function Files() {
           </li>
         )}
         <li className="dropdown-item-normal" onClick={download}>
-          <i className="material-icons">file_download</i>&nbsp;Download
+          <FileDownloadIcon />&nbsp;Download
         </li>
         <li className="dropdown-item-normal" onClick={rename}>
-          <i className="material-icons">drive_file_rename_outline</i>&nbsp;Rename
+          <DriveFileRenameOutlineIcon />&nbsp;Rename
         </li>
         {helper.getQuery('location') === 'trash' && (
           <li className="dropdown-item-normal" onClick={restore}>
-            <i className="material-icons">restore</i>&nbsp;Restore
+            <RestoreIcon />&nbsp;Restore
           </li>
         )}
         <li className="dropdown-item-danger" onClick={_delete}>
-          <i className="material-icons">
-            {helper.getQuery('location') === 'trash'
-              ? 'delete_forever'
-              : 'delete'}
-          </i>
+          {helper.getQuery('location') === 'trash'
+            ? <DeleteForeverIcon />
+            : <DeleteIcon />}
           &nbsp;Delete {helper.getQuery('location') === 'trash' && 'forever'}
         </li>
         {helper.getQuery('keyword') && (
@@ -557,7 +571,7 @@ export default function Files() {
         )}
         {helper.getQuery('keyword') && (
           <li className="dropdown-item-normal" onClick={openLocation}>
-            <i className="material-icons">location_on</i>Open item location
+            <LocationOnIcon />&nbsp;Open item location
           </li>
         )}
       </ul>
@@ -576,13 +590,13 @@ export default function Files() {
             className={`list-group-item-files ${helper.getQuery('location') ? '' : 'active'}`}
             onClick={back}
           >
-            <i className="material-icons">folder</i> My files
+            <FolderIcon />&nbsp;My files
           </li>
           <li
             className={`list-group-item-trash ${helper.getQuery('location') === 'trash' ? 'active' : ''}`}
             onClick={setTrash}
           >
-            <i className="material-icons">delete</i> Trash
+            <DeleteIcon />&nbsp;Trash
           </li>
         </ul>
       </nav>
@@ -591,10 +605,10 @@ export default function Files() {
           !isEmpty() && (
             <span className="main-command-bar">
               <button className="btn-restore" onClick={restoreTrash}>
-                <i className="material-icons">restore_from_trash</i> Restore
+                <RestoreFromTrashIcon />&nbsp;Restore
               </button>
               <button className="btn-empty" onClick={empty}>
-                <i className="material-icons">delete_forever</i> Empty
+                <DeleteOutlineIcon />&nbsp;Empty
               </button>
             </span>
           )
@@ -603,7 +617,7 @@ export default function Files() {
             <span className="primary-command">
               <UncontrolledDropdown className="dropdown-new">
                 <DropdownToggle className="dropdown-toggle-new" caret>
-                  <i className="material-icons">add</i>New
+                  <AddIcon />&nbsp;New
                 </DropdownToggle>
                 <DropdownMenu>
                   <DropdownItem
@@ -622,7 +636,7 @@ export default function Files() {
               </UncontrolledDropdown>
               <input type="file" id="files" onChange={save} multiple hidden />
               <button className="btn-upload" onClick={upload}>
-                <i className="material-icons">publish</i> Upload
+                <UploadIcon />&nbsp;Upload
               </button>
             </span>
             <span className="middle-command"></span>
@@ -633,7 +647,7 @@ export default function Files() {
                   type="button"
                   onClick={() => dispatch(showProgressComponent())}
                 >
-                  <i className="material-icons">backup</i>Uploading...
+                  <BackupIcon />&nbsp;Uploading...
                 </button>
               )}
             </span>
@@ -758,20 +772,19 @@ export default function Files() {
                 onDoubleClick={open}
                 onContextMenu={choose(i)}
               >
-                {helper.isImage(v.name) ? (
-                  <img
+                {helper.isImage(v.name)
+                  ? (<img
                     className="bg-img"
                     id={`file${i}`}
                     src={helper.getMedia(v)}
                     alt={`Img ${i}`}
-                  />
-                ) : helper.isVideo(v.name) ? (
-                  <video className="bg-video" src={helper.getMedia(v)}></video>
-                ) : (
-                  <i className="material-icons bg-file">
-                    {helper.isAudio(v.name) ? 'audio_file' : 'description'}
-                  </i>
-                )}
+                  />)
+                  : helper.isVideo(v.name)
+                    ? (<video className="bg-video" src={helper.getMedia(v)}></video>)
+                    : helper.isAudio(v.name)
+                      ? <AudioFileIcon className="bg-file" />
+                      : <DescriptionIcon className="bg-file" />
+                }
                 <label
                   className="label-file"
                   htmlFor={`file${i}`}
@@ -787,7 +800,7 @@ export default function Files() {
         )}
         {isEmpty() && (
           <div className="empty-trash">
-            <i className="material-icons">delete_outline</i>
+            <DeleteOutlineIcon />
             <strong>Trash is Empty</strong>
           </div>
         )}
