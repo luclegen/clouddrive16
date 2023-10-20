@@ -16,9 +16,8 @@ export default function Login() {
   const [password, setPassword] = useState('');
 
   useEffect(
-    () =>
-      (window.onbeforeunload = () =>
-        email || password || remember ? true : undefined)
+    () => window.onbeforeunload = () =>
+      email || password || remember ? true : undefined
   );
 
   const enterEmail = (e) =>
@@ -37,8 +36,7 @@ export default function Login() {
       setPassword('');
       resolve();
     }).then(() => {
-      if (document.querySelector('.input-group-password'))
-      {document.querySelector('.input-group-password').style.height = 0;}
+      if (document.querySelector('.input-group-password')) { document.querySelector('.input-group-password').style.height = 0; }
       document.querySelector('.input-email').style.width = 205 + 'px';
     });
 
