@@ -64,7 +64,9 @@ module.exports.savePlaintext = catchAsync(async (req, res, next) => {
 
   fs.writeFileSync(converter.toUploadFilePath(req.user._id, file), req.body)
 
-  res.json(req.t('Saved successfully.'))
+  const data = fs.readFileSync(converter.toUploadFilePath(req.user._id, file)).toString()
+
+  res.json(data)
 })
 
 module.exports.download = catchAsync(async (req, res, next) => {
