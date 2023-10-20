@@ -126,18 +126,18 @@ export default function Media(props) {
   return <section className="section-floating">
     <span className="command-bar">
       <span className="primary-command">
+        {props.type === FileType.TXT && <button className="btn-save" type="button" disabled={data === dataPrev} onClick={save}><i className="material-icons">save</i>&nbsp;Save</button>}
         <button className="btn-download" type="button" onClick={download}><i className="material-icons">download</i>Download</button>
         {props.type === FileType.IMAGE && <button className="btn-rotate-left" type="button" onClick={rotateLeft}><i className="material-icons">rotate_90_degrees_ccw</i>Rotate left 90°</button>}
         {props.type === FileType.IMAGE && <button className="btn-rotate-right" type="button" onClick={rotateRight}><i className="material-icons">rotate_90_degrees_cw</i>Rotate right 90°</button>}
-        {props.type !== FileType.IMAGE && <span className="left-space" style={{ width: `${props.type === FileType.TXT ? 155 : 56}px` }}></span>}
+        {props.type !== FileType.IMAGE && props.type !== FileType.TXT && <span className="left-space" style={{ width: '56px' }}></span>}
       </span>
       <span className="middle-command">
         <i className="material-icons">{props.type === FileType.IMAGE ? FileType.IMAGE : props.type === FileType.VIDEO ? 'video_file' : props.type === FileType.AUDIO ? 'audio_file' : props.type === FileType.NONE ? 'none' : ''}</i>
         <strong>&nbsp;{props.src.split('/')[props.src.split('/').length - 1]}</strong>
       </span>
       <span className="secondary-command">
-        {props.type === FileType.TXT && <button className="btn-save" type="button" disabled={data === dataPrev} onClick={save}><i className="material-icons">save</i>&nbsp;Save</button>}
-        {props.type === FileType.IMAGE && <span className="right-space" style={{ width: '270px' }}></span>}
+        {(props.type === FileType.IMAGE || props.type === FileType.TXT) && <span className="right-space" style={{ width: `${props.type === FileType.TXT ? 25 : 270}px` }}></span>}
         <button className="btn-prev" type="button" disabled={props.index === 1} onClick={() => {
           if (props.type === FileType.TXT) {
             if (data === dataPrev) prev()
