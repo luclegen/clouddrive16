@@ -35,7 +35,7 @@ class Helper {
 
   isAudio = value => /\.(aac|flac|mp3|m4a|oga|wav)$/i.test(value)
 
-  isMedia = value => this.isImage(value) || this.isVideo(value) || this.isAudio(value)
+  isMedia = value => this.isImage(value) || this.isVideo(value) || this.isAudio(value) || this.isPlaintext(value)
 
   getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${this.getCookie('id')}/files${v?.path}${v?.name}`
 
