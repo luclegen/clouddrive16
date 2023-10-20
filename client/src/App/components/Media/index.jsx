@@ -4,6 +4,16 @@ import {
   useSelector
 } from 'react-redux';
 import { Progress } from 'reactstrap';
+import SaveIcon from '@mui/icons-material/Save'
+import DownloadIcon from '@mui/icons-material/Download'
+import Rotate90DegreesCcwIcon from '@mui/icons-material/Rotate90DegreesCcw'
+import Rotate90DegreesCwIcon from '@mui/icons-material/Rotate90DegreesCw'
+import ImageIcon from '@mui/icons-material/Image'
+import VideoFileIcon from '@mui/icons-material/VideoFile'
+import AudioFileIcon from '@mui/icons-material/AudioFile'
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious'
+import SkipNextIcon from '@mui/icons-material/SkipNext'
+import CloseIcon from '@mui/icons-material/Close'
 import {
   selectFactor,
   setFactor
@@ -126,14 +136,14 @@ export default function Media(props) {
   return <section className="section-floating">
     <span className="command-bar">
       <span className="primary-command">
-        {props.type === FileType.TXT && <button className="btn-save" type="button" disabled={data === dataPrev} onClick={save}><i className="material-icons">save</i>&nbsp;Save</button>}
-        <button className="btn-download" type="button" onClick={download}><i className="material-icons">download</i>Download</button>
-        {props.type === FileType.IMAGE && <button className="btn-rotate-left" type="button" onClick={rotateLeft}><i className="material-icons">rotate_90_degrees_ccw</i>Rotate left 90°</button>}
-        {props.type === FileType.IMAGE && <button className="btn-rotate-right" type="button" onClick={rotateRight}><i className="material-icons">rotate_90_degrees_cw</i>Rotate right 90°</button>}
+        {props.type === FileType.TXT && <button className="btn-save" type="button" disabled={data === dataPrev} onClick={save}><SaveIcon />&nbsp;Save</button>}
+        <button className="btn-download" type="button" onClick={download}><DownloadIcon />&nbsp;Download</button>
+        {props.type === FileType.IMAGE && <button className="btn-rotate-left" type="button" onClick={rotateLeft}><Rotate90DegreesCcwIcon />&nbsp;Rotate left 90°</button>}
+        {props.type === FileType.IMAGE && <button className="btn-rotate-right" type="button" onClick={rotateRight}><Rotate90DegreesCwIcon />&nbsp;Rotate right 90°</button>}
         {props.type !== FileType.IMAGE && props.type !== FileType.TXT && <span className="left-space" style={{ width: '56px' }}></span>}
       </span>
       <span className="middle-command">
-        <i className="material-icons">{props.type === FileType.IMAGE ? FileType.IMAGE : props.type === FileType.VIDEO ? 'video_file' : props.type === FileType.AUDIO ? 'audio_file' : props.type === FileType.NONE ? 'none' : ''}</i>
+        {props.type === FileType.IMAGE ? <ImageIcon /> : props.type === FileType.VIDEO ? <VideoFileIcon /> : props.type === FileType.AUDIO ? <AudioFileIcon /> : props.type === FileType.NONE ? 'none' : ''}
         <strong>&nbsp;{props.src.split('/')[props.src.split('/').length - 1]}</strong>
       </span>
       <span className="secondary-command">
@@ -145,7 +155,7 @@ export default function Media(props) {
               if (confirm('Are you sure to previous?\nChanges you made may not be saved.')) prev()
             }
           } else prev()
-        }}><i className="material-icons">skip_previous</i></button>
+        }}><SkipPreviousIcon /></button>
         <span className="span-index">&nbsp;&nbsp;{props.index + '/' + props.count}&nbsp;&nbsp;</span>
         <button className="btn-next" type="button" disabled={props.index === props.count} onClick={() => {
           if (props.type === FileType.TXT) {
@@ -154,7 +164,7 @@ export default function Media(props) {
               if (confirm('Are you sure to next?\nChanges you made may not be saved.')) next()
             }
           } else next()
-        }}><i className="material-icons">skip_next</i></button>
+        }}><SkipNextIcon /></button>
         <button className="btn-close" type="button" onClick={() => {
           if (props.type === FileType.TXT) {
             if (data === dataPrev) props.close()
@@ -162,7 +172,7 @@ export default function Media(props) {
               if (confirm('Are you sure to close?\nChanges you made may not be saved.')) props.close()
             }
           } else props.close()
-        }}><i className="material-icons">close</i></button>
+        }}><CloseIcon /></button>
       </span>
     </span>
     {!!props.percent && <Progress value={props.percent} />}
@@ -178,5 +188,5 @@ export default function Media(props) {
               : <span></span>
       }
     </span>
-  </section>
+  </section >
 }
