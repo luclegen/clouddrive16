@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import InputIcon from '@mui/icons-material/Input';
+import LaunchIcon from '@mui/icons-material/Launch';
 import { selectOpened, open } from './slice';
 import { check, login, setRemember, selectRemember } from '../../slice';
 import Registration from '../Registration';
@@ -90,7 +92,7 @@ export default function Login() {
               disabled={!email}
               hidden={true}
             >
-              <i className="material-icons">input</i>
+              <InputIcon />
             </button>
           )}
         </div>
@@ -107,7 +109,7 @@ export default function Login() {
                 required
               />
               <button className="btn-input" type="submit" disabled={!password}>
-                <i className="material-icons">input</i>
+                <InputIcon />
               </button>
             </div>
           )}
@@ -131,7 +133,7 @@ export default function Login() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Forgotten password? <i className="material-icons">open_in_new</i>
+          Forgotten password?&nbsp;<LaunchIcon />
         </a>
         <button
           className="btn-create-account"
