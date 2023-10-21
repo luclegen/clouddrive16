@@ -174,6 +174,7 @@ export const filesSlice = createSlice({
 
 export const {
   setPath,
+  setType,
   setItems,
   setItemPrev,
   setAction,
