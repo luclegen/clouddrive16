@@ -42,6 +42,9 @@ module.exports.upload = (dir = '', type = 'private', maxSize) => multer({
       fs.mkdir(path[path.length - 1], { recursive: true }, err => err
         ? next(err)
         : next(null, path[path.length - 1]))
+
+      req.on('aborted', () => fs.rm(`${path[path.length - 1]}${file.originalname}`, err =>
+        err && next(err)))
     },
     filename: (req, file, next) => {
       switch (dir) {
