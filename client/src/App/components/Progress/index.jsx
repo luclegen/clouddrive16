@@ -1,6 +1,10 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { CircularProgressbar } from 'react-circular-progressbar'
+import CloseIcon from '@mui/icons-material/Close'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import ErrorIcon from '@mui/icons-material/Error'
+import CancelIcon from '@mui/icons-material/Cancel'
 import 'react-circular-progressbar/dist/styles.css'
 import { showCancel, hideCancel, selectUploadFiles, cancelUpload, hideProgress } from './slice'
 
@@ -20,7 +24,7 @@ export default function Progress(props) {
         <span className="middle-command">
         </span>
         <span className="secondary-command">
-          <button className="btn-close-progress" type="button" onClick={() => dispatch(hideProgress())}><i className="material-icons">close</i></button>
+          <button className="btn-close-progress" type="button" onClick={() => dispatch(hideProgress())}><CloseIcon /></button>
         </span>
       </span>
       <main className="main-aside">
@@ -31,11 +35,11 @@ export default function Progress(props) {
               {v.show
                 ? v.done
                   ? v.success
-                    ? <i className="material-icons" title="Done">check_circle</i>
-                    : <i className="material-icons" title="Failed">error</i>
+                    ? <span title="Done"><CheckCircleIcon /></span>
+                    : <span title="Failed"><ErrorIcon /></span>
                   : <span onMouseEnter={() => dispatch(showCancel(i))}><CircularProgressbar className="circular-progressbar" value={v.value} text={`${v.value}%`} /></span>
                 : v.cancel
-                  ? <span><i className="material-icons" title="Canceled">cancel</i></span>
+                  ? <span title="Canceled"><CancelIcon /></span>
                   : <span className="btn-cancel-upload" title="Cancel" onMouseLeave={() => dispatch(hideCancel(i))} onClick={cancel(i)}></span>}
             </li>)}
         </ul>}
