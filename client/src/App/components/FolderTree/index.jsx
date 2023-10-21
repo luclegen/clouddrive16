@@ -192,7 +192,7 @@ export default function FolderTree(props) {
               <button type="button" className="list-group-item list-group-item-action" id={v._id} key={i} style={{ marginLeft: `${((helper.toPath(v).match(/\//g) || []).length - 1) * 40}px` }} onClick={select}>
                 {!!folders.filter(s => s.path === helper.toPath(v)).length
                   ? showedFolders.filter(s => s.path === helper.toPath(v)).length ? <ExpandMoreIcon /> : <NavigateNextIcon />
-                  : <span style={{ width: '29px' }}></span>}
+                  : <span style={{ width: '24px' }}></span>}
                 <img className="folder" src="/svgs/folder.svg" alt="" />&nbsp;&nbsp;{v.name}
               </button>
               {(_new && id === v._id) && <button type="button" className="list-group-item list-group-item-action" style={{ marginLeft: `${((helper.toPath(v).match(/\//g) || []).length) * 40}px` }}>
