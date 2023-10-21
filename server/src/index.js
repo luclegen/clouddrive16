@@ -37,7 +37,6 @@ api
   .use(bodyParser.urlencoded({ extended: true }))
   .use(require('cookie-parser')())
   .use(require('compression')())
-  .use(require('connect-timeout')('10s'))
   .use(require('response-time')((req, res, time) => req.app.get('env') === 'development' && info(req.method, req.baseUrl, `${time}ms`)))
   .use(require('passport').initialize())
   .use(require('express-session')(session))
