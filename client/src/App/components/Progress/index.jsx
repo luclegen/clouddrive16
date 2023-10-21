@@ -40,7 +40,7 @@ export default function Progress(props) {
                   : <span onMouseEnter={() => dispatch(showCancel(i))}><CircularProgressbar className="circular-progressbar" value={v.value} text={`${v.value}%`} /></span>
                 : v.cancel
                   ? <span title="Canceled"><CancelIcon /></span>
-                  : <span className="btn-cancel-upload" title="Cancel" onMouseLeave={() => dispatch(hideCancel(i))} onClick={cancel(i)}></span>}
+                  : <span className="btn-cancel-upload" title="Cancel" onMouseLeave={() => dispatch(hideCancel(i))} onClick={cancel(i)}><CloseIcon /></span>}
             </li>)}
         </ul>}
       </main>
