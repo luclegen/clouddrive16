@@ -1,5 +1,12 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove'
+import FolderCopyIcon from '@mui/icons-material/FolderCopy'
+import FileCopyIcon from '@mui/icons-material/FileCopy'
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder'
+import CloseIcon from '@mui/icons-material/Close'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import {
   selectFolders,
   selectId,
@@ -15,7 +22,7 @@ import {
 import foldersService from '../../services/folders'
 import filesService from '../../services/files'
 import helper from '../../services/helper'
-import { selectAction, selectItems } from '../Files/slice'
+import { selectAction, selectItems, selectType } from '../Files/slice'
 import { close as closeFolderTree } from './slice'
 
 export default function FolderTree(props) {
@@ -28,6 +35,7 @@ export default function FolderTree(props) {
   const folders = useSelector(selectFolders)
   const items = useSelector(selectItems)
   const name = useSelector(selectName)
+  const type = useSelector(selectType)
 
   const refresh = () => new Promise(async resolve => {
     const res = await foldersService.list()
@@ -65,7 +73,6 @@ export default function FolderTree(props) {
 
     dispatch(setNew(false))
     dispatch(setId(e.target.closest('button').id))
-    // setState({ new: false, id: e.target.closest('button').id })
   }
 
   const open = id => {
@@ -73,7 +80,6 @@ export default function FolderTree(props) {
 
     if (id === 'TRoot') {
       dispatch(setShowedFolders(folders.filter(v => v.path === '/')))
-      // setState({ showedFolders: folders.filter(v => v.path === '/') })
 
       if (!target.classList.contains('open')) {
         target.classList.add('open')
@@ -82,10 +88,7 @@ export default function FolderTree(props) {
     else {
       const subfolders = folders.filter(f => f.path === helper.toPath(folders.find(v => v._id === id)))
 
-      if (!showedFolders.some(v => subfolders.includes(v))) {
-        dispatch(setShowedFolders(showedFolders.concat(subfolders)))
-        // setState({ showedFolders: showedFolders.concat(subfolders) })
-      }
+      if (!showedFolders.some(v => subfolders.includes(v))) dispatch(setShowedFolders(showedFolders.concat(subfolders)))
 
       subfolders.length
         && !target.classList.contains('open')
@@ -97,7 +100,6 @@ export default function FolderTree(props) {
     const target = document.querySelector(`#${id}`)
 
     if (id === 'TRoot') {
-      // setState({ showedFolders: [] })
       dispatch(setShowedFolders([]))
 
       target.classList.contains('open')
@@ -107,7 +109,6 @@ export default function FolderTree(props) {
       const subfolders = folders.filter(f => f.path === helper.toPath(folders.find(v => v._id === id)))
 
       showedFolders.some(v => subfolders.includes(v))
-        // && setState({ showedFolders: showedFolders.filter(v => !subfolders.some(s => new RegExp(s.path).test(v.path))) })
         && dispatch(setShowedFolders(showedFolders.filter(v => !subfolders.some(s => new RegExp(s.path).test(v.path)))))
 
       subfolders.map(v => document.getElementById(v._id)?.classList.contains('open')
@@ -158,21 +159,21 @@ export default function FolderTree(props) {
     <aside className="aside-right col-4">
       <span className="command-bar">
         <span className="primary-command">
-          {action === 'move' && <button className="btn-move" onClick={move}><i className="material-icons">drive_file_move</i>Move</button>}
-          {action === 'copy' && <button className="btn-copy" onClick={copy}><i className="material-icons">{props.type === 'folder' ? 'folder_copy' : 'file_copy'}</i>Copy</button>}
-          <button className="btn-new-folder" onClick={create}><i className="material-icons">create_new_folder</i> New</button>
+          {action === 'move' && <button className="btn-move" onClick={move}><DriveFileMoveIcon />&nbsp;Move</button>}
+          {action === 'copy' && <button className="btn-copy" onClick={copy}>{type === 'folder' ? <FolderCopyIcon /> : <FileCopyIcon />}&nbsp;Copy</button>}
+          <button className="btn-new-folder" onClick={create}><CreateNewFolderIcon />&nbsp;New</button>
         </span>
         <span className="middle-command">
         </span>
         <span className="secondary-command">
-          <button className="btn-close" type="button" onClick={() => dispatch(closeFolderTree())}><i className="material-icons">close</i></button>
+          <button className="btn-close" type="button" onClick={() => dispatch(closeFolderTree())}><CloseIcon /></button>
         </span>
       </span>
       <main className="main-folder-tree">
         <div className="list-group">
           <div>
             <button type="button" className="list-group-item list-group-item-action active open" id="TRoot" value="/" onClick={select}>
-              <i className="material-icons">{showedFolders.filter(v => helper.toPath(v)).length ? 'expand_more' : 'navigate_next'}</i>
+              {showedFolders.filter(v => helper.toPath(v)).length ? <ExpandMoreIcon /> : <NavigateNextIcon />}
               <img src="/logo.svg" alt="CloudDrive16 logo" width="30" onClick={toggle} />&nbsp;&nbsp;My files
             </button>
             {(_new && id === 'TRoot') && <button type="button" className="list-group-item list-group-item-action" style={{ marginLeft: '40px' }}>
@@ -190,7 +191,7 @@ export default function FolderTree(props) {
             .map((v, i) => <div key={i}>
               <button type="button" className="list-group-item list-group-item-action" id={v._id} key={i} style={{ marginLeft: `${((helper.toPath(v).match(/\//g) || []).length - 1) * 40}px` }} onClick={select}>
                 {!!folders.filter(s => s.path === helper.toPath(v)).length
-                  ? <i className="material-icons">{showedFolders.filter(s => s.path === helper.toPath(v)).length ? 'expand_more' : 'navigate_next'}</i>
+                  ? showedFolders.filter(s => s.path === helper.toPath(v)).length ? <ExpandMoreIcon /> : <NavigateNextIcon />
                   : <span style={{ width: '29px' }}></span>}
                 <img className="folder" src="/svgs/folder.svg" alt="" />&nbsp;&nbsp;{v.name}
               </button>
