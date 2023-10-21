@@ -54,7 +54,8 @@ import {
   setItemPrev,
   setItems,
   setMedia,
-  setPath
+  setPath,
+  setType
 } from './slice'
 import { setWidth } from '../Header/slice'
 import {
@@ -198,6 +199,7 @@ export default function Files() {
 
   const copy = () => {
     document.body.style.overflow = 'hidden'
+    dispatch(setType(items.every(v => v.type === 'file') ? 'file' : 'folder'))
     dispatch(openFolderTree())
     dispatch(setAction('copy'))
   }
