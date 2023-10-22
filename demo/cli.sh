@@ -21,7 +21,10 @@ npm i -s  @mui/icons-material @mui/material @emotion/styled @emotion/react
 # 3. React Avatar Edit
 npm i -s react-avatar-edit
 
-# 4.Heroku
+# 4. i18n
+npm i -s i18next i18next-xhr-backend react-i18next i18next-browser-languagedetector
+
+# 5.Heroku
 heroku login
 heroku create clouddrive16
 xdg-open https://dashboard.heroku.com/apps/clouddrive16/settings
