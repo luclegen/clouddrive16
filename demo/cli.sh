@@ -18,7 +18,10 @@ npx eslint --init
 # 2. Material UI
 npm i -s  @mui/icons-material @mui/material @emotion/styled @emotion/react
 
-# 3.Heroku
+# 3. React Avatar Edit
+npm i -s react-avatar-edit
+
+# 4.Heroku
 heroku login
 heroku create clouddrive16
 xdg-open https://dashboard.heroku.com/apps/clouddrive16/settings
