@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import InputIcon from '@mui/icons-material/Input';
 import LaunchIcon from '@mui/icons-material/Launch';
 import { selectOpened, open } from './slice';
-import { check, login, setRemember, selectRemember } from '../../slice';
+import { check, login, setRemember, selectRemember, selectLang } from '../../slice';
 import Registration from '../Registration';
 import helper from '../../services/helper';
 
 export default function Login() {
+  const { t } = useTranslation()
   const dispatch = useDispatch();
 
   const remember = useSelector(selectRemember);
+  const language = useSelector(selectLang);
   const opened = useSelector(selectOpened);
 
   const [visible, setVisible] = useState(false);
@@ -29,9 +32,9 @@ export default function Login() {
         e.target.setCustomValidity(
           helper.isEmail(e.target.value)
             ? action.payload
-              ? 'Email not registered'
+              ? t('Email not registered.')
               : ''
-            : 'Invalid email!'
+            : t('Invalid email!')
         )
       );
       setVisible(false);
@@ -51,14 +54,18 @@ export default function Login() {
         document.querySelector('.input-email').style.width = 253 + 'px';
         document.querySelector('.input-password').focus();
 
-        password &&
-          new Promise((resolve) => {
-            setEmail('');
-            setPassword('');
-
-            resolve();
-          }).then(() => dispatch(login({ email, password, remember })));
-      }));
+        if (password) {
+          dispatch(login({ email, password, remember, language }))
+            .then(action => {
+              if (action.type === 'app/login/rejected') setPassword('')
+              else if (action.type === 'app/login/fulfilled') {
+                setPassword('')
+                setEmail('')
+                setRemember(false)
+              }
+            })
+        }
+      }))
 
   return (
     <section className="section-only">
@@ -68,7 +75,7 @@ export default function Login() {
           src="/logo.svg"
           alt={process.env.REACT_APP_NAME + ' logo'}
         />
-        <h1 className="h1-only">Sign in to {process.env.REACT_APP_NAME}</h1>
+        <h1 className="h1-only">{t('Sign in to')} {process.env.REACT_APP_NAME}</h1>
         <div
           className={`input-group-email ${visible ? 'rounded-top' : 'rounded'}`}
         >
@@ -88,6 +95,7 @@ export default function Login() {
           {!visible && (
             <button
               className="btn-input"
+              title={t('Next')}
               type="submit"
               disabled={!email}
               hidden={true}
@@ -103,12 +111,16 @@ export default function Login() {
                 className="input-password"
                 type="password"
                 name="password"
-                placeholder="Password"
+                placeholder={t('Password')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-              <button className="btn-input" type="submit" disabled={!password}>
+              <button
+                className="btn-input"
+                title={t('Next')}
+                type="submit"
+                disabled={!password}>
                 <InputIcon />
               </button>
             </div>
@@ -124,7 +136,7 @@ export default function Login() {
             onChange={(e) => dispatch(setRemember(e.target.checked))}
           />
           <label className="remember-me-label" htmlFor="rememberLogin">
-            Keep me signed in
+            {t('Keep me signed in')}
           </label>
         </div>
         <a
@@ -133,14 +145,14 @@ export default function Login() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Forgotten password?&nbsp;<LaunchIcon />
+          {t('Forgotten password?')}&nbsp;<LaunchIcon />
         </a>
         <button
           className="btn-create-account"
           type="button"
           onClick={() => dispatch(open())}
         >
-          Create New Account
+          {t('Create New Account')}
         </button>
       </form>
       {opened && <Registration />}
