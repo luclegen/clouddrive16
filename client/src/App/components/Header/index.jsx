@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import SearchIcon from '@mui/icons-material/Search'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import InfoIcon from '@mui/icons-material/Info'
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
 import LogoutIcon from '@mui/icons-material/Logout'
+import Lang from '../../models/Lang'
 import {
   selectHover,
   selectWidth,
@@ -27,11 +29,15 @@ import {
 import {
   selectLoggedIn,
   logout,
-  selectIsActivate
+  selectIsActivate,
+  selectLang,
+  changeLang
 } from '../../slice'
 import helper from '../../services/helper'
 
 export default function Header() {
+  const { t, i18n } = useTranslation();
+
   const dispatch = useDispatch()
 
   const hover = useSelector(selectHover)
@@ -41,11 +47,13 @@ export default function Header() {
   const avatar = useSelector(selectAvatar)
   const loggedIn = useSelector(selectLoggedIn)
   const activated = useSelector(selectIsActivate)
+  const lang = useSelector(selectLang)
 
   const [keyword, setKeyword] = useState('')
   const [selected, setSelected] = useState(false)
 
   useEffect(() => {
+    i18n.changeLanguage(lang)
     window.onresize = () => dispatch(setWidth())
     window.onkeydown = e => {
       if (e.ctrlKey && (e.key === 'a' || e.key === 'A')) dispatch(selectAll())
@@ -62,7 +70,7 @@ export default function Header() {
         : document.querySelector('.dropdown-menu-folder')
         && (document.querySelector('.dropdown-menu-folder').style.display = 'none')
     }
-  }, [])
+  }, [lang])
 
   const coloring = e => {
     if (e.type === 'select') setSelected(true)
@@ -118,7 +126,7 @@ export default function Header() {
         <button className="btn-search" type={width > 800 ? 'submit' : opened && keyword ? 'submit' : 'button'} disabled={width > 800 && !keyword} onClick={open}>
           <SearchIcon />
         </button>
-        <input className="input-search" name="keyword" type="search" value={keyword} placeholder="Search for anything" onSelect={coloring} onBlur={coloring} onInput={e => setKeyword(e.target.value)} />
+        <input className="input-search" name="keyword" type="search" value={keyword} placeholder={t('Search for anything')} onSelect={coloring} onBlur={coloring} onInput={e => setKeyword(e.target.value)} />
       </form>
       {/* <div className="list-group-search">
         {foundFolders?.map((v, i) => <button type="button" className="list-group-item-folder" id={v._id} key={i} onClick={access}>
@@ -136,15 +144,16 @@ export default function Header() {
             ? <img className="avatar-img" src={avatar} alt={`${helper.getCookie('first_name')}'s avatar`} />
             : <AccountCircleIcon className="icon-header" />}
         </button>
-        : <a className="link-help" href="/help" target="_blank">
+        : <a className="link-help" title={t('Help')} href="/help" target="_blank">
           <HelpOutlineIcon className="icon-header" />
         </a>}
       {isOpen && <ul className="dropdown-menu dropdown-menu-avatar">
-        <Link className="dropdown-item-normal dropdown-item" to="/profile" onClick={() => dispatch(hideDropdown())}><p className="text-profile">My profile</p><InfoIcon /></Link>
+        <Link className="dropdown-item-normal dropdown-item" to="/profile" onClick={() => dispatch(hideDropdown())}><p className="text-profile">{t('My profile')}</p><InfoIcon /></Link>
         <hr className="dropdown-divider" />
-        <Link className="dropdown-item-normal dropdown-item" to="/help" onClick={() => dispatch(hideDropdown())}><p className="text-help">Help</p><HelpOutlineIcon /></Link>
+        <Link className="dropdown-item-normal dropdown-item" to="/help" onClick={() => dispatch(hideDropdown())}><p className="text-help">{t('Help')}</p><HelpOutlineIcon /></Link>
         <hr className="dropdown-divider" />
-        <Link className="dropdown-item-danger dropdown-item" to="/" onClick={() => dispatch(reset()) && dispatch(logout()) && dispatch(hideDropdown())}><p className="text-logout">Sign out</p><LogoutIcon /></Link>
+        <li className="dropdown-item-normal dropdown-item" onClick={() => dispatch(changeLang(lang === Lang.VI ? Lang.EN : Lang.VI))}><p className="text-language">{lang === Lang.VI ? t('English') : t('Vietnamese')}</p>{lang === Lang.VI ? <img src="/images/United States.png" alt="United States image" /> : <img src="/images/Vietnam.png" alt="Vietnam image" />}</li>
+        <Link className="dropdown-item-danger dropdown-item" to="/" onClick={() => dispatch(reset()) && dispatch(logout()) && dispatch(hideDropdown())}><p className="text-logout">{t('Sign out')}</p><LogoutIcon /></Link>
       </ul>}
     </div>
   </header>
