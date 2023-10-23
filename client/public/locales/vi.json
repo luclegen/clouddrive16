@@ -7,7 +7,7 @@
   "Keep me signed in": "Duy trì đăng nhập",
   "Forgotten password?": "Quên mật khẩu?",
   "Create New Account": "Tạo tài khoản mới",
-  "Next": "Tiếp theo",
+  "Next": "Kế tiếp",
   "Email not registered.": "Email chưa được đăng ký.",
   "Invalid email!": "Email không hợp lệ!",
   "English": "Tiếng Anh",
@@ -66,5 +66,12 @@
   "Move here": "Di chuyển vào đây",
   "Copy here": "Sao chép vào đây",
   "Enter your folder name": "Nhập tên thư mục của bạn",
-  "Create": "Tạo"
+  "Create": "Tạo",
+  "Done": "Xong",
+  "Canceled": "Đã hủy",
+  "Failed": "Thất bại",
+  "Rotate left 90°": "Xoay trái 90°",
+  "Rotate right 90°": "Xoay phải 90°",
+  "Close": "Đóng",
+  "Previous": "Trước đó"
 }
