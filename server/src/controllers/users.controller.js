@@ -6,6 +6,7 @@ const createError = require('http-errors')
 const Session = require('../models/session.model')
 const User = require('../models/user.model')
 const Profile = require('../models/profile.model')
+const Lang = require('../models/lang.enum')
 const catchAsync = require('../middlewares/catcher.middleware')
 const checker = require('../helpers/checker')
 const maxAge = 30 * 24 * 60 * 60 * 1000
@@ -25,7 +26,7 @@ module.exports.create = catchAsync(async (req, res, next) => {
   user.password = await bcrypt.hash(req.body.password, await bcrypt.genSalt(10))
   user.roles = ['User']
   user.lang = req.body.lang
-  profile.full_name = req.body.first_name + ' ' + req.body.last_name
+  profile.full_name = user.lang === Lang.VI ? req.body.last_name + ' ' + req.body.first_name : req.body.first_name + ' ' + req.body.last_name
   profile.birthday = new Date(req.body.year, req.body.month, req.body.day)
   profile.sex = req.body.sex
 
