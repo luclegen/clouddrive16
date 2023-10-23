@@ -180,7 +180,7 @@ export default function FolderTree(props) {
             </button>
             {(_new && id === 'TRoot') && <button type="button" className="list-group-item list-group-item-action" style={{ marginLeft: '40px' }}>
               <form className="form-horizontal" onSubmit={submit}>
-                <img className="folder" src="/svgs/folder.svg" alt="" />
+                <img className="folder" src="/svgs/folder.svg" alt="Folder" style={{ marginLeft: '24px' }} />
                 &nbsp;&nbsp;
                 <input type="text" name="name" id="newFolder" placeholder={t('Enter your folder name')} onChange={e => dispatch(setName(e.target.value))} />
                 &nbsp;&nbsp;
@@ -199,7 +199,7 @@ export default function FolderTree(props) {
               </button>
               {(_new && id === v._id) && <button type="button" className="list-group-item list-group-item-action" style={{ marginLeft: `${((helper.toPath(v).match(/\//g) || []).length) * 40}px` }}>
                 <form className="form-horizontal" onSubmit={submit}>
-                  <img className="folder" src="/svgs/folder.svg" alt="" />
+                  <img className="folder" src="/svgs/folder.svg" alt="Folder" style={{ marginLeft: '24px' }} />
                   &nbsp;&nbsp;
                   <input type="text" name="name" id="newFolder" placeholder={t('Enter your folder name')} onChange={e => dispatch(setName(e.target.value))} />
                   &nbsp;&nbsp;
