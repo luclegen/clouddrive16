@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import { CircularProgressbar } from 'react-circular-progressbar'
 import CloseIcon from '@mui/icons-material/Close'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
@@ -10,6 +11,7 @@ import { showCancel, hideCancel, selectUploadFiles, cancelUpload, hideProgress }
 
 export default function Progress(props) {
   const dispatch = useDispatch()
+  const { t } = useTranslation();
 
   const uploadFiles = useSelector(selectUploadFiles)
 
@@ -24,7 +26,7 @@ export default function Progress(props) {
         <span className="middle-command">
         </span>
         <span className="secondary-command">
-          <button className="btn-close-progress" type="button" onClick={() => dispatch(hideProgress())}><CloseIcon /></button>
+          <button className="btn-close-progress" title={t('Close')} type="button" onClick={() => dispatch(hideProgress())}><CloseIcon /></button>
         </span>
       </span>
       <main className="main-aside">
@@ -35,11 +37,11 @@ export default function Progress(props) {
               {v.show
                 ? v.done
                   ? v.success
-                    ? <span title="Done"><CheckCircleIcon /></span>
-                    : <span title="Failed"><ErrorIcon /></span>
+                    ? <span title={t('Done')}><CheckCircleIcon /></span>
+                    : <span title={t('Failed')}><ErrorIcon /></span>
                   : <span onMouseEnter={() => dispatch(showCancel(i))}><CircularProgressbar className="circular-progressbar" value={v.value} text={`${v.value}%`} /></span>
                 : v.cancel
-                  ? <span title="Canceled"><CancelIcon /></span>
+                  ? <span title={t('Canceled')}><CancelIcon /></span>
                   : <span className="btn-cancel-upload" title="Cancel" onMouseLeave={() => dispatch(hideCancel(i))} onClick={cancel(i)}><CloseIcon /></span>}
             </li>)}
         </ul>}
