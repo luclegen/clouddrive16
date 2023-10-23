@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import {
   DropdownItem,
   DropdownMenu,
@@ -77,6 +78,7 @@ import ItemType from '../../models/ItemType'
 
 export default function Files() {
   const dispatch = useDispatch()
+  const { t } = useTranslation();
 
   const folders = useSelector(selectFolders)
   const files = useSelector(selectFiles)
@@ -100,10 +102,10 @@ export default function Files() {
       if (!isEmpty()) setMainCommandBar()
       dispatch(setWidth())
     }
-    document.title = `My files - ${process.env.REACT_APP_NAME}`
     setMainContent()
     if (!isEmpty()) setMainCommandBar()
     refresh()
+      .then(() => document.title = `${t('My files')} - ${process.env.REACT_APP_NAME}`)
   }, [])
 
   const refresh = () => dispatch(list())
@@ -125,7 +127,7 @@ export default function Files() {
 
   const createNewFolder = () =>
     dispatch(
-      createFolder({ name: prompt('Create folder', 'New folder'), path: path })
+      createFolder({ name: prompt(t('Create folder'), t('New folder')), path: path })
     ).then(
       (action) => action.type === 'files/createFolder/fulfilled' && refresh()
     )
@@ -133,7 +135,7 @@ export default function Files() {
   const createNewPlaintext = () =>
     dispatch(
       createPlaintext({
-        name: prompt('Create plain text document', 'New plain text.txt'),
+        name: prompt(t('Create plain text document'), t('New plain text.txt')),
         path: path
       })
     ).then(
@@ -261,7 +263,7 @@ export default function Files() {
     refresh().then(
       () => {
         document.title = `${helper.getQuery('id') === 'root'
-          ? 'My files'
+          ? t('My files')
           : folders.find((v) => v._id === helper.getQuery('id'))?.name}
       - ${process.env.REACT_APP_NAME}`
       }
@@ -270,7 +272,7 @@ export default function Files() {
   const setTrash = () =>
     helper.setQuery('location', 'trash') ||
     refresh().then(
-      () => (document.title = `Trash - ${process.env.REACT_APP_NAME}`)
+      () => (document.title = `${t('Trash')} - ${process.env.REACT_APP_NAME}`)
     )
 
   const isEmpty = () =>
@@ -350,7 +352,7 @@ export default function Files() {
         f.name === path.split('/')[index]
     )
 
-    document.title = `${index === 0 ? 'My files' : folder?.name} - ${process.env.REACT_APP_NAME}`
+    document.title = `${index === 0 ? t('My files') : folder?.name} - ${process.env.REACT_APP_NAME}`
     setPath(newpath || '/')
     helper.setQuery('id', parseInt(e.target.id) === 0 ? 'root' : folder?._id)
     refresh()
@@ -533,7 +535,7 @@ export default function Files() {
       <ul className="dropdown-menu-folder">
         {!helper.getQuery('location') && (
           <li className="dropdown-item-normal" onClick={move}>
-            <DriveFileMoveIcon />&nbsp;Move to...
+            <DriveFileMoveIcon />&nbsp;{t('Move to...')}
           </li>
         )}
         {!helper.getQuery('location') && (
@@ -541,7 +543,7 @@ export default function Files() {
             {items.every((v) => v.type === ItemType.FILE)
               ? <FileCopyIcon />
               : <FolderCopyIcon />}
-            &nbsp;Copy to...
+            &nbsp;{t('Copy to...')}
           </li>
         )}
         {!helper.getQuery('location') && (
@@ -550,21 +552,21 @@ export default function Files() {
           </li>
         )}
         <li className="dropdown-item-normal" onClick={download}>
-          <FileDownloadIcon />&nbsp;Download
+          <FileDownloadIcon />&nbsp;{t('Download')}
         </li>
         <li className="dropdown-item-normal" onClick={rename}>
-          <DriveFileRenameOutlineIcon />&nbsp;Rename
+          <DriveFileRenameOutlineIcon />&nbsp;{t('Rename')}
         </li>
         {helper.getQuery('location') === 'trash' && (
           <li className="dropdown-item-normal" onClick={restore}>
-            <RestoreIcon />&nbsp;Restore
+            <RestoreIcon />&nbsp;{t('Restore')}
           </li>
         )}
         <li className="dropdown-item-danger" onClick={_delete}>
           {helper.getQuery('location') === 'trash'
             ? <DeleteForeverIcon />
             : <DeleteIcon />}
-          &nbsp;Delete {helper.getQuery('location') === 'trash' && 'forever'}
+          &nbsp;{t(`Delete${helper.getQuery('location') === 'trash' ? ' forever' : ''}`)}
         </li>
         {helper.getQuery('keyword') && (
           <li>
@@ -592,13 +594,13 @@ export default function Files() {
             className={`list-group-item-files ${helper.getQuery('location') ? '' : 'active'}`}
             onClick={back}
           >
-            <FolderIcon />&nbsp;My files
+            <FolderIcon />&nbsp;{t('My files')}
           </li>
           <li
             className={`list-group-item-trash ${helper.getQuery('location') === 'trash' ? 'active' : ''}`}
             onClick={setTrash}
           >
-            <DeleteIcon />&nbsp;Trash
+            <DeleteIcon />&nbsp;{t('Trash')}
           </li>
         </ul>
       </nav>
@@ -607,10 +609,10 @@ export default function Files() {
           !isEmpty() && (
             <span className="main-command-bar">
               <button className="btn-restore" onClick={restoreTrash}>
-                <RestoreFromTrashIcon />&nbsp;Restore
+                <RestoreFromTrashIcon />&nbsp;{t('Restore all items')}
               </button>
               <button className="btn-empty" onClick={empty}>
-                <DeleteOutlineIcon />&nbsp;Empty
+                <DeleteOutlineIcon />&nbsp;{t('Empty trash')}
               </button>
             </span>
           )
@@ -619,7 +621,7 @@ export default function Files() {
             <span className="primary-command">
               <UncontrolledDropdown className="dropdown-new">
                 <DropdownToggle className="dropdown-toggle-new" caret>
-                  <AddIcon />&nbsp;New
+                  <AddIcon />&nbsp;{t('New')}
                 </DropdownToggle>
                 <DropdownMenu>
                   <DropdownItem
@@ -627,18 +629,18 @@ export default function Files() {
                     onClick={createNewFolder}
                   >
                     <img src="/svgs/folder.svg" alt="Folder" />
-                    Folder
+                    &nbsp;{t('Folder')}
                   </DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={createNewPlaintext}>
-                    <img src="/svgs/txt.svg" alt="Plain text document" /> Plain
-                    text document
+                    <img src="/svgs/txt.svg" alt="Plain text document" />
+                    &nbsp;{t('Plain text document')}
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
               <input type="file" id="files" onChange={save} multiple hidden />
               <button className="btn-upload" onClick={upload}>
-                <UploadIcon />&nbsp;Upload
+                <UploadIcon />&nbsp;{t('Upload')}
               </button>
             </span>
             <span className="middle-command"></span>
@@ -660,7 +662,7 @@ export default function Files() {
         ) : helper.getQuery('id') ? (
           <span className="path-bar">
             {path === '/' ? (
-              <strong>My files</strong>
+              <strong>{t('My files')}</strong>
             ) : (
               path
                 .replace(/\/$/, '')
@@ -670,7 +672,7 @@ export default function Files() {
                     {i === 0 ? (
                       <div className="dir">
                         <p className="dir-parent" id={i} onClick={access}>
-                          My files
+                          {t('My files')}
                         </p>
                         <p>&nbsp;&gt;&nbsp;</p>
                       </div>
@@ -803,7 +805,7 @@ export default function Files() {
         {isEmpty() && (
           <div className="empty-trash">
             <DeleteOutlineIcon />
-            <strong>Trash is Empty</strong>
+            <strong>{t('Trash is Empty')}</strong>
           </div>
         )}
       </main>

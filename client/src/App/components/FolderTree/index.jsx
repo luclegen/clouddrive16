@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import DriveFileMoveIcon from '@mui/icons-material/DriveFileMove'
 import FolderCopyIcon from '@mui/icons-material/FolderCopy'
 import FileCopyIcon from '@mui/icons-material/FileCopy'
@@ -26,6 +27,7 @@ import { selectAction, selectItems, selectType } from '../Files/slice'
 import { close as closeFolderTree } from './slice'
 
 export default function FolderTree(props) {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
 
   const action = useSelector(selectAction)
@@ -159,9 +161,9 @@ export default function FolderTree(props) {
     <aside className="aside-right col-4">
       <span className="command-bar">
         <span className="primary-command">
-          {action === 'move' && <button className="btn-move" onClick={move}><DriveFileMoveIcon />&nbsp;Move</button>}
-          {action === 'copy' && <button className="btn-copy" onClick={copy}>{type === 'folder' ? <FolderCopyIcon /> : <FileCopyIcon />}&nbsp;Copy</button>}
-          <button className="btn-new-folder" onClick={create}><CreateNewFolderIcon />&nbsp;New</button>
+          {action === 'move' && <button className="btn-move" onClick={move}><DriveFileMoveIcon />&nbsp;{t('Move here')}</button>}
+          {action === 'copy' && <button className="btn-copy" onClick={copy}>{type === 'folder' ? <FolderCopyIcon /> : <FileCopyIcon />}&nbsp;{t('Copy here')}</button>}
+          <button className="btn-new-folder" onClick={create}><CreateNewFolderIcon />&nbsp;{t('New folder')}</button>
         </span>
         <span className="middle-command">
         </span>
@@ -174,15 +176,15 @@ export default function FolderTree(props) {
           <div>
             <button type="button" className="list-group-item list-group-item-action active open" id="TRoot" value="/" onClick={select}>
               {showedFolders.filter(v => helper.toPath(v)).length ? <ExpandMoreIcon /> : <NavigateNextIcon />}
-              <img src="/logo.svg" alt="CloudDrive16 logo" width="30" onClick={toggle} />&nbsp;&nbsp;My files
+              <img src="/logo.svg" alt="CloudDrive16 logo" width="30" onClick={toggle} />&nbsp;&nbsp;{t('My files')}
             </button>
             {(_new && id === 'TRoot') && <button type="button" className="list-group-item list-group-item-action" style={{ marginLeft: '40px' }}>
               <form className="form-horizontal" onSubmit={submit}>
                 <img className="folder" src="/svgs/folder.svg" alt="" />
                 &nbsp;&nbsp;
-                <input type="text" name="name" id="newFolder" placeholder="Enter your folder name" onChange={e => dispatch(setName(e.target.value))} />
+                <input type="text" name="name" id="newFolder" placeholder={t('Enter your folder name')} onChange={e => dispatch(setName(e.target.value))} />
                 &nbsp;&nbsp;
-                <input className="submit-create" type="submit" value="Create" />
+                <input className="submit-create" type="submit" value={t('Create')} />
               </form>
             </button>}
           </div>
@@ -199,9 +201,9 @@ export default function FolderTree(props) {
                 <form className="form-horizontal" onSubmit={submit}>
                   <img className="folder" src="/svgs/folder.svg" alt="" />
                   &nbsp;&nbsp;
-                  <input type="text" name="name" id="newFolder" placeholder="Enter your folder name" onChange={e => dispatch(setName(e.target.value))} />
+                  <input type="text" name="name" id="newFolder" placeholder={t('Enter your folder name')} onChange={e => dispatch(setName(e.target.value))} />
                   &nbsp;&nbsp;
-                  <input className="submit-create" type="submit" value="Create" />
+                  <input className="submit-create" type="submit" value={t('Create')} />
                 </form>
               </button>}
             </div>)}
