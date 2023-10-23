@@ -152,7 +152,7 @@ export default function Header() {
         <hr className="dropdown-divider" />
         <Link className="dropdown-item-normal dropdown-item" to="/help" onClick={() => dispatch(hideDropdown())}><p className="text-help">{t('Help')}</p><HelpOutlineIcon /></Link>
         <hr className="dropdown-divider" />
-        <li className="dropdown-item-normal dropdown-item" onClick={() => dispatch(changeLang(lang === Lang.VI ? Lang.EN : Lang.VI))}><p className="text-language">{lang === Lang.VI ? t('English') : t('Vietnamese')}</p>{lang === Lang.VI ? <img src="/images/United States.png" alt="United States image" /> : <img src="/images/Vietnam.png" alt="Vietnam image" />}</li>
+        <li className="dropdown-item-normal dropdown-item" onClick={() => dispatch(changeLang(lang === Lang.VI ? Lang.EN : Lang.VI))}><p className="text-language">{lang === Lang.VI ? 'English' : 'Tiếng Việt'}</p>{lang === Lang.VI ? <img src="/images/United States.png" alt="United States image" /> : <img src="/images/Vietnam.png" alt="Vietnam image" />}</li>
         <Link className="dropdown-item-danger dropdown-item" to="/" onClick={() => dispatch(reset()) && dispatch(logout()) && dispatch(hideDropdown())}><p className="text-logout">{t('Sign out')}</p><LogoutIcon /></Link>
       </ul>}
     </div>
