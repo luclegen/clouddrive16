@@ -24,23 +24,26 @@ const defineAbilitiesFor = user => {
 module.exports = catchAsync(async (req, res, next) => {
   req.i18n.changeLanguage(req.cookies?.lang)
 
-  if (!req.session?.passport?.user) {
-    return res
-      .clearCookie('lang')
-      .clearCookie('id')
-      .clearCookie('avatar')
-      .clearCookie('username')
-      .clearCookie('first_name')
-      .clearCookie('middle_name')
-      .clearCookie('last_name')
-      .status(401)
-      .json(req.t('Unauthorized.'))
-  }
+  const clearCookies = () => res
+    .clearCookie('lang')
+    .clearCookie('id')
+    .clearCookie('avatar')
+    .clearCookie('username')
+    .clearCookie('first_name')
+    .clearCookie('middle_name')
+    .clearCookie('last_name')
+    .status(401)
+    .json(req.t('Unauthorized.'))
+
+  if (!req.session?.passport?.user) return clearCookies()
 
   req.payload = await util.promisify(jwt.verify)(req.session?.passport?.user, process.env.SECRET)
   req.user = await User.findById(req.payload)
 
-  if (!req.user) return next(createError(404, 'User not found.'))
+  if (!req.user) {
+    clearCookies()
+    return next(createError(404, 'User not found.'))
+  }
 
   req.ability = defineAbilitiesFor(req.user)
 
