@@ -47,11 +47,17 @@ module.exports = catchAsync(async (req, res, next) => {
   if (req.user.is_activate) return next()
 
   switch (req.baseUrl) {
-  case '/api/auth':
-  case '/api/codes':
-    next()
-    break
-  default:
-    next(createError(401))
+    case '/api/users':
+      if (req.method === 'PATCH') next()
+      else next(createError(401))
+      break
+
+    case '/api/auth':
+    case '/api/codes':
+      next()
+      break
+
+    default:
+      next(createError(401))
   }
 })
