@@ -12,6 +12,7 @@ import {
   setLoggedIn
 } from '../../slice'
 import { create } from './slice'
+import Lang from '../../models/Lang'
 
 export default function Registration() {
   const dispatch = useDispatch()
@@ -164,7 +165,7 @@ export default function Registration() {
         </div>
       </div>
       <h1 className="h1-registration">{t('Sign Up')}</h1>
-      <div className="row-name">
+      <div className={`row-name${lang === Lang.VI ? ' flex-md-row-reverse' : ''}`}>
         <div className="col-md">
           <div className="form-floating">
             <input className="form-control" id="firstNameRegistration" name="first_name" type="text" placeholder={t('First name')} onInput={enterFirstName} onInvalid={enterFirstName} onChange={e => setFirstName(e.target.value)} required />
