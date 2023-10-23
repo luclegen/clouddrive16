@@ -85,5 +85,6 @@
   "No such file.": "Không có tập tin nào như vậy.",
   "Saved successfully.": "Đã lưu thành công.",
   "Cannot execute \"save\" on \"File\"": "Không thể thực thi \"lưa\" trên \"Tập tin\".",
-  "Data not found.": "Không tìm thấy dữ liệu."
+  "Data not found.": "Không tìm thấy dữ liệu.",
+  "You must be 5 years or older": "Bạn phải từ 5 tuổi trở lên"
 }
