@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next'
 import { create, selectSent } from './slice';
 import { verify } from '../../slice';
 import helper from '../../services/helper';
 
 export default function Activate() {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const sent = useSelector(selectSent);
 
   useEffect(() => {
-    document.title = `Activate - ${process.env.REACT_APP_NAME}`;
+    document.title = `${t('Activate account')} - ${process.env.REACT_APP_NAME}`;
     window.onbeforeunload = () => (getCode() ? true : undefined);
   });
 
@@ -28,8 +30,7 @@ export default function Activate() {
     ];
 
     if (e.target.value.length > 1) return (input[i].value = e.target.value[0]);
-    if (i < 5 && helper.isDigit(input[i].value) && input[i].value.length === 1)
-    {input[i + 1].focus();}
+    if (i < 5 && helper.isDigit(input[i].value) && input[i].value.length === 1) { input[i + 1].focus(); }
 
     if (isSubmit()) submit(e);
   };
@@ -58,8 +59,7 @@ export default function Activate() {
       if (helper.isDigits(txt)) input[f].focus();
     });
 
-    for (let j = i, k = 0; k < max; j++, k++)
-    {input[j].value = helper.isDigit(txt[k]) ? txt[k] : null;}
+    for (let j = i, k = 0; k < max; j++, k++) { input[j].value = helper.isDigit(txt[k]) ? txt[k] : null; }
 
     if (isSubmit()) submit(e);
   };
@@ -89,10 +89,10 @@ export default function Activate() {
         <img
           className="logo-img"
           src="/logo.svg"
-          alt={process.env.REACT_APP_NAME + ' logo'}
+          alt={`${process.env.REACT_APP_NAME} logo`}
         />
-        <h1 className="h1-only">Activate your account</h1>
-        <p>We sent a code to your email. Please enter the verification code.</p>
+        <h1 className="h1-only">{t('Activate your account')}</h1>
+        <p>{t('We sent a code to your email. Please enter the verification code.')}</p>
         <div className="row-code">
           {'0'
             .repeat(6)
@@ -116,7 +116,7 @@ export default function Activate() {
               </div>
             ))}
         </div>
-        <a href="/" onClick={send}>{`${sent ? 'Resend' : 'Send'} Code`}</a>
+        <a href="/" onClick={send}>{t(`${sent ? 'Resend' : 'Send'} Code`)}</a>
       </form>
     </section>
   );
