@@ -3,6 +3,7 @@ import {
   useDispatch,
   useSelector
 } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Progress } from 'reactstrap';
 import SaveIcon from '@mui/icons-material/Save'
 import DownloadIcon from '@mui/icons-material/Download'
@@ -30,6 +31,7 @@ import {
 
 export default function Media(props) {
   const dispatch = useDispatch()
+  const { t } = useTranslation();
 
   const factor = useSelector(selectFactor)
   const data = useSelector(selectData)
@@ -137,9 +139,9 @@ export default function Media(props) {
     <span className="command-bar">
       <span className="primary-command">
         {props.type === FileType.TXT && <button className="btn-save" type="button" disabled={data === dataPrev} onClick={save}><SaveIcon />&nbsp;Save</button>}
-        <button className="btn-download" type="button" onClick={download}><DownloadIcon />&nbsp;Download</button>
-        {props.type === FileType.IMAGE && <button className="btn-rotate-left" type="button" onClick={rotateLeft}><Rotate90DegreesCcwIcon />&nbsp;Rotate left 90°</button>}
-        {props.type === FileType.IMAGE && <button className="btn-rotate-right" type="button" onClick={rotateRight}><Rotate90DegreesCwIcon />&nbsp;Rotate right 90°</button>}
+        <button className="btn-download" type="button" onClick={download}><DownloadIcon />&nbsp;{t('Download')}</button>
+        {props.type === FileType.IMAGE && <button className="btn-rotate-left" type="button" onClick={rotateLeft}><Rotate90DegreesCcwIcon />&nbsp;{t('Rotate left 90°')}</button>}
+        {props.type === FileType.IMAGE && <button className="btn-rotate-right" type="button" onClick={rotateRight}><Rotate90DegreesCwIcon />&nbsp;{t('Rotate right 90°')}</button>}
         {props.type !== FileType.IMAGE && props.type !== FileType.TXT && <span className="left-space" style={{ width: '56px' }}></span>}
       </span>
       <span className="middle-command">
@@ -148,7 +150,7 @@ export default function Media(props) {
       </span>
       <span className="secondary-command">
         {(props.type === FileType.IMAGE || props.type === FileType.TXT) && <span className="right-space" style={{ width: `${props.type === FileType.TXT ? 25 : 270}px` }}></span>}
-        <button className="btn-prev" type="button" disabled={props.index === 1} onClick={() => {
+        <button className="btn-prev" title={t('Previous')} type="button" disabled={props.index === 1} onClick={() => {
           if (props.type === FileType.TXT) {
             if (data === dataPrev) prev()
             else {
@@ -157,7 +159,7 @@ export default function Media(props) {
           } else prev()
         }}><SkipPreviousIcon /></button>
         <span className="span-index">&nbsp;&nbsp;{props.index + '/' + props.count}&nbsp;&nbsp;</span>
-        <button className="btn-next" type="button" disabled={props.index === props.count} onClick={() => {
+        <button className="btn-next" title={t('Next')} type="button" disabled={props.index === props.count} onClick={() => {
           if (props.type === FileType.TXT) {
             if (data === dataPrev) next()
             else {
@@ -165,7 +167,7 @@ export default function Media(props) {
             }
           } else next()
         }}><SkipNextIcon /></button>
-        <button className="btn-close" type="button" onClick={() => {
+        <button className="btn-close" title={t('Close')} type="button" onClick={() => {
           if (props.type === FileType.TXT) {
             if (data === dataPrev) props.close()
             else {
