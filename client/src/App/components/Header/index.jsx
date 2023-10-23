@@ -121,7 +121,7 @@ export default function Header() {
       <img className={`logo-img ${width > 560 && 'me-1'}`} src="logo.hover.svg" alt="Hover logo" hidden={!hover} />
       {width > 560 && process.env.REACT_APP_NAME}
     </Link>
-    {loggedIn && <div className="search-bar" onMouseEnter={coloring} onMouseLeave={coloring} onInput={e => dispatch(search(e.target.value))}>
+    {loggedIn && activated && <div className="search-bar" onMouseEnter={coloring} onMouseLeave={coloring} onInput={e => dispatch(search(e.target.value))}>
       <form className="form-search">
         <button className="btn-search" type={width > 800 ? 'submit' : opened && keyword ? 'submit' : 'button'} disabled={width > 800 && !keyword} onClick={open}>
           <SearchIcon />
