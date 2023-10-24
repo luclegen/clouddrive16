@@ -168,7 +168,7 @@ export default function FolderTree(props) {
         <span className="middle-command">
         </span>
         <span className="secondary-command">
-          <button className="btn-close" type="button" onClick={() => dispatch(closeFolderTree())}><CloseIcon /></button>
+          <button className="btn-close" title={t('Close')} type="button" onClick={() => dispatch(closeFolderTree())}><CloseIcon /></button>
         </span>
       </span>
       <main className="main-folder-tree">
