@@ -148,7 +148,7 @@ export default function Header() {
           <HelpOutlineIcon className="icon-header" />
         </a>}
       {isOpen && <ul className="dropdown-menu dropdown-menu-avatar">
-        <Link className="dropdown-item-normal dropdown-item" to="/profile" onClick={() => dispatch(hideDropdown())}><p className="text-profile">{t('My profile')}</p><InfoIcon /></Link>
+        <Link className="dropdown-item-normal dropdown-item" to="/profile/information" onClick={() => dispatch(hideDropdown())}><p className="text-profile">{t('My profile')}</p><InfoIcon /></Link>
         <hr className="dropdown-divider" />
         <Link className="dropdown-item-normal dropdown-item" to="/help" onClick={() => dispatch(hideDropdown())}><p className="text-help">{t('Help')}</p><HelpOutlineIcon /></Link>
         <hr className="dropdown-divider" />
