@@ -99,11 +99,9 @@ export default function Files() {
   useEffect(() => {
     window.onresize = () => {
       setMainContent()
-      if (!isEmpty()) setMainCommandBar()
       dispatch(setWidth())
     }
     setMainContent()
-    if (!isEmpty()) setMainCommandBar()
     refresh()
       .then(() => document.title = `${t('My files')} - ${process.env.REACT_APP_NAME}`)
   }, [])
@@ -115,13 +113,6 @@ export default function Files() {
   const setMainContent = () =>
     document.querySelector('.main-content')
       .style.marginLeft = `${document
-        .querySelector('.left-nav')
-        .clientWidth}px`
-
-  const setMainCommandBar = () =>
-    document
-      .querySelector('.main-command-bar')
-      .style.width = `${window.innerWidth - document
         .querySelector('.left-nav')
         .clientWidth}px`
 
