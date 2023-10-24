@@ -117,8 +117,8 @@ export default function Header() {
 
   return <header>
     <Link className="logo" to={`/${loggedIn && activated ? '?id=root' : ''}`} onClick={() => loggedIn && activated && dispatch(list())} onMouseEnter={() => dispatch(toggle())} onMouseLeave={() => dispatch(toggle())}>
-      <img className={`logo-img ${width > 560 && 'me-1'}`} src="logo.svg" alt="Logo" hidden={hover} />
-      <img className={`logo-img ${width > 560 && 'me-1'}`} src="logo.hover.svg" alt="Hover logo" hidden={!hover} />
+      <img className={`logo-img ${width > 560 && 'me-1'}`} src="/logo.svg" alt="Logo" hidden={hover} />
+      <img className={`logo-img ${width > 560 && 'me-1'}`} src="/logo.hover.svg" alt="Hover logo" hidden={!hover} />
       {width > 560 && process.env.REACT_APP_NAME}
     </Link>
     {loggedIn && activated && <div className="search-bar" onMouseEnter={coloring} onMouseLeave={coloring} onInput={e => dispatch(search(e.target.value))}>
