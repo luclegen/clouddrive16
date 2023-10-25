@@ -35,7 +35,6 @@ module.exports.create = catchAsync(async (req, res, next) => {
   if (!user) return next(createError(404, 'User not found.'))
 
   profile._uid = user
-  // profile = await profile.save()
 
   profile
     .save()
@@ -65,7 +64,7 @@ module.exports.create = catchAsync(async (req, res, next) => {
               .cookie('username', user.username || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
               .cookie('first_name', user.name.first, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
               .cookie('middle_name', user.name.middle || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
-              .cookie('last_name', user.name.last, { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
+              .cookie('last_name', user.name.last || '', { [req.body.remember ? 'maxAge' : 'expires']: req.body.remember ? maxAge : false })
               .status(201)
               .json(req.t('Registered successfully.'))
           }
@@ -89,8 +88,6 @@ module.exports.read = catchAsync(async (req, res, next) => {
 module.exports.update = catchAsync(async (req, res, next) => {
   req.i18n.changeLanguage(req.body.lang)
 
-  if (!checker.isDate(req.body.year, req.body.month, req.body.day)) return next(createError(403, 'Invalid birthday.'))
-
   if (req.file && req.user.avatar) fs.rmSync(`${process.env.UPLOADS}public${req.user.avatar}`)
 
   let profile = await Profile.findOne({ _uid: req.user }).accessibleBy(req.ability)
@@ -101,7 +98,7 @@ module.exports.update = catchAsync(async (req, res, next) => {
   req.user.name.last = req.body.last_name
   req.user.lang = req.body.lang
   profile.full_name = req.body.full_name
-  profile.birthday = new Date(req.body.year, req.body.month, req.body.day)
+  profile.birthday = new Date(req.body.birthday).toISOString()
   profile.sex = req.body.sex
 
   ForbiddenError.from(req.ability).throwUnlessCan('update', req.user)
@@ -118,7 +115,14 @@ module.exports.update = catchAsync(async (req, res, next) => {
   if (!profile) return next(createError(404, 'Profile not found.'))
 
   res
+    .cookie('is_activate', req.user.is_activate.toString() || '', { expires: req.session.cookie.expires })
     .cookie('lang', req.user.lang, { expires: req.session.cookie.expires })
+    .cookie('id', req.user._id.toString(), { expires: req.session.cookie.expires })
+    .cookie('avatar', req.user.avatar || '', { expires: req.session.cookie.expires })
+    .cookie('username', req.user.username || '', { expires: req.session.cookie.expires })
+    .cookie('first_name', req.user.name.first, { expires: req.session.cookie.expires })
+    .cookie('middle_name', req.user.name.middle || '', { expires: req.session.cookie.expires })
+    .cookie('last_name', req.user.name.last || '', { expires: req.session.cookie.expires })
     .json(req.t('Updated successfully.'))
 })
 
