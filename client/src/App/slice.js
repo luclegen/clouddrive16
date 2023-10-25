@@ -9,7 +9,8 @@ const initialState = {
   remember: false,
   loggedIn: helper.loggedIn(),
   is_activate: helper.getCookie('is_activate') === 'true',
-  lang: helper.getCookie('lang') || (navigator.language === Lang.VI ? Lang.VI : Lang.EN)
+  lang: helper.getCookie('lang') || (navigator.language === Lang.VI ? Lang.VI : Lang.EN),
+  avatar: helper.getCookie('avatar')
 }
 
 export const check = createAsyncThunk('app/check', async (email) => (await authService.available(email)).status === 200)
@@ -17,6 +18,8 @@ export const login = createAsyncThunk('app/login', async (user) => (await authSe
 export const logout = createAsyncThunk('app/logout', async () => (await authService.logout()).data)
 export const verify = createAsyncThunk('app/verify', async (code) => (await authService.verify(code)).data)
 export const changeLang = createAsyncThunk('app/changeLang', async (lang) => (await usersService.changeLang(lang)).data)
+export const readUser = createAsyncThunk('app/readUser', async id => ((await usersService.read(id)).data))
+export const updateUser = createAsyncThunk('app/updateUser', async user => ((await usersService.update(user)).data))
 
 export const appSlice = createSlice({
   name: 'app',
@@ -30,6 +33,9 @@ export const appSlice = createSlice({
     },
     setLang: (state, action) => {
       state.lang = action.payload
+    },
+    setAvatar: (state, action) => {
+      state.avatar = action.payload
     }
   },
   extraReducers: (builder) =>
@@ -59,12 +65,16 @@ export const appSlice = createSlice({
       .addCase(changeLang.fulfilled, (state, action) => {
         state.lang = helper.getCookie('lang')
       })
+      .addCase(updateUser.fulfilled, (state, action) => {
+        alert(action.payload)
+      })
 })
 
 export const {
   setRemember,
   setLoggedIn,
-  setLang
+  setLang,
+  setAvatar
 } = appSlice.actions
 
 export const selectAvailable = (state) => state.app.available
@@ -72,5 +82,6 @@ export const selectRemember = (state) => state.app.remember
 export const selectLoggedIn = (state) => state.app.loggedIn
 export const selectIsActivate = (state) => state.app.is_activate
 export const selectLang = (state) => state.app.lang
+export const selectAvatar = (state) => state.app.avatar
 
 export default appSlice.reducer
