@@ -1190,15 +1190,9 @@ components:
         full_name:
           type: string
           example: Huỳnh Thị Cẩm Liên
-        day:
-          type: integer
-          example: 16
-        month:
-          type: integer
-          example: 2
-        year:
-          type: integer
-          example: 1990
+        birthday:
+          type: string
+          example: 1990-03-16
         sex:
           type: string
           enum:
