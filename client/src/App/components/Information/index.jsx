@@ -19,7 +19,8 @@ import {
   selectLang,
   setLang,
   readUser,
-  updateUser
+  updateUser,
+  setAvatar as setGlobalAvatar
 } from '../../slice'
 
 export default function Information() {
@@ -51,6 +52,7 @@ export default function Information() {
   const refresh = () => dispatch(readUser(helper.getCookie('id')))
     .then(action => {
       if (action.type === 'app/readUser/fulfilled') {
+        dispatch(setGlobalAvatar(action.payload.avatar))
         setAvatar(action.payload.avatar)
         setFirstName(action.payload.name.first || '')
         setMiddleName(action.payload.name.middle || '')
