@@ -34,7 +34,7 @@ header
 .form-floating-email
   @extend .form-floating
 
-.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-upload, .btn-download, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next, .submit-create, .btn-move, .btn-copy, .btn-close-progress, .btn-show-progress, .btn-new-folder, .btn-close, .btn-save
+.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-upload, .btn-download, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next, .submit-create, .btn-move, .btn-copy, .btn-close-progress, .btn-show-progress, .btn-new-folder, .btn-close, .btn-save, .btn-edit, .btn-cancel
   @extend .btn
 
 .submit-create, .btn-move, .btn-copy, .dropdown-toggle-new, .btn-save
@@ -42,6 +42,12 @@ header
 
 .btn-create-account, .btn-sign-up
   @extend .btn-success
+
+.btn-edit
+  @extend .btn-warning
+
+.btn-cancel
+  @extend .btn-danger
 
 .btn-cancel-upload
   @extend .btn-close
@@ -101,19 +107,19 @@ header
 header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside, .dropdown-menu-folder
   @extend .position-fixed
 
-.logo, .btn-search, .btn-input, .section-only, .form-only, .input-group-email, .input-group-password, .section-floating-center, .form-row-sign-up, .input-group-password-strength, .dropdown-item-normal, .dropdown-item-danger, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .main-command-bar, .dropdown-item, .bg-media, .empty-trash, .link-find-account, .primary-command, .middle-command, .secondary-command, .span-index, .title-bar, .section-floating-aside, .form-horizontal, .command-bar, .form-check-female, .form-check-male, .form-check-other, .col-md-close, .col-md-sign-up, .item-uploads, .table-only, .table-only, .circle-edit, .avatar-cropper
+.logo, .btn-search, .btn-input, .section-only, .form-only, .input-group-email, .input-group-password, .section-floating-center, .form-row-sign-up, .input-group-password-strength, .dropdown-item-normal, .dropdown-item-danger, .top-left-nav, .list-group-item, .section-files, .path-bar, .dir, .main-command-bar, .dropdown-item, .bg-media, .empty-trash, .link-find-account, .primary-command, .middle-command, .secondary-command, .span-index, .title-bar, .section-floating-aside, .form-horizontal, .command-bar, .form-check-female, .form-check-male, .form-check-other, .col-md-close, .col-md-sign-up, .item-uploads, .table-only, .table-only, .circle-edit, .avatar-cropper, .action-bar
   @extend .d-flex
 
 .form-only, .empty-trash, .table-only, .avatar-cropper
   @extend .flex-column
 
-.logo, .form-only, .section-floating-center, .top-left-nav, .bg-media, .empty-trash, .link-find-account, .middle-command, .span-index, .section-loader, .form-check-female, .form-check-male, .form-check-other, .table-only, .avatar-cropper
+.logo, .form-only, .section-floating-center, .top-left-nav, .bg-media, .empty-trash, .link-find-account, .middle-command, .span-index, .section-loader, .form-check-female, .form-check-male, .form-check-other, .table-only, .avatar-cropper, .action-bar
   @extend .align-items-center
 
 .list-group-item, .circle-edit
   @extend .align-items-end
 
-.section-only, .form-only, .section-floating-center, .form-row-sign-up, .input-group-password-strength, .bg-media, .empty-trash, .middle-command, .col-md-sign-up, .table-only, .circle-edit, .avatar-cropper
+.section-only, .form-only, .section-floating-center, .form-row-sign-up, .input-group-password-strength, .bg-media, .empty-trash, .middle-command, .col-md-sign-up, .table-only, .circle-edit, .avatar-cropper, .action-bar
   @extend .justify-content-center
 
 .col-md-close
@@ -157,7 +163,7 @@ header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
 .input-group-password
   @extend .rounded-bottom
 
-.avatar-img, .circle-edit
+.avatar-img, .circle-edit, .dropdown-toggle-avatar
   @extend .rounded-circle
 
 .search-bar
@@ -166,7 +172,7 @@ header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
 .form-registration, .section-floating-aside
   @extend .shadow
 
-.input-search, .btn-search, .dropdown-toggle-avatar, .input-email, .input-password, .btn-input, select, .form-control-digit
+.input-search, .btn-search, .input-email, .input-password, .btn-input, select, .form-control-digit
   @extend .shadow-none
 
 .command-bar, .main-command-bar
@@ -193,10 +199,10 @@ header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
 .text-editor
   @extend .w-75
 
-.section-floating, .main-command-bar
+.section-floating, .main-command-bar, .action-bar
   @extend .w-100
 
-.dropdown-toggle-new, .text-editor
+.dropdown-toggle-new, .text-editor, .action-bar
   @extend .h-100
 
 .input-group-email, .form-check-female, .form-check-male, .form-check-other, .password-strength, .text-profile, .text-help, .text-logout, .col-md-digit, .text-language
@@ -351,12 +357,6 @@ a
   &::after
     display: none !important
 
-.avatar-img
-  border: 1px solid blue
-
-  &:hover
-    border: 1px solid white
-
 .btn-input
 
   &:disabled
@@ -418,6 +418,11 @@ meter
 
   &:hover
     color: navy
+
+.dropdown-toggle-avatar
+
+  &:hover
+    box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.75)
 
 .dropdown-menu-avatar
   display: inline !important
