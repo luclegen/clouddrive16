@@ -1,18 +1,22 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import authService from './services/auth'
+import usersService from './services/users'
 import helper from './services/helper'
+import Lang from './models/Lang'
 
 const initialState = {
   available: true,
   remember: false,
   loggedIn: helper.loggedIn(),
-  is_activate: helper.getCookie('is_activate') === 'true'
+  is_activate: helper.getCookie('is_activate') === 'true',
+  lang: helper.getCookie('lang') || (navigator.language === Lang.VI ? Lang.VI : Lang.EN)
 }
 
 export const check = createAsyncThunk('app/check', async (email) => (await authService.available(email)).status === 200)
 export const login = createAsyncThunk('app/login', async (user) => (await authService.login(user)).data)
 export const logout = createAsyncThunk('app/logout', async () => (await authService.logout()).data)
 export const verify = createAsyncThunk('app/verify', async (code) => (await authService.verify(code)).data)
+export const changeLang = createAsyncThunk('app/changeLang', async (lang) => (await usersService.changeLang(lang)).data)
 
 export const appSlice = createSlice({
   name: 'app',
@@ -23,6 +27,9 @@ export const appSlice = createSlice({
     },
     setLoggedIn: (state, action) => {
       state.loggedIn = action.payload
+    },
+    setLang: (state, action) => {
+      state.lang = action.payload
     }
   },
   extraReducers: (builder) =>
@@ -49,13 +56,21 @@ export const appSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.loggedIn = false
       })
+      .addCase(changeLang.fulfilled, (state, action) => {
+        state.lang = helper.getCookie('lang')
+      })
 })
 
-export const { setRemember, setLoggedIn } = appSlice.actions
+export const {
+  setRemember,
+  setLoggedIn,
+  setLang
+} = appSlice.actions
 
 export const selectAvailable = (state) => state.app.available
 export const selectRemember = (state) => state.app.remember
 export const selectLoggedIn = (state) => state.app.loggedIn
 export const selectIsActivate = (state) => state.app.is_activate
+export const selectLang = (state) => state.app.lang
 
 export default appSlice.reducer
