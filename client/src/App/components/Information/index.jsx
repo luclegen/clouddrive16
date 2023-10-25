@@ -10,14 +10,17 @@ import Lang from '../../models/Lang'
 import Sex from '../../models/Sex'
 import helper from '../../services/helper'
 import {
-  readUser,
   selectEdit,
-  updateUser,
   setEdit
 } from './slice'
 import { setWidth } from '../Header/slice'
 import { selectPreview } from '../AvatarCropper/slice'
-import { selectLang, setLang } from '../../slice'
+import {
+  selectLang,
+  setLang,
+  readUser,
+  updateUser
+} from '../../slice'
 
 export default function Information() {
   const dispatch = useDispatch()
@@ -47,7 +50,7 @@ export default function Information() {
 
   const refresh = () => dispatch(readUser(helper.getCookie('id')))
     .then(action => {
-      if (action.type === 'information/readUser/fulfilled') {
+      if (action.type === 'app/readUser/fulfilled') {
         setAvatar(action.payload.avatar)
         setFirstName(action.payload.name.first || '')
         setMiddleName(action.payload.name.middle || '')
@@ -96,7 +99,7 @@ export default function Information() {
 
         dispatch(updateUser(formData))
           .then(action => {
-            if (action.type === 'information/updateUser/fulfilled') {
+            if (action.type === 'app/updateUser/fulfilled') {
               refresh()
                 .then(() => {
                   dispatch(setLang(helper.getCookie('lang')))
