@@ -12,7 +12,6 @@ import {
   selectHover,
   selectWidth,
   selectOpened,
-  selectAvatar,
   toggle,
   toggleDropdown,
   search,
@@ -31,7 +30,8 @@ import {
   logout,
   selectIsActivate,
   selectLang,
-  changeLang
+  changeLang,
+  selectAvatar
 } from '../../slice'
 import helper from '../../services/helper'
 
@@ -141,7 +141,7 @@ export default function Header() {
       {loggedIn
         ? <button className="dropdown-toggle dropdown-toggle-avatar" title={helper.getCookie('first_name')} onClick={() => dispatch(toggleDropdown())}>
           {avatar
-            ? <img className="avatar-img" src={avatar} alt={`${helper.getCookie('first_name')}'s avatar`} />
+            ? <img className="avatar-img" src={helper.getAvatar(avatar)} alt={`${helper.getCookie('first_name')}'s avatar`} />
             : <AccountCircleIcon className="icon-header" />}
         </button>
         : <a className="link-help" title={t('Help')} href="/help" target="_blank">
