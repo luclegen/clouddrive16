@@ -11,7 +11,8 @@ const initialState = {
   is_activate: helper.getCookie('is_activate') === 'true',
   lang: helper.getCookie('lang') || (navigator.language === Lang.VI ? Lang.VI : Lang.EN),
   avatar: helper.getCookie('avatar'),
-  first_name: helper.getCookie('first_name')
+  first_name: helper.getCookie('first_name'),
+  full_name: helper.getCookie('lang') === Lang.VI ? `${helper.getCookie('last_name')} ${helper.getCookie('middle_name')} ${helper.getCookie('first_name')}` : `${helper.getCookie('first_name')} ${helper.getCookie('middle_name')} ${helper.getCookie('last_name')}`
 }
 
 export const check = createAsyncThunk('app/check', async (email) => (await authService.available(email)).status === 200)
@@ -40,6 +41,9 @@ export const appSlice = createSlice({
     },
     setFirstName: (state, action) => {
       state.first_name = action.payload
+    },
+    setFullName: (state, action) => {
+      state.full_name = action.payload
     }
   },
   extraReducers: (builder) =>
@@ -79,7 +83,8 @@ export const {
   setLoggedIn,
   setLang,
   setAvatar,
-  setFirstName
+  setFirstName,
+  setFullName
 } = appSlice.actions
 
 export const selectAvailable = (state) => state.app.available
@@ -89,5 +94,6 @@ export const selectIsActivate = (state) => state.app.is_activate
 export const selectLang = (state) => state.app.lang
 export const selectAvatar = (state) => state.app.avatar
 export const selectFirstName = (state) => state.app.first_name
+export const selectFullName = (state) => state.app.full_name
 
 export default appSlice.reducer
