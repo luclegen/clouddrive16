@@ -31,7 +31,8 @@ import {
   selectIsActivate,
   selectLang,
   changeLang,
-  selectAvatar
+  selectAvatar,
+  selectFirstName
 } from '../../slice'
 import helper from '../../services/helper'
 
@@ -45,6 +46,7 @@ export default function Header() {
   const opened = useSelector(selectOpened)
   const isOpen = useSelector(selectIsOpen)
   const avatar = useSelector(selectAvatar)
+  const first_name = useSelector(selectFirstName)
   const loggedIn = useSelector(selectLoggedIn)
   const activated = useSelector(selectIsActivate)
   const lang = useSelector(selectLang)
@@ -139,9 +141,9 @@ export default function Header() {
     </div>}
     <div className="dropdown dropdown-avatar">
       {loggedIn
-        ? <button className="dropdown-toggle dropdown-toggle-avatar" title={helper.getCookie('first_name')} onClick={() => dispatch(toggleDropdown())}>
+        ? <button className="dropdown-toggle dropdown-toggle-avatar" title={first_name} onClick={() => dispatch(toggleDropdown())}>
           {avatar
-            ? <img className="avatar-img" src={helper.getAvatar(avatar)} alt={`${helper.getCookie('first_name')}'s avatar`} />
+            ? <img className="avatar-img" src={helper.getAvatar(avatar)} alt={`${first_name}'s avatar`} />
             : <AccountCircleIcon className="icon-header" />}
         </button>
         : <a className="link-help" title={t('Help')} href="/help" target="_blank">
