@@ -7,8 +7,7 @@ const initialState = {
   opened: false,
   isOpen: false,
   foundFolders: [],
-  foundFiles: [],
-  avatar: ''
+  foundFiles: []
 }
 
 export const search = createAsyncThunk(
@@ -33,7 +32,13 @@ export const headerSlice = createSlice({
   }
 })
 
-export const { toggle, toggleDropdown, hideDropdown, setOpened, setWidth } = headerSlice.actions
+export const {
+  toggle,
+  toggleDropdown,
+  hideDropdown,
+  setOpened,
+  setWidth
+} = headerSlice.actions
 
 export const selectHover = state => state.header.hover
 export const selectWidth = state => state.header.width
@@ -41,6 +46,5 @@ export const selectOpened = state => state.header.opened
 export const selectIsOpen = state => state.header.isOpen
 export const selectFoundFolders = state => state.header.foundFolders
 export const selectFoundFiles = state => state.header.foundFiles
-export const selectAvatar = state => state.header.avatar
 
 export default headerSlice.reducer
