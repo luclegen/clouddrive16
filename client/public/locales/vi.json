@@ -16,6 +16,8 @@
   "Sign Up": "Đăng ký",
   "First name": "Tên",
   "Last name": "Họ",
+  "Middle name": "Họ đệm",
+  "Full name": "Họ và tên",
   "Confirm": "Xác nhận",
   "Date of birth": "Ngày sinh",
   "Day": "Ngày",
@@ -73,5 +75,10 @@
   "Rotate left 90°": "Xoay trái 90°",
   "Rotate right 90°": "Xoay phải 90°",
   "Close": "Đóng",
-  "Previous": "Trước đó"
+  "Previous": "Trước đó",
+  "Information": "Thông tin",
+  "Language": "Ngôn ngữ",
+  "Birthday": "Ngày sinh",
+  "Property": "Thuộc tính",
+  "Value": "Giá trị"
 }
