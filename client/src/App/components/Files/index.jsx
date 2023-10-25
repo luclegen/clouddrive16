@@ -70,6 +70,11 @@ import {
   setSuccess
 } from '../Progress/slice'
 import { selectShow, open as openFolderTree } from '../FolderTree/slice'
+import {
+  readUser,
+  selectFullName,
+  setFullName
+} from '../../slice'
 import formDataAPI from '../../apis/form-data'
 import helper from '../../services/helper'
 import foldersService from '../../services/folders'
@@ -80,6 +85,7 @@ export default function Files() {
   const dispatch = useDispatch()
   const { t } = useTranslation();
 
+  const full_name = useSelector(selectFullName)
   const folders = useSelector(selectFolders)
   const files = useSelector(selectFiles)
   const items = useSelector(selectItems)
@@ -104,6 +110,8 @@ export default function Files() {
     setMainContent()
     refresh()
       .then(() => document.title = `${t('My files')} - ${process.env.REACT_APP_NAME}`)
+    dispatch(readUser())
+      .then(action => dispatch(setFullName(action.payload.full_name)))
   }, [])
 
   const refresh = () => dispatch(list())
@@ -574,9 +582,7 @@ export default function Files() {
         <div className="top-left-nav">
           <label htmlFor="leftNav">
             <strong>
-              {helper.getCookie('first_name') +
-                ' ' +
-                helper.getCookie('last_name')}
+              {full_name}
             </strong>
           </label>
         </div>
