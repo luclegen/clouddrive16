@@ -39,6 +39,8 @@ class Helper {
 
   getMedia = v => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${this.getCookie('id')}/files${v?.path}${v?.name}`
 
+  getAvatar = avatar => `${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/public/?path=${avatar || this.getCookie('avatar')}`
+
   isPlaintext = value => /\.(txt)$/i.test(value)
 
   isPDF = value => /\.pdf$/i.test(value)
