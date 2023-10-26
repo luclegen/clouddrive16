@@ -117,7 +117,7 @@ export default function Information() {
   return <section className="section-only section-right">
     <div className="table-only table-responsive">
       <form onSubmit={submit}>
-        <table className="table table-primary">
+        <table className="table table-primary table-striped">
           <thead>
             <tr>
               <th className="th-center" colSpan={2} scope="col">
