@@ -7,33 +7,15 @@
       "subject": "User"
     },
     {
-      "id": "createCode",
+      "id": "manageCode",
       "can": true,
-      "action": "create",
+      "action": "manage",
       "subject": "Code"
     },
     {
-      "id": "readCode",
+      "id": "manageProfile",
       "can": true,
-      "action": "read",
-      "subject": "Code"
-    },
-    {
-      "id": "verifyCode",
-      "can": true,
-      "action": "verify",
-      "subject": "Code"
-    },
-    {
-      "id": "readProfile",
-      "can": true,
-      "action": "read",
-      "subject": "Profile"
-    },
-    {
-      "id": "updateProfile",
-      "can": true,
-      "action": "update",
+      "action": "manage",
       "subject": "Profile"
     },
     {
@@ -41,7 +23,9 @@
       "can": true,
       "action": "changeLang",
       "subject": "User",
-      "fields": { "_id": "mine" }
+      "fields": {
+        "_id": "mine"
+      }
     },
     {
       "id": "manageFolder",
