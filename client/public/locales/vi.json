@@ -80,5 +80,9 @@
   "Language": "Ngôn ngữ",
   "Birthday": "Ngày sinh",
   "Property": "Thuộc tính",
-  "Value": "Giá trị"
+  "Value": "Giá trị",
+  "Change password": "Thay đổi mật khẩu",
+  "New Password": "Mật khẩu mới",
+  "Confirm Password": "Xác nhận mật khẩu",
+  "Save": "Lưu"
 }
