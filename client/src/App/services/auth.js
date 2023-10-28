@@ -10,6 +10,8 @@ class AuthService {
 
   verify = code => plainAPI.put(URL, code)
 
+  changePassword = user => jsonAPI.patch(URL, user)
+
   logout = () => jsonAPI.delete(URL)
 }
 
