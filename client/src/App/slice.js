@@ -20,6 +20,7 @@ export const login = createAsyncThunk('app/login', async (user) => (await authSe
 export const logout = createAsyncThunk('app/logout', async () => (await authService.logout()).data)
 export const verify = createAsyncThunk('app/verify', async (code) => (await authService.verify(code)).data)
 export const changeLang = createAsyncThunk('app/changeLang', async (lang) => (await usersService.changeLang(lang)).data)
+export const changePassword = createAsyncThunk('app/changePassword', async (user) => (await authService.changePassword(user)).data)
 export const readUser = createAsyncThunk('app/readUser', async id => ((await usersService.read(id)).data))
 export const updateUser = createAsyncThunk('app/updateUser', async user => ((await usersService.update(user)).data))
 
