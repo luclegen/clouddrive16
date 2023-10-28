@@ -138,7 +138,7 @@ export default function Media(props) {
   return <section className="section-floating">
     <span className="command-bar">
       <span className="primary-command">
-        {props.type === FileType.TXT && <button className="btn-save" type="button" disabled={data === dataPrev} onClick={save}><SaveIcon />&nbsp;Save</button>}
+        {props.type === FileType.TXT && <button className="btn-save" type="button" disabled={data === dataPrev} onClick={save}><SaveIcon />&nbsp;{t('Save')}</button>}
         <button className="btn-download" type="button" onClick={download}><DownloadIcon />&nbsp;{t('Download')}</button>
         {props.type === FileType.IMAGE && <button className="btn-rotate-left" type="button" onClick={rotateLeft}><Rotate90DegreesCcwIcon />&nbsp;{t('Rotate left 90°')}</button>}
         {props.type === FileType.IMAGE && <button className="btn-rotate-right" type="button" onClick={rotateRight}><Rotate90DegreesCwIcon />&nbsp;{t('Rotate right 90°')}</button>}
