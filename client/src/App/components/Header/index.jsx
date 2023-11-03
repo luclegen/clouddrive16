@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import SearchIcon from '@mui/icons-material/Search'
@@ -18,12 +18,19 @@ import {
   setOpened,
   setWidth,
   selectIsOpen,
-  hideDropdown
+  hideDropdown,
+  selectFoundFolders,
+  selectFoundFiles,
+  selectKeyword,
+  setKeyword,
+  setFoundFiles,
+  setFoundFolders
 } from './slice'
 import {
   list,
   reset,
-  selectAll
+  selectAll,
+  selectFolders
 } from '../Files/slice'
 import {
   selectLoggedIn,
@@ -40,7 +47,11 @@ export default function Header() {
   const { t, i18n } = useTranslation();
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
+  const folders = useSelector(selectFolders)
+  const foundFolders = useSelector(selectFoundFolders)
+  const foundFiles = useSelector(selectFoundFiles)
   const hover = useSelector(selectHover)
   const width = useSelector(selectWidth)
   const opened = useSelector(selectOpened)
@@ -50,8 +61,8 @@ export default function Header() {
   const loggedIn = useSelector(selectLoggedIn)
   const activated = useSelector(selectIsActivate)
   const lang = useSelector(selectLang)
+  const keyword = useSelector(selectKeyword)
 
-  const [keyword, setKeyword] = useState('')
   const [selected, setSelected] = useState(false)
 
   useEffect(() => {
@@ -96,7 +107,9 @@ export default function Header() {
 
   const getSearchBtn = () => document.querySelector('.btn-search')
 
-  const open = () => {
+  const open = e => {
+    e.preventDefault()
+
     if (width < 801) {
       getSearchBar().style.position = 'absolute'
       getSearchBar().style.width = '100%'
@@ -108,14 +121,29 @@ export default function Header() {
 
       dispatch(setOpened(true))
     }
+
+    navigate(`/?keyword=${keyword}`)
+    dispatch(list())
+    dispatch(setFoundFolders([]))
+    dispatch(setFoundFiles([]))
   }
 
-  // search = e => e.target.value
-  //   ? foldersService.list(e.target.value)
-  //     .then(res => new Promise(resolve => setState({ foundFolders: res.data }) || resolve())
-  //       .then(() => filesService.list(e.target.value)
-  //         .then(res => setState({ foundFiles: res.data }))))
-  //   : setState({ foundFolders: [], foundFiles: [] })
+  const access = e => {
+    if (/folder/g.test(e.target.className)) {
+      navigate(`?id=${e.target.id}`)
+    } else if (/file/g.test(e.target.className)) {
+      navigate(`?id=${e.target.value === '/' ? 'root' : folders.find(v => helper.toPath(v) === e.target.value)._id}${e.target.getAttribute('data-trash') === 'true' ? '&location=trash' : ''}${helper.isMedia(e.target.name) ? `&fid=${e.target.id}` : ''}`)
+      if (helper.isPDF(e.target.name)) window.open(`${process.env.NODE_ENV === 'production' ? window.location.origin + '/api' : process.env.REACT_APP_API}/media/?path=${helper.getCookie('id')}/files${e.target.value === '/' ? '/' : e.target.value + '/'}${e.target.name}`)
+    }
+
+    dispatch(list())
+      .then(action => {
+        if (action.type === 'files/list/fulfilled') {
+          dispatch(setFoundFolders([]))
+          dispatch(setFoundFiles([]))
+        }
+      })
+  }
 
   return <header>
     <Link className="logo" to={`/${loggedIn && activated ? '?id=root' : ''}`} onClick={() => loggedIn && activated && dispatch(list())} onMouseEnter={() => dispatch(toggle())} onMouseLeave={() => dispatch(toggle())}>
@@ -123,21 +151,21 @@ export default function Header() {
       <img className={`logo-img ${width > 560 && 'me-1'}`} src="/logo.hover.svg" alt="Hover logo" hidden={!hover} />
       {width > 560 && process.env.REACT_APP_NAME}
     </Link>
-    {loggedIn && activated && <div className="search-bar" onMouseEnter={coloring} onMouseLeave={coloring} onInput={e => dispatch(search(e.target.value))}>
+    {loggedIn && activated && <div className="search-bar" onMouseEnter={coloring} onMouseLeave={coloring} onInput={e => { dispatch(search(e.target.value)) }}>
       <form className="form-search">
         <button className="btn-search" type={width > 800 ? 'submit' : opened && keyword ? 'submit' : 'button'} disabled={width > 800 && !keyword} onClick={open}>
           <SearchIcon />
         </button>
-        <input className="input-search" name="keyword" type="search" value={keyword} placeholder={t('Search for anything')} onSelect={coloring} onBlur={coloring} onInput={e => setKeyword(e.target.value)} />
+        <input className="input-search" name="keyword" type="search" value={keyword} placeholder={t('Search for anything')} onSelect={coloring} onBlur={coloring} onInput={e => dispatch(setKeyword(e.target.value))} />
       </form>
-      {/* <div className="list-group-search">
+      <div className="list-group-search">
         {foundFolders?.map((v, i) => <button type="button" className="list-group-item-folder" id={v._id} key={i} onClick={access}>
-          <img className="folder" src="/svg/folder.svg" alt="Folder" /> &nbsp;&nbsp;{v.name}
+          <img className="folder" src="/svgs/folder.svg" alt="Folder" /> &nbsp;&nbsp;{v.name}
         </button>)}
         {foundFiles?.map((v, i) => <button type="button" className="list-group-item-file" id={v._id} key={i} name={v.name} value={v.path} data-trash={v.is_trash} onClick={access}>
           <i className="material-icons">{helper.isImage(v.name) ? 'image' : helper.isVideo(v.name) ? 'video_file' : helper.isAudio(v.name) ? 'audio_file' : 'description'}</i>&nbsp;&nbsp;{v.name}
         </button>)}
-      </div> */}
+      </div>
     </div>}
     <div className="dropdown dropdown-avatar">
       {loggedIn
