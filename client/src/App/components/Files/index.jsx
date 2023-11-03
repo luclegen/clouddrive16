@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import {
   DropdownItem,
   DropdownMenu,
@@ -83,6 +84,7 @@ import ItemType from '../../models/ItemType'
 
 export default function Files() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { t } = useTranslation();
 
   const full_name = useSelector(selectFullName)
@@ -107,6 +109,7 @@ export default function Files() {
       setMainContent()
       dispatch(setWidth())
     }
+    window.onpopstate = () => refresh()
     setMainContent()
     refresh()
       .then(() => document.title = `${t('My files')} - ${process.env.REACT_APP_NAME}`)
@@ -255,7 +258,10 @@ export default function Files() {
         )
     ]).then(() => refresh())
 
-  const openLocation = () => { }
+  const openLocation = (e, parent = folders.find(v => items[0].parent === helper.toPath(v))) => {
+    navigate(`?id=${parent ? parent._id : 'root'}`)
+    refresh()
+  }
 
   const back = () =>
     helper.deleteQuery('location') ||
@@ -567,14 +573,14 @@ export default function Files() {
             : <DeleteIcon />}
           &nbsp;{t(`Delete${helper.getQuery('location') === 'trash' ? ' forever' : ''}`)}
         </li>
-        {helper.getQuery('keyword') && (
+        {helper.getQuery('keyword') && (items.length === 1) && (
           <li>
             <hr className="dropdown-divider" />
           </li>
         )}
-        {helper.getQuery('keyword') && (
+        {helper.getQuery('keyword') && (items.length === 1) && (
           <li className="dropdown-item-normal" onClick={openLocation}>
-            <LocationOnIcon />&nbsp;Open item location
+            <LocationOnIcon />&nbsp;{t('Open item location')}
           </li>
         )}
       </ul>
