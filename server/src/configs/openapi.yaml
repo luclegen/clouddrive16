@@ -354,6 +354,14 @@ paths:
       summary: List folder
       description: List a folder
       operationId: listFolder
+      parameters:
+        - name: name
+          in: query
+          description: Folder name
+          explode: true
+          schema:
+            type: string
+            example: abc
       responses:
         '200':
           description: successful operation
@@ -632,6 +640,14 @@ paths:
       summary: List file
       description: List a file
       operationId: listFile
+      parameters:
+        - name: name
+          in: query
+          description: Folder name
+          explode: true
+          schema:
+            type: string
+            example: abc.txt
       responses:
         '200':
           description: successful operation
