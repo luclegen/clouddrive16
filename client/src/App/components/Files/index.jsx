@@ -24,7 +24,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import BackupIcon from '@mui/icons-material/Backup'
 import AudioFileIcon from '@mui/icons-material/AudioFile'
 import DescriptionIcon from '@mui/icons-material/Description'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
 import Progress from '../Progress'
 import Media from '../Media'
 import FileType from '../../models/FileType'
@@ -146,6 +146,8 @@ export default function Files() {
 
   const upload = () => document.getElementById('files').click()
 
+  const uploadFolder = () => document.getElementById('folder').click()
+
   const save = async e => {
     const files = Array.from(e.target.files).map((v) => ({
       name: v.name,
@@ -193,6 +195,66 @@ export default function Files() {
           .then(() => dispatch(setSuccess(i)))
           .finally(async () => (await dispatch(finishUpload(i))) && refresh())
       })
+  }
+
+  const saveFolder = async e => {
+    const foldername = e.target.files[0].webkitRelativePath.split('/')[0]
+
+    dispatch(createFolder({ name: foldername, path: path }))
+      .then(async (action) => {
+        if (action.type === 'files/createFolder/fulfilled') {
+          refresh()
+          const files = Array.from(e.target.files).map((v) => ({
+            name: v.name,
+            value: 0,
+            show: true,
+            cancel: false,
+            success: false,
+            done: false
+          }))
+          controllers.current = '0'
+            .repeat(files.length)
+            .split('')
+            .map(() => new AbortController())
+
+          await dispatch(setUploadFiles(files))
+          await dispatch(showProgressComponent())
+
+          controllers.current.length &&
+            dispatch(startUpload()) &&
+            Array.from(e.target.files).forEach((v, i, a) => {
+              const formData = new FormData()
+
+              formData.append('path', `${path}${foldername}/`)
+              formData.append('name', v.name)
+              formData.append('file', v, v.name)
+
+              formDataAPI
+                .post(
+                  `${process.env.NODE_ENV === 'production'
+                    ? window.location.origin + '/api'
+                    : process.env.REACT_APP_API
+                  }/files/`,
+                  formData,
+                  {
+                    signal: controllers.current[i].signal,
+                    onUploadProgress: data =>
+                      dispatch(
+                        setValue({
+                          index: i,
+                          value: Math.round(100 * (data.loaded / data.total))
+                        })
+                      )
+                  }
+                )
+                .then(() => dispatch(setSuccess(i)))
+                .finally(async () => (await dispatch(finishUpload(i))) && refresh())
+            })
+        }
+      })
+    // console.log(e);
+    // console.log(e.target.files);
+    // console.log(e.target.files[0].webkitRelativePath.split('/')[0]);
   }
 
   const move = () => {
@@ -641,10 +703,27 @@ export default function Files() {
                   </DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
-              <input type="file" id="files" onChange={save} multiple hidden />
-              <button className="btn-upload" onClick={upload}>
-                <UploadIcon />&nbsp;{t('Upload')}
-              </button>
+              <UncontrolledDropdown className="dropdown-upload">
+                <DropdownToggle className="dropdown-toggle-upload" caret>
+                  <UploadIcon />&nbsp;{t('Upload')}
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem
+                    className="dropdown-item-normal"
+                    onClick={uploadFolder}
+                  >
+                    <input type="file" id="folder" onChange={saveFolder} webkitdirectory="" hidden />
+                    <img src="/svgs/folder.svg" alt="Folder" />
+                    &nbsp;{t('Folder')}
+                  </DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={upload}>
+                    <input type="file" id="files" onChange={save} multiple hidden />
+                    <DescriptionIcon />
+                    &nbsp;{t('Files')}
+                  </DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
             </span>
             <span className="middle-command"></span>
             <span className="secondary-command">
