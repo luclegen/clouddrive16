@@ -34,7 +34,7 @@ header
 .form-floating-email
   @extend .form-floating
 
-.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-upload, .btn-download, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next, .submit-create, .btn-move, .btn-copy, .btn-close-progress, .btn-show-progress, .btn-new-folder, .btn-close, .btn-save, .btn-edit, .btn-cancel
+.btn-search, .btn-input, .btn-create-account, .btn-sign-up, .btn-upload, .btn-download, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next, .submit-create, .btn-move, .btn-copy, .btn-close-progress, .btn-show-progress, .btn-new-folder, .btn-close, .btn-save, .btn-edit, .btn-cancel, .dropdown-toggle-upload
   @extend .btn
 
 .submit-create, .btn-move, .btn-copy, .dropdown-toggle-new, .btn-save
@@ -91,6 +91,9 @@ header
 
 .remember-me-label
   @extend .form-check-label
+
+.dropdown-toggle-upload
+  @extend .text-black
 
 .label-group
   @extend .text-secondary
@@ -178,7 +181,7 @@ header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
 .command-bar, .main-command-bar
   @extend .shadow-sm
 
-.input-search, .dropdown-toggle-avatar
+.input-search, .dropdown-toggle-avatar, .dropdown-toggle-upload
   @extend .bg-transparent
 
 .dropdown-item-danger, .dropdown-item-delete
@@ -202,7 +205,7 @@ header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
 .section-floating, .main-command-bar, .action-bar
   @extend .w-100
 
-.dropdown-toggle-new, .text-editor, .action-bar
+.dropdown-toggle-new, .text-editor, .action-bar, .dropdown-toggle-upload
   @extend .h-100
 
 .input-group-email, .form-check-female, .form-check-male, .form-check-other, .password-strength, .text-profile, .text-help, .text-logout, .col-md-digit, .text-language
@@ -238,7 +241,7 @@ header, .left-nav, .main-command-bar, .section-floating, .section-floating-aside
 .input-female, .input-male, .input-other
   @extend .ms-0
 
-.btn-upload
+.btn-upload, .dropdown-toggle-upload
   @extend .ms-1
 
 .dropdown-toggle-avatar, .section-files, .main-content, .section-floating-aside, .aside-right, .form-check-female, .form-check-male, .form-check-other, .col-md-digit, .btn-close-progress, .btn-close
@@ -476,7 +479,7 @@ meter
   i
     margin-right: 5px
 
-.btn-upload, .btn-download, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next, .btn-close-progress, .btn-show-progress, .btn-new-folder, .btn-close
+.btn-upload, .btn-download, .btn-rotate-left, .btn-rotate-right, .btn-empty, .btn-restore, .btn-prev, .btn-next, .btn-close-progress, .btn-show-progress, .btn-new-folder, .btn-close, .dropdown-toggle-upload
 
   &:hover
     background: #f3f2f1
